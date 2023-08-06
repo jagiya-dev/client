@@ -3,9 +3,9 @@ import {StatusBar, Text, View} from 'react-native';
 
 const App = () => {
   return (
-    <View className="flex-1 items-center justify-center">
+    <View className="items-center justify-center flex-1">
       <StatusBar barStyle="default" />
-      <Text className="px-5 text-gray-400 text-2xl font-bold mt-2">
+      <Text className="px-5 mt-2 text-2xl font-bold text-gray-400">
         Open up App.tsx to start working on your app!
       </Text>
     </View>
