@@ -2,6 +2,7 @@ import React from 'react';
 import {StatusBar, Text, View} from 'react-native';
 
 const App = () => {
+
   return (
     <View className="items-center justify-center flex-1">
       <StatusBar barStyle="default" />
