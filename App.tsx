@@ -1,36 +1,29 @@
 import type { FC } from "react";
-import { SafeAreaView, StatusBar, Text, View } from "react-native";
+import { SafeAreaView, StyleSheet, StatusBar, Text, View } from "react-native";
 
-// https://learn.microsoft.com/en-us/appcenter/distribution/codepush/rn-plugin
-import codePush, { type CodePushOptions } from "react-native-code-push";
-import { useTrySync } from "./src/util/codepush/useTrySync";
-import CodepushUpdatePanel from "./src/util/codepush/CodepushUpdatePanel";
-
-const codePushOptions: CodePushOptions = {
-  checkFrequency: codePush.CheckFrequency.MANUAL,
-  installMode: codePush.InstallMode.ON_NEXT_RESUME,
-  mandatoryInstallMode: codePush.InstallMode.IMMEDIATE,
-};
+import Codepush from "./src/util/codepush";
 
 const App: FC = () => {
-  const { progress, bHasUpdate } = useTrySync();
+  const { progress, bHasUpdate } = Codepush.useSyncOrUpdateCode();
   if (bHasUpdate) {
-    return <CodepushUpdatePanel progress={progress} />;
+    return <Codepush.Panel progress={progress} />;
   }
 
   return (
     <SafeAreaView>
       <StatusBar />
-      <View
-        style={{
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+      <View style={style.root}>
         <Text>Welcome!</Text>
       </View>
     </SafeAreaView>
   );
 };
 
-export default codePush(codePushOptions)(App);
+export default Codepush.hoc(App);
+
+const style = StyleSheet.create({
+  root: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
