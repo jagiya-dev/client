@@ -8,6 +8,7 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
+    "build:dev:android": "react-native bundle --platform android --dev --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
     "codepush:android": "appcenter codepush release-react -a jgy/jagiya-android -d Staging",
     "codepush:ios": "appcenter codepush release-react -a jgy/jagiya -d Staging"
   },

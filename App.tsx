@@ -4,6 +4,7 @@ import { SafeAreaView, StyleSheet, StatusBar, Text, View } from "react-native";
 import Codepush from "./src/util/codepush";
 
 const App: FC = () => {
+  // run codepush first of all
   const { progress, bHasUpdate } = Codepush.useSyncOrUpdateCode();
   if (bHasUpdate) {
     return <Codepush.Panel progress={progress} />;
@@ -14,6 +15,7 @@ const App: FC = () => {
       <StatusBar />
       <View style={style.root}>
         <Text>Welcome!</Text>
+        <Text>And This text is updated with codepush!</Text>
       </View>
     </SafeAreaView>
   );
