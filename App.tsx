@@ -1,9 +1,17 @@
 import {SafeAreaView, StatusBar, Text, View} from 'react-native';
 
 // https://learn.microsoft.com/en-us/appcenter/distribution/codepush/rn-plugin
-import codePush from 'react-native-code-push';
+import codePush, {CodePushOptions} from 'react-native-code-push';
+
+const codePushOptions: CodePushOptions = {
+  checkFrequency: codePush.CheckFrequency.MANUAL,
+  installMode: codePush.InstallMode.ON_NEXT_RESUME,
+  mandatoryInstallMode: codePush.InstallMode.IMMEDIATE,
+};
 
 const App = () => {
+
+  const 
   return (
     <SafeAreaView>
       <StatusBar />
@@ -18,4 +26,4 @@ const App = () => {
   );
 };
 
-export default codePush(App);
+export default codePush(codePushOptions)(App);
