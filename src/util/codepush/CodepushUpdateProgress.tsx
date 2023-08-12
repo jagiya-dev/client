@@ -2,7 +2,7 @@ import { type FC, useRef } from "react";
 import { Dimensions, SafeAreaView, Text, View } from "react-native";
 import { DownloadProgress } from "react-native-code-push";
 
-type CodepushUpdateProgressProps = {
+export type CodepushUpdateProgressProps = {
   progress: DownloadProgress;
 };
 
