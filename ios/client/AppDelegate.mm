@@ -1,5 +1,7 @@
 #import "AppDelegate.h"
 
+// https://learn.microsoft.com/en-us/appcenter/distribution/codepush/rn-get-started
+#import <CodePush/CodePush.h>
 #import <React/RCTBundleURLProvider.h>
 
 @implementation AppDelegate
@@ -19,7 +21,10 @@
 #if DEBUG
   return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
 #else
-  return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+  // rn cli original
+  // return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+  // argument bundleURL is the app's bundle is named `main.jsbundle`.
+  return [CodePush bundleURL];
 #endif
 }
 
