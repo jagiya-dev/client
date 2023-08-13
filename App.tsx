@@ -1,26 +1,18 @@
+import { useTheme } from "hooks/useTheme";
 import type { PropsWithChildren } from "react";
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  Text,
-  useColorScheme,
-  View,
-} from "react-native";
-import { getBackgroundColor } from "styles/helper";
+import { SafeAreaView, ScrollView, StatusBar, Text, View } from "react-native";
 
 type SectionProps = {
   title: string;
 } & PropsWithChildren;
 
 const App = () => {
-  const colorScheme = useColorScheme();
-  const backgroundColor = getBackgroundColor(colorScheme);
+  const { backgroundColor, isDarkMode } = useTheme();
 
   return (
     <SafeAreaView style={backgroundColor}>
       <StatusBar
-        barStyle={colorScheme === "dark" ? "light-content" : "dark-content"}
+        barStyle={isDarkMode ? "light-content" : "dark-content"}
         backgroundColor={backgroundColor}
       />
       <ScrollView
