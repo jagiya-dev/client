@@ -1,11 +1,11 @@
 import type { FC } from "react";
-import { SafeAreaView, StyleSheet, StatusBar } from "react-native";
+import { SafeAreaView, StatusBar } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import Codepush from "@/util/codepush";
-import MainPage from "@/screens/Main";
-import React from "react";
+import MainScreen from "@/screens/Main";
+import LoginScreen from "@/screens/Login";
 
 const Stack = createNativeStackNavigator();
 
@@ -18,14 +18,14 @@ const App: FC = () => {
 
   return (
     <NavigationContainer>
-      <SafeAreaView>
-        <StatusBar />
-        <Stack.Navigator initialRouteName="Main">
-          <Stack.Screen name="Main" component={MainPage} />
-        </Stack.Navigator>
-      </SafeAreaView>
+      {/* <StatusBar /> */}
+      <Stack.Navigator initialRouteName="Login" >
+        <Stack.Screen name="Main" component={MainScreen} options={{ title: "" }} />
+        <Stack.Screen name="Login" component={LoginScreen} options={{ title: "로그인" }} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 };
 
-export default Codepush.hoc(App);
+
+export default App;
