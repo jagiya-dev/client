@@ -1,36 +1,31 @@
-import { useTheme } from "hooks/useTheme";
-import type { PropsWithChildren } from "react";
-import { SafeAreaView, ScrollView, StatusBar, Text, View } from "react-native";
+import type { FC } from "react";
+import { SafeAreaView, StyleSheet, StatusBar, Text, View } from "react-native";
 
-type SectionProps = {
-  title: string;
-} & PropsWithChildren;
+import Codepush from "./src/util/codepush";
 
-const App = () => {
-  const { backgroundColor, isDarkMode } = useTheme();
+const App: FC = () => {
+  // run codepush first of all
+  const { progress, bHasUpdate } = Codepush.useSyncOrUpdateCode();
+  if (bHasUpdate) {
+    return <Codepush.Panel progress={progress} />;
+  }
 
   return (
-    <SafeAreaView style={backgroundColor}>
-      <StatusBar
-        barStyle={isDarkMode ? "light-content" : "dark-content"}
-        backgroundColor={backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={{ backgroundColor }}
-      >
-        <View
-          style={{
-            backgroundColor,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Text>Welcome!</Text>
-        </View>
-      </ScrollView>
+    <SafeAreaView>
+      <StatusBar />
+      <View style={style.root}>
+        <Text>Welcome!</Text>
+        <Text>And This text is updated with codepush!</Text>
+      </View>
     </SafeAreaView>
   );
 };
 
-export default App;
+export default Codepush.hoc(App);
+
+const style = StyleSheet.create({
+  root: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
