@@ -1,7 +1,8 @@
 import type { FC } from "react";
 import { SafeAreaView, StyleSheet, StatusBar, Text, View } from "react-native";
 
-import Codepush from "./src/util/codepush";
+import Codepush from "@/util/codepush";
+import MainPage from "@/screens/Main";
 
 const App: FC = () => {
   // run codepush first of all
@@ -13,10 +14,7 @@ const App: FC = () => {
   return (
     <SafeAreaView>
       <StatusBar />
-      <View style={style.root}>
-        <Text>Welcome!</Text>
-        <Text>And This text is updated with codepush!</Text>
-      </View>
+      <MainPage />
     </SafeAreaView>
   );
 };
