@@ -15,6 +15,11 @@ const LoginScreen = () => {
       {/* Image Section */}
       <Image className="w-[50%] h-[22%] bg-black" source={{ uri: "https://example.com/image.jpg" }} />
 
+      <View className="justify-center items-center pt-3">
+        <Text className="text-black">레디우산에 로그인하시고</Text>
+        <Text className="text-black">더 많은 기능을 이용해 보세요!</Text>
+      </View>
+
       {/* Login Section */}
       <View className="items-center justify-center gap-y-5 h-[20%] w-full">
         <TouchableOpacity className="items-center justify-center py-3 rounded-lg bg-yellow-300 w-[50%] z-10" onPress={onPressKakaoLoginButton}>
