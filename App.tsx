@@ -1,7 +1,16 @@
-import type { FC } from "react";
-import { SafeAreaView, StyleSheet, StatusBar, Text, View } from "react-native";
+import { useEffect, type FC } from "react";
+import { SafeAreaView, StatusBar } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import Codepush from "./src/util/codepush";
+import Codepush from "@/util/codepush";
+import MainScreen from "@/screens/Main";
+import LoginScreen from "@/screens/Login";
+
+import * as Sentry from '@sentry/react-native';
+import "@/sentry";
+
+const Stack = createNativeStackNavigator();
 
 const App: FC = () => {
   // run codepush first of all
@@ -10,22 +19,20 @@ const App: FC = () => {
     return <Codepush.Panel progress={progress} />;
   }
 
+  // useEffect(() => {
+  //   throw new Error("Sentry Error Test");
+  // }, []);
+
   return (
-    <SafeAreaView>
-      <StatusBar />
-      <View style={style.root}>
-        <Text>Welcome!</Text>
-        <Text>And This text is updated with codepush!</Text>
-      </View>
-    </SafeAreaView>
+    <NavigationContainer>
+      {/* <StatusBar /> */}
+      <Stack.Navigator initialRouteName="Login" >
+        <Stack.Screen name="Main" component={MainScreen} options={{ title: "" }} />
+        <Stack.Screen name="Login" component={LoginScreen} options={{ title: "로그인" }} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
-export default Codepush.hoc(App);
 
-const style = StyleSheet.create({
-  root: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});
+export default Codepush.hoc(Sentry.wrap(App));

@@ -1,5 +1,5 @@
-import { Button } from "components/Button";
-import { TextInput } from "components/TextInput";
+import { Button } from "@/components/Button";
+import { TextInput } from "@/components/TextInput";
 
 export const SignUpScreen = () => {
   return (
