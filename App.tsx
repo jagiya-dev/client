@@ -1,4 +1,4 @@
-import type { FC } from "react";
+import { useEffect, type FC } from "react";
 import { SafeAreaView, StatusBar } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -6,6 +6,9 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Codepush from "@/util/codepush";
 import MainScreen from "@/screens/Main";
 import LoginScreen from "@/screens/Login";
+
+import * as Sentry from '@sentry/react-native';
+import "@/sentry";
 
 const Stack = createNativeStackNavigator();
 
@@ -15,6 +18,10 @@ const App: FC = () => {
   if (bHasUpdate) {
     return <Codepush.Panel progress={progress} />;
   }
+
+  // useEffect(() => {
+  //   throw new Error("Sentry Error Test");
+  // }, []);
 
   return (
     <NavigationContainer>
@@ -28,4 +35,4 @@ const App: FC = () => {
 };
 
 
-export default App;
+export default Codepush.hoc(Sentry.wrap(App));
