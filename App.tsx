@@ -1,14 +1,23 @@
-import { useEffect, type FC } from "react";
-import { SafeAreaView, StatusBar } from "react-native";
+import type { FC } from "react";
+import { Platform, StatusBar } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import Codepush from "@/util/codepush";
+// setup sentry
+import * as Sentry from '@sentry/react-native';
+
+console.log(`${Platform.OS}-${(__DEV__ ? "dev" : "prod")}`);
+if (!__DEV__) {
+  console.log("Sentry enabled.");
+  Sentry.init({
+    dsn: "https://30091bb8ade8f405c29a52db3b1e18f8@o4505715014696960.ingest.sentry.io/4505715014762496",
+    tracesSampleRate: 1.0,
+  });
+}
+
 import MainScreen from "@/screens/Main";
 import LoginScreen from "@/screens/Login";
-
-import * as Sentry from '@sentry/react-native';
-import "@/sentry";
 
 const Stack = createNativeStackNavigator();
 
@@ -19,13 +28,9 @@ const App: FC = () => {
     return <Codepush.Panel progress={progress} />;
   }
 
-  // useEffect(() => {
-  //   throw new Error("Sentry Error Test");
-  // }, []);
-
   return (
     <NavigationContainer>
-      {/* <StatusBar /> */}
+      <StatusBar />
       <Stack.Navigator initialRouteName="Login" >
         <Stack.Screen name="Main" component={MainScreen} options={{ title: "" }} />
         <Stack.Screen name="Login" component={LoginScreen} options={{ title: "로그인" }} />
@@ -35,4 +40,4 @@ const App: FC = () => {
 };
 
 
-export default Codepush.hoc(Sentry.wrap(App));
+export default Codepush.hoc(!__DEV__ ? Sentry.wrap(App) : App);
