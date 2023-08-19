@@ -52,9 +52,28 @@
 			<string>UIInterfaceOrientationLandscapeLeft</string>
 			<string>UIInterfaceOrientationLandscapeRight</string>
 		</array>
+
 		<key>UIViewControllerBasedStatusBarAppearance</key>
 		<false />
+
+		<!-- Code Push -->
 		<key>CodePushDeploymentKey</key>
 		<string>NLMpJr_htcqKSzDabE315XA7A1EIxM5h5bkY3</string>
+
+		<!-- Permissions -->
+		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+		<string>TEXT</string>
+
+		<key>NSLocationAlwaysUsageDescription</key>
+		<string>YOUR TEXT</string>
+		
+		<key>NSLocationTemporaryUsageDescriptionDictionary</key>
+		<dict>
+			<key>YOUR-PURPOSE-KEY</key>
+			<string>YOUR TEXT</string>
+		</dict>
+		
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>YOUR TEXT</string>
 	</dict>
 </plist>
