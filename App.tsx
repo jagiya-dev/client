@@ -1,13 +1,13 @@
-import type { FC } from "react";
 import { Platform, StatusBar } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import Codepush from "@/util/codepush";
 // setup sentry
-import * as Sentry from '@sentry/react-native';
+import * as Sentry from "@sentry/react-native";
 
-console.log(`${Platform.OS}-${(__DEV__ ? "dev" : "prod")}`);
+console.log(`${Platform.OS}-${__DEV__ ? "dev" : "prod"}`);
+
 if (!__DEV__) {
   console.log("Sentry enabled.");
   Sentry.init({
@@ -21,7 +21,7 @@ import LoginScreen from "@/screens/Login";
 
 const Stack = createNativeStackNavigator();
 
-const App: FC = () => {
+const App = () => {
   // run codepush first of all
   const { progress, bHasUpdate } = Codepush.useSyncOrUpdateCode();
   if (bHasUpdate) {
@@ -31,13 +31,20 @@ const App: FC = () => {
   return (
     <NavigationContainer>
       <StatusBar />
-      <Stack.Navigator initialRouteName="Login" >
-        <Stack.Screen name="Main" component={MainScreen} options={{ title: "" }} />
-        <Stack.Screen name="Login" component={LoginScreen} options={{ title: "로그인" }} />
+      <Stack.Navigator initialRouteName="Login">
+        <Stack.Screen
+          name="Main"
+          component={MainScreen}
+          options={{ title: "" }}
+        />
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{ title: "로그인" }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
-
 
 export default Codepush.hoc(!__DEV__ ? Sentry.wrap(App) : App);

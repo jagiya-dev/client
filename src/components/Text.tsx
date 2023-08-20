@@ -1,9 +1,10 @@
-import { Text as RNText, TextProps } from 'react-native'
+import { Text as RNText, type TextProps } from "react-native";
 
 type Props = TextProps & {};
 
-const Text = (args: Props) => {
-  return (<RNText style={{ fontFamily: "Pretendard" }} {...args} />);
-}
+const Text = (props: Props) => {
+  const style = Object.assign({}, props.style, { fontFamily: "Pretendard" });
+  return <RNText {...props} style={style} />;
+};
 
 export default Text;

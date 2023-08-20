@@ -1,42 +1,112 @@
-import { Text, View, Pressable, Image, TouchableOpacity } from "react-native";
+import { View, Image, StyleSheet } from "react-native";
+import Text from "@/components/Text";
+import Button from "@/components/button/Button";
 
 const LoginScreen = () => {
   const onPressKakaoLoginButton = () => {
     console.log("kakao login button pressed");
-  }
+  };
 
   const onPressAppleLoginButton = () => {
     console.log("apple login button pressed");
-  }
+  };
 
   return (
-    <View className="justify-center items-center h-screen z-0">
-
+    <View style={s.root}>
       {/* Image Section */}
-      <Image className="w-[50%] h-[22%] bg-black" source={{ uri: "https://example.com/image.jpg" }} />
+      <Image
+        style={s.image}
+        source={{ uri: "https://example.com/image.jpg" }}
+      />
 
-      <View className="justify-center items-center pt-3">
-        <Text className="text-black">레디우산에 로그인하시고</Text>
-        <Text className="text-black">더 많은 기능을 이용해 보세요!</Text>
+      <View style={s.descView}>
+        <Text style={s.descText}>레디우산에 로그인하시고</Text>
+        <Text style={s.descText}>더 많은 기능을 이용해 보세요!</Text>
       </View>
 
       {/* Login Section */}
-      <View className="items-center justify-center gap-y-5 h-[20%] w-full">
-        <TouchableOpacity className="items-center justify-center py-3 rounded-lg bg-yellow-300 w-[50%] z-10" onPress={onPressKakaoLoginButton}>
-          <Text className="text-md text-black">카카오 로그인</Text>
-        </TouchableOpacity>
+      <View style={s.loginView}>
+        <Button
+          style={{ ...s.loginButton, ...s.loginButtonKakao }}
+          onPress={onPressKakaoLoginButton}
+          textProps={{ style: s.loginButtonText }}
+        >
+          카카오 로그인
+        </Button>
 
-        <TouchableOpacity className="items-center justify-center w-[50%] py-3 rounded-lg bg-neutral-300 z-10" onPress={onPressAppleLoginButton}>
-          <Text className="text-md text-black">애플 로그인</Text>
-        </TouchableOpacity>
+        <Button
+          style={{ ...s.loginButton, ...s.loginButtonApple }}
+          onPress={onPressAppleLoginButton}
+          textProps={{ style: s.loginButtonText }}
+        >
+          애플 로그인
+        </Button>
       </View>
 
-      <View className="items-center h-[10%]">
-        <Text className="text-xs">로그인을 진행하시면 이용약관과 </Text>
-        <Text className="text-xs">개인정보처리방침에 동의한 것으로 간주힙니다.</Text>
+      <View style={s.privacyView}>
+        <Text style={s.privacyText}>로그인을 진행하시면 이용약관과</Text>
+        <Text style={s.privacyText}>
+          개인정보처리방침에 동의한 것으로 간주힙니다.
+        </Text>
       </View>
     </View>
-  )
+  );
 };
 
 export default LoginScreen;
+
+const s = StyleSheet.create({
+  root: {
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
+    zIndex: 0,
+  },
+  image: {
+    width: 200,
+    height: 200,
+    backgroundColor: "black",
+  },
+  descView: {
+    justifyContent: "center",
+    alignItems: "center",
+    paddingTop: 3,
+  },
+  descText: {
+    color: "black",
+    fontSize: 20,
+  },
+  loginView: {
+    justifyContent: "center",
+    alignItems: "center",
+    height: "20%",
+    width: "100%",
+  },
+  loginButton: {
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: 5,
+    marginVertical: 5,
+    width: "50%",
+    borderRadius: 7,
+    zIndex: 10,
+  },
+  loginButtonText: {
+    color: "black",
+    fontSize: 15,
+  },
+  loginButtonKakao: {
+    backgroundColor: "yellow",
+  },
+  loginButtonApple: {
+    backgroundColor: "lightgray",
+  },
+  privacyView: {
+    alignItems: "center",
+    height: "10%",
+  },
+  privacyText: {
+    color: "black",
+    fontSize: 10,
+  },
+});
