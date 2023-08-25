@@ -18,6 +18,7 @@ if (!__DEV__) {
 
 import MainScreen from "@/screens/Main";
 import LoginScreen from "@/screens/Login";
+import { RecoilRoot } from "recoil";
 
 const Stack = createNativeStackNavigator();
 
@@ -29,21 +30,23 @@ const App = () => {
   }
 
   return (
-    <NavigationContainer>
-      <StatusBar />
-      <Stack.Navigator initialRouteName="Login">
-        <Stack.Screen
-          name="Main"
-          component={MainScreen}
-          options={{ title: "" }}
-        />
-        <Stack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{ title: "로그인" }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <RecoilRoot>
+      <NavigationContainer>
+        <StatusBar />
+        <Stack.Navigator initialRouteName="Login">
+          <Stack.Screen
+            name="Main"
+            component={MainScreen}
+            options={{ title: "" }}
+          />
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+            options={{ title: "로그인" }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </RecoilRoot>
   );
 };
 
