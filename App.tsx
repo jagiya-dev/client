@@ -33,7 +33,7 @@ const App = () => {
     <RecoilRoot>
       <NavigationContainer>
         <StatusBar />
-        <Stack.Navigator initialRouteName="Login">
+        <Stack.Navigator initialRouteName="Main">
           <Stack.Screen
             name="Main"
             component={MainScreen}

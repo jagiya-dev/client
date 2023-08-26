@@ -6,6 +6,8 @@ const IconFactory = ({ load, ...rest }: IconData) => (
   <Icon source={load()} {...rest} />
 );
 
+export type IconProps = ImageProps;
+
 // day
 export const DayIcon = () => <IconFactory {...registry.day} />;
 export const DayGrayIcon = () => <IconFactory {...registry.dayGray} />;
@@ -18,11 +20,13 @@ export const DayNightGrayIcon = () => (
 export const NightIcon = () => <IconFactory {...registry.night} />;
 export const NightGrayIcon = () => <IconFactory {...registry.nightGray} />;
 
-// arrow
+// symbol
 export const RightArrowIcon = () => <IconFactory {...registry.rightArrow} />;
 export const SettingsIcon = () => <IconFactory {...registry.settings} />;
 export const PlusIcon = () => <IconFactory {...registry.plus} />;
 export const MinusIcon = () => <IconFactory {...registry.minus} />;
+
+// weather
 export const UmbrellaEnabledIcon = () => (
   <IconFactory {...registry.umbrellaEnabled} />
 );
