@@ -1,3 +1,12 @@
+// 100 Thin
+// 200 Extra Light
+// 300 Light
+// 400 Normal
+// 500 Medium
+// 600 Semi Bold
+// 700 Bold
+// 800 Extra Bold
+// 900 Ultra Bold
 export const font = {
   font: {
     path: "#/fonts/Pretendard.ttf",
@@ -6,88 +15,88 @@ export const font = {
   display: {
     "1": {
       size: 40,
-      spacing: 40,
-      weight: "medium",
+      height: 40,
+      weight: "500", // medium
     },
     "2": {
       size: 36,
-      spacing: 48,
-      weight: "bold",
+      height: 48,
+      weight: "700", // bold
     },
   },
   headline: {
     "1": {
       size: 28,
-      spacing: 38,
-      weight: "bold",
+      height: 38,
+      weight: "700", //bold
     },
     "2": {
       size: 22,
-      spacing: 30,
-      weight: "bold",
+      height: 30,
+      weight: 700, // bold
     },
   },
   title: {
     "1": {
       size: 20,
-      spacing: 26,
-      weight: "bold",
+      height: 26,
+      weight: "700", // bold
     },
     "2": {
       size: 20,
-      spacing: 26,
-      weight: "semibold",
+      height: 26,
+      weight: "600", // semibold
     },
   },
   body: {
     "1": {
       size: 18,
-      spacing: 24,
-      weight: "semibold",
+      height: 24,
+      weight: "600", //semibold
     },
     "2": {
       size: 16,
-      spacing: 22,
-      weight: "medium",
+      height: 22,
+      weight: "500", // medium
     },
     "3": {
       size: 16,
-      spacing: 22,
-      weight: "regular",
+      height: 22,
+      weight: "400", // regular
     },
     "4": {
       size: 14,
-      spacing: 20,
-      weight: "medium",
+      height: 20,
+      weight: "500", // medium
     },
     "5": {
       size: 14,
-      spacing: 20,
-      weight: "regular",
+      height: 20,
+      weight: "400", // regular
     },
   },
   button: {
     "1": {
       size: 20,
-      spacing: 26,
-      weight: "semibold",
+      height: 26,
+      weight: "600", // semibold
     },
     "2": {
       size: 14,
-      spacing: 20,
-      weight: "medium",
+      height: 20,
+      weight: "500", // medium
     },
   },
   caption: {
     "1": {
       size: 12,
-      spacing: 16,
-      weight: "semibold",
+      height: 16,
+      weight: "600", // semibold
     },
     "2": {
       size: 12,
-      spacing: 16,
-      weight: "regular",
+      height: 16,
+      weight: "400", // regular
     },
   },
 } as const;

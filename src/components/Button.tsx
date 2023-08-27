@@ -1,17 +1,15 @@
 import {
   TouchableOpacity,
-  type TextProps,
   type TouchableOpacityProps,
   StyleSheet,
 } from "react-native";
 import { PropsWithChildren } from "react";
 import { PlusIcon, RightArrowIcon } from "./Icon";
 import { style } from "@/styles/style";
-import Text from "./Text";
 
 type Props = TouchableOpacityProps;
 
-const Button = (props: PropsWithChildren<Props>) => (
+export const Button = (props: PropsWithChildren<Props>) => (
   <TouchableOpacity {...props}>{props.children}</TouchableOpacity>
 );
 
@@ -33,12 +31,6 @@ export const WithArrowButton = (props: PropsWithChildren<Props>) => (
   </Button>
 );
 
-export const TextButton = (props: PropsWithChildren<Props & TextProps>) => (
-  <Button {...props} style={s.withArrowButton}>
-    <Text {...props}>{props.children}</Text>
-  </Button>
-);
-
 const s = StyleSheet.create({
   addButton: {
     ...style.flex.center,
@@ -47,5 +39,3 @@ const s = StyleSheet.create({
     ...style.flex.center,
   },
 });
-
-export default Button;
