@@ -1,11 +1,9 @@
-import { View } from "react-native";
 import { PlusIcon } from "@/components/Icon";
+import Tag from "@/components/Tag";
 
-const AlarmAddLocationItem = () => {
-  return (
-    <View>
-      <PlusIcon />
-    </View>
-  );
-};
+const AlarmAddLocationItem = () => (
+  <Tag>
+    <PlusIcon useTouch width={16} height={16} />
+  </Tag>
+);
 export default AlarmAddLocationItem;

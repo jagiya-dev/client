@@ -1,32 +1,45 @@
-import type { WeatherModel } from "@/components/alarm/Alarm.Container";
 import { StyleSheet, View } from "react-native";
 import Text from "@/components/Text";
-import { DayIcon, NightIcon } from "@/components/Icon";
-import { style } from "@/styles/style";
-
-const IconFactory = (weather: WeatherModel["weather"]) => {
-  switch (weather) {
-    case "sunny":
-      return <DayIcon />;
-
-    default:
-      return <NightIcon />;
-  }
-};
+import { IconFactoryByWeatherModel, PlusIcon } from "@/components/Icon";
+import Tag from "@/components/Tag";
+import { color } from "@/styles/color";
+import { font } from "@/styles/font";
+import { WeatherModel } from "@/typing";
 
 const AlarmLocationItem = (props: WeatherModel) => {
+  if (props.isAddNewWeather) {
+    return (
+      <Tag style={{ ...s.root, ...s.addNewWeatherBorder }}>
+        <PlusIcon />
+      </Tag>
+    );
+  }
+
   return (
-    <View style={s.root}>
-      {IconFactory(props.weather)}
-      <Text>{props.location}</Text>
-    </View>
+    <Tag style={s.root}>
+      {IconFactoryByWeatherModel(props.weather)}
+      <View />
+      <Text style={s.locationText}>{props.location}</Text>
+    </Tag>
   );
 };
 export default AlarmLocationItem;
 
 const s = StyleSheet.create({
   root: {
-    flexDirection: "row",
-    ...style.flex.center,
+    marginRight: 4,
+    height: 32,
+  },
+  addNewWeatherBorder: {
+    borderColor: color.primary["600"],
+  },
+  spacer: {
+    marginRight: 4,
+  },
+  locationText: {
+    color: color.primary["500"],
+    fontSize: font.caption["2"].size,
+    fontWeight: font.caption["2"].weight,
+    lineHeight: font.caption["2"].height,
   },
 });

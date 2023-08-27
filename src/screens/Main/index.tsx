@@ -3,11 +3,8 @@ import { SettingsIcon } from "@/components/Icon";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
 import { useState } from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
+import { StyleSheet, Text, View } from "react-native";
+import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import AlarmContainer from "@/components/alarm/Alarm.Container";
 
 const dummy = {
@@ -25,24 +22,23 @@ const MainScreen = () => {
 
   return (
     <View style={s.root}>
-      {/* 1. head */}
-      <View style={s.headContainer}>
-        <Text style={s.headText}>레디우산</Text>
-        <SettingsIcon />
-      </View>
+      <View style={s.innerRoot}>
+        {/* 1. head */}
+        <View style={s.headContainer}>
+          <Text style={s.headText}>레디우산</Text>
+          <SettingsIcon useTouch />
+        </View>
 
-      {/* 2. conversation */}
-      <View style={s.conversationContainer}>
-        <Text style={s.conversationText}>
-          {userName}님, 오늘은&nbsp;
-          <Text style={s.conversationToolNameText}>{toolName}</Text>을 꼭
-          챙기세요!
-        </Text>
-      </View>
+        {/* 2. conversation */}
+        <View style={s.conversationContainer}>
+          <Text style={s.conversationText}>
+            {userName}님, 오늘은&nbsp;
+            <Text style={s.conversationToolNameText}>{toolName}</Text>을 꼭
+            챙기세요!
+          </Text>
+        </View>
 
-      {/* 3. Alarm Area */}
-      <View style={s.alarmContainer}>
-        {/* 3-1. Label */}
+        {/* 3. Alarm Label */}
         <View style={s.alarmLabelContainer}>
           <Text style={s.alarmLabel}>My 알람</Text>
           <Button onPress={onPressButton_toggleDeleteMode}>
@@ -53,10 +49,10 @@ const MainScreen = () => {
             )}
           </Button>
         </View>
-
-        {/* 3-2. Alarm Scroll View */}
-        <AlarmContainer />
       </View>
+
+      {/* 4. Alarm Scroll View */}
+      <AlarmContainer />
     </View>
   );
 };
@@ -67,6 +63,8 @@ const s = StyleSheet.create({
   root: {
     width: wp("100%"),
     flex: 1,
+  },
+  innerRoot: {
     paddingHorizontal: 20,
   },
   headContainer: {
@@ -91,9 +89,6 @@ const s = StyleSheet.create({
   },
   conversationToolNameText: {
     color: color.primary["600"],
-  },
-  alarmContainer: {
-    flex: 1,
   },
   alarmLabelContainer: {
     flexDirection: "row",
