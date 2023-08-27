@@ -1,7 +1,3 @@
-const default$ = {
-  height: "-2%",
-};
-
 export const font = {
   font: {
     path: "#/fonts/Pretendard.ttf",
