@@ -1,17 +1,19 @@
-export const defaultColors = {
+export const color = {
   primary: {
     600: "#0099FF",
-    500: "33ADFF",
+    500: "#33ADFF",
     400: "#66C2FF",
     300: "#99D6FF",
     200: "#CCEBFF",
     100: "#E5F5FF",
   },
   sub: {
-    400: "#FFE65A",
-    300: "#FFEE8F",
-    200: "#FFF6C2",
-    100: "#C3CEE0",
+    500: "#FF881A",
+    400: "#FFA119",
+    300: "#FFB64D",
+    200: "#FFCB80",
+    100: "#FFE082",
+    50: "#FFF5E5",
   },
   gray: {
     700: "#000000",
@@ -24,4 +26,5 @@ export const defaultColors = {
     50: "#F9FAFB",
     0: "#FFFFFF",
   },
+  warning: "#ED7267",
 } as const;

@@ -1,16 +1,15 @@
 import { atom } from "recoil";
-import { defaultColors } from "@/styles/defaultColors";
+import { color } from "@/styles/color";
 
 interface StyleState {
-  colors: typeof defaultColors;
+  colors: typeof color;
 }
 
-const s = ({ colors: { primary, sub, gray } }: StyleState) => {
-};
+const s = ({ colors: { primary, sub, gray } }: StyleState) => {};
 
 export const styleState = atom({
   key: "style",
   default: {
-    colors: defaultColors,
+    colors: color,
   },
 });
