@@ -1,13 +1,13 @@
 import {
   TouchableOpacity,
-  Text,
   type TextProps,
   type TouchableOpacityProps,
   StyleSheet,
 } from "react-native";
 import { PropsWithChildren } from "react";
-import { PlusIcon, RightArrowIcon } from "../icon";
-import { global as $ } from "@/styles/global";
+import { PlusIcon, RightArrowIcon } from "./Icon";
+import { style } from "@/styles/style";
+import Text from "./Text";
 
 type Props = TouchableOpacityProps;
 
@@ -41,10 +41,10 @@ export const TextButton = (props: PropsWithChildren<Props & TextProps>) => (
 
 const s = StyleSheet.create({
   addButton: {
-    ...$.flex.center,
+    ...style.flex.center,
   },
   withArrowButton: {
-    ...$.flex.center,
+    ...style.flex.center,
   },
 });
 
