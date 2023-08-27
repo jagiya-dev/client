@@ -6,18 +6,27 @@ import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import AlarmContainer from "@/components/alarm/Alarm.Container";
+import { atom, useRecoilState } from "recoil";
 
 const dummy = {
   userName: "Jagiya",
   toolName: "우산",
 } as const;
 
+const state = atom<number>({
+  key: "unqState",
+  default: 0,
+});
+
 const MainScreen = () => {
   const { userName, toolName } = dummy;
   const [isDeleteMode, setDeleteMode] = useState(false);
+  const [n, setN] = useRecoilState(state);
 
   const onPressButton_toggleDeleteMode = (): void => {
     setDeleteMode((prev) => !prev);
+    setN((prev) => prev + 1);
+    console.log(n);
   };
 
   return (
