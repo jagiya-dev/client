@@ -1,34 +1,23 @@
-import { create } from "zustand";
-import { devtools } from "zustand/middleware";
-import { immer } from "zustand/middleware/immer";
+import { atom } from "recoil";
 
-export interface LoginField {
-  isLogin: boolean;
+interface LoginField {
+  isLoggedIn: boolean;
 }
 
 interface LoginBehaviour {
   login: () => Promise<void>;
-  logout: () => Promise<void>;
+  logOut: () => Promise<void>;
 }
 
-const useLoginState = create<LoginField & LoginBehaviour>()(
-  immer(
-    devtools((set) => ({
-      // field
-      isLogin: false,
-
-      // behaviour
-      login: async () => {
-        set((state) => {
-          state.isLogin = true;
-        });
-      },
-
-      logout: async () => {
-        set((state) => {
-          state.isLogin = false;
-        });
-      },
-    }))
-  )
-);
+const loginState = atom<LoginField & LoginBehaviour>({
+  key: "loginState",
+  default: {
+    isLoggedIn: false,
+    login: () => {
+      return Promise.resolve();
+    },
+    logOut: () => {
+      return Promise.resolve();
+    },
+  },
+});

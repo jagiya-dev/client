@@ -1,6 +1,6 @@
 import { View, Image, StyleSheet } from "react-native";
 import Text from "@/components/Text";
-import Button from "@/components/button/Button";
+import Button from "@/components/Button";
 
 const LoginScreen = () => {
   const onPressKakaoLoginButton = () => {

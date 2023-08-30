@@ -3,6 +3,10 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import Codepush from "@/util/codepush";
+
+import { RecoilDebugObserver } from "reactotron-recoil-plugin";
+import { instance } from "./reactotron.config";
+
 // setup sentry
 import * as Sentry from "@sentry/react-native";
 
@@ -10,14 +14,17 @@ console.log(`${Platform.OS}-${__DEV__ ? "dev" : "prod"}`);
 
 if (!__DEV__) {
   console.log("Sentry enabled.");
+
   Sentry.init({
     dsn: "https://30091bb8ade8f405c29a52db3b1e18f8@o4505715014696960.ingest.sentry.io/4505715014762496",
     tracesSampleRate: 1.0,
   });
+
 }
 
 import MainScreen from "@/screens/Main";
 import LoginScreen from "@/screens/Login";
+import { RecoilRoot } from "recoil";
 
 const Stack = createNativeStackNavigator();
 
@@ -29,21 +36,24 @@ const App = () => {
   }
 
   return (
-    <NavigationContainer>
-      <StatusBar />
-      <Stack.Navigator initialRouteName="Login">
-        <Stack.Screen
-          name="Main"
-          component={MainScreen}
-          options={{ title: "" }}
-        />
-        <Stack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{ title: "로그인" }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <RecoilRoot>
+      <RecoilDebugObserver instance={instance} />
+      <NavigationContainer>
+        <StatusBar />
+        <Stack.Navigator initialRouteName="Main">
+          <Stack.Screen
+            name="Main"
+            component={MainScreen}
+            options={{ title: "" }}
+          />
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+            options={{ title: "로그인" }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </RecoilRoot>
   );
 };
 
