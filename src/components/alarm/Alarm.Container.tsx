@@ -5,6 +5,7 @@ import { dummyAlarmData } from "@/state/alarm/dummy";
 
 const AlarmContainer = () => {
   const [state, setState] = useState(dummyAlarmData);
+
   return (
     <View style={s.root}>
       <FlatList
@@ -26,6 +27,7 @@ export default AlarmContainer;
 const s = StyleSheet.create({
   root: {
     flex: 1,
+    marginTop: 16,
   },
   listView: {
     alignItems: "center",

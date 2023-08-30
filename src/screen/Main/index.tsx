@@ -2,8 +2,8 @@ import { Button } from "@/components/Button";
 import { SettingsIcon } from "@/components/Icon";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
-import { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { useRef } from "react";
+import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import AlarmContainer from "@/components/alarm/Alarm.Container";
 import { atom, useRecoilState } from "recoil";
@@ -13,24 +13,21 @@ const dummy = {
   toolName: "우산",
 } as const;
 
-const state = atom<number>({
-  key: "unqState",
-  default: 0,
+const useIsDeleteMode = atom({
+  key: "isDeleteMode",
+  default: false,
 });
 
 const MainScreen = () => {
-  const { userName, toolName } = dummy;
-  const [isDeleteMode, setDeleteMode] = useState(false);
-  const [n, setN] = useRecoilState(state);
+  const { userName, toolName } = useRef(dummy).current;
+  const [isDeleteMode, setDeleteMode] = useRecoilState(useIsDeleteMode);
 
-  const onPressButton_toggleDeleteMode = (): void => {
+  const onPressButton_toggleDeleteMode = () => {
     setDeleteMode((prev) => !prev);
-    setN((prev) => prev + 1);
-    console.log(n);
   };
 
   return (
-    <View style={s.root}>
+    <SafeAreaView style={s.root}>
       <View style={s.innerRoot}>
         {/* 1. head */}
         <View style={s.headContainer}>
@@ -51,10 +48,10 @@ const MainScreen = () => {
         <View style={s.alarmLabelContainer}>
           <Text style={s.alarmLabel}>My 알람</Text>
           <Button onPress={onPressButton_toggleDeleteMode}>
-            {!isDeleteMode ? (
-              <Text style={s.alarmEnableDeleteModeText}>삭제</Text>
-            ) : (
+            {isDeleteMode ? (
               <Text style={s.alarmDisableDeleteModeText}>완료</Text>
+            ) : (
+              <Text style={s.alarmEnableDeleteModeText}>삭제</Text>
             )}
           </Button>
         </View>
@@ -62,7 +59,7 @@ const MainScreen = () => {
 
       {/* 4. Alarm Scroll View */}
       <AlarmContainer />
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -117,5 +114,8 @@ const s = StyleSheet.create({
     fontSize: font.body["1"].size,
     fontWeight: font.button["1"].weight,
     color: color.primary["500"],
+  },
+  alarmContainerView: {
+    marginTop: 16,
   },
 });

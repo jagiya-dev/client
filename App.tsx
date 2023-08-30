@@ -3,7 +3,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import Codepush from "@/util/codepush";
-
 import { RecoilDebugObserver } from "reactotron-recoil-plugin";
 import { instance } from "./reactotron.config";
 
@@ -19,11 +18,10 @@ if (!__DEV__) {
     dsn: "https://30091bb8ade8f405c29a52db3b1e18f8@o4505715014696960.ingest.sentry.io/4505715014762496",
     tracesSampleRate: 1.0,
   });
-
 }
 
-import MainScreen from "@/screens/Main";
-import LoginScreen from "@/screens/Login";
+import MainScreen from "@/screen/Main";
+import LoginScreen from "@/screen/Login";
 import { RecoilRoot } from "recoil";
 
 const Stack = createNativeStackNavigator();
@@ -38,18 +36,18 @@ const App = () => {
   return (
     <RecoilRoot>
       <RecoilDebugObserver instance={instance} />
+      <StatusBar />
       <NavigationContainer>
-        <StatusBar />
         <Stack.Navigator initialRouteName="Main">
           <Stack.Screen
             name="Main"
             component={MainScreen}
-            options={{ title: "" }}
+            options={{ title: "", headerShown: false }}
           />
           <Stack.Screen
             name="Login"
             component={LoginScreen}
-            options={{ title: "로그인" }}
+            options={{ title: "", headerShown: false }}
           />
         </Stack.Navigator>
       </NavigationContainer>

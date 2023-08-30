@@ -11,61 +11,62 @@ import { dummyDates } from "@/state/date/dummy";
 import { Shadow } from "react-native-shadow-2";
 
 const AlarmItem = (props: AlarmModel) => (
-  <Shadow offset={[1, 2]} distance={1}>
-    <View
-      style={{
-        ...s.root,
-        ...(props.isEnabled && s.disabledRoot),
-      }}
-    >
-      {/* 1. 상단 부분 */}
-      <View style={s.up}>
-        {/* 1-1. 날씨 아이콘 (enabled/disabled) */}
-        <View>
-          {props.isEnabled ? <UmbrellaEnabledIcon /> : <UmbrellaDisabledIcon />}
-        </View>
-
-        {/* 1-2. 알람 날짜 표시 (enabled/disabled) */}
-        <View style={s.chronoContainer}>
-          <FlatList
-            data={dummyDates}
-            renderItem={(dateModel) => (
-              <DateTextButton
-                key={dateModel.index}
-                label={dateModel.item.label}
-                isEnabled={props.isEnabled && dateModel.item.isEnabled}
-                onPress={() => {}}
-              />
-            )}
-            style={s.dateContainer}
-          />
-
-          {/* 1-3. 시간 표시 */}
-          <Text style={s.timeContainer}>
-            <Text style={s.time12Text}>{props.time}</Text>
-            <Text style={s.timeAMPMText}>{props.dateOfTime}</Text>
-          </Text>
-        </View>
-
-        {/* 1-4. 알람 활성화 여부 토글 */}
-        <Toggle
-          onChange={() => props.toggleAvailability()}
-          initialIsEnabled={props.isEnabled}
-          disabled={!props.isEnabled}
-        />
+  <Shadow
+    offset={[0, 1]}
+    distance={2}
+    startColor="rgba(0, 0, 0, 0.1)"
+    style={{
+      ...s.root,
+      ...(props.isEnabled && s.disabledRoot),
+    }}
+  >
+    {/* 1. 상단 부분 */}
+    <View style={s.up}>
+      {/* 1-1. 날씨 아이콘 (enabled/disabled) */}
+      <View>
+        {props.isEnabled ? <UmbrellaEnabledIcon /> : <UmbrellaDisabledIcon />}
       </View>
 
-      {/* 2-1. 하단 부분 */}
-      <View style={s.down}>
+      {/* 1-2. 알람 날짜 표시 (enabled/disabled) */}
+      <View style={s.chronoContainer}>
         <FlatList
-          data={props.weathers}
-          renderItem={(data) => (
-            <AlarmLocationItem key={data.index} {...data.item} />
+          data={dummyDates}
+          renderItem={(dateModel) => (
+            <DateTextButton
+              key={dateModel.index}
+              label={dateModel.item.label}
+              isEnabled={props.isEnabled && dateModel.item.isEnabled}
+              onPress={() => {}}
+            />
           )}
-          horizontal
-          showsHorizontalScrollIndicator={false}
+          style={s.dateContainer}
         />
+
+        {/* 1-3. 시간 표시 */}
+        <Text style={s.timeContainer}>
+          <Text style={s.time12Text}>{props.time}</Text>
+          <Text style={s.timeAMPMText}>{props.dateOfTime}</Text>
+        </Text>
       </View>
+
+      {/* 1-4. 알람 활성화 여부 토글 */}
+      <Toggle
+        onChange={() => props.toggleAvailability()}
+        initialIsEnabled={props.isEnabled}
+        disabled={!props.isEnabled}
+      />
+    </View>
+
+    {/* 2-1. 하단 부분 */}
+    <View style={s.down}>
+      <FlatList
+        data={props.weathers}
+        renderItem={(data) => (
+          <AlarmLocationItem key={data.index} {...data.item} />
+        )}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+      />
     </View>
   </Shadow>
 );
@@ -78,8 +79,10 @@ const s = StyleSheet.create({
     height: 172,
     marginBottom: 16,
     borderRadius: 8,
-    // borderColor: color.gray["300"],
-    // borderWidth: 0.2,
+    overflow: "hidden",
+    borderColor: color.gray["100"],
+    borderWidth: 1,
+
     // backgroundColor: "white",
   },
   disabledRoot: {
