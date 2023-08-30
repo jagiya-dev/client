@@ -16,11 +16,8 @@ const s = StyleSheet.create({
   root: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 3,
-    paddingHorizontal: 8,
     backgroundColor: "white",
     borderRadius: 32,
-    borderWidth: 1,
-    borderColor: color.primary["300"],
+    borderColor: color.sub["400"],
   },
 });

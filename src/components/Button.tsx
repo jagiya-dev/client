@@ -8,7 +8,6 @@ import { PlusIcon, RightArrowIcon } from "./Icon";
 import { style } from "@/styles/style";
 import Text from "@/components/Text";
 import { color } from "@/styles/color";
-import { DateModel } from "@/components/alarm/Alarm.Item";
 
 type Props = TouchableOpacityProps;
 
@@ -62,9 +61,9 @@ const s = StyleSheet.create({
 
 const dateTextButtenStyle = StyleSheet.create({
   enabledText: {
-    color: color.primary["500"],
+    color: color.sub["400"],
   },
   disabledText: {
-    color: color.gray["500"],
+    color: color.gray["200"],
   },
 });

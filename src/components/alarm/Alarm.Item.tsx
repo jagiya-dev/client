@@ -45,7 +45,14 @@ const AlarmItem = (props: AlarmModel) => (
         {/* 1-3. 시간 표시 */}
         <Text style={s.timeContainer}>
           <Text style={s.time12Text}>{props.time}</Text>
-          <Text style={s.timeAMPMText}>{props.dateOfTime}</Text>
+          <Text
+            style={{
+              ...s.timeAMPMText,
+              // ...(!props.isEnabled && s.timeDisabledText),
+            }}
+          >
+            {props.dateOfTime}
+          </Text>
         </Text>
       </View>
 
@@ -99,6 +106,8 @@ const s = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: "white",
   },
+
+  // dates
   chronoContainer: {
     flexDirection: "column",
     width: 150,
@@ -108,6 +117,7 @@ const s = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: 4,
+    marginBottom: 4,
     gap: 8,
   },
   timeContainer: {
@@ -125,6 +135,9 @@ const s = StyleSheet.create({
     fontSize: font.body["3"].size,
     fontWeight: font.body["3"].weight,
     // lineHeight: font.body["3"].height,
+  },
+  timeDisabledText: {
+    tintColor: color.gray["200"],
   },
 
   // down

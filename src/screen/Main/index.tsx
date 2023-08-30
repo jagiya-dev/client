@@ -1,5 +1,5 @@
-import { Button } from "@/components/Button";
-import { SettingsIcon } from "@/components/Icon";
+import { Button, WithArrowButton } from "@/components/Button";
+import { RightArrowIcon, SettingsIcon } from "@/components/Icon";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
 import { useRef } from "react";
@@ -32,27 +32,26 @@ const MainScreen = () => {
         {/* 1. head */}
         <View style={s.headContainer}>
           <Text style={s.headText}>레디우산</Text>
-          <SettingsIcon useTouch />
+          <SettingsIcon style={s.settingsIcon} useTouch />
         </View>
 
         {/* 2. conversation */}
         <View style={s.conversationContainer}>
-          <Text style={s.conversationText}>
-            {userName}님, 오늘은&nbsp;
-            <Text style={s.conversationToolNameText}>{toolName}</Text>을 꼭
-            챙기세요!
-          </Text>
+          <Text style={s.conversationText}>오늘은 우산을 꼭 챙기세요!</Text>
+
+          <Button style={s.detailButton}>
+            <Text style={s.detailButtonText}>자세히 보기</Text>
+            <RightArrowIcon style={s.detailButtonRightArrowIcon} />
+          </Button>
         </View>
 
         {/* 3. Alarm Label */}
         <View style={s.alarmLabelContainer}>
           <Text style={s.alarmLabel}>My 알람</Text>
           <Button onPress={onPressButton_toggleDeleteMode}>
-            {isDeleteMode ? (
-              <Text style={s.alarmDisableDeleteModeText}>완료</Text>
-            ) : (
-              <Text style={s.alarmEnableDeleteModeText}>삭제</Text>
-            )}
+            <Text style={s.alarmToggleDeleteModeText}>
+              {isDeleteMode ? "완료" : "삭제"}
+            </Text>
           </Button>
         </View>
       </View>
@@ -77,43 +76,62 @@ const s = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    height: 52,
+    height: 72,
   },
   headText: {
     color: color.primary["600"],
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: "800",
   },
+  settingsIcon: {
+    tintColor: color.gray["300"],
+  },
   conversationContainer: {
-    height: 64,
-    marginBottom: 24,
+    height: 68,
+    // marginBottom: 32,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
   },
   conversationText: {
     fontSize: font.body["1"].size,
     fontWeight: font.body["1"].weight,
     color: color.gray["700"],
   },
-  conversationToolNameText: {
-    color: color.primary["600"],
+  detailButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: color.primary["600"],
+    paddingLeft: 16,
+    paddingRight: 10,
+    paddingVertical: 8,
+    borderRadius: 24,
+  },
+  detailButtonText: {
+    color: "white",
+    fontSize: font.button["2"].size,
+    fontWeight: font.button["2"].weight,
+    marginRight: 4,
+  },
+  detailButtonRightArrowIcon: {
+    tintColor: "white",
+    width: 20,
+    height: 20,
   },
   alarmLabelContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
+    paddingVertical: 8,
   },
   alarmLabel: {
     fontSize: font.title["1"].size,
     fontWeight: font.title["1"].weight,
     color: color.gray["700"],
   },
-  alarmEnableDeleteModeText: {
-    fontSize: font.button["1"].size,
-    fontWeight: font.button["1"].weight,
-    color: color.gray["300"],
-  },
-  alarmDisableDeleteModeText: {
-    fontSize: font.body["1"].size,
-    fontWeight: font.button["1"].weight,
-    color: color.primary["500"],
+  alarmToggleDeleteModeText: {
+    fontSize: font.body["2"].size,
+    fontWeight: font.body["2"].weight,
+    color: color.primary["600"],
   },
   alarmContainerView: {
     marginTop: 16,
