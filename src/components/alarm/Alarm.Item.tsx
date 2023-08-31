@@ -3,7 +3,7 @@ import { UmbrellaDisabledIcon, UmbrellaEnabledIcon } from "@/components/Icon";
 import Text from "@/components/Text";
 import AlarmLocationItem from "@/components/alarm/Alarm.LocationItem";
 import { color } from "@/styles/color";
-import { DateTextButton } from "@/components/Button";
+import { DateTextButton } from "@/components/button";
 import { font } from "@/styles/font";
 import Toggle from "@/components/Toggle";
 import type { AlarmModel } from "@/typing";

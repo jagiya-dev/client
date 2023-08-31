@@ -4,7 +4,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { PropsWithChildren } from "react";
-import { PlusIcon, RightArrowIcon } from "./Icon";
+import { PlusIcon, RightArrowIcon } from "../Icon";
 import { style } from "@/styles/style";
 import Text from "@/components/Text";
 import { color } from "@/styles/color";

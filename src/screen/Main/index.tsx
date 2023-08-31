@@ -1,17 +1,22 @@
-import { Button, WithArrowButton } from "@/components/Button";
+import { Button, WithArrowButton } from "@/components/button";
 import { RightArrowIcon, SettingsIcon } from "@/components/Icon";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
-import { useRef } from "react";
+// import { useRef } from "react";
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
-import { widthPercentageToDP as wp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from "react-native-responsive-screen";
 import AlarmContainer from "@/components/alarm/Alarm.Container";
 import { atom, useRecoilState } from "recoil";
+import AddNewAlarmItembutton from "@/components/button/AddNewAlarmItem.button";
+// import { dummyAlarmData } from "@/state/alarm/dummy";
 
-const dummy = {
-  userName: "Jagiya",
-  toolName: "우산",
-} as const;
+// const dummy = {
+//   userName: "Jagiya",
+//   toolName: "우산",
+// } as const;
 
 const useIsDeleteMode = atom({
   key: "isDeleteMode",
@@ -19,11 +24,16 @@ const useIsDeleteMode = atom({
 });
 
 const MainScreen = () => {
-  const { userName, toolName } = useRef(dummy).current;
+  // const { userName, toolName } = useRef(dummy).current;
   const [isDeleteMode, setDeleteMode] = useRecoilState(useIsDeleteMode);
 
   const onPressButton_toggleDeleteMode = () => {
     setDeleteMode((prev) => !prev);
+    console.log("onPressButton_toggleDeleteMode");
+  };
+
+  const onPressButton_AddNewAlarmItem = () => {
+    console.log("onClickAddNewAlarmItem");
   };
 
   return (
@@ -57,7 +67,15 @@ const MainScreen = () => {
       </View>
 
       {/* 4. Alarm Scroll View */}
-      <AlarmContainer />
+      <AlarmContainer alarmModel={[]} />
+
+      {/* 5. Add New Alarm Item Button */}
+      <View style={s.addNewAlarmItembuttonRoot}>
+        <AddNewAlarmItembutton
+          style={s.addNewAlarmItemButton}
+          onPress={onPressButton_AddNewAlarmItem}
+        />
+      </View>
     </SafeAreaView>
   );
 };
@@ -135,5 +153,15 @@ const s = StyleSheet.create({
   },
   alarmContainerView: {
     marginTop: 16,
+  },
+  addNewAlarmItembuttonRoot: {
+    // width: wp("100%"),
+    // // height: hp("100%"),
+    position: "relative",
+  },
+  addNewAlarmItemButton: {
+    position: "absolute",
+    right: 15,
+    bottom: 39,
   },
 });
