@@ -143,7 +143,7 @@ const s = StyleSheet.create({
   down: {
     flexDirection: "row",
     height: 60,
-    backgroundColor: color.gray["100"],
+    backgroundColor: color.gray["50"],
     paddingHorizontal: 8,
     alignItems: "center",
   },
