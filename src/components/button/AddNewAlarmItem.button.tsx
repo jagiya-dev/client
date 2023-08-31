@@ -17,7 +17,7 @@ type Props = {
 
 const AddNewAlarmItembutton = (props: Props) => (
   <View style={[props.style, { zIndex: 10 }]}>
-    <Shadow distance={16} offset={[8, 8]} startColor="rgba(0, 0, 0, 0.13)">
+    <Shadow distance={16} offset={[6, 6]} startColor="rgba(0, 0, 0, 0.1)">
       <Button style={s.button} onPress={props.onPress}>
         <PlusIcon style={s.plusIcon} />
       </Button>

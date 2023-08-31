@@ -81,7 +81,7 @@ const MainScreen = () => {
           style={s.addNewAlarmItemButton}
           onPress={onPressButton_AddNewAlarmItem}
         />
-        <AddNewAlarmItemShadow style={s.addNewAlarmItemButton} />
+        {/* <AddNewAlarmItemShadow style={s.addNewAlarmItemButton} /> */}
       </View>
     </SafeAreaView>
   );
@@ -157,8 +157,6 @@ const s = StyleSheet.create({
     marginTop: 16,
   },
   addNewAlarmItembuttonRoot: {
-    // width: wp("100%"),
-    // // height: hp("100%"),
     position: "relative",
   },
   addNewAlarmItemButton: {
