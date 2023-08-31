@@ -2,7 +2,13 @@ import { Button } from "@/components/button";
 import { RightArrowIcon, SettingsIcon } from "@/components/Icon";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import {
+  GestureResponderEvent,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import AlarmContainer from "@/components/alarm/Alarm.Container";
 // import { atom, useRecoilState } from "recoil";
@@ -32,6 +38,10 @@ const MainScreen = () => {
     console.log("onClickAddNewAlarmItem");
   };
 
+  function onPressButton_DetailButton(event: GestureResponderEvent): void {
+    throw new Error("Function not implemented.");
+  }
+
   return (
     <SafeAreaView style={s.root}>
       <View style={s.innerRoot}>
@@ -45,7 +55,7 @@ const MainScreen = () => {
         <View style={s.conversationContainer}>
           <Text style={s.conversationText}>오늘은 우산을 꼭 챙기세요!</Text>
 
-          <Button style={s.detailButton}>
+          <Button style={s.detailButton} onPress={onPressButton_DetailButton}>
             <Text style={s.detailButtonText}>자세히 보기</Text>
             <RightArrowIcon style={s.detailButtonRightArrowIcon} />
           </Button>
@@ -129,7 +139,6 @@ const s = StyleSheet.create({
     marginRight: 4,
   },
   detailButtonRightArrowIcon: {
-    tintColor: "white",
     width: 20,
     height: 20,
   },
