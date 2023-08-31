@@ -61,7 +61,7 @@ const MainScreen = () => {
       {/* 4. Alarm Scroll View */}
       <AlarmContainer alarmModel={[]} />
 
-      {/* 5. Add New Alarm Item Button */}
+      {/* 5. Add New Alarm Item Button and its additive shadow */}
       <View style={s.addNewAlarmItembuttonRoot}>
         <AddNewAlarmItembutton
           style={s.addNewAlarmItemButton}

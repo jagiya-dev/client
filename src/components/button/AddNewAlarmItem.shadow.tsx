@@ -1,14 +1,10 @@
-import { GestureResponderEvent, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Button } from ".";
 import { Shadow, ShadowProps } from "react-native-shadow-2";
 
-type Props = {
-  onPress?: (e: GestureResponderEvent) => void;
-} & ShadowProps;
-
-const AddNewAlarmItemShadow = (props: Props) => (
+const AddNewAlarmItemShadow = (props: ShadowProps) => (
   <View style={props.style}>
-    <Shadow distance={12} startColor="rgba(0, 0, 0, 0.05)">
+    <Shadow distance={12} startColor="rgba(0, 0, 0, 0.05)" {...props}>
       <Button style={s.button} />
     </Shadow>
   </View>
