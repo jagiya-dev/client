@@ -3061,11 +3061,6 @@ csstype@^3.0.2:
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.1.2.tgz#1d4bf9d572f11c14031f0436e1c10bc1f571f50b"
   integrity sha512-I7K1Uu0MBPzaFKg4nI5Q7Vs2t+3gWWW648spaF+Rg7pI9ds18Ugn+lvg4SHczUdKlHI5LWBXyqfS8+DufyBsgQ==
 
-curry@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/curry/-/curry-1.2.0.tgz#9e6dd289548dba7e653d5ae3fe903fe7dfb33af2"
-  integrity sha512-PAdmqPH2DUYTCc/aknv6RxRxmqdRHclvbz+wP8t1Xpg2Nu13qg+oLb6/5iFoDmf4dbmC9loYoy9PwwGbFt/AqA==
-
 data-uri-to-buffer@3:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/data-uri-to-buffer/-/data-uri-to-buffer-3.0.1.tgz#594b8973938c5bc2c33046535785341abc4f3636"
@@ -4221,11 +4216,6 @@ immediate@~3.0.5:
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/immediate/-/immediate-3.0.6.tgz#9db1dbd0faf8de6fbe0f5dd5e56bb606280de69b"
   integrity sha512-XXOFtyqDjNDAQxVfYxuF7g9Il/IbWmmlQg2MYKOH8ExIT1qg6xc4zyS3HaEEATgs1btfzxq15ciUiY7gjSXRGQ==
-
-immutable@^3.7.5:
-  version "3.8.2"
-  resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.8.2.tgz#c2439951455bb39913daf281376f1530e104adf3"
-  integrity sha512-15gZoQ38eYjEjxkorfbcgBKBL6R7T459OuK+CpcWt7O3KF4uPCx2tD0uFETlUDIyo+1789crbMhTvQBSR5yBMg==
 
 import-fresh@^2.0.0:
   version "2.0.0"
@@ -6442,11 +6432,6 @@ queue@6.0.2:
   dependencies:
     inherits "~2.0.3"
 
-ramda@^0.19.1:
-  version "0.19.1"
-  resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.19.1.tgz#89c4ad697265ff6b1face9f286439e2520d6679c"
-  integrity sha512-wrW13t9FctXdnM++U6EA4bzIPVpOWtNx9G9DrvmcwWDWiJko13UfUg0MeQ8d/CcI88XsX6s7Y3KI3dBg+VXEYw==
-
 range-parser@~1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/range-parser/-/range-parser-1.2.1.tgz#3cf37023d199e1c24d1a55b84800c2f3e6468031"
@@ -6524,17 +6509,6 @@ react-native-flipper@^0.212.0:
   version "0.212.0"
   resolved "https://registry.yarnpkg.com/react-native-flipper/-/react-native-flipper-0.212.0.tgz#b3fdd47676ecd09a25edd77a1466acace6276762"
   integrity sha512-bDRfIgE3v/jjEEdnvGP0T6maDD+bXhDAQ/SZUYTKd/CQ6YIU1c0EF+e0urU62LNMv6XEFQKz226McdddyVhYZA==
-
-react-native-gestures@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/react-native-gestures/-/react-native-gestures-0.3.0.tgz#c6dc0c47b031ddc84907ed5e842b5f97f26ee510"
-  integrity sha512-HFRg1C7bki0Tmm2HY96RW7Lw5iw8tmwMwlSIpxx2cfHRqf1T5B7SV6MNd3XAAOkyKfGAgrQKxpHkZ2hgorDSHg==
-  dependencies:
-    curry "^1.2.0"
-    immutable "^3.7.5"
-    ramda "^0.19.1"
-    rx "^4.0.6"
-    transducers.js "^0.3.2"
 
 react-native-responsive-screen@^1.4.2:
   version "1.4.2"
@@ -6886,11 +6860,6 @@ run-parallel@^1.1.9:
   integrity sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA==
   dependencies:
     queue-microtask "^1.2.2"
-
-rx@^4.0.6:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/rx/-/rx-4.1.0.tgz#a5f13ff79ef3b740fe30aa803fb09f98805d4782"
-  integrity sha512-CiaiuN6gapkdl+cZUr67W6I8jquN4lkak3vtIsIWCl4XIPP8ffsoyN6/+PuGXnQy8Cu8W2y9Xxh31Rq4M6wUug==
 
 rxjs@^7.5.5:
   version "7.8.1"
@@ -7467,11 +7436,6 @@ tr46@~0.0.3:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/tr46/-/tr46-0.0.3.tgz#8184fd347dac9cdc185992f3a6622e14b9d9ab6a"
   integrity sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==
-
-transducers.js@^0.3.2:
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/transducers.js/-/transducers.js-0.3.2.tgz#78902ef755e0606cd2fdd1633912f1093c8a5432"
-  integrity sha512-O/rpze9uLIGq5sVjvMhYoPt1VFUd9RoouKAltLnTIXZ1cj+2wdSEHGuqNsu4NYzvDchJ2tB/ssb8qVn2NCosXA==
 
 tslib@^1.8.1:
   version "1.14.1"
