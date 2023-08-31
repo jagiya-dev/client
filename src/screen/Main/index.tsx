@@ -34,13 +34,13 @@ const MainScreen = () => {
     console.log("onPressButton_toggleDeleteMode");
   };
 
-  const onPressButton_AddNewAlarmItem = () => {
+  const onPressButton_AddNewAlarmItem = (event: GestureResponderEvent) => {
     console.log("onClickAddNewAlarmItem");
   };
 
-  function onPressButton_DetailButton(event: GestureResponderEvent): void {
-    throw new Error("Function not implemented.");
-  }
+  const onPressButton_DetailButton = (event: GestureResponderEvent) => {
+    console.log("onPressButton_DetailButton");
+  };
 
   return (
     <SafeAreaView style={s.root}>
@@ -57,7 +57,7 @@ const MainScreen = () => {
 
           <Button style={s.detailButton} onPress={onPressButton_DetailButton}>
             <Text style={s.detailButtonText}>자세히 보기</Text>
-            <RightArrowIcon style={s.detailButtonRightArrowIcon} />
+            <RightArrowIcon />
           </Button>
         </View>
 
@@ -137,10 +137,6 @@ const s = StyleSheet.create({
     fontSize: font.button["2"].size,
     fontWeight: font.button["2"].weight,
     marginRight: 4,
-  },
-  detailButtonRightArrowIcon: {
-    width: 20,
-    height: 20,
   },
   alarmLabelContainer: {
     flexDirection: "row",

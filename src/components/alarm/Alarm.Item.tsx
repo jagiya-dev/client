@@ -81,13 +81,14 @@ export default AlarmItem;
 
 const s = StyleSheet.create({
   root: {
-    // width: 352,
+    width: 352,
     height: 172,
     marginBottom: 16,
     borderRadius: 8,
     overflow: "hidden",
     borderColor: color.gray["100"],
     borderWidth: 1,
+    // marginHorizontal: 20,
 
     // backgroundColor: "white",
   },
@@ -100,9 +101,9 @@ const s = StyleSheet.create({
   up: {
     height: 112,
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     alignItems: "center",
-    paddingHorizontal: 20,
+    paddingHorizontal: 16,
     backgroundColor: "white",
   },
 
@@ -114,10 +115,7 @@ const s = StyleSheet.create({
   },
   dateContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    paddingHorizontal: 4,
     marginBottom: 4,
-    gap: 8,
   },
   timeContainer: {
     flexDirection: "row",

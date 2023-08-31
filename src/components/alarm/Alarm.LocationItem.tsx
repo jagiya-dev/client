@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import Text from "@/components/Text";
 import { IconFactoryByWeatherModel, PlusIcon } from "@/components/Icon";
 import Tag from "@/components/Tag";
@@ -18,6 +18,7 @@ const AlarmLocationItem = (props: WeatherModel) => {
   return (
     <Tag style={s.root}>
       {IconFactoryByWeatherModel(props.weather)}
+      <View style={s.spacer} />
       <Text style={s.locationText}>{props.location}</Text>
     </Tag>
   );
@@ -26,15 +27,15 @@ export default AlarmLocationItem;
 
 const s = StyleSheet.create({
   root: {
-    marginRight: 4,
+    marginRight: 8,
     maxHeight: 32,
-    paddingHorizontal: 8,
+    paddingLeft: 8,
+    paddingRight: 12,
     paddingVertical: 6,
     borderWidth: 1,
   },
   addNewWeatherRoot: {
-    backgroundColor: color.sub["400"],
-    maxHeight: 32,
+    backgroundColor: color.sub["200"],
     paddingHorizontal: 14,
     paddingVertical: 6,
   },
@@ -47,9 +48,9 @@ const s = StyleSheet.create({
     marginRight: 4,
   },
   locationText: {
-    color: color.sub["400"],
-    fontSize: font.caption["2"].size,
-    fontWeight: font.caption["2"].weight,
-    lineHeight: font.caption["2"].height,
+    color: color.sub["500"],
+    fontSize: font.caption["1"].size,
+    fontWeight: font.caption["1"].weight,
+    lineHeight: font.caption["1"].height,
   },
 });
