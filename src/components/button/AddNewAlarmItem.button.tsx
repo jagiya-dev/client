@@ -4,6 +4,7 @@ import {
   StyleProp,
   StyleSheet,
   TouchableOpacityProps,
+  View,
 } from "react-native";
 import { Button } from ".";
 import { PlusIcon } from "../Icon";
@@ -15,18 +16,13 @@ type Props = {
 } & TouchableOpacityProps;
 
 const AddNewAlarmItembutton = (props: Props) => (
-  <Shadow
-    distance={16}
-    offset={[8, 8]}
-    startColor="rgba(0, 0, 0, 0.1)"
-    {...props}
-  >
-    <Shadow distance={12} startColor="rgba(0, 0, 0, 0.1)">
+  <View style={props.style}>
+    <Shadow distance={16} offset={[8, 8]} startColor="rgba(0, 0, 0, 0.13)">
       <Button style={s.button} onPress={props.onPress}>
         <PlusIcon style={s.plusIcon} />
       </Button>
     </Shadow>
-  </Shadow>
+  </View>
 );
 
 export default AddNewAlarmItembutton;

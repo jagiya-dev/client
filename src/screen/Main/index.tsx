@@ -1,22 +1,14 @@
-import { Button, WithArrowButton } from "@/components/button";
+import { Button } from "@/components/button";
 import { RightArrowIcon, SettingsIcon } from "@/components/Icon";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
-// import { useRef } from "react";
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp,
-} from "react-native-responsive-screen";
+import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import AlarmContainer from "@/components/alarm/Alarm.Container";
 import { atom, useRecoilState } from "recoil";
 import AddNewAlarmItembutton from "@/components/button/AddNewAlarmItem.button";
+import AddNewAlarmItemShadow from "@/components/button/AddNewAlarmItem.shadow";
 // import { dummyAlarmData } from "@/state/alarm/dummy";
-
-// const dummy = {
-//   userName: "Jagiya",
-//   toolName: "우산",
-// } as const;
 
 const useIsDeleteMode = atom({
   key: "isDeleteMode",
@@ -75,6 +67,7 @@ const MainScreen = () => {
           style={s.addNewAlarmItemButton}
           onPress={onPressButton_AddNewAlarmItem}
         />
+        <AddNewAlarmItemShadow style={s.addNewAlarmItemButton} />
       </View>
     </SafeAreaView>
   );
