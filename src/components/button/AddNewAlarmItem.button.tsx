@@ -16,7 +16,7 @@ type Props = {
 } & TouchableOpacityProps;
 
 const AddNewAlarmItembutton = (props: Props) => (
-  <View style={props.style}>
+  <View style={[props.style, { zIndex: 10 }]}>
     <Shadow distance={16} offset={[8, 8]} startColor="rgba(0, 0, 0, 0.13)">
       <Button style={s.button} onPress={props.onPress}>
         <PlusIcon style={s.plusIcon} />
