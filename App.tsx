@@ -20,8 +20,8 @@ if (!__DEV__) {
   });
 }
 
-import MainScreen from "@/screen/Main";
-import LoginScreen from "@/screen/Login";
+import MainScreen from "@/screen/MainScreen";
+import LoginScreen from "@/screen/LoginScreen";
 import { RecoilRoot } from "recoil";
 import PlaygroundScreen from "@/screen/Playground";
 
