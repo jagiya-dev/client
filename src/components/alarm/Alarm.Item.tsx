@@ -5,10 +5,10 @@ import AlarmLocationItem from "@/components/alarm/Alarm.LocationItem";
 import { color } from "@/styles/color";
 import { DateTextButton } from "@/components/button";
 import { font } from "@/styles/font";
-import Toggle from "@/components/Toggle";
 import type { AlarmModel } from "@/typing";
 import { dummyDates } from "@/state/date/dummy";
 import { Shadow } from "react-native-shadow-2";
+import Toggle from "../toggle";
 
 const AlarmItem = (props: AlarmModel) => (
   <Shadow
@@ -59,7 +59,6 @@ const AlarmItem = (props: AlarmModel) => (
       {/* 1-4. 알람 활성화 여부 토글 */}
       <Toggle
         onChange={() => props.toggleAvailability()}
-        initialIsEnabled={props.isEnabled}
         disabled={!props.isEnabled}
       />
     </View>

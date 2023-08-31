@@ -23,6 +23,7 @@ if (!__DEV__) {
 import MainScreen from "@/screen/Main";
 import LoginScreen from "@/screen/Login";
 import { RecoilRoot } from "recoil";
+import PlaygroundScreen from "@/screen/Playground";
 
 const Stack = createNativeStackNavigator();
 
@@ -47,6 +48,11 @@ const App = () => {
           <Stack.Screen
             name="Login"
             component={LoginScreen}
+            options={{ title: "", headerShown: false }}
+          />
+          <Stack.Screen
+            name="Playground"
+            component={PlaygroundScreen}
             options={{ title: "", headerShown: false }}
           />
         </Stack.Navigator>

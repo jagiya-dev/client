@@ -6,7 +6,7 @@ type Props = {
   initialIsEnabled?: boolean;
 } & SwitchProps;
 
-const Toggle = (props: Props) => {
+const NativeToggle = (props: Props) => {
   const [isEnabled, setIsEnabled] = useState(props.initialIsEnabled ?? true);
   const toggleSwitch = () => setIsEnabled((prev) => !prev);
 
@@ -23,4 +23,4 @@ const Toggle = (props: Props) => {
     />
   );
 };
-export default Toggle;
+export default NativeToggle;

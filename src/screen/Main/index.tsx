@@ -5,19 +5,23 @@ import { font } from "@/styles/font";
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import AlarmContainer from "@/components/alarm/Alarm.Container";
-import { atom, useRecoilState } from "recoil";
+// import { atom, useRecoilState } from "recoil";
 import AddNewAlarmItembutton from "@/components/button/AddNewAlarmItem.button";
 import AddNewAlarmItemShadow from "@/components/button/AddNewAlarmItem.shadow";
+import { useState } from "react";
+import { dummyAlarmData } from "@/state/alarm/dummy";
+
 // import { dummyAlarmData } from "@/state/alarm/dummy";
 
-const useIsDeleteMode = atom({
-  key: "isDeleteMode",
-  default: false,
-});
+// const useIsDeleteMode = atom({
+//   key: "isDeleteMode",
+//   default: false,
+// });
 
 const MainScreen = () => {
   // const { userName, toolName } = useRef(dummy).current;
-  const [isDeleteMode, setDeleteMode] = useRecoilState(useIsDeleteMode);
+  // const [isDeleteMode, setDeleteMode] = useRecoilState(useIsDeleteMode);
+  const [isDeleteMode, setDeleteMode] = useState(false);
 
   const onPressButton_toggleDeleteMode = () => {
     setDeleteMode((prev) => !prev);
@@ -59,7 +63,7 @@ const MainScreen = () => {
       </View>
 
       {/* 4. Alarm Scroll View */}
-      <AlarmContainer alarmModel={[]} />
+      <AlarmContainer alarmModel={dummyAlarmData} />
 
       {/* 5. Add New Alarm Item Button and its additive shadow */}
       <View style={s.addNewAlarmItembuttonRoot}>

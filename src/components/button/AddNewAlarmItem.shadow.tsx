@@ -1,19 +1,20 @@
 import { StyleSheet, View } from "react-native";
-import { Button } from ".";
 import { Shadow, ShadowProps } from "react-native-shadow-2";
 
-const AddNewAlarmItemShadow = (props: ShadowProps) => (
-  <View style={props.style}>
-    <Shadow distance={12} startColor="rgba(0, 0, 0, 0.05)" {...props}>
-      <Button style={s.button} />
-    </Shadow>
-  </View>
-);
+const AddNewAlarmItemShadow = (props: ShadowProps) => {
+  const rootStyle = Object.assign({}, props.style, s.root);
+
+  return (
+    <View style={rootStyle}>
+      <Shadow distance={12} startColor="rgba(0, 0, 0, 0.05)" {...props} />
+    </View>
+  );
+};
 
 export default AddNewAlarmItemShadow;
 
 const s = StyleSheet.create({
-  button: {
+  root: {
     width: 62,
     height: 62,
     borderRadius: 50,
