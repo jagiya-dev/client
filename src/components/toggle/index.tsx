@@ -1,44 +1,32 @@
-import {
-  Animated,
-  StyleSheet,
-  SwitchProps,
-  TouchableHighlight,
-} from "react-native";
-import React, { useEffect, useRef, useState } from "react";
+import { StyleSheet, SwitchProps, TouchableHighlight } from "react-native";
+import React, { useState } from "react";
 import { color } from "@/styles/color";
+import Animated, {
+  interpolateColor,
+  useAnimatedStyle,
+  useDerivedValue,
+  withSpring,
+  withTiming,
+} from "react-native-reanimated";
 
-type Prop = SwitchProps;
-
-const animationDuration = 200;
-
-const Toggle = (prop: Prop) => {
+const Toggle = (prop: SwitchProps) => {
   const [isEnabled, setIsEnabled] = useState(!prop.disabled);
   const toggle = () => setIsEnabled((prev) => !prev);
 
-  const toggleColorChangeAnim = useRef(new Animated.Value(0)).current;
+  const bgColor = useDerivedValue(() => withTiming(isEnabled ? 1 : 0));
+  const handlePosX = useDerivedValue(() => (isEnabled ? 0 : -30));
 
-  const interpolateColor = toggleColorChangeAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: [color.primary["600"], color.gray["200"]],
-  });
+  const bgStyle = useAnimatedStyle(() => ({
+    backgroundColor: interpolateColor(
+      bgColor.value,
+      [0, 1],
+      [color.gray["200"], color.primary["600"]],
+    ),
+  }));
 
-  const toggleMoveAnim = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    Animated.timing(toggleColorChangeAnim, {
-      toValue: isEnabled ? 0 : 1,
-      duration: animationDuration * 0.5,
-      useNativeDriver: true,
-    }).start();
-  }, [isEnabled, toggleColorChangeAnim]);
-
-  useEffect(() => {
-    Animated.timing(toggleMoveAnim, {
-      toValue: isEnabled ? 0 : -30,
-      duration: animationDuration,
-      useNativeDriver: true,
-    }).start();
-  }, [isEnabled, toggleMoveAnim]);
+  const handleStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: withSpring(handlePosX.value, { damping: 30 }) }],
+  }));
 
   return (
     <TouchableHighlight
@@ -46,10 +34,8 @@ const Toggle = (prop: Prop) => {
       style={s.resetTouchable}
       underlayColor="none"
     >
-      <Animated.View style={[s.root, { backgroundColor: interpolateColor }]}>
-        <Animated.View
-          style={[s.handle, { transform: [{ translateX: toggleMoveAnim }] }]}
-        />
+      <Animated.View style={[s.root, bgStyle]}>
+        <Animated.View style={[s.handle, handleStyle]} />
       </Animated.View>
     </TouchableHighlight>
   );
