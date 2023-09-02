@@ -1,7 +1,5 @@
 import {
-  ButtonProps,
   GestureResponderEvent,
-  StyleProp,
   StyleSheet,
   TouchableOpacityProps,
   View,
