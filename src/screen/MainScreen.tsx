@@ -15,7 +15,8 @@ import AlarmContainer from "@/components/alarm/Alarm.Container";
 import AddNewAlarmItembutton from "@/components/button/AddNewAlarmItem.button";
 // import AddNewAlarmItemShadow from "@/components/button/AddNewAlarmItem.shadow";
 import { useState } from "react";
-import { dummyAlarmData } from "@/state/alarm/dummy";
+import { useSetRecoilState } from "recoil";
+import { alarmModel, genAlarmItem } from "@/state/alarm/alarm.state";
 
 // import { dummyAlarmData } from "@/state/alarm/dummy";
 
@@ -28,6 +29,7 @@ const MainScreen = () => {
   // const { userName, toolName } = useRef(dummy).current;
   // const [isDeleteMode, setDeleteMode] = useRecoilState(useIsDeleteMode);
   const [isDeleteMode, setDeleteMode] = useState(false);
+  const setAlarm = useSetRecoilState(alarmModel);
 
   const onPressButton_toggleDeleteMode = () => {
     setDeleteMode((prev) => !prev);
@@ -36,6 +38,7 @@ const MainScreen = () => {
 
   const onPressButton_AddNewAlarmItem = (event: GestureResponderEvent) => {
     console.log("onClickAddNewAlarmItem");
+    setAlarm((prev) => [genAlarmItem(), ...prev]);
   };
 
   const onPressButton_DetailButton = (event: GestureResponderEvent) => {

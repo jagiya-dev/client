@@ -7,3 +7,12 @@ export const DateFlag = {
   sat: 1 << 5,
   sun: 1 << 6,
 };
+
+export const AllDateFlag =
+  DateFlag.mon |
+  DateFlag.tue |
+  DateFlag.wed |
+  DateFlag.thu |
+  DateFlag.fri |
+  DateFlag.sat |
+  DateFlag.sun;

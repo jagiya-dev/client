@@ -11,10 +11,10 @@ import { Shadow } from "react-native-shadow-2";
 import Toggle from "../toggle";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import { useSetRecoilState } from "recoil";
-import { alarmState } from "@/state/alarm/alarm.state";
+import { alarmModel } from "@/state/alarm/alarm.state";
 
 function AlarmItem(props: AlarmModel) {
-  const set = useSetRecoilState(alarmState);
+  const set = useSetRecoilState(alarmModel);
 
   const onCloseLeftAction = () => {
     set((prev) => prev.filter((alarm) => alarm.id !== props.id));

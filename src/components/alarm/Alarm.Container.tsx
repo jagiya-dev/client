@@ -4,10 +4,10 @@ import Text from "../Text";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
 import { useRecoilValue } from "recoil";
-import { alarmState } from "@/state/alarm/alarm.state";
+import { alarmModel } from "@/state/alarm/alarm.state";
 
 const AlarmContainer = () => {
-  const alarmModels = useRecoilValue(alarmState);
+  const alarmModels = useRecoilValue(alarmModel);
 
   return (
     <View style={s.root}>
