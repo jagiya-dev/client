@@ -10,10 +10,14 @@ import { Animated, FlatList, StyleSheet, View } from "react-native";
 import { Shadow } from "react-native-shadow-2";
 import Toggle from "../toggle";
 import Swipeable from "react-native-gesture-handler/Swipeable";
-import { BorderlessButton, RectButton } from "react-native-gesture-handler";
+import { useSetRecoilState } from "recoil";
+import { alarmState } from "@/state/alarm/alarm.state";
 
 function AlarmItem(props: AlarmModel) {
+  const set = useSetRecoilState(alarmState);
+
   const onCloseLeftAction = () => {
+    set((prev) => prev.filter((alarm) => alarm.id !== props.id));
     console.log("close left action");
   };
 

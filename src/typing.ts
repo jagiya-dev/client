@@ -3,6 +3,7 @@ import { DateFlag } from "@/state/date/dataFlag";
 export type DateFlagT = typeof DateFlag;
 
 export type AlarmModel = {
+  id: number;
   isEnabled: boolean;
   toggleAvailability: () => void;
   enabledDates: number;

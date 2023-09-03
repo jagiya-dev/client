@@ -3,31 +3,31 @@ import AlarmItem from "@/components/alarm/Alarm.Item";
 import Text from "../Text";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
-import { AlarmModel } from "@/typing";
+import { useRecoilValue } from "recoil";
+import { alarmState } from "@/state/alarm/alarm.state";
 
-type AlarmContainerProps = {
-  alarmModel: ReadonlyArray<AlarmModel>;
+const AlarmContainer = () => {
+  const alarmModels = useRecoilValue(alarmState);
+
+  return (
+    <View style={s.root}>
+      {alarmModels?.length ? (
+        <FlatList
+          data={alarmModels}
+          renderItem={(data) => <AlarmItem key={data.index} {...data.item} />}
+          horizontal={false}
+          automaticallyAdjustKeyboardInsets
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={s.listView} />
+      ) : (
+        <View style={s.nothingTextContainer}>
+          <Text style={s.nothingText}>알람을 추가해주세요.</Text>
+        </View>
+      )}
+    </View>
+  );
 };
-
-const AlarmContainer = (props: AlarmContainerProps) => (
-  <View style={s.root}>
-    {props.alarmModel?.length ? (
-      <FlatList
-        data={props.alarmModel}
-        renderItem={(data) => <AlarmItem key={data.index} {...data.item} />}
-        horizontal={false}
-        automaticallyAdjustKeyboardInsets
-        showsHorizontalScrollIndicator={false}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={s.listView}
-      />
-    ) : (
-      <View style={s.nothingTextContainer}>
-        <Text style={s.nothingText}>알람을 추가해주세요.</Text>
-      </View>
-    )}
-  </View>
-);
 export default AlarmContainer;
 
 const s = StyleSheet.create({
