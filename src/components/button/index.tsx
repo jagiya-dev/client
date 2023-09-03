@@ -4,11 +4,10 @@ import {
   StyleSheet,
 } from "react-native";
 import { PropsWithChildren } from "react";
-import { PlusIcon, RightArrowIcon } from "./Icon";
+import { PlusIcon, RightArrowIcon } from "../Icon";
 import { style } from "@/styles/style";
 import Text from "@/components/Text";
 import { color } from "@/styles/color";
-import { DateModel } from "@/components/alarm/Alarm.Item";
 
 type Props = TouchableOpacityProps;
 
@@ -39,17 +38,22 @@ type DateTextButtonProps = {
   isEnabled?: boolean;
   onPress: () => void;
 };
-export const DateTextButton = (props: DateTextButtonProps) => {
-  const innerTextStyle = props.isEnabled
-    ? dateTextButtenStyle.enabledText
-    : dateTextButtenStyle.disabledText;
-
-  return (
-    <TouchableOpacity onPress={props.onPress}>
-      <Text style={innerTextStyle}>{props.label}</Text>
-    </TouchableOpacity>
-  );
-};
+export const DateTextButton = (props: DateTextButtonProps) => (
+  <TouchableOpacity
+    onPress={props.onPress}
+    style={dateTextButtenStyle.baseText}
+  >
+    <Text
+      style={
+        props.isEnabled
+          ? dateTextButtenStyle.enabledText
+          : dateTextButtenStyle.disabledText
+      }
+    >
+      {props.label}
+    </Text>
+  </TouchableOpacity>
+);
 
 const s = StyleSheet.create({
   addButton: {
@@ -61,10 +65,13 @@ const s = StyleSheet.create({
 });
 
 const dateTextButtenStyle = StyleSheet.create({
+  baseText: {
+    marginRight: 4,
+  },
   enabledText: {
-    color: color.primary["500"],
+    color: color.sub["400"],
   },
   disabledText: {
-    color: color.gray["500"],
+    color: color.gray["200"],
   },
 });

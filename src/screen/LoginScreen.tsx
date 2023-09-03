@@ -1,6 +1,6 @@
-import { View, Image, StyleSheet } from "react-native";
+import { View, Image, StyleSheet, SafeAreaView } from "react-native";
 import Text from "@/components/Text";
-import Button from "@/components/Button";
+import { Button } from "@/components/button";
 
 const LoginScreen = () => {
   const onPressKakaoLoginButton = () => {
@@ -12,7 +12,7 @@ const LoginScreen = () => {
   };
 
   return (
-    <View style={s.root}>
+    <SafeAreaView style={s.root}>
       {/* Image Section */}
       <Image
         style={s.image}
@@ -29,17 +29,15 @@ const LoginScreen = () => {
         <Button
           style={{ ...s.loginButton, ...s.loginButtonKakao }}
           onPress={onPressKakaoLoginButton}
-          textProps={{ style: s.loginButtonText }}
         >
-          카카오 로그인
+          <Text style={s.loginButtonText}>카카오 로그인</Text>
         </Button>
 
         <Button
           style={{ ...s.loginButton, ...s.loginButtonApple }}
           onPress={onPressAppleLoginButton}
-          textProps={{ style: s.loginButtonText }}
         >
-          애플 로그인
+          <Text style={s.loginButtonText}>애플 로그인</Text>
         </Button>
       </View>
 
@@ -49,7 +47,7 @@ const LoginScreen = () => {
           개인정보처리방침에 동의한 것으로 간주힙니다.
         </Text>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

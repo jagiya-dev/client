@@ -9,8 +9,8 @@ import { WeatherModel } from "@/typing";
 const AlarmLocationItem = (props: WeatherModel) => {
   if (props.isAddNewWeather) {
     return (
-      <Tag style={{ ...s.root, ...s.addNewWeatherBorder }}>
-        <PlusIcon />
+      <Tag style={s.addNewWeatherRoot}>
+        <PlusIcon style={s.plusIcon} />
       </Tag>
     );
   }
@@ -18,7 +18,7 @@ const AlarmLocationItem = (props: WeatherModel) => {
   return (
     <Tag style={s.root}>
       {IconFactoryByWeatherModel(props.weather)}
-      <View />
+      <View style={s.spacer} />
       <Text style={s.locationText}>{props.location}</Text>
     </Tag>
   );
@@ -27,19 +27,30 @@ export default AlarmLocationItem;
 
 const s = StyleSheet.create({
   root: {
-    marginRight: 4,
-    height: 32,
+    marginRight: 8,
+    maxHeight: 32,
+    paddingLeft: 8,
+    paddingRight: 12,
+    paddingVertical: 6,
+    borderWidth: 1,
   },
-  addNewWeatherBorder: {
-    borderColor: color.primary["600"],
+  addNewWeatherRoot: {
+    backgroundColor: color.sub["200"],
+    paddingHorizontal: 14,
+    paddingVertical: 6,
+  },
+  plusIcon: {
+    width: 20,
+    height: 20,
+    tintColor: "#FFFFFF",
   },
   spacer: {
     marginRight: 4,
   },
   locationText: {
-    color: color.primary["500"],
-    fontSize: font.caption["2"].size,
-    fontWeight: font.caption["2"].weight,
-    lineHeight: font.caption["2"].height,
+    color: color.sub["500"],
+    fontSize: font.caption["1"].size,
+    fontWeight: font.caption["1"].weight,
+    lineHeight: font.caption["1"].height,
   },
 });

@@ -24,6 +24,14 @@ export const dummyAlarmData: ReadonlyArray<AlarmModel> = [
         location: "합정동",
       },
       {
+        weather: "day-night",
+        location: "합정동",
+      },
+      {
+        weather: "day-night",
+        location: "합정동",
+      },
+      {
         isAddNewWeather: true,
       },
     ],
