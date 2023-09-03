@@ -1,19 +1,37 @@
 import AlarmLocationItem from "@/components/alarm/Alarm.LocationItem";
-import {DateTextButton} from "@/components/button";
-import {UmbrellaDisabledIcon, UmbrellaEnabledIcon} from "@/components/Icon";
+import { DateTextButton } from "@/components/button";
+import { UmbrellaDisabledIcon, UmbrellaEnabledIcon } from "@/components/Icon";
 import Text from "@/components/Text";
-import {dummyDates} from "@/state/date/dummy";
-import {color} from "@/styles/color";
-import {font} from "@/styles/font";
-import type {AlarmModel} from "@/typing";
-import {FlatList, StyleSheet, View} from "react-native";
-import {Shadow} from "react-native-shadow-2";
+import { dummyDates } from "@/state/date/dummy";
+import { color } from "@/styles/color";
+import { font } from "@/styles/font";
+import type { AlarmModel } from "@/typing";
+import { Animated, FlatList, StyleSheet, View } from "react-native";
+import { Shadow } from "react-native-shadow-2";
 import Toggle from "../toggle";
 import Swipeable from "react-native-gesture-handler/Swipeable";
+import { RectButton } from "react-native-gesture-handler";
 
 function AlarmItem(props: AlarmModel) {
+  const onCloseLeftAction = () => {
+
+  }
   return (
-    <Swipeable>
+    <Swipeable renderLeftActions={(progress, dragX) => {
+      const trans = dragX.interpolate({
+        inputRange: [0, 1000],
+        outputRange: [0, 10],
+      });
+
+      return (
+        <RectButton onPress={onCloseLeftAction} style={s.leftSwipeButtonContainer}>
+          <Animated.Image
+            style={[s.leftSwipeButton, { transform: [{ translateX: trans }] }]}
+            source={require("#/icons/icon-minus.png")}
+          />
+        </RectButton>
+      );
+    }}>
       <Shadow
         offset={[0, 1]}
         distance={2}
@@ -39,7 +57,7 @@ function AlarmItem(props: AlarmModel) {
                   key={dateModel.index}
                   label={dateModel.item.label}
                   isEnabled={props.isEnabled && dateModel.item.isEnabled}
-                  onPress={() => {}} />
+                  onPress={() => { }} />
               )}
               style={s.dateContainer} />
 
@@ -97,6 +115,18 @@ const s = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 16,
     backgroundColor: "white",
+  },
+
+  leftSwipeButtonContainer: {
+    justifyContent: "center",
+    paddingRight: 20,
+  },
+  leftSwipeButton: {
+    width: 22,
+    height: 22,
+    borderRadius: 100,
+    backgroundColor: color.warning,
+    tintColor: "white",
   },
 
   // dates
