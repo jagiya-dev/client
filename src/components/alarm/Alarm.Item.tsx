@@ -1,5 +1,5 @@
 import AlarmLocationItem from "@/components/alarm/Alarm.LocationItem";
-import { DateTextButton } from "@/components/button";
+import { Button, DateTextButton } from "@/components/button";
 import { UmbrellaDisabledIcon, UmbrellaEnabledIcon } from "@/components/Icon";
 import Text from "@/components/Text";
 import { dummyDates } from "@/state/date/dummy";
@@ -10,26 +10,27 @@ import { Animated, FlatList, StyleSheet, View } from "react-native";
 import { Shadow } from "react-native-shadow-2";
 import Toggle from "../toggle";
 import Swipeable from "react-native-gesture-handler/Swipeable";
-import { RectButton } from "react-native-gesture-handler";
+import { BorderlessButton, RectButton } from "react-native-gesture-handler";
 
 function AlarmItem(props: AlarmModel) {
   const onCloseLeftAction = () => {
+    console.log("close left action");
+  };
 
-  }
   return (
     <Swipeable renderLeftActions={(progress, dragX) => {
       const trans = dragX.interpolate({
         inputRange: [0, 1000],
-        outputRange: [0, 10],
+        outputRange: [0, 20],
       });
 
       return (
-        <RectButton onPress={onCloseLeftAction} style={s.leftSwipeButtonContainer}>
+        <Button onPress={onCloseLeftAction} style={s.leftSwipeButtonContainer}>
           <Animated.Image
             style={[s.leftSwipeButton, { transform: [{ translateX: trans }] }]}
             source={require("#/icons/icon-minus.png")}
           />
-        </RectButton>
+        </Button>
       );
     }}>
       <Shadow
