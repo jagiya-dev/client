@@ -6,7 +6,7 @@
     "start": "react-native start",
     "android": "react-native run-android",
     "ios": "react-native run-ios --simulator=\"iPhone 14 Pro\"",
-    "pod-install": "cd ios && RCT_NEW_ARCH_ENABLED=1 pod install && cd ..",
+    "pod-install": "cd ios && pod install && cd ..",
     "lint": "eslint .",
     "test": "jest",
     "build:android-dev": "react-native bundle --platform android --dev --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
@@ -16,8 +16,6 @@
   },
   "dependencies": {
     "@faker-js/faker": "^8.0.2",
-    "@react-native-firebase/app": "^18.3.2",
-    "@react-native-firebase/messaging": "^18.3.2",
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/native-stack": "^6.9.13",
     "@sentry/react-native": "^5.9.0",
