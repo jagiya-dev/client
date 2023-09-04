@@ -1715,6 +1715,13 @@
     opencollective-postinstall "^2.0.1"
     superstruct "^0.6.2"
 
+"@react-native-firebase/auth@^18.3.2":
+  version "18.3.2"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/auth/-/auth-18.3.2.tgz#28d079a456f0982f3c9ac81b91cd5563415d3be8"
+  integrity sha512-a96YrKsadMJ3pYrS2i2a13tSMDbs6YqLWMi7ONLXclIY7dG7jtYCtZJq+Afr1JY7lnCIZTKOPkvXDy+NRBy3rg==
+  dependencies:
+    plist "^3.1.0"
+
 "@react-native-firebase/crashlytics@^18.3.2":
   version "18.3.2"
   resolved "https://registry.yarnpkg.com/@react-native-firebase/crashlytics/-/crashlytics-18.3.2.tgz#66123b7a0066ffb9f1f076e3fe99bf16ee8db330"
@@ -6314,7 +6321,7 @@ pkg-up@^3.1.0:
   dependencies:
     find-up "^3.0.0"
 
-plist@^3.0.1, plist@^3.0.4, plist@^3.0.5:
+plist@^3.0.1, plist@^3.0.4, plist@^3.0.5, plist@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/plist/-/plist-3.1.0.tgz#797a516a93e62f5bde55e0b9cc9c967f860893c9"
   integrity sha512-uysumyrvkUX0rX/dEVqt8gC3sTBzd4zoWfLeS29nb53imdaXVvLINYXTI2GNqzaMuvacNx4uJQ8+b3zXR0pkgQ==
