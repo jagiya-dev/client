@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "726991405564",
+    "project_id": "readyumbrella-3913e",
+    "storage_bucket": "readyumbrella-3913e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:726991405564:android:1c4cdcabd725cd28bc7279",
+        "android_client_info": {
+          "package_name": "com.jagiya.readyUmbrella"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "726991405564-ooeph93rvol6bhldt7mtr46gs2riag17.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDiBovdm6V_ntkiQ5iYcYvETAAqOLuUhko"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "726991405564-ooeph93rvol6bhldt7mtr46gs2riag17.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "726991405564-9mp02tmtcr4549jsmmf6k01eo1nkcct4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.jagiya.readyUmbrella"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
