@@ -12,7 +12,7 @@ import {
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import AlarmContainer from "@/components/alarm/Alarm.Container";
 // import { atom, useRecoilState } from "recoil";
-import AddNewAlarmItembutton from "@/components/button/AddNewAlarmItem.button";
+import AddNewAlarmItemButton from "@/components/button/AddNewAlarmItem.button";
 // import AddNewAlarmItemShadow from "@/components/button/AddNewAlarmItem.shadow";
 import { useState } from "react";
 import { useSetRecoilState } from "recoil";
@@ -80,11 +80,10 @@ const MainScreen = () => {
 
       {/* 5. Add New Alarm Item Button and its additive shadow */}
       <View style={s.addNewAlarmItembuttonRoot}>
-        <AddNewAlarmItembutton
+        <AddNewAlarmItemButton
           style={s.addNewAlarmItemButton}
           onPress={onPressButton_AddNewAlarmItem}
         />
-        {/* <AddNewAlarmItemShadow style={s.addNewAlarmItemButton} /> */}
       </View>
     </SafeAreaView>
   );
