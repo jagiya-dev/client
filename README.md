@@ -9,5 +9,6 @@
 - React Native CLI
 - Typescript
 - react-query
+- Recoil.js
 - code push + app center
-- zustand
+

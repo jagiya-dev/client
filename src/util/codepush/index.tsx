@@ -1,6 +1,6 @@
 // https://learn.microsoft.com/en-us/appcenter/distribution/codepush/rn-plugin
 
-import type { ComponentType, FC } from "react";
+import type { FC } from "react";
 import type { DownloadProgress, CodePushOptions } from "react-native-code-push";
 
 import { useRef } from "react";
@@ -16,7 +16,7 @@ const codepushOptions: CodePushOptions = {
   checkFrequency: codePush.CheckFrequency.MANUAL,
 };
 
-const codepushSetupHoc = (rootFunctionalComponent: ComponentType<{}>) => {
+const codepushSetupHoc = (rootFunctionalComponent: FC) => {
   return codePush(codepushOptions)(rootFunctionalComponent);
 };
 //#endregion setup hoc

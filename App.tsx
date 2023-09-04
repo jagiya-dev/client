@@ -1,27 +1,16 @@
+import { useEffect, type FC } from "react";
+import { SafeAreaView, StatusBar } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Platform, StatusBar, StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import type { FC } from "react";
+import { SafeAreaView, StyleSheet, StatusBar, Text, View } from "react-native";
 
 import Codepush from "@/util/codepush";
-import { RecoilDebugObserver } from "reactotron-recoil-plugin";
-import { instance } from "./reactotron.config";
-
-import "react-native-gesture-handler";
-import {GestureHandlerRootView} from "react-native-gesture-handler";
-
-// setup sentry
-import * as Sentry from "@sentry/react-native";
-
-console.log(`${Platform.OS}-${__DEV__ ? "dev" : "prod"}`);
-
-if (!__DEV__) {
-  console.log("Sentry enabled.");
-
-  Sentry.init({
-    dsn: "https://30091bb8ade8f405c29a52db3b1e18f8@o4505715014696960.ingest.sentry.io/4505715014762496",
-    tracesSampleRate: 1.0,
-  });
-}
+import MainScreen from "@/screens/Main";
+import LoginScreen from "@/screens/Login";
 
 import MainScreen from "@/screen/MainScreen";
 import LoginScreen from "@/screen/LoginScreen";
@@ -38,6 +27,13 @@ const App = () => {
   }
 
   return (
+    <NavigationContainer>
+      {/* <StatusBar /> */}
+      <Stack.Navigator initialRouteName="Login" >
+        <Stack.Screen name="Main" component={MainScreen} options={{ title: "" }} />
+        <Stack.Screen name="Login" component={LoginScreen} options={{ title: "로그인" }} />
+      </Stack.Navigator>
+    </NavigationContainer>
     <GestureHandlerRootView style={s.root}>
       <RecoilRoot>
         <RecoilDebugObserver instance={instance} />
@@ -63,13 +59,21 @@ const App = () => {
         </NavigationContainer>
       </RecoilRoot>
     </GestureHandlerRootView>
+    <SafeAreaView>
+      <StatusBar />
+      <View style={style.root}>
+        <Text>Welcome!</Text>
+        <Text>And This text is updated with codepush!</Text>
+      </View>
+    </SafeAreaView>
   );
 };
 
-export default Codepush.hoc(!__DEV__ ? Sentry.wrap(App) : App);
 
-const s = StyleSheet.create({
+export default Codepush.hoc(Sentry.wrap(App));
   root: {
     flex: 1
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
