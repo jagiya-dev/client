@@ -71,5 +71,20 @@
 		<string>Pretendard-Regular.ttf</string>
 		<string>Pretendard-SemiBold.ttf</string>
 	</array>
+	<!-- Permissions -->
+    		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    		<string>TEXT</string>
+
+    		<key>NSLocationAlwaysUsageDescription</key>
+    		<string>YOUR TEXT</string>
+
+    		<key>NSLocationTemporaryUsageDescriptionDictionary</key>
+    		<dict>
+    			<key>YOUR-PURPOSE-KEY</key>
+    			<string>YOUR TEXT</string>
+    		</dict>
+
+    		<key>NSLocationWhenInUseUsageDescription</key>
+    		<string>YOUR TEXT</string>
 </dict>
 </plist>

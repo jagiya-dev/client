@@ -7,8 +7,8 @@
 
 @implementation AppDelegate
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
+- (BOOL)application:(UIApplication *)application
+        didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   [FIRApp configure];
   self.moduleName = @"readyUmbrella";
   // You can add your custom initial props in the dictionary below.

@@ -1,6 +1,6 @@
 import {NavigationContainer} from "@react-navigation/native";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import {StatusBar, StyleSheet} from "react-native";
+import {Alert, StatusBar, StyleSheet} from "react-native";
 
 import Codepush from "@/util/codepush";
 
@@ -11,7 +11,15 @@ import PlaygroundScreen from "@/screen/Playground";
 import {GestureHandlerRootView} from "react-native-gesture-handler";
 import {RecoilDebugObserver} from "reactotron-recoil-plugin";
 import {instance} from "./reactotron.config";
+import {useRegisterForegroundReceive} from "@/firebase/fcm/useSetForegroundPushNotification";
+import {ProcessPermission} from "@/permissions";
+import messaging from "@react-native-firebase/messaging";
 
+ProcessPermission();
+
+messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+    Alert.alert('A new FCM message arrived: \n\n', JSON.stringify(remoteMessage));
+});
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -20,6 +28,8 @@ const App = () => {
     if (bHasUpdate) {
         return <Codepush.Panel progress={progress}/>;
     }
+
+    useRegisterForegroundReceive();
 
     return (
         <GestureHandlerRootView style={s.root}>
