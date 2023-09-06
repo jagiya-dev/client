@@ -21,11 +21,11 @@ export async function requestFCMUserPermission(): Promise<void> {
     }
 
     if (Platform.OS === 'android' && Platform.Version >= 33) {
-        if (await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATION)) {
+        if (await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS)) {
             console.log("User already has notification permissions enabled.");
             return;
         }
-        const authStatus = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATION);
+        const authStatus = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
         if (authStatus === PermissionsAndroid.RESULTS.GRANTED) {
             console.log('Authorization status:', authStatus);
         } else {

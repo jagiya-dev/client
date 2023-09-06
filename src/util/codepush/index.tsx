@@ -45,7 +45,7 @@ const CodepushUpdateProgress: FC<CodepushUpdateProgressProps> = ({
 //#region update panel
 type CodepushUpdatePanelProps = Partial<CodepushUpdateProgressProps>;
 const CodepushUpdatePanel = ({progress}: CodepushUpdatePanelProps) => {
-    if (!progress) return false;
+    if (!progress) return null;
 
     return <CodepushUpdateProgress progress={progress}/>;
 };
