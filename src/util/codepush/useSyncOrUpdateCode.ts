@@ -6,7 +6,7 @@ import codePush from "react-native-code-push";
 // https://zerogyun.dev/2021/07/15/React-Native-버그픽스-3분완성-코드푸시-맛-2/
 export const useSyncOrUpdateCode = () => {
     const [bHasUpdate, setHasUpdate] = useState(false);
-    const [downloadProgress, setDownloadprogress] = useState<DownloadProgress>();
+    const [downloadProgress, setDownloadProgress] = useState<DownloadProgress>();
 
     const hasUpdateCompleted = () => {
         return downloadProgress?.receivedBytes === downloadProgress?.totalBytes;
@@ -23,7 +23,7 @@ export const useSyncOrUpdateCode = () => {
 
                 const downloadedLocalPkg = await remotePkg.download(
                     (progress: DownloadProgress) => {
-                        setDownloadprogress(progress);
+                        setDownloadProgress(progress);
                     },
                 );
 

@@ -3,11 +3,13 @@
 // https://learn.microsoft.com/en-us/appcenter/distribution/codepush/rn-get-started
 #import <CodePush/CodePush.h>
 #import <React/RCTBundleURLProvider.h>
+#import <Firebase.h>
 
 @implementation AppDelegate
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
+- (BOOL)application:(UIApplication *)application
+        didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+  [FIRApp configure];
   self.moduleName = @"readyUmbrella";
   // You can add your custom initial props in the dictionary below.
   // They will be passed down to the ViewController used by React Native.
@@ -21,9 +23,7 @@
 #if DEBUG
   return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
 #else
-  // rn cli original
   // return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
-  // argument bundleURL is the app's bundle is named `main.jsbundle`.
   return [CodePush bundleURL];
 #endif
 }
