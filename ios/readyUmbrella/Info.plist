@@ -40,16 +40,16 @@
 		</dict>
 	</dict>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>TEXT</string>
+	<string>위치기반 기상정보를 받아오려면 필요합니다.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>YOUR TEXT</string>
+	<string>위치기반 기상정보를 받아오려면 필요합니다.</string>
 	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
 	<dict>
-		<key>YOUR-PURPOSE-KEY</key>
-		<string>YOUR TEXT</string>
+		<key>임시 위치 권한 요청</key>
+		<string>위치기반 기상정보를 받아오려면 필요합니다.</string>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>YOUR TEXT</string>
+	<string>위치기반 기상정보를 받아오려면 필요합니다.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Pretendard-Bold.ttf</string>

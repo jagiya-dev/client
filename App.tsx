@@ -1,6 +1,6 @@
 import {NavigationContainer} from "@react-navigation/native";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import {Alert, StatusBar, StyleSheet} from "react-native";
+import {Alert, Platform, StatusBar, StyleSheet} from "react-native";
 
 import Codepush from "@/util/codepush";
 
@@ -18,8 +18,11 @@ import messaging from "@react-native-firebase/messaging";
 ProcessPermission();
 
 messaging().setBackgroundMessageHandler(async (remoteMessage) => {
-    Alert.alert('A new FCM message arrived: \n\n', JSON.stringify(remoteMessage));
+    Alert.alert(
+        `[${Platform.OS}] A new FCM message arrived (background or quit state): `,
+        JSON.stringify(remoteMessage));
 });
+
 const Stack = createNativeStackNavigator();
 
 const App = () => {
