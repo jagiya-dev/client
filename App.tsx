@@ -1,6 +1,6 @@
 import {NavigationContainer} from "@react-navigation/native";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import {Alert, Platform, StatusBar, StyleSheet} from "react-native";
+import {StatusBar, StyleSheet} from "react-native";
 
 import Codepush from "@/util/codepush";
 
@@ -13,15 +13,11 @@ import {RecoilDebugObserver} from "reactotron-recoil-plugin";
 import {instance} from "./reactotron.config";
 import {useRegisterForegroundReceive} from "@/firebase/fcm/useSetForegroundPushNotification";
 import {ProcessPermission} from "@/permissions";
-import messaging from "@react-native-firebase/messaging";
+
+import "@/firebase/fcm/SetBackgroundFCM";
+import AlarmScreen from "@/screen/AlarmScreen";
 
 ProcessPermission();
-
-messaging().setBackgroundMessageHandler(async (remoteMessage) => {
-    Alert.alert(
-        `[${Platform.OS}] A new FCM message arrived (background or quit state): `,
-        JSON.stringify(remoteMessage));
-});
 
 const Stack = createNativeStackNavigator();
 
@@ -40,7 +36,7 @@ const App = () => {
                 <RecoilDebugObserver instance={instance}/>
                 <StatusBar/>
                 <NavigationContainer>
-                    <Stack.Navigator initialRouteName="Main">
+                    <Stack.Navigator initialRouteName="Alarm">
                         <Stack.Screen
                             name="Main"
                             component={MainScreen}
@@ -49,6 +45,11 @@ const App = () => {
                         <Stack.Screen
                             name="Login"
                             component={LoginScreen}
+                            options={{title: "", headerShown: false}}
+                        />
+                        <Stack.Screen
+                            name="Alarm"
+                            component={AlarmScreen}
                             options={{title: "", headerShown: false}}
                         />
                         <Stack.Screen
