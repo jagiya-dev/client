@@ -64,6 +64,11 @@ export const CloseIcon = (props: IconProps & TouchableOpacityProps) => (
     <Image source={require("#/icons/icon-close.png")} {...props} />
   </TouchableOpacity>
 );
+export const InfoIcon = (props: IconProps) => (
+  <TouchableOpacity disabled={!props.useTouch}>
+    <Image source={require("#/icons/icon-info.png")} {...props} />
+  </TouchableOpacity>
+);
 
 
 // weather
