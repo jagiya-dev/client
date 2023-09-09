@@ -1,4 +1,4 @@
-import { Image, type ImageProps, TouchableOpacity } from "react-native";
+import { Image, type ImageProps, TouchableOpacity, TouchableOpacityProps } from "react-native";
 import { WeatherModel } from "@/typing";
 
 type IconProps = Partial<Exclude<ImageProps, "source">> & {
@@ -59,6 +59,12 @@ export const MinusIcon = (props: IconProps) => (
     <Image source={require("#/icons/icon-minus.png")} {...props} />
   </TouchableOpacity>
 );
+export const CloseIcon = (props: IconProps & TouchableOpacityProps) => (
+  <TouchableOpacity disabled={!props.useTouch} onPress={props.onPress}>
+    <Image source={require("#/icons/icon-close.png")} {...props} />
+  </TouchableOpacity>
+);
+
 
 // weather
 export const UmbrellaEnabledIcon = (props: IconProps) => (
