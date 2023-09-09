@@ -11,23 +11,12 @@ import {
 } from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import AlarmContainer from "@/components/alarm/Alarm.Container";
-// import { atom, useRecoilState } from "recoil";
 import AddNewAlarmItemButton from "@/components/button/AddNewAlarmItem.button";
-// import AddNewAlarmItemShadow from "@/components/button/AddNewAlarmItem.shadow";
 import { useState } from "react";
 import { useSetRecoilState } from "recoil";
 import { alarmModel, genAlarmItem } from "@/state/alarm/alarm.state";
 
-// import { dummyAlarmData } from "@/state/alarm/dummy";
-
-// const useIsDeleteMode = atom({
-//   key: "isDeleteMode",
-//   default: false,
-// });
-
 const MainScreen = () => {
-  // const { userName, toolName } = useRef(dummy).current;
-  // const [isDeleteMode, setDeleteMode] = useRecoilState(useIsDeleteMode);
   const [isDeleteMode, setDeleteMode] = useState(false);
   const setAlarm = useSetRecoilState(alarmModel);
 
