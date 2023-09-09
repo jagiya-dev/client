@@ -550,7 +550,8 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = XQ24HP64B3;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = readyUmbrella/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = readyUmbrella;
+				INFOPLIST_KEY_CFBundleDisplayName = "레디우산";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.weather";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -585,7 +586,8 @@
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = XQ24HP64B3;
 				INFOPLIST_FILE = readyUmbrella/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = readyUmbrella;
+				INFOPLIST_KEY_CFBundleDisplayName = "레디우산";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.weather";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -674,10 +676,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_CFLAGS = "$(inherited)  ";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DFOLLY_NO_CONFIG",
@@ -750,10 +749,7 @@
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_CFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_CFLAGS = "$(inherited)  ";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DFOLLY_NO_CONFIG",
