@@ -5,7 +5,7 @@ import {requestPermissionsIOS} from "@/permissions/ios";
 export function ProcessPermission() {
     if (Platform.OS === 'android') {
         requestPermissionsAndroid().then(() => {
-            console.log(`request for android permission done`);
+            // console.log(`request for android permission done`);
         });
     }
 

@@ -14,6 +14,7 @@ import { instance } from "./reactotron.config";
 import { useRegisterForegroundReceive } from "@/firebase/fcm/useSetForegroundPushNotification";
 import { ProcessPermission } from "@/permissions";
 import messaging from "@react-native-firebase/messaging";
+import { StackParamList } from "@/typing";
 
 ProcessPermission();
 
@@ -23,7 +24,7 @@ messaging().setBackgroundMessageHandler(async (remoteMessage) => {
         JSON.stringify(remoteMessage));
 });
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<StackParamList>();
 
 const App = () => {
     // run codepush first of all

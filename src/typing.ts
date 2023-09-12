@@ -22,3 +22,12 @@ export type DateModel = {
   label: "월" | "화" | "수" | "목" | "금" | "토" | "일";
   isEnabled: boolean;
 };
+
+export type StackParamList = {
+  Main: undefined;
+  Login: undefined;
+  Playground: undefined;
+  KakaoLogin: {
+    redirectUrl: string;
+  }
+};

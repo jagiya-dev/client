@@ -3,14 +3,6 @@ import Text from "@/components/Text";
 import {Button} from "@/components/button";
 import {login, getProfile} from "@react-native-seoul/kakao-login";
 
-// const getProfile = () => {
-//   getProfile().then((result) => {
-//     console.log("GetProfile Success", JSON.stringify(result));
-//   }).catch((error) => {
-//     console.log(`GetProfile Fail(code:${error.code})`, error.message);
-//   });
-// };
-
 const LoginScreen = () => {
     const onPressKakaoLoginButton = async () => {
         const response = await fetch("https://www.readyumbrelladata.com/auth/getKakaoUrl");
@@ -19,25 +11,24 @@ const LoginScreen = () => {
         console.log("response", response);
 
 
-        // try {
-        //     const result = await login();
-        //     console.log("Login Success", JSON.stringify(result));
-        //     // getProfile();
-        // } catch (error: any) {
-        //     if (error.code === 'E_CANCELLED_OPERATION') {
-        //         console.log("Login Cancel", error.message);
-        //         return;
-        //     }
-        //
-        //     console.log(`Login Fail(code:${error.code})`, error.message);
-        // }
+        try {
+            const result = await login();
+            // console.log("Login Success", JSON.stringify(result));
+            await getKakaoProfile();
+        } catch (error: any) {
+            if (error.code === 'E_CANCELLED_OPERATION') {
+                console.log("Login Cancel", error.message);
+                return;
+            }
+
+            console.log(`Login Fail(code:${error.code})`, error.message);
+        }
     };
 
     const getKakaoProfile = async () => {
         const profile = await getProfile();
         // profile.
-        // console.log("GetProfile Success", JSON.stringify(result));
-        // console.log(`GetProfile Fail(code:${error.code})`, error.message);
+        console.log("GetProfile Success", JSON.stringify(profile));
     }
 
     const onPressAppleLoginButton = () => {
