@@ -1,6 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { StatusBar, StyleSheet } from "react-native";
+import { Platform, StatusBar, StyleSheet } from "react-native";
 
 import Codepush from "@/util/codepush";
 
@@ -15,8 +15,24 @@ import { useRegisterForegroundReceive } from "@/firebase/fcm/useSetForegroundPus
 import { ProcessPermission } from "@/permissions";
 import { StackParamList } from "@/typing";
 import AlarmScreen from "@/screen/AlarmScreen";
+import { useInitNotification } from "@/util/notification/useInitNotification";
+import { useHandleForegroundNotification } from "@/util/notification/useHandleForegroundNotification";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+import { handleBackgroundNotification } from "@/util/notification/useHandleBackgroundNotification";
+import { useAndroidBatteryOptimize } from "@/util/notification/useAndroidBatterOptimize";
+import { useAndroidPowerManager } from "@/util/notification/useAndroidPowerManager";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.tz.setDefault("Asia/Seoul");
 
 ProcessPermission();
+
+if (Platform.OS === "android") {
+  handleBackgroundNotification();
+}
 
 const Stack = createNativeStackNavigator<StackParamList>();
 
@@ -27,7 +43,18 @@ const App = () => {
     return <Codepush.Panel progress={progress} />;
   }
 
+  const [loading] = useInitNotification();
+  useHandleForegroundNotification();
   useRegisterForegroundReceive();
+
+  if (Platform.OS === "android") {
+    useAndroidBatteryOptimize();
+    useAndroidPowerManager();
+  }
+
+  if (loading) {
+    return null;
+  }
 
   return (
     <GestureHandlerRootView style={s.root}>

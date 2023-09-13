@@ -13,13 +13,15 @@ export const requestForLocationPermission = async (location: Permission) => {
   });
 };
 
-export const onRequestedLocationPermission = (granted: PermissionStatus | null) => {
+export const onRequestedLocationPermission = (
+  granted: PermissionStatus | null,
+) => {
   if (granted === null) return;
 
   switch (granted) {
     case PermissionsAndroid.RESULTS.GRANTED:
       {
-        console.log("You can use the location");
+        // console.log("You can use the location");
       }
       break;
 

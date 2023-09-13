@@ -4,7 +4,7 @@ import { Alert, Platform } from "react-native";
 
 async function getToken() {
   const pushToken = await messaging().getToken();
-  //   console.log(`[${Platform.OS}] push token: ${pushToken}`);
+  // console.log(`[${Platform.OS}] push token: ${pushToken}`);
 }
 
 export const useRegisterForegroundReceive = () => {
