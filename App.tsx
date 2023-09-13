@@ -1,6 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Alert, Platform, StatusBar, StyleSheet } from "react-native";
+import { StatusBar, StyleSheet } from "react-native";
 
 import Codepush from "@/util/codepush";
 
@@ -13,58 +13,58 @@ import { RecoilDebugObserver } from "reactotron-recoil-plugin";
 import { instance } from "./reactotron.config";
 import { useRegisterForegroundReceive } from "@/firebase/fcm/useSetForegroundPushNotification";
 import { ProcessPermission } from "@/permissions";
-import messaging from "@react-native-firebase/messaging";
 import { StackParamList } from "@/typing";
+import AlarmScreen from "@/screen/AlarmScreen";
 
 ProcessPermission();
 
 const Stack = createNativeStackNavigator<StackParamList>();
 
 const App = () => {
-    // run codepush first of all
-    const { progress, bHasUpdate } = Codepush.useSyncOrUpdateCode();
-    if (bHasUpdate) {
-        return <Codepush.Panel progress={progress} />;
-    }
+  // run codepush first of all
+  const { progress, bHasUpdate } = Codepush.useSyncOrUpdateCode();
+  if (bHasUpdate) {
+    return <Codepush.Panel progress={progress} />;
+  }
 
-    useRegisterForegroundReceive();
+  useRegisterForegroundReceive();
 
-    return (
-        <GestureHandlerRootView style={s.root}>
-            <RecoilRoot>
-                <RecoilDebugObserver instance={instance} />
-                <StatusBar />
-                <NavigationContainer>
-                    <Stack.Navigator initialRouteName="Alarm">
-                        <Stack.Screen
-                            name="Main"
-                            component={MainScreen}
-                            options={{ title: "", headerShown: false }}
-                        />
-                        <Stack.Screen
-                            name="Login"
-                            component={LoginScreen}
-                            options={{ title: "", headerShown: false }}
-                        />
-                        <Stack.Screen
-                            name="Alarm"
-                            component={AlarmScreen}
-                            options={{title: "", headerShown: false}}
-                        />
-                        <Stack.Screen
-                            name="Playground"
-                            component={PlaygroundScreen}
-                            options={{ title: "", headerShown: false }}
-                        />
-                    </Stack.Navigator>
-                </NavigationContainer>
-            </RecoilRoot>
-        </GestureHandlerRootView>);
+  return (
+    <GestureHandlerRootView style={s.root}>
+      <RecoilRoot>
+        <RecoilDebugObserver instance={instance} />
+        <StatusBar />
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="Alarm">
+            <Stack.Screen
+              name="Main"
+              component={MainScreen}
+              options={{ title: "", headerShown: false }}
+            />
+            <Stack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{ title: "", headerShown: false }}
+            />
+            <Stack.Screen
+              name="Alarm"
+              component={AlarmScreen}
+              options={{ title: "", headerShown: false }}
+            />
+            <Stack.Screen
+              name="Playground"
+              component={PlaygroundScreen}
+              options={{ title: "", headerShown: false }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </RecoilRoot>
+    </GestureHandlerRootView>);
 };
 
 export default Codepush.hoc(App);
 const s = StyleSheet.create({
-    root: {
-        flex: 1
-    }
+  root: {
+    flex: 1
+  }
 });

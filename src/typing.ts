@@ -29,5 +29,6 @@ export type StackParamList = {
   Playground: undefined;
   KakaoLogin: {
     redirectUrl: string;
-  }
+  };
+  Alarm: undefined;
 };
