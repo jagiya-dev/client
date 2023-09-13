@@ -1,5 +1,4 @@
 import { AndroidNotificationSetting } from "./../../../node_modules/@notifee/react-native/src/types/NotificationAndroid";
-import { AndroidLaunchActivityFlag } from "@notifee/react-native/";
 import notifee from "@notifee/react-native";
 import { TriggerType } from "@notifee/react-native/src/types/Trigger";
 import { TimestampTrigger } from "@notifee/react-native/dist/types/Trigger";
@@ -32,10 +31,11 @@ export async function setTrigger() {
         channelId: "default",
         pressAction: {
           id: "default",
-          // launchActivity: "com.jagiya.readyUmbrella",
           launchActivity: "com.jagiya.readyUmbrella.MainActivity",
-          // launchActivityFlags: [AndroidLaunchActivityFlag.SINGLE_TOP],
         },
+      },
+      ios: {
+        sound: "default",
       },
     },
     trigger,

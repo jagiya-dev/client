@@ -1,8 +1,11 @@
 import notifee from "@notifee/react-native";
+import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
+import { Platform } from "react-native";
 
 export const useInitNotification = () => {
   const [loading, setLoading] = useState(true);
+  const navigation = useNavigation();
 
   useEffect(() => {
     async function bootstrap() {
@@ -10,12 +13,18 @@ export const useInitNotification = () => {
 
       if (initialNotification) {
         console.log(
-          "Notification caused application to open",
+          Platform.OS + "Notification caused application to open",
           initialNotification.notification,
         );
         console.log(
-          "Press action used to open the app: ",
+          Platform.OS + "Press action used to open the app: ",
           initialNotification.pressAction,
+        );
+
+        navigation.navigate("ActivatedAlarm");
+      } else {
+        console.log(
+          Platform.OS + ": App doesn't have any initial notification",
         );
       }
     }
@@ -24,5 +33,5 @@ export const useInitNotification = () => {
       .catch(console.error);
   }, []);
 
-  return [loading];
+  return loading;
 };

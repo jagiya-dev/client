@@ -15,10 +15,19 @@ import AddNewAlarmItemButton from "@/components/button/AddNewAlarmItem.button";
 import { useState } from "react";
 import { useSetRecoilState } from "recoil";
 import { alarmModel, genAlarmItem } from "@/state/alarm/alarm.state";
+import { useInitNotification } from "@/util/notification/useInitNotification";
+import { useHandleForegroundNotification } from "@/util/notification/useHandleForegroundNotification";
 
 const MainScreen = () => {
   const [isDeleteMode, setDeleteMode] = useState(false);
   const setAlarm = useSetRecoilState(alarmModel);
+
+  useHandleForegroundNotification();
+  const loading = useInitNotification();
+
+  if (loading) {
+    return null;
+  }
 
   const onPressButton_toggleDeleteMode = () => {
     setDeleteMode((prev) => !prev);

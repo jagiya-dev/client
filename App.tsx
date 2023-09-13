@@ -23,6 +23,7 @@ import timezone from "dayjs/plugin/timezone";
 import { handleBackgroundNotification } from "@/util/notification/useHandleBackgroundNotification";
 import { useAndroidBatteryOptimize } from "@/util/notification/useAndroidBatterOptimize";
 import { useAndroidPowerManager } from "@/util/notification/useAndroidPowerManager";
+import ActivatedAlarmScreen from "@/screen/ActivatedAlarmScreen";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -43,17 +44,11 @@ const App = () => {
     return <Codepush.Panel progress={progress} />;
   }
 
-  const [loading] = useInitNotification();
-  useHandleForegroundNotification();
   useRegisterForegroundReceive();
 
   if (Platform.OS === "android") {
     useAndroidBatteryOptimize();
     useAndroidPowerManager();
-  }
-
-  if (loading) {
-    return null;
   }
 
   return (
@@ -79,8 +74,8 @@ const App = () => {
               options={{ title: "", headerShown: false }}
             />
             <Stack.Screen
-              name="Playground"
-              component={PlaygroundScreen}
+              name="ActivatedAlarm"
+              component={ActivatedAlarmScreen}
               options={{ title: "", headerShown: false }}
             />
           </Stack.Navigator>

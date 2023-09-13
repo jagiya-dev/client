@@ -2,8 +2,11 @@ import notifee from "@notifee/react-native";
 import { useEffect } from "react";
 import { EventType } from "@notifee/react-native/src/types/Notification";
 import { Platform } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 export const useHandleForegroundNotification = () => {
+  const navigation = useNavigation();
+
   useEffect(() => {
     return notifee.onForegroundEvent(async ({ type, detail }) => {
       switch (type) {
@@ -19,6 +22,7 @@ export const useHandleForegroundNotification = () => {
             `[${Platform.OS}] User pressed notification`,
             detail.notification,
           );
+          navigation.navigate("ActivatedAlarm");
           break;
 
         case EventType.ACTION_PRESS:
@@ -26,6 +30,7 @@ export const useHandleForegroundNotification = () => {
             `[${Platform.OS}] User pressed notification action`,
             detail.notification,
           );
+          navigation.navigate("ActivatedAlarm");
           break;
 
         case EventType.DELIVERED:

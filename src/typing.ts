@@ -31,4 +31,5 @@ export type StackParamList = {
     redirectUrl: string;
   };
   Alarm: undefined;
+  ActivatedAlarm: undefined;
 };

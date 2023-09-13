@@ -4,8 +4,16 @@ import { widthPercentageToDP } from "react-native-responsive-screen";
 import notifee from "@notifee/react-native";
 import { setTrigger } from "@/util/trigger/setTrigger";
 import { color } from "@/styles/color";
+import { useInitNotification } from "@/util/notification/useInitNotification";
+import { useHandleForegroundNotification } from "@/util/notification/useHandleForegroundNotification";
 
 const AlarmScreen = () => {
+  useHandleForegroundNotification();
+  const loading = useInitNotification();
+  if (loading) {
+    return null;
+  }
+
   const onPressButton_CreateNewAlarm = async () => {
     await notifee.requestPermission();
 
@@ -31,7 +39,7 @@ const AlarmScreen = () => {
         title: "My notification title",
         body: "My notification body",
         ios: {
-
+          sound: "default",
         }
       });
     }
