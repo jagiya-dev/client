@@ -1,9 +1,9 @@
 import { AlarmModel } from "@/typing";
 import { BehaviorSubject } from "rxjs";
-import { genAlarmItem } from "./alarm.helper";
+import { genRandomAlarmItem } from "./alarm.helper";
 
 export const alarmModelSubject = new BehaviorSubject<ReadonlyArray<AlarmModel>>(
-  new Array(3).fill(0).map(() => genAlarmItem()),
+  new Array(5).fill(0).map(() => genRandomAlarmItem()),
 );
 
 const addNewAlarmItem = (newItem: AlarmModel) => {

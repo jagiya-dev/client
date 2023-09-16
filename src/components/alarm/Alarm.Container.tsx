@@ -3,23 +3,23 @@ import AlarmItem from "./Alarm.Item";
 import Text from "../Text";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
-import { useEffect, useState } from "react";
-import { AlarmModel } from "@/typing";
 import { alarmModelSubject } from "@/state/alarm/alarm.state";
+import { useObservableState } from "@/hook/useObservableState";
 
 const AlarmContainer = () => {
-  const [alarms, setAlarms] = useState<readonly AlarmModel[]>([]);
-  useEffect(() => {
-    const dispose = alarmModelSubject.subscribe((alarms) => setAlarms(alarms));
-    return () => dispose?.unsubscribe();
-  }, [alarmModelSubject]);
+  const [alarms] = useObservableState({
+    observable: alarmModelSubject.asObservable(),
+    subscribeFn: (alarms) => {
+      console.log("AlarmContainer: ", alarms);
+    }
+  });
 
   return (
     <View style={s.root}>
       {alarms?.length ? (
         <FlatList
           data={alarms}
-          renderItem={(data) => <AlarmItem key={data.index} {...data.item} />}
+          renderItem={(data) => <AlarmItem  {...data.item} />}
           horizontal={false}
           automaticallyAdjustKeyboardInsets
           showsHorizontalScrollIndicator={false}

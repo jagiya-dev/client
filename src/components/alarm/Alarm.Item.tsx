@@ -10,17 +10,17 @@ import { Animated, FlatList, StyleSheet, View } from "react-native";
 import { Shadow } from "react-native-shadow-2";
 import Toggle from "../toggle";
 import Swipeable from "react-native-gesture-handler/Swipeable";
-import { useEffect, useRef } from "react";
+import { useMemo, useRef, useState } from "react";
 import { whenToggleDeleteMode } from "@/state/main/main.state";
-import { behaviours as AlarmBehaviours, whenToggleAlarmToggleEnabled } from "@/state/alarm/alarm.state";
+import { behaviours as AlarmBehaviours } from "@/state/alarm/alarm.state";
 import { useObservableEffect } from "@/hook/useObservableEffect";
 
 function AlarmItem(props: AlarmModel) {
   const swipeableRef = useRef<Swipeable>(null);
 
-  useObservableEffect(
-    whenToggleDeleteMode,
-    (bEnable) => {
+  useObservableEffect({
+    observable: whenToggleDeleteMode,
+    subscribeFn: (bEnable) => {
       if (bEnable) {
         swipeableRef.current?.openLeft();
         return;
@@ -28,15 +28,8 @@ function AlarmItem(props: AlarmModel) {
 
       swipeableRef.current?.close();
     },
-    [swipeableRef]
-  );
-
-  useEffect(() => {
-    const dispose = whenToggleDeleteMode.subscribe((bEnable) => {
-    });
-
-    return () => dispose?.unsubscribe();
-  }, [whenToggleDeleteMode, swipeableRef]);
+    dependencies: [swipeableRef]
+  });
 
   const onCloseLeftAction = () => AlarmBehaviours.deleteAlarmItem(props.id);
   const onPress_alarmToggleEnabled = () => AlarmBehaviours.toggleAlarmToggleEnabled(props.id);

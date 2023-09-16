@@ -7,7 +7,7 @@ function getUniqueId(): number {
   return uorder++;
 }
 
-export const genAlarmItem = (): AlarmModel => ({
+export const genRandomAlarmItem = (): AlarmModel => ({
   id: getUniqueId(),
   isEnabled: rnd.randomBool(),
   enabledDates: rnd.pickOneOfFlags(AllDateFlag, LenDateFlags),

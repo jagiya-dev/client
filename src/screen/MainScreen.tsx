@@ -13,7 +13,7 @@ import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import AlarmContainer from "@/components/alarm/Alarm.Container";
 import AddNewAlarmItemButton from "@/components/button/AddNewAlarmItem.button";
 import { useState } from "react";
-import { genAlarmItem } from "@/state/alarm/alarm.helper";
+import { genRandomAlarmItem } from "@/state/alarm/alarm.helper";
 import { useInitNotification } from "@/util/notification/useInitNotification";
 import { useHandleForegroundNotification } from "@/util/notification/useHandleForegroundNotification";
 import { deleteModeToggleSubject } from "@/state/main/main.state";
@@ -35,7 +35,7 @@ const MainScreen = () => {
   };
 
   const onPressButton_AddNewAlarmItem = (_: GestureResponderEvent) => {
-    AlarmBehaviours.addNewAlarmItem(genAlarmItem());
+    AlarmBehaviours.addNewAlarmItem(genRandomAlarmItem());
   };
 
   const onPressButton_DetailButton = (event: GestureResponderEvent) => {
