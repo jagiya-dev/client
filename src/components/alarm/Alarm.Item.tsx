@@ -12,21 +12,28 @@ import Toggle from "../toggle";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import { useEffect, useRef } from "react";
 import { whenToggleDeleteMode } from "@/state/main/main.state";
-import { behaviours as AlarmBehaviours } from "@/state/alarm/alarm.state";
+import { behaviours as AlarmBehaviours, whenToggleAlarmToggleEnabled } from "@/state/alarm/alarm.state";
+import { useObservableEffect } from "@/hook/useObservableEffect";
 
 function AlarmItem(props: AlarmModel) {
   const swipeableRef = useRef<Swipeable>(null);
 
-  useEffect(() => {
-    const dispose = whenToggleDeleteMode
-      .subscribe((bEnable) => {
-        if (bEnable) {
-          swipeableRef.current?.openLeft();
-          return;
-        }
+  useObservableEffect(
+    whenToggleDeleteMode,
+    (bEnable) => {
+      if (bEnable) {
+        swipeableRef.current?.openLeft();
+        return;
+      }
 
-        swipeableRef.current?.close();
-      });
+      swipeableRef.current?.close();
+    },
+    [swipeableRef]
+  );
+
+  useEffect(() => {
+    const dispose = whenToggleDeleteMode.subscribe((bEnable) => {
+    });
 
     return () => dispose?.unsubscribe();
   }, [whenToggleDeleteMode, swipeableRef]);
