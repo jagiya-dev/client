@@ -7,7 +7,6 @@ import Codepush from "@/util/codepush";
 import MainScreen from "@/screen/MainScreen";
 import LoginScreen from "@/screen/LoginScreen";
 import { RecoilRoot } from "recoil";
-import PlaygroundScreen from "@/screen/Playground";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { RecoilDebugObserver } from "reactotron-recoil-plugin";
 import { instance } from "./reactotron.config";
@@ -15,8 +14,8 @@ import { useRegisterForegroundReceive } from "@/firebase/fcm/useSetForegroundPus
 import { ProcessPermission } from "@/permissions";
 import { StackParamList } from "@/typing";
 import AlarmScreen from "@/screen/AlarmScreen";
-import { useInitNotification } from "@/util/notification/useInitNotification";
-import { useHandleForegroundNotification } from "@/util/notification/useHandleForegroundNotification";
+// import { useInitNotification } from "@/util/notification/useInitNotification";
+// import { useHandleForegroundNotification } from "@/util/notification/useHandleForegroundNotification";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
@@ -57,7 +56,7 @@ const App = () => {
         <RecoilDebugObserver instance={instance} />
         <StatusBar />
         <NavigationContainer>
-          <Stack.Navigator initialRouteName="Alarm">
+          <Stack.Navigator initialRouteName="Main">
             <Stack.Screen
               name="Main"
               component={MainScreen}

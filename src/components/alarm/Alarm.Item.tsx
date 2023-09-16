@@ -12,9 +12,26 @@ import Toggle from "../toggle";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import { useSetRecoilState } from "recoil";
 import { alarmModel } from "@/state/alarm/alarm.state";
+import { useEffect, useRef } from "react";
+import { whenToggleDeleteMode } from "@/state/main/main.state";
 
 function AlarmItem(props: AlarmModel) {
   const set = useSetRecoilState(alarmModel);
+  const swipeableRef = useRef<Swipeable>(null);
+
+  useEffect(() => {
+    const dispose = whenToggleDeleteMode
+      .subscribe((bEnable) => {
+        if (bEnable) {
+          swipeableRef.current?.openLeft();
+          return;
+        }
+
+        swipeableRef.current?.close();
+      });
+
+    return () => dispose?.unsubscribe();
+  }, [whenToggleDeleteMode, swipeableRef]);
 
   const onCloseLeftAction = () => {
     set((prev) => prev.filter((alarm) => alarm.id !== props.id));
@@ -22,21 +39,23 @@ function AlarmItem(props: AlarmModel) {
   };
 
   return (
-    <Swipeable renderLeftActions={(progress, dragX) => {
-      const trans = dragX.interpolate({
-        inputRange: [0, 1000],
-        outputRange: [0, 20],
-      });
+    <Swipeable
+      ref={swipeableRef}
+      renderLeftActions={(progress, dragX) => {
+        const trans = dragX.interpolate({
+          inputRange: [0, 1000],
+          outputRange: [0, 20],
+        });
 
-      return (
-        <Button onPress={onCloseLeftAction} style={s.leftSwipeButtonContainer}>
-          <Animated.Image
-            style={[s.leftSwipeButton, { transform: [{ translateX: trans }] }]}
-            source={require("#/icons/icon-minus.png")}
-          />
-        </Button>
-      );
-    }}>
+        return (
+          <Button onPress={onCloseLeftAction} style={s.leftSwipeButtonContainer}>
+            <Animated.Image
+              style={[s.leftSwipeButton, { transform: [{ translateX: trans }] }]}
+              source={require("#/icons/icon-minus.png")}
+            />
+          </Button>
+        );
+      }}>
       <Shadow
         offset={[0, 1]}
         distance={2}

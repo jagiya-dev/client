@@ -4,13 +4,13 @@ import { AllDateFlag, DateFlag } from "../date/dataFlag";
 import { faker } from "@faker-js/faker";
 
 let uorder = 0;
-function getUOrder(): number {
+function getUniqueId(): number {
   return uorder++;
 }
 
 export function genAlarmItem(): AlarmModel {
   return {
-    id: getUOrder(),
+    id: getUniqueId(),
     isEnabled: faker.datatype.boolean(),
     toggleAvailability() {
       this.isEnabled = !this.isEnabled;
@@ -50,7 +50,7 @@ export const alarmModel = atom<ReadonlyArray<AlarmModel>>({
   key: "alarmState",
   default: [
     {
-      id: getUOrder(),
+      id: getUniqueId(),
       isEnabled: true,
       toggleAvailability() {
         this.isEnabled = !this.isEnabled;
@@ -85,7 +85,7 @@ export const alarmModel = atom<ReadonlyArray<AlarmModel>>({
       ],
     },
     {
-      id: getUOrder(),
+      id: getUniqueId(),
       isEnabled: false,
       toggleAvailability() {
         this.isEnabled = !this.isEnabled;
@@ -112,7 +112,7 @@ export const alarmModel = atom<ReadonlyArray<AlarmModel>>({
       ],
     },
     {
-      id: getUOrder(),
+      id: getUniqueId(),
       isEnabled: true,
       toggleAvailability() {
         this.isEnabled = !this.isEnabled;
@@ -139,7 +139,7 @@ export const alarmModel = atom<ReadonlyArray<AlarmModel>>({
       ],
     },
     {
-      id: getUOrder(),
+      id: getUniqueId(),
       isEnabled: false,
       toggleAvailability() {
         this.isEnabled = !this.isEnabled;

@@ -17,6 +17,7 @@ import { useSetRecoilState } from "recoil";
 import { alarmModel, genAlarmItem } from "@/state/alarm/alarm.state";
 import { useInitNotification } from "@/util/notification/useInitNotification";
 import { useHandleForegroundNotification } from "@/util/notification/useHandleForegroundNotification";
+import { deleteModeToggleSubject } from "@/state/main/main.state";
 
 const MainScreen = () => {
   const [isDeleteMode, setDeleteMode] = useState(false);
@@ -31,6 +32,8 @@ const MainScreen = () => {
 
   const onPressButton_toggleDeleteMode = () => {
     setDeleteMode((prev) => !prev);
+    deleteModeToggleSubject.next(!isDeleteMode);
+
     console.log("onPressButton_toggleDeleteMode");
   };
 
