@@ -11,7 +11,10 @@ import Animated, {
 
 const Toggle = (prop: SwitchProps) => {
   const [isEnabled, setIsEnabled] = useState(!prop.disabled);
-  const toggle = () => setIsEnabled((prev) => !prev);
+  const toggle = () => {
+    setIsEnabled((prev) => !prev);
+    prop.onValueChange?.(!isEnabled);
+  };
 
   const bgColor = useDerivedValue(() => withTiming(isEnabled ? 1 : 0));
   const handlePosX = useDerivedValue(() => (isEnabled ? 0 : -30));

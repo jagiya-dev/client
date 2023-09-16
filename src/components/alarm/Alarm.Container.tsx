@@ -1,19 +1,24 @@
 import { FlatList, StyleSheet, View } from "react-native";
-import AlarmItem from "@/components/alarm/Alarm.Item";
+import AlarmItem from "./Alarm.Item";
 import Text from "../Text";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
-import { useRecoilValue } from "recoil";
-import { alarmModel } from "@/state/alarm/alarm.state";
+import { useEffect, useState } from "react";
+import { AlarmModel } from "@/typing";
+import { alarmModelSubject } from "@/state/alarm/alarm.state";
 
 const AlarmContainer = () => {
-  const alarmModels = useRecoilValue(alarmModel);
+  const [alarms, setAlarms] = useState<readonly AlarmModel[]>([]);
+  useEffect(() => {
+    const dispose = alarmModelSubject.subscribe((alarms) => setAlarms(alarms));
+    return () => dispose?.unsubscribe();
+  }, [alarmModelSubject]);
 
   return (
     <View style={s.root}>
-      {alarmModels?.length ? (
+      {alarms?.length ? (
         <FlatList
-          data={alarmModels}
+          data={alarms}
           renderItem={(data) => <AlarmItem key={data.index} {...data.item} />}
           horizontal={false}
           automaticallyAdjustKeyboardInsets

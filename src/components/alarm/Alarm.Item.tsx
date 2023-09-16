@@ -10,13 +10,11 @@ import { Animated, FlatList, StyleSheet, View } from "react-native";
 import { Shadow } from "react-native-shadow-2";
 import Toggle from "../toggle";
 import Swipeable from "react-native-gesture-handler/Swipeable";
-import { useSetRecoilState } from "recoil";
-import { alarmModel } from "@/state/alarm/alarm.state";
 import { useEffect, useRef } from "react";
 import { whenToggleDeleteMode } from "@/state/main/main.state";
+import { behaviours as AlarmBehaviours } from "@/state/alarm/alarm.state";
 
 function AlarmItem(props: AlarmModel) {
-  const set = useSetRecoilState(alarmModel);
   const swipeableRef = useRef<Swipeable>(null);
 
   useEffect(() => {
@@ -33,10 +31,8 @@ function AlarmItem(props: AlarmModel) {
     return () => dispose?.unsubscribe();
   }, [whenToggleDeleteMode, swipeableRef]);
 
-  const onCloseLeftAction = () => {
-    set((prev) => prev.filter((alarm) => alarm.id !== props.id));
-    console.log("close left action");
-  };
+  const onCloseLeftAction = () => AlarmBehaviours.deleteAlarmItem(props.id);
+  const onPress_alarmToggleEnabled = () => AlarmBehaviours.toggleAlarmToggleEnabled(props.id);
 
   return (
     <Swipeable
@@ -80,7 +76,9 @@ function AlarmItem(props: AlarmModel) {
                 <DateTextButton
                   key={dateModel.index}
                   label={dateModel.item.label}
-                  isEnabled={props.isEnabled && dateModel.item.isEnabled}
+                  isEnabled={
+                    props.isEnabled && dateModel.item.isEnabled
+                  }
                   onPress={() => { }} />
               )}
               style={s.dateContainer} />
@@ -96,7 +94,7 @@ function AlarmItem(props: AlarmModel) {
 
           {/* 1-4. 알람 활성화 여부 토글 */}
           <Toggle
-            onChange={() => props.toggleAvailability()}
+            onChange={onPress_alarmToggleEnabled}
             disabled={!props.isEnabled} />
         </View>
 

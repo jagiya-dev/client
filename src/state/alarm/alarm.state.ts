@@ -1,169 +1,39 @@
 import { AlarmModel } from "@/typing";
-import { atom } from "recoil";
-import { AllDateFlag, DateFlag } from "../date/dataFlag";
-import { faker } from "@faker-js/faker";
+import { BehaviorSubject } from "rxjs";
+import { genAlarmItem } from "./alarm.helper";
 
-let uorder = 0;
-function getUniqueId(): number {
-  return uorder++;
-}
+export const alarmModelSubject = new BehaviorSubject<ReadonlyArray<AlarmModel>>(
+  new Array(3).fill(0).map(() => genAlarmItem()),
+);
 
-export function genAlarmItem(): AlarmModel {
-  return {
-    id: getUniqueId(),
-    isEnabled: faker.datatype.boolean(),
-    toggleAvailability() {
-      this.isEnabled = !this.isEnabled;
-    },
-    enabledDates: faker.helpers.arrayElement([AllDateFlag]),
-    time: "8:00",
-    dateOfTime: faker.helpers.arrayElement(["AM", "PM"]),
-    weathers: [
-      {
-        weather: "day",
-        location: "신당동",
-      },
-      {
-        weather: "night",
-        location: "국구정중앙면",
-      },
-      {
-        weather: "day-night",
-        location: "합정동",
-      },
-      {
-        weather: "day-night",
-        location: "합정동",
-      },
-      {
-        weather: "day-night",
-        location: "합정동",
-      },
-      {
-        isAddNewWeather: true,
-      },
-    ],
-  };
-}
+const addNewAlarmItem = (newItem: AlarmModel) => {
+  alarmModelSubject.next([...alarmModelSubject.value, newItem]);
+};
 
-export const alarmModel = atom<ReadonlyArray<AlarmModel>>({
-  key: "alarmState",
-  default: [
-    {
-      id: getUniqueId(),
-      isEnabled: true,
-      toggleAvailability() {
-        this.isEnabled = !this.isEnabled;
-      },
-      enabledDates: DateFlag.mon | DateFlag.tue | DateFlag.wed | DateFlag.sun,
-      time: "8:00",
-      dateOfTime: "AM",
-      weathers: [
-        {
-          weather: "day",
-          location: "신당동",
-        },
-        {
-          weather: "night",
-          location: "국구정중앙면",
-        },
-        {
-          weather: "day-night",
-          location: "합정동",
-        },
-        {
-          weather: "day-night",
-          location: "합정동",
-        },
-        {
-          weather: "day-night",
-          location: "합정동",
-        },
-        {
-          isAddNewWeather: true,
-        },
-      ],
-    },
-    {
-      id: getUniqueId(),
-      isEnabled: false,
-      toggleAvailability() {
-        this.isEnabled = !this.isEnabled;
-      },
-      enabledDates: DateFlag.mon | DateFlag.tue | DateFlag.wed | DateFlag.sun,
-      time: "12:00",
-      dateOfTime: "AM",
-      weathers: [
-        {
-          weather: "day",
-          location: "신당동",
-        },
-        {
-          weather: "night",
-          location: "국구정중앙면",
-        },
-        {
-          weather: "day-night",
-          location: "합정동",
-        },
-        {
-          isAddNewWeather: true,
-        },
-      ],
-    },
-    {
-      id: getUniqueId(),
-      isEnabled: true,
-      toggleAvailability() {
-        this.isEnabled = !this.isEnabled;
-      },
-      enabledDates: DateFlag.mon | DateFlag.tue | DateFlag.wed | DateFlag.sun,
-      time: "11:00",
-      dateOfTime: "PM",
-      weathers: [
-        {
-          weather: "day",
-          location: "신당동",
-        },
-        {
-          weather: "night",
-          location: "국구정중앙면",
-        },
-        {
-          weather: "day-night",
-          location: "합정동",
-        },
-        {
-          isAddNewWeather: true,
-        },
-      ],
-    },
-    {
-      id: getUniqueId(),
-      isEnabled: false,
-      toggleAvailability() {
-        this.isEnabled = !this.isEnabled;
-      },
-      enabledDates: DateFlag.mon | DateFlag.tue | DateFlag.wed | DateFlag.sun,
-      time: "6:00",
-      dateOfTime: "PM",
-      weathers: [
-        {
-          weather: "day",
-          location: "신당동",
-        },
-        {
-          weather: "night",
-          location: "국구정중앙면",
-        },
-        {
-          weather: "day-night",
-          location: "합정동",
-        },
-        {
-          isAddNewWeather: true,
-        },
-      ],
-    },
-  ],
-});
+const deleteAlarmItem = (id: number) => {
+  alarmModelSubject.next(
+    alarmModelSubject.value.filter((item) => item.id !== id),
+  );
+};
+
+const toggleAlarmToggleEnabled = (id: number) => {
+  const foundIndex = alarmModelSubject.value.findIndex(
+    (item) => item.id === id,
+  );
+  const targetAlarm = alarmModelSubject.value[foundIndex];
+  targetAlarm.isEnabled = !targetAlarm.isEnabled;
+
+  alarmModelSubject.next([
+    ...alarmModelSubject.value.slice(0, foundIndex),
+    targetAlarm,
+    ...alarmModelSubject.value.slice(foundIndex + 1),
+  ]);
+};
+
+export const whenToggleAlarmToggleEnabled = alarmModelSubject.pipe();
+
+export const behaviours = {
+  addNewAlarmItem,
+  deleteAlarmItem,
+  toggleAlarmToggleEnabled,
+};

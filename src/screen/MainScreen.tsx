@@ -13,15 +13,14 @@ import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import AlarmContainer from "@/components/alarm/Alarm.Container";
 import AddNewAlarmItemButton from "@/components/button/AddNewAlarmItem.button";
 import { useState } from "react";
-import { useSetRecoilState } from "recoil";
-import { alarmModel, genAlarmItem } from "@/state/alarm/alarm.state";
+import { genAlarmItem } from "@/state/alarm/alarm.helper";
 import { useInitNotification } from "@/util/notification/useInitNotification";
 import { useHandleForegroundNotification } from "@/util/notification/useHandleForegroundNotification";
 import { deleteModeToggleSubject } from "@/state/main/main.state";
+import { behaviours as AlarmBehaviours } from "@/state/alarm/alarm.state";
 
 const MainScreen = () => {
   const [isDeleteMode, setDeleteMode] = useState(false);
-  const setAlarm = useSetRecoilState(alarmModel);
 
   useHandleForegroundNotification();
   const loading = useInitNotification();
@@ -33,13 +32,10 @@ const MainScreen = () => {
   const onPressButton_toggleDeleteMode = () => {
     setDeleteMode((prev) => !prev);
     deleteModeToggleSubject.next(!isDeleteMode);
-
-    console.log("onPressButton_toggleDeleteMode");
   };
 
-  const onPressButton_AddNewAlarmItem = (event: GestureResponderEvent) => {
-    console.log("onClickAddNewAlarmItem");
-    setAlarm((prev) => [genAlarmItem(), ...prev]);
+  const onPressButton_AddNewAlarmItem = (_: GestureResponderEvent) => {
+    AlarmBehaviours.addNewAlarmItem(genAlarmItem());
   };
 
   const onPressButton_DetailButton = (event: GestureResponderEvent) => {
