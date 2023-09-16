@@ -15,14 +15,14 @@ const AlarmLocationItem = (props: Props) => {
       <Tag
         style={cond({
           predicate: () => !props.isEnabled,
-          true$: s.disabledBorder,
+          true$: s.disabledBG,
           underlayingStyles: s.addNewWeatherRoot
         })}
       >
         <PlusIcon
           style={cond({
             predicate: () => !props.isEnabled,
-            true$: s.disabledWeatherIcon,
+            true$: s.disabledPlusIcon,
             underlayingStyles: s.plusIcon
           })}
         />
@@ -95,10 +95,16 @@ const s = StyleSheet.create({
   disabledWeatherIcon: {
     tintColor: color.gray["200"],
   },
+  disabledPlusIcon: {
+    color: "white"
+  },
   disabledText: {
     color: color.gray["200"],
   },
   disabledBorder: {
     borderColor: color.gray["100"],
+  },
+  disabledBG: {
+    backgroundColor: color.gray["200"],
   }
 });
