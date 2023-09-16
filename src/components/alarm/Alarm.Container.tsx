@@ -10,25 +10,26 @@ const AlarmContainer = () => {
   const [alarms] = useObservableState({
     observable: alarmModelSubject.asObservable(),
   });
-  console.log("asd");
 
+  if (!alarms?.length) {
+    return (
+      <View style={s.nothingTextContainer}>
+        <Text style={s.nothingText}>알람을 추가해주세요.</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={s.root}>
-      {alarms?.length ? (
-        <FlatList
-          data={alarms}
-          renderItem={(data) => <AlarmItem  {...data.item} />}
-          horizontal={false}
-          automaticallyAdjustKeyboardInsets
-          showsHorizontalScrollIndicator={false}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={s.listView} />
-      ) : (
-        <View style={s.nothingTextContainer}>
-          <Text style={s.nothingText}>알람을 추가해주세요.</Text>
-        </View>
-      )}
+      <FlatList
+        data={alarms}
+        renderItem={(data) => <AlarmItem  {...data.item} />}
+        horizontal={false}
+        automaticallyAdjustKeyboardInsets
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={s.listView}
+      />
     </View>
   );
 };
