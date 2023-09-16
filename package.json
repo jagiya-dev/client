@@ -15,7 +15,6 @@
     "codepush:ios": "appcenter codepush release-react -a bside.16.6.shared-gmail.com/readyUmbrella -d Staging"
   },
   "dependencies": {
-    "@faker-js/faker": "^8.0.2",
     "@notifee/react-native": "^7.8.0",
     "@react-native-firebase/app": "^18.3.2",
     "@react-native-firebase/messaging": "^18.3.2",
