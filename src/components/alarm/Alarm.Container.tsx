@@ -9,10 +9,9 @@ import { useObservableState } from "@/hook/useObservableState";
 const AlarmContainer = () => {
   const [alarms] = useObservableState({
     observable: alarmModelSubject.asObservable(),
-    subscribeFn: (alarms) => {
-      console.log("AlarmContainer: ", alarms);
-    }
   });
+  console.log("asd");
+
 
   return (
     <View style={s.root}>

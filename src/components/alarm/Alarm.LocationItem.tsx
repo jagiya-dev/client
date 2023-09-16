@@ -4,22 +4,60 @@ import { IconFactoryByWeatherModel, PlusIcon } from "@/components/Icon";
 import Tag from "@/components/Tag";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
-import { WeatherModel } from "@/typing";
+import { IsEnabled, WeatherModel } from "@/typing";
+import { cond } from "@/util/StyleHelper";
 
-const AlarmLocationItem = (props: WeatherModel) => {
+type Props = WeatherModel & IsEnabled;
+
+const AlarmLocationItem = (props: Props) => {
   if (props.isAddNewWeather) {
     return (
-      <Tag style={s.addNewWeatherRoot}>
-        <PlusIcon style={s.plusIcon} />
+      <Tag
+        style={cond({
+          predicate: () => !props.isEnabled,
+          true$: s.disabledBorder,
+          underlayingStyles: s.addNewWeatherRoot
+        })}
+      >
+        <PlusIcon
+          style={cond({
+            predicate: () => !props.isEnabled,
+            true$: s.disabledWeatherIcon,
+            underlayingStyles: s.plusIcon
+          })}
+        />
       </Tag>
     );
   }
 
   return (
-    <Tag style={s.root}>
-      {IconFactoryByWeatherModel(props.weather)}
+    <Tag
+      style={cond({
+        predicate: () => !props.isEnabled,
+        true$: s.disabledBorder,
+        underlayingStyles: s.root
+      })}
+    >
+      {IconFactoryByWeatherModel(
+        props.weather,
+        cond({
+          predicate: () => !props.isEnabled,
+          true$: s.disabledWeatherIcon,
+          underlayingStyles: {}
+        }))
+      }
+
       <View style={s.spacer} />
-      <Text style={s.locationText}>{props.location}</Text>
+
+      <Text
+        style={cond({
+          predicate: () => !props.isEnabled,
+          true$: s.disabledText,
+          underlayingStyles: s.locationText
+        })}
+      >
+        {props.location}
+      </Text>
     </Tag>
   );
 };
@@ -53,4 +91,14 @@ const s = StyleSheet.create({
     fontWeight: font.caption["1"].weight,
     lineHeight: font.caption["1"].height,
   },
+
+  disabledWeatherIcon: {
+    tintColor: color.gray["200"],
+  },
+  disabledText: {
+    color: color.gray["200"],
+  },
+  disabledBorder: {
+    borderColor: color.gray["100"],
+  }
 });

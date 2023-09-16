@@ -20,12 +20,16 @@ const toggleAlarmToggleEnabled = (id: number) => {
   const foundIndex = alarmModelSubject.value.findIndex(
     (item) => item.id === id,
   );
+
+  if (foundIndex === -1) {
+    return;
+  }
+
   const targetAlarm = alarmModelSubject.value[foundIndex];
-  targetAlarm.isEnabled = !targetAlarm.isEnabled;
 
   alarmModelSubject.next([
     ...alarmModelSubject.value.slice(0, foundIndex),
-    targetAlarm,
+    { ...targetAlarm, isEnabled: !targetAlarm.isEnabled },
     ...alarmModelSubject.value.slice(foundIndex + 1),
   ]);
 };
