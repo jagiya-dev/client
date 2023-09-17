@@ -10,7 +10,7 @@ import { Animated, FlatList, Platform, StyleSheet, View } from "react-native";
 import { Shadow } from "react-native-shadow-2";
 import Toggle from "../toggle";
 import Swipeable from "react-native-gesture-handler/Swipeable";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { whenToggleDeleteMode } from "@/state/main/main.state";
 import { behaviours as AlarmBehaviours } from "@/state/alarm/alarm.state";
 import { useObservableEffect } from "@/hook/useObservableEffect";

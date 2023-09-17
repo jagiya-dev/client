@@ -33,6 +33,7 @@ import {
 import ActivatedAlarmScreen from "@/screen/ActivatedAlarmScreen";
 import SettingsScreen from "@/screen/SettingsScreen";
 import AlarmDetailScreen from "@/screen/AlarmDetailScreen";
+import AlarmDeferScreen from "@/screen/AlarmDeferScreen";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -66,37 +67,50 @@ const App = () => {
         <RecoilDebugObserver instance={instance}/>
         <StatusBar/>
         <NavigationContainer>
-          <Stack.Navigator initialRouteName="AlarmDetail">
-            <Stack.Screen
-              name="Main"
-              component={MainScreen}
-              options={{ title: "", headerShown: false }}
-            />
-            <Stack.Screen
-              name="Login"
-              component={LoginScreen}
-              options={{ title: "", headerShown: false }}
-            />
-            <Stack.Screen
-              name="Alarm"
-              component={AlarmScreen}
-              options={{ title: "", headerShown: false }}
-            />
-            <Stack.Screen
-              name="ActivatedAlarm"
-              component={ActivatedAlarmScreen}
-              options={{ title: "", headerShown: false }}
-            />
-            <Stack.Screen
-              name="AlarmDetail"
-              component={AlarmDetailScreen}
-              options={{ title: "", headerShown: false }}
-            />
-            <Stack.Screen
-              name="Settings"
-              component={SettingsScreen}
-              options={{ title: "", headerShown: false }}
-            />
+          <Stack.Navigator initialRouteName="ActivatedAlarm">
+            <Stack.Group>
+              <Stack.Screen
+                name="Main"
+                component={MainScreen}
+                options={{ title: "", headerShown: false }}
+              />
+              <Stack.Screen
+                name="Login"
+                component={LoginScreen}
+                options={{ title: "", headerShown: false }}
+              />
+              <Stack.Screen
+                name="Alarm"
+                component={AlarmScreen}
+                options={{ title: "", headerShown: false }}
+              />
+              <Stack.Screen
+                name="ActivatedAlarm"
+                component={ActivatedAlarmScreen}
+                options={{ title: "", headerShown: false }}
+              />
+              <Stack.Screen
+                name="AlarmDetail"
+                component={AlarmDetailScreen}
+                options={{ title: "", headerShown: false }}
+              />
+              <Stack.Screen
+                name="Settings"
+                component={SettingsScreen}
+                options={{ title: "", headerShown: false }}
+              />
+            </Stack.Group>
+            {/*<Stack.Group screenOptions={{ presentation: "fullScreenModal" }}>*/}
+            {/*  <Stack.Screen*/}
+            {/*    name="AlarmDefer"*/}
+            {/*    component={AlarmDeferScreen}*/}
+            {/*    options={{*/}
+            {/*      title: "",*/}
+            {/*      headerShown: false,*/}
+            {/*      animation: "slide_from_bottom"*/}
+            {/*    }}*/}
+            {/*  />*/}
+            {/*</Stack.Group>*/}
           </Stack.Navigator>
         </NavigationContainer>
       </RecoilRoot>

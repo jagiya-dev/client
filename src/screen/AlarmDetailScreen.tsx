@@ -9,7 +9,7 @@ import { Button } from "@/components/button";
 import { CloseIcon } from "@/components/Icon";
 import { useObservableState } from "@/hook/useObservableState";
 import { alarmModelSubject } from "@/state/alarm/alarm.state";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import LocationItem from "@/components/location/LocationItem";
 import { font } from "@/styles/font";
 import { color } from "@/styles/color";
