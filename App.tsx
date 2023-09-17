@@ -10,7 +10,9 @@ import { RecoilRoot } from "recoil";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { RecoilDebugObserver } from "reactotron-recoil-plugin";
 import { instance } from "./reactotron.config";
-import { useRegisterForegroundReceive } from "@/firebase/fcm/useSetForegroundPushNotification";
+import {
+  useRegisterForegroundReceive
+} from "@/firebase/fcm/useSetForegroundPushNotification";
 import { ProcessPermission } from "@/permissions";
 import { StackParamList } from "@/typing";
 import AlarmScreen from "@/screen/AlarmScreen";
@@ -19,10 +21,17 @@ import AlarmScreen from "@/screen/AlarmScreen";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
-import { handleBackgroundNotification } from "@/util/notification/useHandleBackgroundNotification";
-import { useAndroidBatteryOptimize } from "@/util/notification/useAndroidBatterOptimize";
-import { useAndroidPowerManager } from "@/util/notification/useAndroidPowerManager";
+import {
+  handleBackgroundNotification
+} from "@/util/notification/useHandleBackgroundNotification";
+import {
+  useAndroidBatteryOptimize
+} from "@/util/notification/useAndroidBatterOptimize";
+import {
+  useAndroidPowerManager
+} from "@/util/notification/useAndroidPowerManager";
 import ActivatedAlarmScreen from "@/screen/ActivatedAlarmScreen";
+import SettingsScreen from "@/screen/SettingsScreen";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -40,7 +49,7 @@ const App = () => {
   // run codepush first of all
   const { progress, bHasUpdate } = Codepush.useSyncOrUpdateCode();
   if (bHasUpdate) {
-    return <Codepush.Panel progress={progress} />;
+    return <Codepush.Panel progress={progress}/>;
   }
 
   useRegisterForegroundReceive();
@@ -51,12 +60,12 @@ const App = () => {
   }
 
   return (
-    <GestureHandlerRootView style={s.root}>
+    <GestureHandlerRootView style={{ flex: 1 }}>
       <RecoilRoot>
-        <RecoilDebugObserver instance={instance} />
-        <StatusBar />
+        <RecoilDebugObserver instance={instance}/>
+        <StatusBar/>
         <NavigationContainer>
-          <Stack.Navigator initialRouteName="Main">
+          <Stack.Navigator initialRouteName="ActivatedAlarm">
             <Stack.Screen
               name="Main"
               component={MainScreen}
@@ -77,6 +86,11 @@ const App = () => {
               component={ActivatedAlarmScreen}
               options={{ title: "", headerShown: false }}
             />
+            <Stack.Screen
+              name="Settings"
+              component={SettingsScreen}
+              options={{ title: "", headerShown: false }}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </RecoilRoot>
@@ -84,8 +98,3 @@ const App = () => {
 };
 
 export default Codepush.hoc(App);
-const s = StyleSheet.create({
-  root: {
-    flex: 1
-  }
-});

@@ -33,7 +33,7 @@ export const font = {
     "2": {
       size: 22,
       height: 30,
-      weight: 700, // bold
+      weight: "700", // bold
     },
   },
   title: {
