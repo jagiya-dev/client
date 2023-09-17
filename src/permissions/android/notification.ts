@@ -1,7 +1,9 @@
 import { PermissionsAndroid } from "react-native";
 import type { Permission, PermissionStatus } from "react-native";
 
-export const requestForNotificationPermission = async (notification: Permission) => {
+export const requestForNotificationPermission = async (
+  notification: Permission,
+) => {
   // if (!(await PermissionsAndroid.check(notification))) return null;
 
   return await PermissionsAndroid.request(notification, {
@@ -21,7 +23,7 @@ export const onRequestedNotificationPermission = (
   switch (granted) {
     case PermissionsAndroid.RESULTS.GRANTED:
       {
-        console.log("You can use the notification");
+        // console.log("You can use the notification");
       }
       break;
 

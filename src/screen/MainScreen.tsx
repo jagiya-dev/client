@@ -11,34 +11,31 @@ import {
 } from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import AlarmContainer from "@/components/alarm/Alarm.Container";
-// import { atom, useRecoilState } from "recoil";
 import AddNewAlarmItemButton from "@/components/button/AddNewAlarmItem.button";
-// import AddNewAlarmItemShadow from "@/components/button/AddNewAlarmItem.shadow";
 import { useState } from "react";
-import { useSetRecoilState } from "recoil";
-import { alarmModel, genAlarmItem } from "@/state/alarm/alarm.state";
-
-// import { dummyAlarmData } from "@/state/alarm/dummy";
-
-// const useIsDeleteMode = atom({
-//   key: "isDeleteMode",
-//   default: false,
-// });
+import { genRandomAlarmItem } from "@/state/alarm/alarm.helper";
+import { useInitNotification } from "@/util/notification/useInitNotification";
+import { useHandleForegroundNotification } from "@/util/notification/useHandleForegroundNotification";
+import { deleteModeToggleSubject } from "@/state/main/main.state";
+import { behaviours as AlarmBehaviours } from "@/state/alarm/alarm.state";
 
 const MainScreen = () => {
-  // const { userName, toolName } = useRef(dummy).current;
-  // const [isDeleteMode, setDeleteMode] = useRecoilState(useIsDeleteMode);
   const [isDeleteMode, setDeleteMode] = useState(false);
-  const setAlarm = useSetRecoilState(alarmModel);
+
+  useHandleForegroundNotification();
+  const loading = useInitNotification();
+
+  if (loading) {
+    return null;
+  }
 
   const onPressButton_toggleDeleteMode = () => {
     setDeleteMode((prev) => !prev);
-    console.log("onPressButton_toggleDeleteMode");
+    deleteModeToggleSubject.next(!isDeleteMode);
   };
 
-  const onPressButton_AddNewAlarmItem = (event: GestureResponderEvent) => {
-    console.log("onClickAddNewAlarmItem");
-    setAlarm((prev) => [genAlarmItem(), ...prev]);
+  const onPressButton_AddNewAlarmItem = (_: GestureResponderEvent) => {
+    AlarmBehaviours.addNewAlarmItem(genRandomAlarmItem());
   };
 
   const onPressButton_DetailButton = (event: GestureResponderEvent) => {

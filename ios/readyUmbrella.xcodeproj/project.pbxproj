@@ -580,11 +580,9 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = readyUmbrella/readyUmbrella.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = XQ24HP64B3;
+				DEVELOPMENT_TEAM = XQ24HP64B3;
 				INFOPLIST_FILE = readyUmbrella/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "레디우산";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.weather";
@@ -601,7 +599,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.jagiya.readyUmbrella;
 				PRODUCT_NAME = readyUmbrella;
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = readyUmbrella;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

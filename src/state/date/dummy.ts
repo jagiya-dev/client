@@ -1,4 +1,4 @@
-import type { DateModel } from "@/typing";
+import type { AlarmModel, DateModel } from "@/typing";
 
 export const dummyDates: ReadonlyArray<DateModel> = [
   { label: "월", isEnabled: true },

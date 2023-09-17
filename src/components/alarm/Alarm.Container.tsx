@@ -1,30 +1,35 @@
 import { FlatList, StyleSheet, View } from "react-native";
-import AlarmItem from "@/components/alarm/Alarm.Item";
+import AlarmItem from "./Alarm.Item";
 import Text from "../Text";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
-import { useRecoilValue } from "recoil";
-import { alarmModel } from "@/state/alarm/alarm.state";
+import { alarmModelSubject } from "@/state/alarm/alarm.state";
+import { useObservableState } from "@/hook/useObservableState";
 
 const AlarmContainer = () => {
-  const alarmModels = useRecoilValue(alarmModel);
+  const [alarms] = useObservableState({
+    observable: alarmModelSubject.asObservable(),
+  });
+
+  if (!alarms?.length) {
+    return (
+      <View style={s.nothingTextContainer}>
+        <Text style={s.nothingText}>알람을 추가해주세요.</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={s.root}>
-      {alarmModels?.length ? (
-        <FlatList
-          data={alarmModels}
-          renderItem={(data) => <AlarmItem key={data.index} {...data.item} />}
-          horizontal={false}
-          automaticallyAdjustKeyboardInsets
-          showsHorizontalScrollIndicator={false}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={s.listView} />
-      ) : (
-        <View style={s.nothingTextContainer}>
-          <Text style={s.nothingText}>알람을 추가해주세요.</Text>
-        </View>
-      )}
+      <FlatList
+        data={alarms}
+        renderItem={(data) => <AlarmItem  {...data.item} />}
+        horizontal={false}
+        automaticallyAdjustKeyboardInsets
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={s.listView}
+      />
     </View>
   );
 };

@@ -38,22 +38,22 @@ type DateTextButtonProps = {
   isEnabled?: boolean;
   onPress: () => void;
 };
-export const DateTextButton = (props: DateTextButtonProps) => (
-  <TouchableOpacity
-    onPress={props.onPress}
-    style={dateTextButtenStyle.baseText}
-  >
-    <Text
-      style={
-        props.isEnabled
-          ? dateTextButtenStyle.enabledText
-          : dateTextButtenStyle.disabledText
-      }
+export const DateTextButton = (props: DateTextButtonProps) => {
+  return (
+    <TouchableOpacity
+      onPress={props.onPress}
+      style={dateTextButtenStyle.baseText}
     >
-      {props.label}
-    </Text>
-  </TouchableOpacity>
-);
+      <Text
+        style={props.isEnabled
+          ? dateTextButtenStyle.enabledText
+          : dateTextButtenStyle.disabledText}
+      >
+        {props.label}
+      </Text>
+    </TouchableOpacity>
+  );
+};
 
 const s = StyleSheet.create({
   addButton: {

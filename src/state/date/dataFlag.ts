@@ -16,3 +16,4 @@ export const AllDateFlag =
   DateFlag.fri |
   DateFlag.sat |
   DateFlag.sun;
+export const LenDateFlags = 7;
