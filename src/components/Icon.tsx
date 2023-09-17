@@ -8,65 +8,65 @@ type IconProps = Partial<Exclude<ImageProps, "source">> & {
 // day
 export const DayIcon = (props: IconProps) => (
   <TouchableOpacity disabled={!props.useTouch} style={props.style}>
-    <Image source={require("#/icons/icon-day.png")} {...props} />
+    <Image source={require("#/icons/day.png")} {...props} />
   </TouchableOpacity>
 );
 export const DayGrayIcon = (props: IconProps) => (
   <TouchableOpacity disabled={!props.useTouch} style={props.style}>
-    <Image source={require("#/icons/icon-day-gray.png")} {...props} />
+    <Image source={require("#/icons/day_gray.png")} {...props} />
   </TouchableOpacity>
 );
 export const DayNightIcon = (props: IconProps) => (
   <TouchableOpacity disabled={!props.useTouch} style={props.style}>
-    <Image source={require("#/icons/icon-day-night.png")} {...props} />
+    <Image source={require("#/icons/day_night.png")} {...props} />
   </TouchableOpacity>
 );
 export const DayNightGrayIcon = (props: IconProps) => (
   <TouchableOpacity disabled={!props.useTouch} style={props.style}>
-    <Image source={require("#/icons/icon-day-night-gray.png")} {...props} />
+    <Image source={require("#/icons/day_night_gray.png")} {...props} />
   </TouchableOpacity>
 );
 // night
 export const NightIcon = (props: IconProps) => (
   <TouchableOpacity disabled={!props.useTouch} style={props.style}>
-    <Image source={require("#/icons/icon-night.png")} {...props} />
+    <Image source={require("#/icons/night.png")} {...props} />
   </TouchableOpacity>
 );
 export const NightGrayIcon = (props: IconProps) => (
   <TouchableOpacity disabled={!props.useTouch} style={props.style}>
-    <Image source={require("#/icons/icon-night-gray.png")} {...props} />
+    <Image source={require("#/icons/night_gray.png")} {...props} />
   </TouchableOpacity>
 );
 
 // symbol
 export const RightArrowIcon = (props: IconProps) => (
   <TouchableOpacity disabled={!props.useTouch}>
-    <Image source={require("#/icons/icon-arrow.png")} {...props} />
+    <Image source={require("#/icons/arrow.png")} {...props} />
   </TouchableOpacity>
 );
 export const SettingsIcon = (props: IconProps) => (
   <TouchableOpacity disabled={!props.useTouch}>
-    <Image source={require("#/icons/icon-setting.png")} {...props} />
+    <Image source={require("#/icons/setting.png")} {...props} />
   </TouchableOpacity>
 );
 export const PlusIcon = (props: IconProps) => (
   <TouchableOpacity disabled={!props.useTouch} style={props.style}>
-    <Image source={require("#/icons/icon-plus.png")} {...props} />
+    <Image source={require("#/icons/plus.png")} {...props} />
   </TouchableOpacity>
 );
 export const MinusIcon = (props: IconProps) => (
   <TouchableOpacity disabled={!props.useTouch}>
-    <Image source={require("#/icons/icon-minus.png")} {...props} />
+    <Image source={require("#/icons/minus.png")} {...props} />
   </TouchableOpacity>
 );
 export const CloseIcon = (props: IconProps & TouchableOpacityProps) => (
   <TouchableOpacity disabled={!props.useTouch} onPress={props.onPress}>
-    <Image source={require("#/icons/icon-close.png")} {...props} />
+    <Image source={require("#/icons/close.png")} {...props} />
   </TouchableOpacity>
 );
 export const InfoIcon = (props: IconProps) => (
   <TouchableOpacity disabled={!props.useTouch}>
-    <Image source={require("#/icons/icon-info.png")} {...props} />
+    <Image source={require("#/icons/info.png")} {...props} />
   </TouchableOpacity>
 );
 
@@ -74,12 +74,12 @@ export const InfoIcon = (props: IconProps) => (
 // weather
 export const UmbrellaEnabledIcon = (props: IconProps) => (
   <TouchableOpacity disabled={!props.useTouch}>
-    <Image source={require("#/icons/icon-umbrella-enabled.png")} {...props} />
+    <Image source={require("#/icons/umbrella_enabled.png")} {...props} />
   </TouchableOpacity>
 );
 export const UmbrellaDisabledIcon = (props: IconProps) => (
   <TouchableOpacity disabled={!props.useTouch}>
-    <Image source={require("#/icons/icon-umbrella-disabled.png")} {...props} />
+    <Image source={require("#/icons/umbrella_disabled.png")} {...props} />
   </TouchableOpacity>
 );
 

@@ -12,15 +12,19 @@ import {
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import AlarmContainer from "@/components/alarm/Alarm.Container";
 import AddNewAlarmItemButton from "@/components/button/AddNewAlarmItem.button";
-import { useState } from "react";
 import { genRandomAlarmItem } from "@/state/alarm/alarm.helper";
 import { useInitNotification } from "@/util/notification/useInitNotification";
-import { useHandleForegroundNotification } from "@/util/notification/useHandleForegroundNotification";
+import {
+  useHandleForegroundNotification
+} from "@/util/notification/useHandleForegroundNotification";
 import { deleteModeToggleSubject } from "@/state/main/main.state";
 import { behaviours as AlarmBehaviours } from "@/state/alarm/alarm.state";
+import { useObservableState } from "@/hook/useObservableState";
 
 const MainScreen = () => {
-  const [isDeleteMode, setDeleteMode] = useState(false);
+  const isDeleteMode = useObservableState({
+    observable: deleteModeToggleSubject,
+  });
 
   useHandleForegroundNotification();
   const loading = useInitNotification();
@@ -30,8 +34,8 @@ const MainScreen = () => {
   }
 
   const onPressButton_toggleDeleteMode = () => {
-    setDeleteMode((prev) => !prev);
     deleteModeToggleSubject.next(!isDeleteMode);
+    // AlarmBehaviours.toggleAlarmToggleEnabled();
   };
 
   const onPressButton_AddNewAlarmItem = (_: GestureResponderEvent) => {
@@ -48,7 +52,7 @@ const MainScreen = () => {
         {/* 1. head */}
         <View style={s.headContainer}>
           <Text style={s.headText}>레디우산</Text>
-          <SettingsIcon style={s.settingsIcon} useTouch />
+          <SettingsIcon style={s.settingsIcon} useTouch/>
         </View>
 
         {/* 2. conversation */}
@@ -57,7 +61,7 @@ const MainScreen = () => {
 
           <Button style={s.detailButton} onPress={onPressButton_DetailButton}>
             <Text style={s.detailButtonText}>자세히 보기</Text>
-            <RightArrowIcon />
+            <RightArrowIcon/>
           </Button>
         </View>
 
@@ -73,7 +77,7 @@ const MainScreen = () => {
       </View>
 
       {/* 4. Alarm Scroll View */}
-      <AlarmContainer />
+      <AlarmContainer/>
 
       {/* 5. Add New Alarm Item Button and its additive shadow */}
       <View style={s.addNewAlarmItembuttonRoot}>

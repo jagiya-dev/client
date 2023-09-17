@@ -7,7 +7,7 @@ import { alarmModelSubject } from "@/state/alarm/alarm.state";
 import { useObservableState } from "@/hook/useObservableState";
 
 const AlarmContainer = () => {
-  const [alarms] = useObservableState({
+  const alarms = useObservableState({
     observable: alarmModelSubject.asObservable(),
   });
 
@@ -23,7 +23,7 @@ const AlarmContainer = () => {
     <View style={s.root}>
       <FlatList
         data={alarms}
-        renderItem={(data) => <AlarmItem  {...data.item} />}
+        renderItem={(data) => <AlarmItem {...data.item} />}
         horizontal={false}
         automaticallyAdjustKeyboardInsets
         showsHorizontalScrollIndicator={false}

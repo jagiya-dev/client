@@ -16,6 +16,7 @@ export type AlarmModel = {
 
 export type WeatherModel = {
   weather?: "day" | "night" | "day-night";
+  bHasIcon?: boolean;
   location?: string;
   isAddNewWeather?: boolean;
 };
@@ -33,4 +34,11 @@ export type StackParamList = {
   };
   Alarm: undefined;
   ActivatedAlarm: undefined;
+  AlarmDetail: undefined;
+  Settings: undefined;
+  AlarmDefer: undefined;
+};
+
+export type LocationModel = {
+
 };

@@ -1,3 +1,4 @@
+
 import { AlarmModel } from "@/typing";
 import { BehaviorSubject } from "rxjs";
 import { genRandomAlarmItem } from "./alarm.helper";
@@ -7,7 +8,7 @@ export const alarmModelSubject = new BehaviorSubject<ReadonlyArray<AlarmModel>>(
 );
 
 const addNewAlarmItem = (newItem: AlarmModel) => {
-  alarmModelSubject.next([...alarmModelSubject.value, newItem]);
+  alarmModelSubject.next([ ...alarmModelSubject.value, newItem ]);
 };
 
 const deleteAlarmItem = (id: number) => {
@@ -34,10 +35,20 @@ const toggleAlarmToggleEnabled = (id: number) => {
   ]);
 };
 
+const closeCurrentAlarm = () => {
+
+};
+
+const deferCurrentAlarm = () => {
+};
+
 export const whenToggleAlarmToggleEnabled = alarmModelSubject.pipe();
+export const whenScheduledAlarmsChange = alarmModelSubject.asObservable();
 
 export const behaviours = {
   addNewAlarmItem,
   deleteAlarmItem,
   toggleAlarmToggleEnabled,
+  closeCurrentAlarm,
+  deferCurrentAlarm
 };

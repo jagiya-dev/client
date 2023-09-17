@@ -10,19 +10,21 @@ type UseObservableStateArgs<T> = {
 
 export const useObservableState = <T>(
   args: UseObservableStateArgs<T>,
-): ReturnType<typeof useState<T>> => {
+): ReturnType<typeof useState<T>>[0] => {
   const { observable, subscribeFn, dependencies } = args;
-  const [state, setState] = useState<T>();
+  const [ state, setState ] = useState<T>();
 
   useEffect(() => {
     const subscription = observable.subscribe((value) => {
-      setState(value);
-      if (subscribeFn && typeof subscribeFn === "function") {
-        subscribeFn(value);
-      }
+      setState(() => {
+        if (subscribeFn && typeof subscribeFn === "function") {
+          subscribeFn(value);
+        }
+        return value;
+      });
     });
     return () => subscription?.unsubscribe();
-  }, [observable, subscribeFn, ...(dependencies || [])]);
+  }, [ observable, subscribeFn, ...(dependencies || []) ]);
 
-  return [state, setState];
+  return state;
 };

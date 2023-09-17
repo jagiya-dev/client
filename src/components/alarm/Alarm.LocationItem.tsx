@@ -16,16 +16,10 @@ const AlarmLocationItem = (props: Props) => {
         style={cond({
           predicate: () => !props.isEnabled,
           true$: s.disabledBG,
-          underlayingStyles: s.addNewWeatherRoot
+          underlyingStyles: s.addNewWeatherRoot
         })}
       >
-        <PlusIcon
-          style={cond({
-            predicate: () => !props.isEnabled,
-            true$: s.disabledPlusIcon,
-            underlayingStyles: s.plusIcon
-          })}
-        />
+        <PlusIcon style={s.plusIcon}/>
       </Tag>
     );
   }
@@ -35,25 +29,24 @@ const AlarmLocationItem = (props: Props) => {
       style={cond({
         predicate: () => !props.isEnabled,
         true$: s.disabledBorder,
-        underlayingStyles: s.root
+        underlyingStyles: s.root
       })}
     >
-      {IconFactoryByWeatherModel(
+      {props.bHasIcon && IconFactoryByWeatherModel(
         props.weather,
         cond({
           predicate: () => !props.isEnabled,
           true$: s.disabledWeatherIcon,
-          underlayingStyles: {}
         }))
       }
 
-      <View style={s.spacer} />
+      <View style={s.spacer}/>
 
       <Text
         style={cond({
           predicate: () => !props.isEnabled,
           true$: s.disabledText,
-          underlayingStyles: s.locationText
+          underlyingStyles: s.locationText
         })}
       >
         {props.location}
@@ -94,9 +87,6 @@ const s = StyleSheet.create({
 
   disabledWeatherIcon: {
     tintColor: color.gray["200"],
-  },
-  disabledPlusIcon: {
-    color: "white"
   },
   disabledText: {
     color: color.gray["200"],
