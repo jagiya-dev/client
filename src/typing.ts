@@ -16,7 +16,7 @@ export type AlarmModel = {
 
 export type WeatherModel = {
   weather?: "day" | "night" | "day-night";
-  bHasIcon: boolean;
+  bHasIcon?: boolean;
   location?: string;
   isAddNewWeather?: boolean;
 };
