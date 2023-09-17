@@ -65,7 +65,7 @@ const App = () => {
         <RecoilDebugObserver instance={instance}/>
         <StatusBar/>
         <NavigationContainer>
-          <Stack.Navigator initialRouteName="ActivatedAlarm">
+          <Stack.Navigator initialRouteName="Alarm">
             <Stack.Screen
               name="Main"
               component={MainScreen}

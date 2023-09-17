@@ -46,6 +46,10 @@ const ActivatedAlarmScreen = ({ route, navigation }: PageProps) => {
           source={require("#/images/umbrella.png")}
           style={s.weatherImage}
         />
+        <Image
+          source={require("#/images/rains.png")}
+          style={s.weatherImage}
+        />
       </View>
 
       {/* 4. Bottom Actions */}

@@ -49,7 +49,7 @@ function AlarmItem(props: AlarmModel) {
           <Button onPress={onCloseLeftAction} style={s.leftSwipeButtonContainer}>
             <Animated.Image
               style={[s.leftSwipeButton, { transform: [{ translateX: trans }] }]}
-              source={require("#/icons/icon-minus.png")}
+              source={require("#/icons/minus.png")}
             />
           </Button>
         );
