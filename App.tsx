@@ -32,6 +32,7 @@ import {
 } from "@/util/notification/useAndroidPowerManager";
 import ActivatedAlarmScreen from "@/screen/ActivatedAlarmScreen";
 import SettingsScreen from "@/screen/SettingsScreen";
+import AlarmDetailScreen from "@/screen/AlarmDetailScreen";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -65,7 +66,7 @@ const App = () => {
         <RecoilDebugObserver instance={instance}/>
         <StatusBar/>
         <NavigationContainer>
-          <Stack.Navigator initialRouteName="Alarm">
+          <Stack.Navigator initialRouteName="Main">
             <Stack.Screen
               name="Main"
               component={MainScreen}
@@ -84,6 +85,11 @@ const App = () => {
             <Stack.Screen
               name="ActivatedAlarm"
               component={ActivatedAlarmScreen}
+              options={{ title: "", headerShown: false }}
+            />
+            <Stack.Screen
+              name="AlarmDetail"
+              component={AlarmDetailScreen}
               options={{ title: "", headerShown: false }}
             />
             <Stack.Screen

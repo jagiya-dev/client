@@ -13,11 +13,12 @@ const ActivatedAlarmScreen = ({ route, navigation }: PageProps) => {
   const onPressButton_closeAlarm = () => {
     console.log("onPressButton_closeAlarm");
 
-    navigation.navigate("Main");
+    // todo: open weather detail screen.
+    navigation.navigate("AlarmDetail");
   };
 
-  const onPressButton_notifyLaterAgain = () => {
-    console.log("onPressButton_notifyLaterAgain");
+  const onPressButton_deferAlarm = () => {
+    console.log("onPressButton_deferAlarm");
     // todo : notify later.
   };
 
@@ -48,17 +49,17 @@ const ActivatedAlarmScreen = ({ route, navigation }: PageProps) => {
         />
         <Image
           source={require("#/images/rains.png")}
-          style={s.weatherImage}
+          style={s.rainImage}
         />
       </View>
 
       {/* 4. Bottom Actions */}
       <View style={s.bottomContainer}>
-        <Button style={s.closeButton}>
+        <Button style={s.closeButton} onPress={onPressButton_closeAlarm}>
           <Text style={s.closeButtonText}>이미 우산을 챙겼어요</Text>
         </Button>
 
-        <Button style={s.deferButton}>
+        <Button style={s.deferButton} onPress={onPressButton_deferAlarm}>
           <Text style={s.deferButtonText}>5분 후 다시 알림</Text>
         </Button>
       </View>
@@ -120,11 +121,20 @@ const s = StyleSheet.create({
   // 3. weather image
   weatherImageContainer: {
     marginTop: 21,
+    position: "relative",
   },
   weatherImage: {
     width: 274.883,
     height: 304.739,
     backgroundColor: "black",
+  },
+  rainImage: {
+    width: 274.883,
+    height: 304.739,
+    backgroundColor: "black",
+    position: "absolute",
+    top: 0,
+    zIndex: -1,
   },
 
   // 4. bottom actions

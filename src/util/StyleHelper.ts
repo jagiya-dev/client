@@ -9,15 +9,15 @@ type SelectArgs<T extends FlexStyle> = {
   predicate: () => boolean;
   true$: StyleObject<T>;
   false$?: {};
-  underlayingStyles?: StyleObject<T>;
+  underlyingStyles?: StyleObject<T>;
 };
 
 export const cond = <T extends FlexStyle>({
   predicate,
   true$,
   false$,
-  underlayingStyles,
+  underlyingStyles,
 }: SelectArgs<T>) => ({
-  ...underlayingStyles,
+  ...underlyingStyles,
   ...(predicate() ? true$ : false$),
 });
