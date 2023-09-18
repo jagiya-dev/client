@@ -1,4 +1,11 @@
-import { Image, type ImageProps, TouchableOpacity, TouchableOpacityProps, StyleProp, ImageStyle } from "react-native";
+import {
+  Image,
+  type ImageProps,
+  TouchableOpacity,
+  TouchableOpacityProps,
+  StyleProp,
+  ImageStyle
+} from "react-native";
 import { WeatherModel } from "@/typing";
 
 type IconProps = Partial<Exclude<ImageProps, "source">> & {
@@ -70,6 +77,10 @@ export const InfoIcon = (props: IconProps) => (
   </TouchableOpacity>
 );
 
+export const BellIcon = (props: IconProps) => (
+  <Image source={require("#/icons/bell.png")} {...props} />
+);
+
 
 // weather
 export const UmbrellaEnabledIcon = (props: IconProps) => (
@@ -86,15 +97,15 @@ export const UmbrellaDisabledIcon = (props: IconProps) => (
 export const IconFactoryByWeatherModel = (weather: WeatherModel["weather"], style: StyleProp<ImageStyle>) => {
   switch (weather) {
     case "day":
-      return <DayIcon width={20} height={20} style={style} />;
+      return <DayIcon width={20} height={20} style={style}/>;
 
     case "night":
-      return <NightIcon width={20} height={20} style={style} />;
+      return <NightIcon width={20} height={20} style={style}/>;
 
     case "day-night":
-      return <DayNightIcon width={20} height={20} style={style} />;
+      return <DayNightIcon width={20} height={20} style={style}/>;
 
     default:
-      return <DayNightIcon width={20} height={20} style={style} />;
+      return <DayNightIcon width={20} height={20} style={style}/>;
   }
 };

@@ -1,20 +1,18 @@
 import {
   Modal,
-  ModalProps,
   Platform,
   StyleSheet,
-  Text,
   View
 } from "react-native";
-
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "@/components/button";
-import { useState } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackParamList } from "@/typing";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
+import { BellIcon } from "@/components/Icon";
+import Text from "@/components/Text";
 
 type Props = {
   visible: boolean;
@@ -46,16 +44,17 @@ const AlarmDeferModal = ({ visible, setDeferred, navigation }: Props) => {
     <SafeAreaView style={s.deferModalRoot}>
       <View style={s.modalSpacer}/>
 
-      <View style={s.bottomContainer}>
+      <View style={s.delayTimeContainer}>
+        <BellIcon/>
+        <Text style={s.delayTimeText}>4:59</Text>
+      </View>
+
+      <View style={s.closeContainer}>
         <Button style={s.closeButton}
                 onPress={onPressButton_closeAlarmOnDeferModal}>
           <Text style={s.closeButtonText}>이미 우산을 챙겼어요</Text>
         </Button>
 
-        <Button style={s.deferButton}
-                onPress={onPressButton_deferAlarmOnDeferModal}>
-          <Text style={s.deferButtonText}>5분 후 다시 알림</Text>
-        </Button>
       </View>
     </SafeAreaView>
   </Modal>;
@@ -71,10 +70,33 @@ const s = StyleSheet.create({
     alignItems: "center",
   },
 
+  modalSpacer: {
+    ...Platform.select({
+      ios: {
+        marginTop: 565
+      },
+      android: {
+        marginTop: 506
+      }
+    })
+  },
+
+  delayTimeContainer: {
+    flexDirection: "row",
+    height: 40,
+    marginBottom: 24,
+  },
+  delayTimeText: {
+    marginLeft: 4,
+    color: "white",
+    fontSize: font.display["1"].size,
+    fontWeight: font.display["1"].weight,
+    lineHeight: font.display["1"].height,
+  },
+
   // 4. bottom actions
-  bottomContainer: {
+  closeContainer: {
     paddingHorizontal: 50,
-    marginTop: 35.5
   },
   closeButton: {
     backgroundColor: color.primary["600"],
@@ -90,25 +112,4 @@ const s = StyleSheet.create({
     fontWeight: font.title["2"].weight,
     lineHeight: font.title["2"].height,
   },
-  deferButton: {
-    width: 290,
-    alignItems: "center",
-    marginTop: 32
-  },
-  deferButtonText: {
-    color: color.primary["600"],
-    fontSize: font.body["1"].size,
-    fontWeight: font.body["1"].weight,
-    lineHeight: font.body["1"].height,
-  },
-  modalSpacer: {
-    ...Platform.select({
-      ios: {
-        marginTop: 565
-      },
-      android: {
-        marginTop: 506
-      }
-    })
-  }
 });
