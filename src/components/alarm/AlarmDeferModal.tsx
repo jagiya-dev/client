@@ -13,6 +13,11 @@ import { color } from "@/styles/color";
 import { font } from "@/styles/font";
 import { BellIcon } from "@/components/Icon";
 import Text from "@/components/Text";
+import { useObservableState } from "@/hook/useObservableState";
+import {
+  alarmDeferCountdown$,
+  initialTimeAsStr
+} from "@/state/alarmDefer/alarmDefer.state";
 
 type Props = {
   visible: boolean;
@@ -21,17 +26,12 @@ type Props = {
 };
 
 const AlarmDeferModal = ({ visible, setDeferred, navigation }: Props) => {
+  const time = useObservableState({ observable: alarmDeferCountdown$ }) ?? initialTimeAsStr;
+
   const onPressButton_closeAlarmOnDeferModal = () => {
     console.log("onPressButton_closeAlarm on defer modal");
     setDeferred(false);
     navigation.navigate("AlarmDetail");
-  };
-
-  const onPressButton_deferAlarmOnDeferModal = () => {
-    console.log("onPressButton_deferAlarm on defer modal");
-    // todo : notify later.
-
-    setDeferred(false);
   };
 
   return <Modal
@@ -46,7 +46,7 @@ const AlarmDeferModal = ({ visible, setDeferred, navigation }: Props) => {
 
       <View style={s.delayTimeContainer}>
         <BellIcon/>
-        <Text style={s.delayTimeText}>4:59</Text>
+        <Text style={s.delayTimeText}>{time}</Text>
       </View>
 
       <View style={s.closeContainer}>

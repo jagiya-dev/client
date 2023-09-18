@@ -8,6 +8,7 @@ import { color } from "@/styles/color";
 import { font } from "@/styles/font";
 import { useState } from "react";
 import AlarmDeferModal from "@/components/alarm/AlarmDeferModal";
+import { startCountdown } from "@/state/alarmDefer/alarmDefer.state";
 
 type PageProps = NativeStackScreenProps<StackParamList, "ActivatedAlarm">;
 
@@ -23,6 +24,7 @@ const ActivatedAlarmScreen = ({ route, navigation }: PageProps) => {
     // todo : notify later.
 
     setDeferred(true);
+    startCountdown();
   };
 
   return (
