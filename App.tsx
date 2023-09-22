@@ -1,6 +1,6 @@
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, createNavigationContainerRef, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Platform, StatusBar, StyleSheet } from "react-native";
+import { Image, Platform, StatusBar } from "react-native";
 
 import Codepush from "@/util/codepush";
 
@@ -15,7 +15,7 @@ import {
 } from "@/firebase/fcm/useSetForegroundPushNotification";
 import { ProcessPermission } from "@/permissions";
 import { StackParamList } from "@/typing";
-import AlarmScreen from "@/screen/AlarmScreen";
+import CreateAlarmScreen from "@/screen/CreateAlarmScreen";
 // import { useInitNotification } from "@/util/notification/useInitNotification";
 // import { useHandleForegroundNotification } from "@/util/notification/useHandleForegroundNotification";
 import dayjs from "dayjs";
@@ -33,7 +33,9 @@ import {
 import ActivatedAlarmScreen from "@/screen/ActivatedAlarmScreen";
 import SettingsScreen from "@/screen/SettingsScreen";
 import AlarmDetailScreen from "@/screen/AlarmDetailScreen";
-import AlarmDeferScreen from "@/screen/AlarmDeferScreen";
+import { CloseIcon } from "@/components/Icon";
+import { font } from "@/styles/font";
+import { useRef } from "react";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -46,12 +48,14 @@ if (Platform.OS === "android") {
 }
 
 const Stack = createNativeStackNavigator<StackParamList>();
+const navRef = createNavigationContainerRef();
 
 const App = () => {
+
   // run codepush first of all
   const { progress, bHasUpdate } = Codepush.useSyncOrUpdateCode();
   if (bHasUpdate) {
-    return <Codepush.Panel progress={progress}/>;
+    return <Codepush.Panel progress={progress} />;
   }
 
   useRegisterForegroundReceive();
@@ -64,53 +68,50 @@ const App = () => {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <RecoilRoot>
-        <RecoilDebugObserver instance={instance}/>
-        <StatusBar/>
-        <NavigationContainer>
-          <Stack.Navigator initialRouteName="ActivatedAlarm">
-            <Stack.Group>
-              <Stack.Screen
-                name="Main"
-                component={MainScreen}
-                options={{ title: "", headerShown: false }}
-              />
-              <Stack.Screen
-                name="Login"
-                component={LoginScreen}
-                options={{ title: "", headerShown: false }}
-              />
-              <Stack.Screen
-                name="Alarm"
-                component={AlarmScreen}
-                options={{ title: "", headerShown: false }}
-              />
-              <Stack.Screen
-                name="ActivatedAlarm"
-                component={ActivatedAlarmScreen}
-                options={{ title: "", headerShown: false }}
-              />
-              <Stack.Screen
-                name="AlarmDetail"
-                component={AlarmDetailScreen}
-                options={{ title: "", headerShown: false }}
-              />
-              <Stack.Screen
-                name="Settings"
-                component={SettingsScreen}
-                options={{ title: "", headerShown: false }}
-              />
-            </Stack.Group>
-            {/*<Stack.Group screenOptions={{ presentation: "fullScreenModal" }}>*/}
-            {/*  <Stack.Screen*/}
-            {/*    name="AlarmDefer"*/}
-            {/*    component={AlarmDeferScreen}*/}
-            {/*    options={{*/}
-            {/*      title: "",*/}
-            {/*      headerShown: false,*/}
-            {/*      animation: "slide_from_bottom"*/}
-            {/*    }}*/}
-            {/*  />*/}
-            {/*</Stack.Group>*/}
+        <RecoilDebugObserver instance={instance} />
+        <StatusBar />
+        <NavigationContainer ref={navRef}>
+          <Stack.Navigator initialRouteName="CreateAlarm">
+            <Stack.Screen
+              name="Main"
+              component={MainScreen}
+              options={{ title: "", headerShown: false }}
+            />
+            <Stack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{ title: "", headerShown: false }}
+            />
+            <Stack.Screen
+              name="CreateAlarm"
+              component={CreateAlarmScreen}
+              options={{
+                title: "알람설정",
+                headerRight: (props) => <CloseIcon onPress={() => navRef.navigate("Main")} useTouch />,
+                headerShadowVisible: false,
+                headerBackTitleVisible: false,
+                headerTitleAlign: "center",
+                headerTitleStyle: {
+                  fontSize: font.body["1"].size,
+                  fontWeight: font.body["1"].weight,
+                }
+              }}
+            />
+            <Stack.Screen
+              name="ActivatedAlarm"
+              component={ActivatedAlarmScreen}
+              options={{ title: "", headerShown: false }}
+            />
+            <Stack.Screen
+              name="AlarmDetail"
+              component={AlarmDetailScreen}
+              options={{ title: "", headerShown: false }}
+            />
+            <Stack.Screen
+              name="Settings"
+              component={SettingsScreen}
+              options={{ title: "", headerShown: false }}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </RecoilRoot>

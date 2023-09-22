@@ -6,7 +6,7 @@ import {
   timer
 } from "rxjs";
 
-const initialTime = 0.1 * 60 * 1000; // 30000
+const initialTime = 5 * 60 * 1000; // 30000
 const asTimeStr = (ms: number) => {
   const noMs = ms / 1000;
   const m = Math.floor(noMs / 60);

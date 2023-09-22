@@ -1,15 +1,142 @@
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import {
+  Platform,
+  SafeAreaView,
+  StyleSheet,
+  View
+} from "react-native";
+import { useInitNotification } from "@/util/notification/useInitNotification";
+import {
+  useHandleForegroundNotification
+} from "@/util/notification/useHandleForegroundNotification";
+import Text from "@/components/Text";
+import { CloseIcon, RightArrowIcon } from "@/components/Icon";
+import { useEffect, useState } from "react";
+import DatePicker from "react-native-date-picker";
+import { color } from "@/styles/color";
+import { Shadow } from "react-native-shadow-2";
+import { Button } from "@/components/button";
+import { createNewTrigger } from "@/util/trigger/setTrigger";
+import DeviceInfo from "react-native-device-info";
+import { font } from "@/styles/font";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 
 const CreateAlarmScreen = () => {
+  const [date, setDate] = useState<Date>(new Date());
+
+  useEffect(() => {
+    console.log("current date: ", date.toDateString());
+  }, [date]);
+
+  useHandleForegroundNotification();
+  const loading = useInitNotification();
+  if (loading) {
+    return null;
+  }
+
   return (
     <SafeAreaView style={s.root}>
       {/* 1. header */}
-      <View style={s.header}>
-        <Text>알람 추가</Text>
+      {/* <View style={s.headerContainer}>
+        <Text style={s.headerText}>알람 설정</Text>
+        <CloseIcon style={s.headerCloseIcon} />
+      </View> */}
+
+      {/* 2. timepicker */}
+      <View style={s.timePickerContainer}>
+        <DatePicker date={date} onDateChange={setDate} mode="time" />
       </View>
-    </SafeAreaView>
-  )
+
+      {/* 3. set repeat */}
+      <Shadow
+        offset={[0, 2]}
+        distance={2}
+        startColor="rgba(0, 0, 0, 0.1)"
+        style={s.itemBlockShadow}
+      >
+        <View style={s.itemBlockContainer}>
+          <Text style={s.itemBlockLabel}>반복</Text>
+
+          <View style={s.itemBlockRight}>
+            <Text style={s.itemBlockLabel}>주중</Text>
+            <View style={s.itemBlockRightSpacer} />
+            <RightArrowIcon style={s.itemBlockIcon} />
+          </View>
+        </View>
+      </Shadow>
+
+      {/* 4. set alarm sound */}
+      <View style={s.alarmSoundContainer}>
+        <Text style={s.alarmSoundLabel}>어떤 소리로 알려드릴까요?</Text>
+
+        <Shadow
+          offset={[0, 2]}
+          distance={2}
+          startColor="rgba(0, 0, 0, 0.1)"
+          style={s.itemBlockShadow}
+        >
+          <View style={s.alarmSoundItemContainer}>
+            <View style={[s.alarmSoundItem, s.alarmSoundItemBorderBottom]}>
+              <Text style={s.itemBlockLabel}>사운드</Text>
+
+              <View style={s.itemBlockRight}>
+                <Text style={s.itemBlockLabel}>기본알람</Text>
+                <View style={s.itemBlockRightSpacer} />
+                <RightArrowIcon style={s.itemBlockIcon} />
+              </View>
+            </View>
+
+            <View style={[s.alarmSoundItem, s.alarmSoundItemBorderBottom]}>
+              <Text style={s.itemBlockLabel}>볼륨</Text>
+            </View>
+
+            <View style={s.alarmSoundItem}>
+              <Text style={s.itemBlockLabel}>다시알림</Text>
+
+              <View style={s.itemBlockRight}>
+                <Text style={s.itemBlockLabel}>5분</Text>
+                <View style={s.itemBlockRightSpacer} />
+                <RightArrowIcon style={s.itemBlockIcon} />
+              </View>
+            </View>
+
+          </View>
+        </Shadow>
+      </View>
+
+      {/* 5. set location */}
+      <View style={s.locationContainer} >
+        {/*<Text>JAGIYA님이</Text>*/}
+        {/*<Text>활동하는 지역들을 추가해주세요.</Text>*/}
+        {/*<Text>(지역은 최대 4개까지 추가할 수 있어요)</Text>*/}
+
+        <Button onPress={createNewTrigger}>
+          <Text>알람</Text>
+        </Button>
+
+        {/*<FlatList*/}
+        {/*  data={[ "지역이름동", "지역이름동", "지역이름동", "지역이름동", ]}*/}
+        {/*  renderItem={(data) => (*/}
+        {/*    <Shadow*/}
+        {/*      offset={[ 0, 2 ]}*/}
+        {/*      distance={2}*/}
+        {/*      startColor="rgba(0, 0, 0, 0.1)"*/}
+        {/*      style={s.itemBlockShadow}*/}
+        {/*      key={data.index}*/}
+        {/*    >*/}
+        {/*      <View*/}
+        {/*        style={[ s.itemBlockContainer, s.itemBlockHalfContainer ]}>*/}
+        {/*        <Text style={s.itemBlockLabel}>{data.item}</Text>*/}
+
+        {/*        <View style={s.itemBlockRight}>*/}
+        {/*          <View style={s.itemBlockRightSpacer}/>*/}
+        {/*          <RightArrowIcon style={s.itemBlockIcon}/>*/}
+        {/*        </View>*/}
+        {/*      </View>*/}
+        {/*    </Shadow>*/}
+        {/*  )}/>*/}
+      </View>
+    </SafeAreaView >
+  );
 };
 
 export default CreateAlarmScreen;
@@ -17,10 +144,117 @@ export default CreateAlarmScreen;
 const s = StyleSheet.create({
   root: {
     flex: 1,
-    width: widthPercentageToDP("100%"),
-    alignItems: "center"
-  },
-  header: {
     alignItems: "center",
-  }
+    backgroundColor: color.gray["50"],
+  },
+
+  // 1. header
+  headerContainer: {
+    width: widthPercentageToDP("100%"),
+    height: 30,
+
+    flexDirection: "row",
+    // justifyContent: "center",
+
+    marginBottom: 46,
+    marginLeft: 'auto',
+    position: "relative",
+  },
+  headerText: {
+    fontSize: font.body["1"].size,
+    fontWeight: font.body["1"].weight,
+    lineHeight: font.body["1"].height,
+    color: color.gray["700"],
+  },
+  headerCloseIcon: {
+    // position: "absolute",
+    right: 0
+  },
+
+  // 2. timepicker
+  timePickerContainer: {
+    alignItems: "center",
+    marginBottom: 14,
+  },
+
+  // 3. set repeat
+  itemBlockShadow: {
+    ...Platform.select({
+      android: {
+        marginRight: 1,
+        marginBottom: 2,
+      }
+    })
+  },
+  itemBlockContainer: {
+    width: 317,
+    height: 54,
+
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+
+    borderRadius: 8,
+    backgroundColor: "white",
+  },
+  itemBlockHalfContainer: {
+    width: 317 * 0.5,
+  },
+  itemBlockLabel: {
+    color: color.gray["700"],
+  },
+  itemBlockIcon: {
+    tintColor: color.gray["200"]
+  },
+  itemBlockRight: {
+    flexDirection: "row",
+  },
+  itemBlockRightSpacer: {
+    marginRight: 4
+  },
+
+  // 4. set alarm sound
+  alarmSoundContainer: {
+    marginTop: 16,
+    paddingHorizontal: 20,
+    paddingVertical: 16
+  },
+  alarmSoundLabel: {
+    marginBottom: 16,
+    color: color.gray["700"],
+    fontSize: font.body["1"].size,
+    fontWeight: font.body["1"].weight,
+    lineHeight: font.body["1"].height,
+  },
+
+  alarmSoundItemContainer: {
+    width: 317,
+
+    paddingHorizontal: 3,
+    paddingVertical: 3,
+
+    borderRadius: 8,
+    backgroundColor: "white",
+  },
+  alarmSoundItem: {
+    height: 54,
+
+    paddingHorizontal: 13,
+    paddingVertical: 13,
+
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "white",
+  },
+  alarmSoundItemBorderBottom: {
+    borderBottomWidth: 1,
+    borderColor: color.gray["100"],
+  },
+
+  // 5. set location
+  locationContainer: {},
 });

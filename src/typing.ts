@@ -32,13 +32,10 @@ export type StackParamList = {
   KakaoLogin: {
     redirectUrl: string;
   };
-  Alarm: undefined;
+  CreateAlarm: undefined;
   ActivatedAlarm: undefined;
   AlarmDetail: undefined;
   Settings: undefined;
-  AlarmDefer: undefined;
 };
 
-export type LocationModel = {
-
-};
+export type LocationModel = {};

@@ -34,30 +34,32 @@ const AlarmDeferModal = ({ visible, setDeferred, navigation }: Props) => {
     navigation.navigate("AlarmDetail");
   };
 
-  return <Modal
-    transparent
-    statusBarTranslucent
-    animationType="slide"
-    visible={visible}
-    presentationStyle="overFullScreen"
-  >
-    <SafeAreaView style={s.deferModalRoot}>
-      <View style={s.modalSpacer}/>
+  return (
+    <Modal
+      transparent
+      statusBarTranslucent
+      animationType="slide"
+      visible={visible}
+      presentationStyle="overFullScreen"
+    >
+      <SafeAreaView style={s.deferModalRoot}>
+        <View style={s.modalSpacer}/>
 
-      <View style={s.delayTimeContainer}>
-        <BellIcon/>
-        <Text style={s.delayTimeText}>{time}</Text>
-      </View>
+        <View style={s.delayTimeContainer}>
+          <BellIcon/>
+          <Text style={s.delayTimeText}>{time}</Text>
+        </View>
 
-      <View style={s.closeContainer}>
-        <Button style={s.closeButton}
-                onPress={onPressButton_closeAlarmOnDeferModal}>
-          <Text style={s.closeButtonText}>이미 우산을 챙겼어요</Text>
-        </Button>
+        <View style={s.closeContainer}>
+          <Button style={s.closeButton}
+                  onPress={onPressButton_closeAlarmOnDeferModal}>
+            <Text style={s.closeButtonText}>이미 우산을 챙겼어요</Text>
+          </Button>
 
-      </View>
-    </SafeAreaView>
-  </Modal>;
+        </View>
+      </SafeAreaView>
+    </Modal>
+  );
 };
 export default AlarmDeferModal;
 

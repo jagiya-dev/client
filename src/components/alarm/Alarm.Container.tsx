@@ -3,12 +3,12 @@ import AlarmItem from "./Alarm.Item";
 import Text from "../Text";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
-import { alarmModelSubject } from "@/state/alarm/alarm.state";
+import { whenAlarmModel } from "@/state/alarm/alarm.state";
 import { useObservableState } from "@/hook/useObservableState";
 
 const AlarmContainer = () => {
   const alarms = useObservableState({
-    observable: alarmModelSubject.asObservable(),
+    observable: whenAlarmModel
   });
 
   if (!alarms?.length) {
