@@ -76,9 +76,14 @@ export const InfoIcon = (props: IconProps) => (
     <Image source={require("#/icons/info.png")} {...props} />
   </TouchableOpacity>
 );
-
 export const BellIcon = (props: IconProps) => (
   <Image source={require("#/icons/bell.png")} {...props} />
+);
+export const SoundVolumeIcon = (props: IconProps) => (
+  <Image source={require("#/icons/volume_on.png")} {...props} />
+);
+export const VibrationIcon = (props: IconProps) => (
+  <Image source={require("#/icons/vibration.png")} {...props} />
 );
 
 
@@ -97,15 +102,15 @@ export const UmbrellaDisabledIcon = (props: IconProps) => (
 export const IconFactoryByWeatherModel = (weather: WeatherModel["weather"], style: StyleProp<ImageStyle>) => {
   switch (weather) {
     case "day":
-      return <DayIcon width={20} height={20} style={style}/>;
+      return <DayIcon width={20} height={20} style={style} />;
 
     case "night":
-      return <NightIcon width={20} height={20} style={style}/>;
+      return <NightIcon width={20} height={20} style={style} />;
 
     case "day-night":
-      return <DayNightIcon width={20} height={20} style={style}/>;
+      return <DayNightIcon width={20} height={20} style={style} />;
 
     default:
-      return <DayNightIcon width={20} height={20} style={style}/>;
+      return <DayNightIcon width={20} height={20} style={style} />;
   }
 };

@@ -1,4 +1,5 @@
 import {
+  FlatList,
   Platform,
   SafeAreaView,
   StyleSheet,
@@ -9,7 +10,7 @@ import {
   useHandleForegroundNotification
 } from "@/util/notification/useHandleForegroundNotification";
 import Text from "@/components/Text";
-import { CloseIcon, RightArrowIcon } from "@/components/Icon";
+import { CloseIcon, RightArrowIcon, SoundVolumeIcon, VibrationIcon } from "@/components/Icon";
 import { useEffect, useState } from "react";
 import DatePicker from "react-native-date-picker";
 import { color } from "@/styles/color";
@@ -19,9 +20,24 @@ import { createNewTrigger } from "@/util/trigger/setTrigger";
 import DeviceInfo from "react-native-device-info";
 import { font } from "@/styles/font";
 import { widthPercentageToDP } from "react-native-responsive-screen";
+import { Slider } from "@miblanchard/react-native-slider";
+import { SliderOnChangeCallback } from "@miblanchard/react-native-slider/lib/types";
+import { useObservableState } from "@/hook/useObservableState";
+import { whenSoundVolumeChange } from "@/state/sound/sound.state";
+import { behaviours as soundBehaviours } from "@/state/sound/sound.state";
 
 const CreateAlarmScreen = () => {
   const [date, setDate] = useState<Date>(new Date());
+  const soundVolume = useObservableState({
+    observable: whenSoundVolumeChange
+  });
+
+  const onChangeSliderValue: SliderOnChangeCallback = (value) => {
+    if (!isNaN(value[0])) {
+      const volume = Number(value[0].toFixed(2));
+      soundBehaviours.setSoundVolume(volume);
+    }
+  }
 
   useEffect(() => {
     console.log("current date: ", date.toDateString());
@@ -35,18 +51,13 @@ const CreateAlarmScreen = () => {
 
   return (
     <SafeAreaView style={s.root}>
-      {/* 1. header */}
-      {/* <View style={s.headerContainer}>
-        <Text style={s.headerText}>알람 설정</Text>
-        <CloseIcon style={s.headerCloseIcon} />
-      </View> */}
-
-      {/* 2. timepicker */}
+      {/* <ScrollView contentContainerStyle={s.scrollRoot}> */}
+      {/* 1. timepicker */}
       <View style={s.timePickerContainer}>
         <DatePicker date={date} onDateChange={setDate} mode="time" />
       </View>
 
-      {/* 3. set repeat */}
+      {/* 2. set repeat */}
       <Shadow
         offset={[0, 2]}
         distance={2}
@@ -64,9 +75,11 @@ const CreateAlarmScreen = () => {
         </View>
       </Shadow>
 
-      {/* 4. set alarm sound */}
+      {/* 3. set alarm sound */}
       <View style={s.alarmSoundContainer}>
-        <Text style={s.alarmSoundLabel}>어떤 소리로 알려드릴까요?</Text>
+        <Text style={s.alarmSoundLabel}>
+          어떤 소리로 알려드릴까요?
+        </Text>
 
         <Shadow
           offset={[0, 2]}
@@ -76,10 +89,14 @@ const CreateAlarmScreen = () => {
         >
           <View style={s.alarmSoundItemContainer}>
             <View style={[s.alarmSoundItem, s.alarmSoundItemBorderBottom]}>
-              <Text style={s.itemBlockLabel}>사운드</Text>
+              <Text style={s.itemBlockLabel}>
+                사운드
+              </Text>
 
               <View style={s.itemBlockRight}>
-                <Text style={s.itemBlockLabel}>기본알람</Text>
+                <Text style={s.itemBlockLabel}>
+                  기본알람
+                </Text>
                 <View style={s.itemBlockRightSpacer} />
                 <RightArrowIcon style={s.itemBlockIcon} />
               </View>
@@ -87,6 +104,33 @@ const CreateAlarmScreen = () => {
 
             <View style={[s.alarmSoundItem, s.alarmSoundItemBorderBottom]}>
               <Text style={s.itemBlockLabel}>볼륨</Text>
+              <SoundVolumeIcon />
+              <View style={s.sliderContainer}>
+                <Slider
+                  value={soundVolume}
+                  onValueChange={onChangeSliderValue}
+                  step={0.05}
+                  thumbTintColor="white"
+                  thumbStyle={{
+                    shadowColor: "black",
+                    ...Platform.select({
+                      android: {
+                        elevation: 3
+                      },
+                      ios: {
+                        shadowRadius: 3,
+                        shadowOpacity: 0.2,
+                        shadowOffset: {
+                          width: 1,
+                          height: 3
+                        }
+                      }
+                    })
+                  }}
+                  minimumTrackTintColor={color.primary["600"]}
+                />
+              </View>
+              <VibrationIcon />
             </View>
 
             <View style={s.alarmSoundItem}>
@@ -103,38 +147,40 @@ const CreateAlarmScreen = () => {
         </Shadow>
       </View>
 
-      {/* 5. set location */}
+      {/* 4. set location */}
       <View style={s.locationContainer} >
-        {/*<Text>JAGIYA님이</Text>*/}
-        {/*<Text>활동하는 지역들을 추가해주세요.</Text>*/}
-        {/*<Text>(지역은 최대 4개까지 추가할 수 있어요)</Text>*/}
+        <Text>JAGIYA님이</Text>
+        <Text>활동하는 지역들을 추가해주세요.</Text>
+        <Text>(지역은 최대 4개까지 추가할 수 있어요)</Text>
 
         <Button onPress={createNewTrigger}>
           <Text>알람</Text>
         </Button>
 
-        {/*<FlatList*/}
-        {/*  data={[ "지역이름동", "지역이름동", "지역이름동", "지역이름동", ]}*/}
-        {/*  renderItem={(data) => (*/}
-        {/*    <Shadow*/}
-        {/*      offset={[ 0, 2 ]}*/}
-        {/*      distance={2}*/}
-        {/*      startColor="rgba(0, 0, 0, 0.1)"*/}
-        {/*      style={s.itemBlockShadow}*/}
-        {/*      key={data.index}*/}
-        {/*    >*/}
-        {/*      <View*/}
-        {/*        style={[ s.itemBlockContainer, s.itemBlockHalfContainer ]}>*/}
-        {/*        <Text style={s.itemBlockLabel}>{data.item}</Text>*/}
+        <FlatList
+          data={["지역이름동", "지역이름동", "지역이름동", "지역이름동",]}
+          renderItem={(data) => (
+            <Shadow
+              offset={[0, 2]}
+              distance={2}
+              startColor="rgba(0, 0, 0, 0.1)"
+              style={s.itemBlockShadow}
+              key={data.index}
+            >
+              <View
+                style={[s.itemBlockContainer, s.itemBlockHalfContainer]}>
+                <Text style={s.itemBlockLabel}>{data.item}</Text>
 
-        {/*        <View style={s.itemBlockRight}>*/}
-        {/*          <View style={s.itemBlockRightSpacer}/>*/}
-        {/*          <RightArrowIcon style={s.itemBlockIcon}/>*/}
-        {/*        </View>*/}
-        {/*      </View>*/}
-        {/*    </Shadow>*/}
-        {/*  )}/>*/}
-      </View>
+                <View style={s.itemBlockRight}>
+                  <View style={s.itemBlockRightSpacer} />
+                  <RightArrowIcon style={s.itemBlockIcon} />
+                </View>
+              </View>
+            </Shadow>
+          )} />
+      </View >
+
+      {/* </ScrollView> */}
     </SafeAreaView >
   );
 };
@@ -146,6 +192,9 @@ const s = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     backgroundColor: color.gray["50"],
+  },
+  scrollRoot: {
+    alignItems: "center",
   },
 
   // 1. header
@@ -205,6 +254,7 @@ const s = StyleSheet.create({
   },
   itemBlockLabel: {
     color: color.gray["700"],
+    marginRight: 16,
   },
   itemBlockIcon: {
     tintColor: color.gray["200"]
@@ -214,6 +264,12 @@ const s = StyleSheet.create({
   },
   itemBlockRightSpacer: {
     marginRight: 4
+  },
+  sliderContainer: {
+    flex: 1,
+    marginHorizontal: 'auto',
+    paddingHorizontal: 16,
+    paddingVertical: 9
   },
 
   // 4. set alarm sound
