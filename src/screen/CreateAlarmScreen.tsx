@@ -1,23 +1,24 @@
 import {
-  FlatList,
   Platform,
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   View
 } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
 import { useInitNotification } from "@/util/notification/useInitNotification";
 import {
   useHandleForegroundNotification
 } from "@/util/notification/useHandleForegroundNotification";
 import Text from "@/components/Text";
-import { CloseIcon, RightArrowIcon, SoundVolumeIcon, VibrationIcon } from "@/components/Icon";
+import { RightArrowIcon, SoundVolumeIcon, VibrationIcon } from "@/components/Icon";
 import { useEffect, useState } from "react";
 import DatePicker from "react-native-date-picker";
 import { color } from "@/styles/color";
 import { Shadow } from "react-native-shadow-2";
 import { Button } from "@/components/button";
 import { createNewTrigger } from "@/util/trigger/setTrigger";
-import DeviceInfo from "react-native-device-info";
+// import DeviceInfo from "react-native-device-info";
 import { font } from "@/styles/font";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import { Slider } from "@miblanchard/react-native-slider";
@@ -28,8 +29,12 @@ import { behaviours as soundBehaviours } from "@/state/sound/sound.state";
 
 const CreateAlarmScreen = () => {
   const [date, setDate] = useState<Date>(new Date());
+
   const soundVolume = useObservableState({
-    observable: whenSoundVolumeChange
+    observable: whenSoundVolumeChange,
+    subscribeFn(value) {
+      console.log("sound volume changed to ", value);
+    },
   });
 
   const onChangeSliderValue: SliderOnChangeCallback = (value) => {
@@ -44,6 +49,7 @@ const CreateAlarmScreen = () => {
   }, [date]);
 
   useHandleForegroundNotification();
+
   const loading = useInitNotification();
   if (loading) {
     return null;
@@ -51,136 +57,141 @@ const CreateAlarmScreen = () => {
 
   return (
     <SafeAreaView style={s.root}>
-      {/* <ScrollView contentContainerStyle={s.scrollRoot}> */}
-      {/* 1. timepicker */}
-      <View style={s.timePickerContainer}>
-        <DatePicker date={date} onDateChange={setDate} mode="time" />
-      </View>
-
-      {/* 2. set repeat */}
-      <Shadow
-        offset={[0, 2]}
-        distance={2}
-        startColor="rgba(0, 0, 0, 0.1)"
-        style={s.itemBlockShadow}
+      <ScrollView
+        contentContainerStyle={s.scrollRoot}
+        nestedScrollEnabled
+        showsVerticalScrollIndicator={false}
+        horizontal={false}
+        showsHorizontalScrollIndicator={false}
       >
-        <View style={s.itemBlockContainer}>
-          <Text style={s.itemBlockLabel}>반복</Text>
-
-          <View style={s.itemBlockRight}>
-            <Text style={s.itemBlockLabel}>주중</Text>
-            <View style={s.itemBlockRightSpacer} />
-            <RightArrowIcon style={s.itemBlockIcon} />
-          </View>
+        {/* 1. timepicker */}
+        <View style={s.timePickerContainer}>
+          <DatePicker date={date} onDateChange={setDate} mode="time" />
         </View>
-      </Shadow>
 
-      {/* 3. set alarm sound */}
-      <View style={s.alarmSoundContainer}>
-        <Text style={s.alarmSoundLabel}>
-          어떤 소리로 알려드릴까요?
-        </Text>
-
+        {/* 2. set repeat */}
         <Shadow
           offset={[0, 2]}
           distance={2}
           startColor="rgba(0, 0, 0, 0.1)"
           style={s.itemBlockShadow}
         >
-          <View style={s.alarmSoundItemContainer}>
-            <View style={[s.alarmSoundItem, s.alarmSoundItemBorderBottom]}>
-              <Text style={s.itemBlockLabel}>
-                사운드
-              </Text>
+          <View style={s.itemBlockContainer}>
+            <Text style={s.itemBlockLabel}>반복</Text>
 
-              <View style={s.itemBlockRight}>
-                <Text style={s.itemBlockLabel}>
-                  기본알람
-                </Text>
-                <View style={s.itemBlockRightSpacer} />
-                <RightArrowIcon style={s.itemBlockIcon} />
-              </View>
+            <View style={s.itemBlockRight}>
+              <Text style={s.itemBlockLabel}>주중</Text>
+              <View style={s.itemBlockRightSpacer} />
+              <RightArrowIcon style={s.itemBlockIcon} />
             </View>
-
-            <View style={[s.alarmSoundItem, s.alarmSoundItemBorderBottom]}>
-              <Text style={s.itemBlockLabel}>볼륨</Text>
-              <SoundVolumeIcon />
-              <View style={s.sliderContainer}>
-                <Slider
-                  value={soundVolume}
-                  onValueChange={onChangeSliderValue}
-                  step={0.05}
-                  thumbTintColor="white"
-                  thumbStyle={{
-                    shadowColor: "black",
-                    ...Platform.select({
-                      android: {
-                        elevation: 3
-                      },
-                      ios: {
-                        shadowRadius: 3,
-                        shadowOpacity: 0.2,
-                        shadowOffset: {
-                          width: 1,
-                          height: 3
-                        }
-                      }
-                    })
-                  }}
-                  minimumTrackTintColor={color.primary["600"]}
-                />
-              </View>
-              <VibrationIcon />
-            </View>
-
-            <View style={s.alarmSoundItem}>
-              <Text style={s.itemBlockLabel}>다시알림</Text>
-
-              <View style={s.itemBlockRight}>
-                <Text style={s.itemBlockLabel}>5분</Text>
-                <View style={s.itemBlockRightSpacer} />
-                <RightArrowIcon style={s.itemBlockIcon} />
-              </View>
-            </View>
-
           </View>
         </Shadow>
-      </View>
 
-      {/* 4. set location */}
-      <View style={s.locationContainer} >
-        <Text>JAGIYA님이</Text>
-        <Text>활동하는 지역들을 추가해주세요.</Text>
-        <Text>(지역은 최대 4개까지 추가할 수 있어요)</Text>
+        {/* 3. set alarm sound */}
+        <View style={s.alarmSoundContainer}>
+          <Text style={s.alarmSoundLabel}>
+            어떤 소리로 알려드릴까요?
+          </Text>
 
-        <Button onPress={createNewTrigger}>
-          <Text>알람</Text>
-        </Button>
-
-        <FlatList
-          data={["지역이름동", "지역이름동", "지역이름동", "지역이름동",]}
-          renderItem={(data) => (
-            <Shadow
-              offset={[0, 2]}
-              distance={2}
-              startColor="rgba(0, 0, 0, 0.1)"
-              style={s.itemBlockShadow}
-              key={data.index}
-            >
-              <View
-                style={[s.itemBlockContainer, s.itemBlockHalfContainer]}>
-                <Text style={s.itemBlockLabel}>{data.item}</Text>
+          <Shadow
+            offset={[0, 2]}
+            distance={2}
+            startColor="rgba(0, 0, 0, 0.1)"
+            style={s.itemBlockShadow}
+          >
+            <View style={s.alarmSoundItemContainer}>
+              <View style={[s.alarmSoundItem, s.alarmSoundItemBorderBottom]}>
+                <Text style={s.itemBlockLabel}>
+                  사운드
+                </Text>
 
                 <View style={s.itemBlockRight}>
+                  <Text style={s.itemBlockLabel}>
+                    기본알람
+                  </Text>
                   <View style={s.itemBlockRightSpacer} />
                   <RightArrowIcon style={s.itemBlockIcon} />
                 </View>
               </View>
-            </Shadow>
-          )} />
-      </View >
 
-      {/* </ScrollView> */}
+              <View style={[s.alarmSoundItem, s.alarmSoundItemBorderBottom]}>
+                <Text style={s.itemBlockLabel}>볼륨</Text>
+                <SoundVolumeIcon />
+                <View style={s.sliderContainer}>
+                  <Slider
+                    value={soundVolume}
+                    onValueChange={onChangeSliderValue}
+                    step={0.05}
+                    thumbTintColor="white"
+                    thumbStyle={{
+                      shadowColor: "black",
+                      ...Platform.select({
+                        android: {
+                          elevation: 3
+                        },
+                        ios: {
+                          shadowRadius: 3,
+                          shadowOpacity: 0.2,
+                          shadowOffset: {
+                            width: 1,
+                            height: 3
+                          }
+                        }
+                      })
+                    }}
+                    minimumTrackTintColor={color.primary["600"]}
+                  />
+                </View>
+                <VibrationIcon />
+              </View>
+
+              <View style={s.alarmSoundItem}>
+                <Text style={s.itemBlockLabel}>다시알림</Text>
+
+                <View style={s.itemBlockRight}>
+                  <Text style={s.itemBlockLabel}>5분</Text>
+                  <View style={s.itemBlockRightSpacer} />
+                  <RightArrowIcon style={s.itemBlockIcon} />
+                </View>
+              </View>
+
+            </View>
+          </Shadow>
+        </View>
+
+        {/* 4. set location */}
+        <View style={s.locationContainer} >
+          <Text>JAGIYA님이</Text>
+          <Text>활동하는 지역들을 추가해주세요.</Text>
+          <Text>(지역은 최대 4개까지 추가할 수 있어요)</Text>
+
+          <Button onPress={createNewTrigger}>
+            <Text>알람</Text>
+          </Button>
+
+          {
+            ["지역이름동", "지역이름동", "지역이름동", "지역이름동", "지역이름동", "지역이름동", "지역이름동", "지역이름동",].map((name, i) => {
+              return <Shadow
+                offset={[0, 2]}
+                distance={2}
+                startColor="rgba(0, 0, 0, 0.1)"
+                style={s.itemBlockShadow}
+                key={i}
+              >
+                <View
+                  style={[s.itemBlockContainer, s.itemBlockHalfContainer]}>
+                  <Text style={s.itemBlockLabel}>{name}</Text>
+
+                  <View style={s.itemBlockRight}>
+                    <View style={s.itemBlockRightSpacer} />
+                    <RightArrowIcon style={s.itemBlockIcon} />
+                  </View>
+                </View>
+              </Shadow>
+            })
+          }
+        </View >
+      </ScrollView>
     </SafeAreaView >
   );
 };
@@ -223,6 +234,7 @@ const s = StyleSheet.create({
   // 2. timepicker
   timePickerContainer: {
     alignItems: "center",
+    marginTop: 33,
     marginBottom: 14,
   },
 

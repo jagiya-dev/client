@@ -2,12 +2,9 @@ import { BehaviorSubject, debounceTime, interval, tap, throttle } from "rxjs";
 
 const soundVolumeSubject = new BehaviorSubject<number>(0.5);
 const VOLUME_UPDATE_INTERVAL = 500;
-export const whenSoundVolumeChange = soundVolumeSubject.asObservable().pipe(
-  debounceTime(VOLUME_UPDATE_INTERVAL),
-  tap((value) => {
-    console.log("sound volume changed to ", value);
-  }),
-);
+export const whenSoundVolumeChange = soundVolumeSubject
+  .asObservable()
+  .pipe(debounceTime(VOLUME_UPDATE_INTERVAL));
 
 let lastSoundVolume: number | null = null;
 let currentSoundVolume: number = 0.5;
