@@ -23,6 +23,7 @@ import { SliderOnChangeCallback } from "@miblanchard/react-native-slider/lib/typ
 import { useObservableState } from "@/hook/useObservableState";
 import { whenSoundVolumeChange } from "@/state/sound/sound.state";
 import { behaviours as soundBehaviours } from "@/state/sound/sound.state";
+import { Button } from "@/components/button";
 
 const regionNames = [
   "서울시",
@@ -48,10 +49,11 @@ const CreateAlarmScreen = () => {
   });
 
   const onChangeSliderValue: SliderOnChangeCallback = (value) => {
-    if (!isNaN(value[0])) {
-      const volume = Number(value[0].toFixed(2));
-      soundBehaviours.setSoundVolume(volume);
-    }
+    if (isNaN(value[0]))
+      return;
+
+    const volume = Number(value[0].toFixed(2));
+    soundBehaviours.setSoundVolume(volume);
   }
 
   useEffect(() => {
@@ -169,13 +171,14 @@ const CreateAlarmScreen = () => {
           </Shadow>
         </View>
 
-        {/* 4. set location */}
+        {/* 4. set location label */}
         <View style={s.regionContainer}>
           <Text style={s.regionLabel}>JAGIYA님이</Text>
           <Text style={s.regionLabel}>활동하는 지역들을 추가해주세요.</Text>
           <Text style={s.regionSublabel}>(지역은 최대 4개까지 추가할 수 있어요)</Text>
         </View>
 
+        {/* 4-2. set location */}
         <View style={s.regionItemContainer}>
           {regionNames.map((name, i) => (
             <Shadow
@@ -192,14 +195,20 @@ const CreateAlarmScreen = () => {
 
                 <View style={s.itemBlockRight}>
                   <View style={s.regionItemRightSpacer} />
-                  <CloseIcon style={s.itemBlockIcon} />
+                  <CloseIcon style={s.itemBlockIcon} useTouch />
                 </View>
               </View>
             </Shadow>)
           )}
         </View>
-
       </ScrollView>
+
+      {/* 5. save */}
+      <View style={s.saveContainer}>
+        <Button style={s.saveButton}>
+          <Text style={s.saveButtonInnerText}>완료</Text>
+        </Button>
+      </View>
     </SafeAreaView>
   );
 };
@@ -211,6 +220,7 @@ const s = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     backgroundColor: color.gray["50"],
+    position: "relative",
   },
   scrollRoot: {
     alignItems: "center",
@@ -353,5 +363,45 @@ const s = StyleSheet.create({
   },
   regionAddItem: {
 
+  },
+
+  // 5. save
+  saveContainer: {
+    width: widthPercentageToDP("100%"),
+    height: 82,
+
+    ...Platform.select({
+      android: {
+        bottom: 40,
+      },
+      ios: {
+        bottom: 0,
+      }
+    }),
+    backgroundColor: "white",
+    zIndex: 10,
+
+    position: "absolute",
+    left: 0,
+    right: 0,
+
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical: 12,
+  },
+  saveButton: {
+    backgroundColor: color.primary["600"],
+    paddingHorizontal: 24,
+    paddingVertical: 16,
+    borderRadius: 99,
+    width: 290,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  saveButtonInnerText: {
+    color: "white",
+    fontSize: font.body["1"].size,
+    fontWeight: font.body["1"].weight,
+    lineHeight: font.body["1"].height,
   }
 });
