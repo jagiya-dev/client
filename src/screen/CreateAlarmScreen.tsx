@@ -4,14 +4,17 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  View
+  View,
 } from "react-native";
 import { useInitNotification } from "@/util/notification/useInitNotification";
-import {
-  useHandleForegroundNotification
-} from "@/util/notification/useHandleForegroundNotification";
+import { useHandleForegroundNotification } from "@/util/notification/useHandleForegroundNotification";
 import Text from "@/components/Text";
-import { CloseIcon, RightArrowIcon, SoundVolumeIcon, VibrationIcon } from "@/components/Icon";
+import {
+  CloseIcon,
+  RightArrowIcon,
+  SoundVolumeIcon,
+  VibrationIcon,
+} from "@/components/Icon";
 import { useEffect, useState } from "react";
 import DatePicker from "react-native-date-picker";
 import { color } from "@/styles/color";
@@ -46,12 +49,11 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
   });
 
   const onChangeSliderValue: SliderOnChangeCallback = (value) => {
-    if (isNaN(value[0]))
-      return;
+    if (isNaN(value[0])) return;
 
     const volume = Number(value[0].toFixed(2));
     soundBehaviours.setSoundVolume(volume);
-  }
+  };
 
   useEffect(() => {
     console.log("current date: ", date.toDateString());
@@ -88,6 +90,7 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
           distance={2}
           startColor="rgba(0, 0, 0, 0.1)"
           style={s.itemBlockShadow}
+          stretch
         >
           <View style={s.itemBlockContainer}>
             <Text style={s.itemBlockLabel}>반복</Text>
@@ -95,33 +98,28 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
             <View style={s.itemBlockRight}>
               <Text style={s.itemBlockLabel}>주중</Text>
               <View style={s.itemBlockRightSpacer} />
-              <RightArrowIcon style={s.itemBlockIcon} />
+              <RightArrowIcon style={s.itemBlockIcon} useTouch />
             </View>
           </View>
         </Shadow>
 
         {/* 3. set alarm sound */}
         <View style={s.alarmSoundContainer}>
-          <Text style={s.alarmSoundLabel}>
-            어떤 소리로 알려드릴까요?
-          </Text>
+          <Text style={s.alarmSoundLabel}>어떤 소리로 알려드릴까요?</Text>
 
           <Shadow
             offset={[0, 2]}
             distance={2}
             startColor="rgba(0, 0, 0, 0.1)"
             style={s.itemBlockShadow}
+            stretch
           >
             <View style={s.alarmSoundItemContainer}>
               <View style={[s.alarmSoundItem, s.alarmSoundItemBorderBottom]}>
-                <Text style={s.itemBlockLabel}>
-                  사운드
-                </Text>
+                <Text style={s.itemBlockLabel}>사운드</Text>
 
                 <View style={s.itemBlockRight}>
-                  <Text style={s.itemBlockLabel}>
-                    기본알람
-                  </Text>
+                  <Text style={s.itemBlockLabel}>기본알람</Text>
                   <View style={s.itemBlockRightSpacer} />
                   <RightArrowIcon style={s.itemBlockIcon} useTouch />
                 </View>
@@ -140,17 +138,17 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
                       shadowColor: "black",
                       ...Platform.select({
                         android: {
-                          elevation: 3
+                          elevation: 3,
                         },
                         ios: {
                           shadowRadius: 3,
                           shadowOpacity: 0.2,
                           shadowOffset: {
                             width: 1,
-                            height: 3
-                          }
-                        }
-                      })
+                            height: 3,
+                          },
+                        },
+                      }),
                     }}
                     minimumTrackTintColor={color.primary["600"]}
                   />
@@ -167,7 +165,6 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
                   <RightArrowIcon style={s.itemBlockIcon} />
                 </View>
               </View>
-
             </View>
           </Shadow>
         </View>
@@ -176,7 +173,9 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
         <View style={s.regionContainer}>
           <Text style={s.regionLabel}>JAGIYA님이</Text>
           <Text style={s.regionLabel}>활동하는 지역들을 추가해주세요.</Text>
-          <Text style={s.regionSublabel}>(지역은 최대 4개까지 추가할 수 있어요)</Text>
+          <Text style={s.regionSublabel}>
+            (지역은 최대 4개까지 추가할 수 있어요)
+          </Text>
         </View>
 
         {/* 4-2. set location */}
@@ -188,23 +187,18 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
               distance={2}
               startColor="rgba(0, 0, 0, 0.1)"
               style={s.itemBlockShadow}
+              stretch
             >
               <View style={s.regionItem}>
-                <Text style={s.itemBlockLabel}>
-                  {name}
-                </Text>
+                <Text style={s.itemBlockLabel}>{name}</Text>
 
                 <View style={s.itemBlockRight}>
                   <View style={s.regionItemRightSpacer} />
-                  <CloseIcon
-                    style={s.itemBlockIcon}
-                    useTouch
-                    onPress={onPressButton_AddNewRegion}
-                  />
+                  <CloseIcon style={s.itemBlockIcon} useTouch />
                 </View>
               </View>
-            </Shadow>)
-          )}
+            </Shadow>
+          ))}
 
           {/* 4-3. add new region */}
           <Shadow
@@ -212,15 +206,20 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
             distance={2}
             startColor="rgba(0, 0, 0, 0.1)"
             style={s.itemBlockShadow}
+            stretch
           >
             <View style={[s.regionItem, s.regionAddItem]}>
-              <Text style={s.regionAddItemLabel}>
-                지역 추가
-              </Text>
+              <Text style={s.regionAddItemLabel}>지역 추가</Text>
 
               <View style={s.itemBlockRight}>
-                <Button style={s.regionAddItemButton}>
-                  <Image source={require("#/icons/plus.png")} style={s.regionAddItemIcon} />
+                <Button
+                  style={s.regionAddItemButton}
+                  onPress={onPressButton_AddNewRegion}
+                >
+                  <Image
+                    source={require("#/icons/plus.png")}
+                    style={s.regionAddItemIcon}
+                  />
                 </Button>
               </View>
             </View>
@@ -256,8 +255,8 @@ const s = StyleSheet.create({
       },
       ios: {
         paddingBottom: 82,
-      }
-    })
+      },
+    }),
   },
 
   // 1. timepicker
@@ -272,8 +271,8 @@ const s = StyleSheet.create({
       android: {
         marginRight: 1,
         marginBottom: 2,
-      }
-    })
+      },
+    }),
   },
   itemBlockContainer: {
     width: 317,
@@ -303,20 +302,20 @@ const s = StyleSheet.create({
     alignItems: "center",
   },
   itemBlockRightSpacer: {
-    marginRight: 4
+    marginRight: 4,
   },
   sliderContainer: {
     flex: 1,
-    marginHorizontal: 'auto',
+    marginHorizontal: "auto",
     paddingHorizontal: 16,
-    paddingVertical: 9
+    paddingVertical: 9,
   },
 
   // 4. set alarm sound
   alarmSoundContainer: {
     marginTop: 16,
     // paddingHorizontal: 20,
-    paddingVertical: 16
+    paddingVertical: 16,
   },
   alarmSoundLabel: {
     marginBottom: 16,
@@ -398,14 +397,14 @@ const s = StyleSheet.create({
     marginRight: 16,
   },
   regionAddItem: {
-    backgroundColor: color.primary["100"]
+    backgroundColor: color.primary["100"],
   },
   regionAddItemLabel: {
     color: color.primary["600"],
     fontSize: font.body["2"].size,
     fontWeight: font.body["2"].weight,
     lineHeight: font.body["2"].height,
-    marginRight: 14
+    marginRight: 14,
   },
   regionAddItemButton: {
     backgroundColor: color.primary["400"],
@@ -418,7 +417,7 @@ const s = StyleSheet.create({
   regionAddItemIcon: {
     width: 18,
     height: 18,
-    tintColor: "white"
+    tintColor: "white",
   },
 
   // 5. save
@@ -432,7 +431,7 @@ const s = StyleSheet.create({
       },
       ios: {
         bottom: 0,
-      }
+      },
     }),
     backgroundColor: "white",
     zIndex: 10,
@@ -459,5 +458,5 @@ const s = StyleSheet.create({
     fontSize: font.body["1"].size,
     fontWeight: font.body["1"].weight,
     lineHeight: font.body["1"].height,
-  }
+  },
 });

@@ -29,47 +29,59 @@ function AlarmItem(props: AlarmModel) {
 
       swipeableRef.current?.close();
     },
-    dependencies: [ swipeableRef ]
+    dependencies: [swipeableRef],
   });
 
   const onCloseLeftAction = () => AlarmBehaviours.deleteAlarmItem(props.id);
 
-  const onPress_alarmToggleEnabled = () => AlarmBehaviours.toggleAlarmToggleEnabled(props.id);
+  const onPress_alarmToggleEnabled = () =>
+    AlarmBehaviours.toggleAlarmToggleEnabled(props.id);
 
   return (
     <Swipeable
       ref={swipeableRef}
       renderLeftActions={(progress, dragX) => {
         const trans = dragX.interpolate({
-          inputRange: [ 0, 1000 ],
-          outputRange: [ 0, 20 ],
+          inputRange: [0, 1000],
+          outputRange: [0, 20],
         });
 
         return (
-          <Button onPress={onCloseLeftAction}
-                  style={s.leftSwipeButtonContainer}>
+          <Button
+            onPress={onCloseLeftAction}
+            style={s.leftSwipeButtonContainer}
+          >
             <Animated.Image
-              style={[ s.leftSwipeButton, { transform: [ { translateX: trans } ] } ]}
+              style={[
+                s.leftSwipeButton,
+                { transform: [{ translateX: trans }] },
+              ]}
               source={require("#/icons/minus.png")}
             />
           </Button>
         );
-      }}>
+      }}
+    >
       <Shadow
-        offset={[ 0, 1 ]}
+        offset={[0, 1]}
         distance={2}
         startColor="rgba(0, 0, 0, 0.1)"
+        stretch
         style={cond({
           predicate: () => !props.isEnabled,
           true$: s.disabledRoot,
-          underlyingStyles: s.root
+          underlyingStyles: s.root,
         })}
       >
         {/* 1. 상단 부분 */}
         <View style={s.up}>
           {/* 1-1. 날씨 아이콘 (enabled/disabled) */}
           <View>
-            {props.isEnabled ? <UmbrellaEnabledIcon/> : <UmbrellaDisabledIcon/>}
+            {props.isEnabled ? (
+              <UmbrellaEnabledIcon />
+            ) : (
+              <UmbrellaDisabledIcon />
+            )}
           </View>
 
           {/* 1-2. 알람 날짜 표시 (enabled/disabled) */}
@@ -80,13 +92,12 @@ function AlarmItem(props: AlarmModel) {
                 <DateTextButton
                   key={dateModel.index}
                   label={dateModel.item.label}
-                  isEnabled={
-                    props.isEnabled && dateModel.item.isEnabled
-                  }
-                  onPress={() => {
-                  }}/>
+                  isEnabled={props.isEnabled && dateModel.item.isEnabled}
+                  onPress={() => {}}
+                />
               )}
-              style={s.dateContainer}/>
+              style={s.dateContainer}
+            />
 
             {/* 1-3. 시간 표시 */}
             <Text style={s.timeContainer}>
@@ -94,14 +105,17 @@ function AlarmItem(props: AlarmModel) {
                 style={cond({
                   predicate: () => !props.isEnabled,
                   true$: s.disabledText,
-                  underlyingStyles: s.time12Text
+                  underlyingStyles: s.time12Text,
                 })}
-              > {props.time}</Text>
+              >
+                {" "}
+                {props.time}
+              </Text>
               <Text
                 style={cond({
                   predicate: () => !props.isEnabled,
                   true$: s.disabledText,
-                  underlyingStyles: s.timeAMPMText
+                  underlyingStyles: s.timeAMPMText,
                 })}
               >
                 {props.dateOfTime}
@@ -112,7 +126,8 @@ function AlarmItem(props: AlarmModel) {
           {/* 1-4. 알람 활성화 여부 토글 */}
           <Toggle
             onValueChange={onPress_alarmToggleEnabled}
-            disabled={!props.isEnabled}/>
+            disabled={!props.isEnabled}
+          />
         </View>
 
         {/* 2-1. 하단 부분 */}
@@ -121,7 +136,7 @@ function AlarmItem(props: AlarmModel) {
             data={props.weathers.map((weather) => ({
               ...weather,
               isEnabled: props.isEnabled,
-              bHasIcon: true
+              bHasIcon: true,
             }))}
             renderItem={(data) => (
               <AlarmLocationItem key={data.index} {...data.item} />
@@ -129,9 +144,9 @@ function AlarmItem(props: AlarmModel) {
             style={{
               ...Platform.select({
                 android: {
-                  zIndex: 5
-                }
-              })
+                  zIndex: 5,
+                },
+              }),
             }}
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -221,5 +236,5 @@ const s = StyleSheet.create({
 
   disabledText: {
     color: color.gray["200"],
-  }
+  },
 });
