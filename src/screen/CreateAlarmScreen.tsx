@@ -5,19 +5,16 @@ import {
   StyleSheet,
   View
 } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
 import { useInitNotification } from "@/util/notification/useInitNotification";
 import {
   useHandleForegroundNotification
 } from "@/util/notification/useHandleForegroundNotification";
 import Text from "@/components/Text";
-import { RightArrowIcon, SoundVolumeIcon, VibrationIcon } from "@/components/Icon";
+import { CloseIcon, RightArrowIcon, SoundVolumeIcon, VibrationIcon } from "@/components/Icon";
 import { useEffect, useState } from "react";
 import DatePicker from "react-native-date-picker";
 import { color } from "@/styles/color";
 import { Shadow } from "react-native-shadow-2";
-import { Button } from "@/components/button";
-import { createNewTrigger } from "@/util/trigger/setTrigger";
 // import DeviceInfo from "react-native-device-info";
 import { font } from "@/styles/font";
 import { widthPercentageToDP } from "react-native-responsive-screen";
@@ -26,6 +23,19 @@ import { SliderOnChangeCallback } from "@miblanchard/react-native-slider/lib/typ
 import { useObservableState } from "@/hook/useObservableState";
 import { whenSoundVolumeChange } from "@/state/sound/sound.state";
 import { behaviours as soundBehaviours } from "@/state/sound/sound.state";
+
+const regionNames = [
+  "서울시",
+  "부산시",
+  "대구시",
+  "인천시",
+  "광주시",
+  "대전시",
+  "울산시",
+  "세종시",
+  "경기도",
+  "강원도",
+];
 
 const CreateAlarmScreen = () => {
   const [date, setDate] = useState<Date>(new Date());
@@ -160,39 +170,37 @@ const CreateAlarmScreen = () => {
         </View>
 
         {/* 4. set location */}
-        <View style={s.locationContainer} >
-          <Text>JAGIYA님이</Text>
-          <Text>활동하는 지역들을 추가해주세요.</Text>
-          <Text>(지역은 최대 4개까지 추가할 수 있어요)</Text>
+        <View style={s.regionContainer}>
+          <Text style={s.regionLabel}>JAGIYA님이</Text>
+          <Text style={s.regionLabel}>활동하는 지역들을 추가해주세요.</Text>
+          <Text style={s.regionSublabel}>(지역은 최대 4개까지 추가할 수 있어요)</Text>
+        </View>
 
-          <Button onPress={createNewTrigger}>
-            <Text>알람</Text>
-          </Button>
+        <View style={s.regionItemContainer}>
+          {regionNames.map((name, i) => (
+            <Shadow
+              key={i}
+              offset={[0, 2]}
+              distance={2}
+              startColor="rgba(0, 0, 0, 0.1)"
+              style={s.itemBlockShadow}
+            >
+              <View style={s.regionItem}>
+                <Text style={s.itemBlockLabel}>
+                  {name}
+                </Text>
 
-          {
-            ["지역이름동", "지역이름동", "지역이름동", "지역이름동", "지역이름동", "지역이름동", "지역이름동", "지역이름동",].map((name, i) => {
-              return <Shadow
-                offset={[0, 2]}
-                distance={2}
-                startColor="rgba(0, 0, 0, 0.1)"
-                style={s.itemBlockShadow}
-                key={i}
-              >
-                <View
-                  style={[s.itemBlockContainer, s.itemBlockHalfContainer]}>
-                  <Text style={s.itemBlockLabel}>{name}</Text>
-
-                  <View style={s.itemBlockRight}>
-                    <View style={s.itemBlockRightSpacer} />
-                    <RightArrowIcon style={s.itemBlockIcon} />
-                  </View>
+                <View style={s.itemBlockRight}>
+                  <View style={s.regionItemRightSpacer} />
+                  <CloseIcon style={s.itemBlockIcon} />
                 </View>
-              </Shadow>
-            })
-          }
-        </View >
+              </View>
+            </Shadow>)
+          )}
+        </View>
+
       </ScrollView>
-    </SafeAreaView >
+    </SafeAreaView>
   );
 };
 
@@ -206,39 +214,16 @@ const s = StyleSheet.create({
   },
   scrollRoot: {
     alignItems: "center",
+    paddingHorizontal: 20,
   },
 
-  // 1. header
-  headerContainer: {
-    width: widthPercentageToDP("100%"),
-    height: 30,
-
-    flexDirection: "row",
-    // justifyContent: "center",
-
-    marginBottom: 46,
-    marginLeft: 'auto',
-    position: "relative",
-  },
-  headerText: {
-    fontSize: font.body["1"].size,
-    fontWeight: font.body["1"].weight,
-    lineHeight: font.body["1"].height,
-    color: color.gray["700"],
-  },
-  headerCloseIcon: {
-    // position: "absolute",
-    right: 0
-  },
-
-  // 2. timepicker
+  // 1. timepicker
   timePickerContainer: {
     alignItems: "center",
-    marginTop: 33,
     marginBottom: 14,
   },
 
-  // 3. set repeat
+  // 2. set repeat
   itemBlockShadow: {
     ...Platform.select({
       android: {
@@ -261,15 +246,13 @@ const s = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: "white",
   },
-  itemBlockHalfContainer: {
-    width: 317 * 0.5,
-  },
   itemBlockLabel: {
     color: color.gray["700"],
     marginRight: 16,
   },
   itemBlockIcon: {
-    tintColor: color.gray["200"]
+    width: 18,
+    height: 18,
   },
   itemBlockRight: {
     flexDirection: "row",
@@ -287,7 +270,7 @@ const s = StyleSheet.create({
   // 4. set alarm sound
   alarmSoundContainer: {
     marginTop: 16,
-    paddingHorizontal: 20,
+    // paddingHorizontal: 20,
     paddingVertical: 16
   },
   alarmSoundLabel: {
@@ -324,5 +307,51 @@ const s = StyleSheet.create({
   },
 
   // 5. set location
-  locationContainer: {},
+  regionContainer: {
+    paddingTop: 16,
+    flex: 1,
+    width: "100%",
+    paddingHorizontal: 20,
+  },
+  regionLabel: {
+    color: color.gray["700"],
+    fontSize: font.body["1"].size,
+    fontWeight: font.body["1"].weight,
+    lineHeight: font.body["1"].height,
+  },
+  regionSublabel: {
+    marginTop: 4,
+    color: color.gray["400"],
+    fontSize: font.body["5"].size,
+    fontWeight: font.body["5"].weight,
+    lineHeight: font.body["5"].height,
+  },
+  regionItemContainer: {
+    paddingTop: 16,
+    gap: 12,
+    paddingLeft: 20,
+    flex: 1,
+    flexWrap: "wrap",
+    flexDirection: "row",
+  },
+  regionItem: {
+    height: 54,
+
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    flex: 0,
+
+    borderRadius: 8,
+    backgroundColor: "white",
+  },
+  regionItemRightSpacer: {
+    marginRight: 16,
+  },
+  regionAddItem: {
+
+  }
 });
