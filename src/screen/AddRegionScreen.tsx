@@ -2,12 +2,21 @@ import { DownArrowIcon, SearchIcon, TimeIcon } from "@/components/Icon";
 import Text from "@/components/Text";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
+import BottomSheet from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheet/BottomSheet";
+import { useRef } from "react";
 import { Platform, StyleSheet, View } from "react-native";
-import { widthPercentageToDP } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Shadow } from "react-native-shadow-2";
 
 const AddRegionScreen = () => {
+  const bottomSheetRef = useRef<BottomSheet>(null);
+
+  const snapPoints = useRef<ReadonlyArray<string>>(["25%", "50%"]).current;
+
+  const onChangeBottomSheet = (index: number) => {
+    console.log("onChangeBottomSheet: ", index);
+  };
+
   return (
     <SafeAreaView style={s.root}>
       {/* 1. forecast search bar */}
@@ -21,6 +30,16 @@ const AddRegionScreen = () => {
           원하는 지역을 검색해주세요.
         </Text>
       </View>
+      <BottomSheet
+        ref={bottomSheetRef}
+        index={1}
+        snapPoints={snapPoints}
+        onChange={onChangeBottomSheet}
+      >
+        <View>
+          <Text>Awesome</Text>
+        </View>
+      </BottomSheet>
 
       {/* 2. select time table */}
       <Text style={s.forecaseSearchBarLabel}>

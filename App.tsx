@@ -1,10 +1,9 @@
 import {
   NavigationContainer,
   createNavigationContainerRef,
-  useNavigation,
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Image, Platform, StatusBar } from "react-native";
+import { Platform, StatusBar } from "react-native";
 
 import Codepush from "@/util/codepush";
 
@@ -29,9 +28,8 @@ import { useAndroidPowerManager } from "@/util/notification/useAndroidPowerManag
 import ActivatedAlarmScreen from "@/screen/ActivatedAlarmScreen";
 import SettingsScreen from "@/screen/SettingsScreen";
 import AlarmDetailScreen from "@/screen/AlarmDetailScreen";
-import { CloseIcon, LeftArrowIcon, RightArrowIcon } from "@/components/Icon";
+import { CloseIcon, LeftArrowIcon } from "@/components/Icon";
 import { font } from "@/styles/font";
-import { useRef } from "react";
 import AddRegionScreen from "@/screen/AddRegionScreen";
 
 dayjs.extend(utc);
