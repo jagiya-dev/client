@@ -1,4 +1,5 @@
 import {
+  Image,
   Platform,
   SafeAreaView,
   ScrollView,
@@ -10,7 +11,7 @@ import {
   useHandleForegroundNotification
 } from "@/util/notification/useHandleForegroundNotification";
 import Text from "@/components/Text";
-import { CloseIcon, RightArrowIcon, SoundVolumeIcon, VibrationIcon } from "@/components/Icon";
+import { CloseIcon, PlusIcon, RightArrowIcon, SoundVolumeIcon, VibrationIcon } from "@/components/Icon";
 import { useEffect, useState } from "react";
 import DatePicker from "react-native-date-picker";
 import { color } from "@/styles/color";
@@ -219,18 +220,15 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
             startColor="rgba(0, 0, 0, 0.1)"
             style={s.itemBlockShadow}
           >
-            <View style={s.regionItem}>
-              <Text style={s.itemBlockLabel}>
+            <View style={[s.regionItem, s.regionAddItem]}>
+              <Text style={s.regionAddItemLabel}>
                 지역 추가
               </Text>
 
               <View style={s.itemBlockRight}>
-                <View style={s.regionItemRightSpacer} />
-                <CloseIcon
-                  style={s.itemBlockIcon}
-                  useTouch
-                  onPress={onPressButton_AddNewRegion}
-                />
+                <Button style={s.regionAddItemButton}>
+                  <Image source={require("#/icons/plus.png")} style={s.regionAddItemIcon} />
+                </Button>
               </View>
             </View>
           </Shadow>
@@ -255,15 +253,6 @@ const s = StyleSheet.create({
     alignItems: "center",
     backgroundColor: color.gray["50"],
     position: "relative",
-
-    // ...Platform.select({
-    //   android: {
-    //     bottom: 40,
-    //   },
-    //   ios: {
-    //     bottom: 0,
-    //   }
-    // }),
   },
   scrollRoot: {
     alignItems: "center",
@@ -416,7 +405,27 @@ const s = StyleSheet.create({
     marginRight: 16,
   },
   regionAddItem: {
-
+    backgroundColor: color.primary["100"]
+  },
+  regionAddItemLabel: {
+    color: color.primary["600"],
+    fontSize: font.body["2"].size,
+    fontWeight: font.body["2"].weight,
+    lineHeight: font.body["2"].height,
+    marginRight: 14
+  },
+  regionAddItemButton: {
+    backgroundColor: color.primary["400"],
+    borderRadius: 99,
+    width: 22,
+    height: 22,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  regionAddItemIcon: {
+    width: 18,
+    height: 18,
+    tintColor: "white"
   },
 
   // 5. save
