@@ -35,6 +35,7 @@ export type StackParamList = {
   CreateAlarm: undefined;
   ActivatedAlarm: undefined;
   AlarmDetail: undefined;
+  AddRegion: undefined;
   Settings: undefined;
 };
 

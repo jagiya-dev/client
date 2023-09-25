@@ -33,9 +33,10 @@ import {
 import ActivatedAlarmScreen from "@/screen/ActivatedAlarmScreen";
 import SettingsScreen from "@/screen/SettingsScreen";
 import AlarmDetailScreen from "@/screen/AlarmDetailScreen";
-import { CloseIcon } from "@/components/Icon";
+import { CloseIcon, LeftArrowIcon, RightArrowIcon } from "@/components/Icon";
 import { font } from "@/styles/font";
 import { useRef } from "react";
+import AddRegionScreen from "@/screen/AddRegionScreen";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -100,12 +101,35 @@ const App = () => {
             <Stack.Screen
               name="ActivatedAlarm"
               component={ActivatedAlarmScreen}
-              options={{ title: "", headerShown: false }}
+              options={{
+                title: "",
+                headerShown: false,
+                gestureDirection: "horizontal",
+              }}
             />
             <Stack.Screen
               name="AlarmDetail"
               component={AlarmDetailScreen}
               options={{ title: "", headerShown: false }}
+            />
+            <Stack.Screen
+              name="AddRegion"
+              component={AddRegionScreen}
+              options={{
+                title: "지역추가",
+                headerLeft: (props) =>
+                  <LeftArrowIcon
+                    onPress={() => navRef.navigate("Main")}
+                    useTouch
+                  />,
+                headerShadowVisible: false,
+                headerBackTitleVisible: false,
+                headerTitleAlign: "center",
+                headerTitleStyle: {
+                  fontSize: font.body["1"].size,
+                  fontWeight: font.body["1"].weight,
+                }
+              }}
             />
             <Stack.Screen
               name="Settings"
