@@ -11,7 +11,7 @@ import {
   useHandleForegroundNotification
 } from "@/util/notification/useHandleForegroundNotification";
 import Text from "@/components/Text";
-import { CloseIcon, PlusIcon, RightArrowIcon, SoundVolumeIcon, VibrationIcon } from "@/components/Icon";
+import { CloseIcon, RightArrowIcon, SoundVolumeIcon, VibrationIcon } from "@/components/Icon";
 import { useEffect, useState } from "react";
 import DatePicker from "react-native-date-picker";
 import { color } from "@/styles/color";
@@ -28,22 +28,15 @@ import { Button } from "@/components/button";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackParamList } from "@/typing";
 
-const regionNames = [
-  "서울시",
-  "부산시",
-  "대구시",
-  "인천시",
-  "광주시",
-  "대전시",
-  "울산시",
-  "세종시",
-  "경기도",
-];
-
 type ScreenProps = NativeStackScreenProps<StackParamList, "CreateAlarm">;
 
 const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
   const [date, setDate] = useState<Date>(new Date());
+  const [regionNames, setRegionNames] = useState<string[]>([
+    "서울시",
+    "부산시",
+    "대구시",
+  ]);
 
   const soundVolume = useObservableState({
     observable: whenSoundVolumeChange,
@@ -387,7 +380,7 @@ const s = StyleSheet.create({
     flexDirection: "row",
   },
   regionItem: {
-    maxWidth: 136,
+    width: 136,
     height: 54,
 
     paddingHorizontal: 16,
