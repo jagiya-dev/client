@@ -48,9 +48,16 @@ export const NightGrayIcon = (props: IconProps) => (
 // symbol
 export const RightArrowIcon = (props: IconProps) => (
   <TouchableOpacity disabled={!props.useTouch}>
-    <Image source={require("#/icons/arrow.png")} {...props} />
+    <Image source={require("#/icons/arrow_right.png")} {...props} />
   </TouchableOpacity>
 );
+
+export const LeftArrowIcon = (props: IconProps) => (
+  <TouchableOpacity disabled={!props.useTouch}>
+    <Image source={require("#/icons/arrow_left.png")} {...props} />
+  </TouchableOpacity>
+);
+
 export const SettingsIcon = (props: IconProps) => (
   <TouchableOpacity disabled={!props.useTouch}>
     <Image source={require("#/icons/setting.png")} {...props} />

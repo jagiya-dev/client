@@ -24,6 +24,8 @@ import { useObservableState } from "@/hook/useObservableState";
 import { whenSoundVolumeChange } from "@/state/sound/sound.state";
 import { behaviours as soundBehaviours } from "@/state/sound/sound.state";
 import { Button } from "@/components/button";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { StackParamList } from "@/typing";
 
 const regionNames = [
   "서울시",
@@ -35,10 +37,11 @@ const regionNames = [
   "울산시",
   "세종시",
   "경기도",
-  "강원도",
 ];
 
-const CreateAlarmScreen = () => {
+type ScreenProps = NativeStackScreenProps<StackParamList, "CreateAlarm">;
+
+const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
   const [date, setDate] = useState<Date>(new Date());
 
   const soundVolume = useObservableState({
@@ -66,6 +69,10 @@ const CreateAlarmScreen = () => {
   if (loading) {
     return null;
   }
+
+  const onPressButton_AddNewRegion = () => {
+    navigation.navigate("AddRegion");
+  };
 
   return (
     <SafeAreaView style={s.root}>
@@ -122,7 +129,7 @@ const CreateAlarmScreen = () => {
                     기본알람
                   </Text>
                   <View style={s.itemBlockRightSpacer} />
-                  <RightArrowIcon style={s.itemBlockIcon} />
+                  <RightArrowIcon style={s.itemBlockIcon} useTouch />
                 </View>
               </View>
 
@@ -195,11 +202,38 @@ const CreateAlarmScreen = () => {
 
                 <View style={s.itemBlockRight}>
                   <View style={s.regionItemRightSpacer} />
-                  <CloseIcon style={s.itemBlockIcon} useTouch />
+                  <CloseIcon
+                    style={s.itemBlockIcon}
+                    useTouch
+                    onPress={onPressButton_AddNewRegion}
+                  />
                 </View>
               </View>
             </Shadow>)
           )}
+
+          {/* 4-3. add new region */}
+          <Shadow
+            offset={[0, 2]}
+            distance={2}
+            startColor="rgba(0, 0, 0, 0.1)"
+            style={s.itemBlockShadow}
+          >
+            <View style={s.regionItem}>
+              <Text style={s.itemBlockLabel}>
+                지역 추가
+              </Text>
+
+              <View style={s.itemBlockRight}>
+                <View style={s.regionItemRightSpacer} />
+                <CloseIcon
+                  style={s.itemBlockIcon}
+                  useTouch
+                  onPress={onPressButton_AddNewRegion}
+                />
+              </View>
+            </View>
+          </Shadow>
         </View>
       </ScrollView>
 
@@ -221,10 +255,27 @@ const s = StyleSheet.create({
     alignItems: "center",
     backgroundColor: color.gray["50"],
     position: "relative",
+
+    // ...Platform.select({
+    //   android: {
+    //     bottom: 40,
+    //   },
+    //   ios: {
+    //     bottom: 0,
+    //   }
+    // }),
   },
   scrollRoot: {
     alignItems: "center",
     paddingHorizontal: 20,
+    ...Platform.select({
+      android: {
+        paddingBottom: 82 + 60,
+      },
+      ios: {
+        paddingBottom: 82,
+      }
+    })
   },
 
   // 1. timepicker
@@ -263,9 +314,11 @@ const s = StyleSheet.create({
   itemBlockIcon: {
     width: 18,
     height: 18,
+    tintColor: color.gray["400"],
   },
   itemBlockRight: {
     flexDirection: "row",
+    alignItems: "center",
   },
   itemBlockRightSpacer: {
     marginRight: 4
@@ -345,6 +398,7 @@ const s = StyleSheet.create({
     flexDirection: "row",
   },
   regionItem: {
+    maxWidth: 136,
     height: 54,
 
     paddingHorizontal: 16,
