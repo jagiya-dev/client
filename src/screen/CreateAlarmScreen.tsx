@@ -30,6 +30,7 @@ import { behaviours as soundBehaviours } from "@/state/sound/sound.state";
 import { Button } from "@/components/button";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackParamList } from "@/typing";
+import { behaviours as AlarmBehaviours } from "@/state/alarm/alarm.state";
 
 type ScreenProps = NativeStackScreenProps<StackParamList, "CreateAlarm">;
 
@@ -40,6 +41,12 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
     "부산시",
     "대구시",
   ]);
+  const onPressButton_deleteRegion = (index: number) => {
+    setRegionNames((prev) => [
+      ...prev.slice(0, index),
+      ...prev.slice(index + 1),
+    ]);
+  };
 
   const soundVolume = useObservableState({
     observable: whenSoundVolumeChange,
@@ -68,6 +75,18 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
 
   const onPressButton_AddNewRegion = () => {
     navigation.navigate("AddRegion");
+  };
+
+  const onPressButton_SaveAndSetNewNotification = () => {
+    console.log("Save and set new notification");
+
+    // todo: add new alarm in the state.
+    // AlarmBehaviours.addNewAlarmItem({
+    //   isEnabled: true,
+    //   time:
+    // })
+
+    // todo: set a new notification.
   };
 
   return (
@@ -194,7 +213,11 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
 
                 <View style={s.itemBlockRight}>
                   <View style={s.regionItemRightSpacer} />
-                  <CloseIcon style={s.itemBlockIcon} useTouch />
+                  <CloseIcon
+                    style={s.itemBlockIcon}
+                    useTouch
+                    onPress={() => onPressButton_deleteRegion(i)}
+                  />
                 </View>
               </View>
             </Shadow>
@@ -229,7 +252,10 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
 
       {/* 5. save */}
       <View style={s.saveContainer}>
-        <Button style={s.saveButton}>
+        <Button
+          style={s.saveButton}
+          onPress={onPressButton_SaveAndSetNewNotification}
+        >
           <Text style={s.saveButtonInnerText}>완료</Text>
         </Button>
       </View>
@@ -375,8 +401,11 @@ const s = StyleSheet.create({
     gap: 12,
     paddingLeft: 20,
     flex: 1,
+    width: "100%",
     flexWrap: "wrap",
     flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
   },
   regionItem: {
     width: 136,
