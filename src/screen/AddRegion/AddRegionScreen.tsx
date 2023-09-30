@@ -2,7 +2,7 @@ import { DownArrowIcon, SearchIcon, TimeIcon } from "@/components/Icon";
 import Text from "@/components/Text";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
-import BottomSheet from "@gorhom/bottom-sheet";
+import BottomSheet_ from "@gorhom/bottom-sheet";
 import { useRef, useState } from "react";
 import {
   Platform,
@@ -12,12 +12,13 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Shadow } from "react-native-shadow-2";
-import RegionBottomSheet, {
+import BottomSheet, {
   EBottomSheetOpenState,
-} from "@/components/region/RegionBottomSheet";
+} from "@/components/bottom-sheet/BottomSheet";
+import SearchResult from "@/screen/AddRegion/Region/SearchRegion";
 
 const AddRegionScreen = () => {
-  const bottomSheetRef = useRef<BottomSheet>(null);
+  const bottomSheetRef = useRef<BottomSheet_>(null);
   const [isRegionBottomSheetOpen, setIsRegionBottomSheetOpen] =
     useState<EBottomSheetOpenState>(EBottomSheetOpenState.CLOSE);
 
@@ -25,6 +26,10 @@ const AddRegionScreen = () => {
     useState<EBottomSheetOpenState>(EBottomSheetOpenState.CLOSE);
 
   const onPress_RegionSearchBar = () => {
+    if (isTimeBottomSheetOpen === EBottomSheetOpenState.OPEN) {
+      return;
+    }
+
     setIsRegionBottomSheetOpen((prev) =>
       prev === EBottomSheetOpenState.OPEN
         ? EBottomSheetOpenState.CLOSE
@@ -55,12 +60,14 @@ const AddRegionScreen = () => {
       </TouchableNativeFeedback>
 
       {isRegionBottomSheetOpen === EBottomSheetOpenState.OPEN && (
-        <RegionBottomSheet
+        <BottomSheet
           bOpen={isRegionBottomSheetOpen}
           setIsOpen={setIsRegionBottomSheetOpen}
           bottomSheetRef={bottomSheetRef}
           title="지역 검색"
-        />
+        >
+          <SearchResult />
+        </BottomSheet>
       )}
 
       {/* 2. select time table */}
@@ -87,7 +94,7 @@ const AddRegionScreen = () => {
       </Shadow>
 
       {isTimeBottomSheetOpen === EBottomSheetOpenState.OPEN && (
-        <RegionBottomSheet
+        <BottomSheet
           bOpen={isTimeBottomSheetOpen}
           setIsOpen={setIsTimeBottomSheetOpen}
           bottomSheetRef={bottomSheetRef}

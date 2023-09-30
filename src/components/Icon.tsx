@@ -93,6 +93,10 @@ export const InfoIcon = (props: IconProps) => (
   </TouchableOpacity>
 );
 
+export const MapIcon = (props: IconProps) => (
+  <Image source={require("#/icons/map.png")} {...props} />
+);
+
 export const BellIcon = (props: IconProps) => (
   <Image source={require("#/icons/bell.png")} {...props} />
 );

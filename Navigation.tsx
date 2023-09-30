@@ -1,6 +1,6 @@
 import { CloseIcon, LeftArrowIcon } from "@/components/Icon";
 import ActivatedAlarmScreen from "@/screen/ActivatedAlarmScreen";
-import AddRegionScreen from "@/screen/AddRegionScreen";
+import AddRegionScreen from "@/screen/AddRegion/AddRegionScreen";
 import AlarmDetailScreen from "@/screen/AlarmDetailScreen";
 import CreateAlarmScreen from "@/screen/CreateAlarmScreen";
 import LoginScreen from "@/screen/LoginScreen";

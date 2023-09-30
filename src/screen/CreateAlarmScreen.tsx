@@ -20,7 +20,6 @@ import { useEffect, useState } from "react";
 import DatePicker from "react-native-date-picker";
 import { color } from "@/styles/color";
 import { Shadow } from "react-native-shadow-2";
-// import DeviceInfo from "react-native-device-info";
 import { font } from "@/styles/font";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import { Slider } from "@miblanchard/react-native-slider";
@@ -224,7 +223,7 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
             </Shadow>
           ))}
 
-          {/* 4-3. add new region */}
+          {/* 4-3. add new bottom-sheet */}
           <Shadow
             offset={[0, 2]}
             distance={2}
@@ -422,11 +421,6 @@ const s = StyleSheet.create({
     backgroundColor: "white",
   },
   regionItemInside: {
-    // flexDirection: "row",
-    // justifyContent: "space-between",
-    // alignItems: "center",
-    // width: 136,
-    // height: 54,
     borderRadius: 8,
   },
   regionItemRightSpacer: {
