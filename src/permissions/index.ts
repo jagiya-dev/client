@@ -1,4 +1,3 @@
-import { AndroidNotificationSetting } from "./../../node_modules/@notifee/react-native/src/types/NotificationAndroid";
 import notifee, { AuthorizationStatus } from "@notifee/react-native";
 import { requestPermissionsAndroid } from "@/permissions/android";
 import { Platform } from "react-native";
@@ -15,7 +14,8 @@ export async function ProcessPermission() {
     requestPermissionsIOS().then(() => {});
   }
 
-  let settings = await notifee.requestPermission({
+  // init notifee
+  const settings = await notifee.requestPermission({
     announcement: true,
   });
 

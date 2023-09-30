@@ -13,6 +13,7 @@ import {
   createNavigationContainerRef,
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { loadAndroidRawResource } from "react-native-svg/lib/typescript/LocalSvg";
 
 const Stack = createNativeStackNavigator<StackParamList>();
 const navRef = createNavigationContainerRef();
@@ -66,8 +67,15 @@ const Navigation = () => (
         component={AddRegionScreen}
         options={{
           title: "지역추가",
-          headerLeft: () => (
-            <LeftArrowIcon onPress={() => navRef.goBack()} useTouch />
+          headerLeft: (props) => (
+            <LeftArrowIcon
+              onPress={() => {
+                if (props.canGoBack) {
+                  navRef.goBack();
+                }
+              }}
+              useTouch
+            />
           ),
           headerShadowVisible: false,
           headerBackTitleVisible: false,

@@ -4,6 +4,7 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
+  TouchableNativeFeedback,
   View,
 } from "react-native";
 import { useInitNotification } from "@/util/notification/useInitNotification";
@@ -231,21 +232,20 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
             style={s.itemBlockShadow}
             stretch
           >
-            <View style={[s.regionItem, s.regionAddItem]}>
-              <Text style={s.regionAddItemLabel}>지역 추가</Text>
-
-              <View style={s.itemBlockRight}>
-                <Button
-                  style={s.regionAddItemButton}
-                  onPress={onPressButton_AddNewRegion}
-                >
+            <TouchableNativeFeedback
+              onPress={onPressButton_AddNewRegion}
+              style={s.regionItemInside}
+            >
+              <View style={[s.regionItem, s.regionAddItem]}>
+                <Text style={s.regionAddItemLabel}>지역 추가</Text>
+                <View style={s.regionAddItemButton}>
                   <Image
                     source={require("#/icons/plus.png")}
                     style={s.regionAddItemIcon}
                   />
-                </Button>
+                </View>
               </View>
-            </View>
+            </TouchableNativeFeedback>
           </Shadow>
         </View>
       </ScrollView>
@@ -417,10 +417,17 @@ const s = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    flex: 0,
 
     borderRadius: 8,
     backgroundColor: "white",
+  },
+  regionItemInside: {
+    // flexDirection: "row",
+    // justifyContent: "space-between",
+    // alignItems: "center",
+    // width: 136,
+    // height: 54,
+    borderRadius: 8,
   },
   regionItemRightSpacer: {
     marginRight: 16,

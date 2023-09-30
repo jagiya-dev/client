@@ -18,6 +18,7 @@ import { useAndroidBatteryOptimize } from "@/util/notification/useAndroidBatterO
 import { useAndroidPowerManager } from "@/util/notification/useAndroidPowerManager";
 import Navigation from "./Navigation";
 
+// init dayjs
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.tz.setDefault("Asia/Seoul");

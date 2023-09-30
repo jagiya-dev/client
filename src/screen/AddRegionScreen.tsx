@@ -2,47 +2,69 @@ import { DownArrowIcon, SearchIcon, TimeIcon } from "@/components/Icon";
 import Text from "@/components/Text";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
-import BottomSheet from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheet/BottomSheet";
-import { useRef } from "react";
-import { Platform, StyleSheet, View } from "react-native";
+import BottomSheet from "@gorhom/bottom-sheet";
+import { useRef, useState } from "react";
+import {
+  Platform,
+  StyleSheet,
+  TouchableNativeFeedback,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Shadow } from "react-native-shadow-2";
+import RegionBottomSheet, {
+  EBottomSheetOpenState,
+} from "@/components/region/RegionBottomSheet";
 
 const AddRegionScreen = () => {
   const bottomSheetRef = useRef<BottomSheet>(null);
+  const [isRegionBottomSheetOpen, setIsRegionBottomSheetOpen] =
+    useState<EBottomSheetOpenState>(EBottomSheetOpenState.CLOSE);
 
-  const snapPoints = useRef<ReadonlyArray<string>>(["25%", "50%"]).current;
+  const [isTimeBottomSheetOpen, setIsTimeBottomSheetOpen] =
+    useState<EBottomSheetOpenState>(EBottomSheetOpenState.CLOSE);
 
-  const onChangeBottomSheet = (index: number) => {
-    console.log("onChangeBottomSheet: ", index);
+  const onPress_RegionSearchBar = () => {
+    setIsRegionBottomSheetOpen((prev) =>
+      prev === EBottomSheetOpenState.OPEN
+        ? EBottomSheetOpenState.CLOSE
+        : EBottomSheetOpenState.OPEN,
+    );
+  };
+
+  const onPress_TimeContainer = () => {
+    setIsTimeBottomSheetOpen((prev) =>
+      prev === EBottomSheetOpenState.OPEN
+        ? EBottomSheetOpenState.CLOSE
+        : EBottomSheetOpenState.OPEN,
+    );
   };
 
   return (
     <SafeAreaView style={s.root}>
       {/* 1. forecast search bar */}
-      <Text style={s.forecaseSearchBarLabel}>
-        어떤 지역의 예보를 확인할까요?
-      </Text>
+      <Text style={s.regionSearchBarLabel}>어떤 지역의 예보를 확인할까요?</Text>
 
-      <View style={s.forecaseSearchBar}>
-        <SearchIcon style={s.forecaseSearchBarIcon} />
-        <Text style={s.forecaseSearchBarInnerText}>
-          원하는 지역을 검색해주세요.
-        </Text>
-      </View>
-      <BottomSheet
-        ref={bottomSheetRef}
-        index={1}
-        snapPoints={snapPoints}
-        onChange={onChangeBottomSheet}
-      >
-        <View>
-          <Text>Awesome</Text>
+      <TouchableNativeFeedback onPress={onPress_RegionSearchBar}>
+        <View style={s.regionSearchBar}>
+          <SearchIcon style={s.regionSearchBarIcon} />
+          <Text style={s.regionSearchBarInnerText}>
+            원하는 지역을 검색해주세요.
+          </Text>
         </View>
-      </BottomSheet>
+      </TouchableNativeFeedback>
+
+      {isRegionBottomSheetOpen === EBottomSheetOpenState.OPEN && (
+        <RegionBottomSheet
+          bOpen={isRegionBottomSheetOpen}
+          setIsOpen={setIsRegionBottomSheetOpen}
+          bottomSheetRef={bottomSheetRef}
+          title="지역 검색"
+        />
+      )}
 
       {/* 2. select time table */}
-      <Text style={s.forecaseSearchBarLabel}>
+      <Text style={s.regionSearchBarLabel}>
         어느 시간대의 예보를 확인할까요?
       </Text>
 
@@ -53,14 +75,26 @@ const AddRegionScreen = () => {
         style={s.timeContainerShadow}
         stretch
       >
-        <View style={s.timeContainer}>
-          <View style={s.timeContainerLeft}>
-            <TimeIcon />
-            <Text style={s.timeContainerLeftLabel}>시간 선택</Text>
+        <TouchableNativeFeedback onPress={onPress_TimeContainer}>
+          <View style={s.timeContainer}>
+            <View style={s.timeContainerLeft}>
+              <TimeIcon />
+              <Text style={s.timeContainerLeftLabel}>시간 선택</Text>
+            </View>
+            <DownArrowIcon useTouch />
           </View>
-          <DownArrowIcon useTouch />
-        </View>
+        </TouchableNativeFeedback>
       </Shadow>
+
+      {isTimeBottomSheetOpen === EBottomSheetOpenState.OPEN && (
+        <RegionBottomSheet
+          bOpen={isTimeBottomSheetOpen}
+          setIsOpen={setIsTimeBottomSheetOpen}
+          bottomSheetRef={bottomSheetRef}
+          title="시간 선택"
+          height={80}
+        />
+      )}
     </SafeAreaView>
   );
 };
@@ -75,14 +109,14 @@ const s = StyleSheet.create({
   },
 
   // 1. forecast search bar
-  forecaseSearchBarLabel: {
+  regionSearchBarLabel: {
     color: color.gray["700"],
     fontSize: font.body["1"].size,
     fontWeight: font.body["1"].weight,
     lineHeight: font.body["1"].height,
     marginBottom: 16,
   },
-  forecaseSearchBar: {
+  regionSearchBar: {
     height: 45,
 
     backgroundColor: color.gray["100"],
@@ -94,13 +128,13 @@ const s = StyleSheet.create({
     paddingHorizontal: 13,
     paddingVertical: 13,
   },
-  forecaseSearchBarIcon: {
+  regionSearchBarIcon: {
     width: 18,
     height: 18,
     tintColor: color.gray["200"],
     marginRight: 5,
   },
-  forecaseSearchBarInnerText: {
+  regionSearchBarInnerText: {
     color: color.gray["300"],
     fontSize: font.body["5"].size,
     fontWeight: font.body["5"].weight,
@@ -140,4 +174,13 @@ const s = StyleSheet.create({
     lineHeight: font.body["1"].height,
     marginLeft: 6,
   },
+
+  // 2-1. select time bottom sheet
+  timeBottomSheetContainer: {},
+
+  timeBottomSheetSearchBar: {},
+  timeBottomSheetSearchBarLabel: {},
+  timeBottomSheetSearchResultLabel: {},
+  timeBottomSheetSearchResultContainer: {},
+  timeBottomSheetSearchResultItem: {},
 });

@@ -47,42 +47,42 @@ export const NightGrayIcon = (props: IconProps) => (
 
 // symbol
 export const RightArrowIcon = (props: IconProps & TouchableOpacityProps) => (
-  <TouchableOpacity disabled={!props.useTouch}>
+  <TouchableOpacity disabled={!props.useTouch} {...props}>
     <Image source={require("#/icons/arrow_right.png")} {...props} />
   </TouchableOpacity>
 );
 
 export const LeftArrowIcon = (props: IconProps & TouchableOpacityProps) => (
-  <TouchableOpacity disabled={!props.useTouch}>
+  <TouchableOpacity disabled={!props.useTouch} {...props}>
     <Image source={require("#/icons/arrow_left.png")} {...props} />
   </TouchableOpacity>
 );
 
 export const DownArrowIcon = (props: IconProps & TouchableOpacityProps) => (
-  <TouchableOpacity disabled={!props.useTouch}>
+  <TouchableOpacity disabled={!props.useTouch} {...props}>
     <Image source={require("#/icons/arrow_down.png")} {...props} />
   </TouchableOpacity>
 );
 
 export const SettingsIcon = (props: IconProps) => (
-  <TouchableOpacity disabled={!props.useTouch}>
+  <TouchableOpacity disabled={!props.useTouch} {...props}>
     <Image source={require("#/icons/setting.png")} {...props} />
   </TouchableOpacity>
 );
 export const PlusIcon = (props: IconProps) => (
-  <TouchableOpacity disabled={!props.useTouch} style={props.style}>
+  <TouchableOpacity disabled={!props.useTouch} style={props.style} {...props}>
     <Image source={require("#/icons/plus.png")} {...props} />
   </TouchableOpacity>
 );
 
 export const MinusIcon = (props: IconProps) => (
-  <TouchableOpacity disabled={!props.useTouch}>
+  <TouchableOpacity disabled={!props.useTouch} {...props}>
     <Image source={require("#/icons/minus.png")} {...props} />
   </TouchableOpacity>
 );
 
 export const CloseIcon = (props: IconProps & TouchableOpacityProps) => (
-  <TouchableOpacity disabled={!props.useTouch} onPress={props.onPress}>
+  <TouchableOpacity disabled={!props.useTouch} {...props}>
     <Image source={require("#/icons/close.png")} {...props} />
   </TouchableOpacity>
 );
