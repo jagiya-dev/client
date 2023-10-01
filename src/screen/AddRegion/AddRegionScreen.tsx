@@ -16,6 +16,7 @@ import BottomSheet, {
   EBottomSheetOpenState,
 } from "@/components/bottom-sheet/BottomSheet";
 import SearchResult from "@/screen/AddRegion/Region/SearchRegion";
+import TimeTable from "@/screen/AddRegion/Time/TimeTable";
 
 const AddRegionScreen = () => {
   const bottomSheetRef = useRef<BottomSheet_>(null);
@@ -100,7 +101,9 @@ const AddRegionScreen = () => {
           bottomSheetRef={bottomSheetRef}
           title="시간 선택"
           height={80}
-        />
+        >
+          <TimeTable />
+        </BottomSheet>
       )}
     </SafeAreaView>
   );
