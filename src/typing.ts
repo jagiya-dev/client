@@ -40,3 +40,14 @@ export type StackParamList = {
 };
 
 export type LocationModel = {};
+
+export enum ETimeTableItemState {
+  none,
+  selected,
+  disabled,
+}
+
+export type TimetableItem = {
+  time: string;
+  state: ETimeTableItemState;
+};

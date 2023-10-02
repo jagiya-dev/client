@@ -100,7 +100,7 @@ const AddRegionScreen = () => {
           setIsOpen={setIsTimeBottomSheetOpen}
           bottomSheetRef={bottomSheetRef}
           title="시간 선택"
-          height={80}
+          height={85}
         >
           <TimeTable />
         </BottomSheet>
