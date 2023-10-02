@@ -1,12 +1,19 @@
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import Text from "@/components/Text";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
 import React from "react";
 import { Button } from "@/components/button";
 import TimeGridList from "@/screen/AddRegion/Time/TimeGridList";
+import { useBottomSheet } from "@gorhom/bottom-sheet";
 
 const TimeTable = () => {
+  const { close } = useBottomSheet();
+
+  const onPressButton_closeBottomSheet = () => {
+    close();
+  };
+
   return (
     <View style={s.root}>
       {/* 1. label */}
@@ -38,7 +45,7 @@ const TimeTable = () => {
 
       {/* 4. 저장 버튼 */}
       <View style={s.saveButtonContainer}>
-        <Button style={s.saveButton}>
+        <Button style={s.saveButton} onPress={onPressButton_closeBottomSheet}>
           <Text style={s.saveButtonInnerText}>확인</Text>
         </Button>
       </View>

@@ -2,8 +2,7 @@ import { DownArrowIcon, SearchIcon, TimeIcon } from "@/components/Icon";
 import Text from "@/components/Text";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
-import BottomSheet_ from "@gorhom/bottom-sheet";
-import { useRef, useState } from "react";
+import React, { useState } from "react";
 import {
   Platform,
   StyleSheet,
@@ -17,14 +16,19 @@ import BottomSheet, {
 } from "@/components/bottom-sheet/BottomSheet";
 import SearchResult from "@/screen/AddRegion/Region/SearchRegion";
 import TimeTable from "@/screen/AddRegion/Time/TimeTable";
+import { useObservableState } from "@/hook/useObservableState";
+import { allTimeSelected$ } from "@/state/region/regionTimetable.state";
 
 const AddRegionScreen = () => {
-  const bottomSheetRef = useRef<BottomSheet_>(null);
   const [isRegionBottomSheetOpen, setIsRegionBottomSheetOpen] =
     useState<EBottomSheetOpenState>(EBottomSheetOpenState.CLOSE);
 
   const [isTimeBottomSheetOpen, setIsTimeBottomSheetOpen] =
     useState<EBottomSheetOpenState>(EBottomSheetOpenState.CLOSE);
+
+  const allSelectedTimes = useObservableState({
+    observable: allTimeSelected$,
+  });
 
   const onPress_RegionSearchBar = () => {
     if (isTimeBottomSheetOpen === EBottomSheetOpenState.OPEN) {
@@ -64,7 +68,6 @@ const AddRegionScreen = () => {
         <BottomSheet
           bOpen={isRegionBottomSheetOpen}
           setIsOpen={setIsRegionBottomSheetOpen}
-          bottomSheetRef={bottomSheetRef}
           title="지역 검색"
         >
           <SearchResult />
@@ -101,13 +104,17 @@ const AddRegionScreen = () => {
         <BottomSheet
           bOpen={isTimeBottomSheetOpen}
           setIsOpen={setIsTimeBottomSheetOpen}
-          bottomSheetRef={bottomSheetRef}
           title="시간 선택"
           height={85}
         >
           <TimeTable />
         </BottomSheet>
       )}
+
+      {/* 저장 목록 */}
+      {allSelectedTimes !== undefined &&
+        allSelectedTimes.length > 0 &&
+        allSelectedTimes.map((data, i) => <Text key={i}>{data.time}</Text>)}
     </SafeAreaView>
   );
 };

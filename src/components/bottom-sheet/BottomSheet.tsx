@@ -1,8 +1,6 @@
 import BottomSheet_ from "@gorhom/bottom-sheet";
-import { StyleSheet, View } from "react-native";
-import type { PropsWithChildren, RefObject } from "react";
-import Text from "@/components/Text";
-import { font } from "@/styles/font";
+import { StyleSheet } from "react-native";
+import type { PropsWithChildren } from "react";
 import Backdrop from "./Backdrop";
 
 export enum EBottomSheetOpenState {
@@ -11,7 +9,6 @@ export enum EBottomSheetOpenState {
 }
 
 type Props = {
-  bottomSheetRef: RefObject<BottomSheet_>;
   bOpen: EBottomSheetOpenState;
   setIsOpen: (bOpen: EBottomSheetOpenState) => void;
   title: string;
@@ -20,7 +17,6 @@ type Props = {
 
 const BottomSheet = (props: Props) => (
   <BottomSheet_
-    ref={props.bottomSheetRef}
     index={Number(props.bOpen)}
     snapPoints={[(props.height ?? 90).toString() + "%"]}
     containerStyle={s.root}

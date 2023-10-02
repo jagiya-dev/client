@@ -16,6 +16,10 @@ const TimeGridList = () => {
     observable: amTimetable$,
   });
 
+  const pmTimetables = useObservableState({
+    observable: pmTimetable$,
+  });
+
   const toggleTimeTableItemStateOfAM = (index: number) => {
     behaviours.toggleTimeTableStateOfAM(index);
   };
@@ -23,10 +27,6 @@ const TimeGridList = () => {
   const toggleTimeTableItemStateOfPM = (index: number) => {
     behaviours.toggleTimeTableStateOfPM(index);
   };
-
-  const pmTimetables = useObservableState({
-    observable: pmTimetable$,
-  });
 
   return (
     <View style={s.timeSelectContainer}>
