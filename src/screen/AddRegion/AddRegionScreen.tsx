@@ -83,7 +83,10 @@ const AddRegionScreen = () => {
         style={s.timeContainerShadow}
         stretch
       >
-        <TouchableNativeFeedback onPress={onPress_TimeContainer}>
+        <TouchableNativeFeedback
+          onPress={onPress_TimeContainer}
+          style={s.timeTouchable}
+        >
           <View style={s.timeContainer}>
             <View style={s.timeContainerLeft}>
               <TimeIcon />
@@ -159,6 +162,9 @@ const s = StyleSheet.create({
         marginBottom: 2,
       },
     }),
+  },
+  timeTouchable: {
+    borderRadius: 8,
   },
   timeContainer: {
     height: 54,
