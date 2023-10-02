@@ -1,4 +1,9 @@
-import { DownArrowIcon, SearchIcon, TimeIcon } from "@/components/Icon";
+import {
+  CloseIcon,
+  DownArrowIcon,
+  SearchIcon,
+  TimeIcon,
+} from "@/components/Icon";
 import Text from "@/components/Text";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
@@ -112,9 +117,18 @@ const AddRegionScreen = () => {
       )}
 
       {/* 저장 목록 */}
-      {allSelectedTimes !== undefined &&
-        allSelectedTimes.length > 0 &&
-        allSelectedTimes.map((data, i) => <Text key={i}>{data.time}</Text>)}
+      <View style={s.selectedTimeContainer}>
+        {allSelectedTimes !== undefined &&
+          allSelectedTimes.length > 0 &&
+          allSelectedTimes.map((data, i) => (
+            <View style={s.selectedTimeItem}>
+              <Text key={i} style={s.selectedItemText}>
+                {data.time}
+              </Text>
+              <CloseIcon style={s.selectedTimeItemCloseIcon} useTouch />
+            </View>
+          ))}
+      </View>
     </SafeAreaView>
   );
 };
@@ -198,12 +212,34 @@ const s = StyleSheet.create({
     marginLeft: 6,
   },
 
-  // 2-1. select time bottom sheet
-  timeBottomSheetContainer: {},
+  selectedTimeContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 12,
+    marginTop: 54,
+  },
+  selectedTimeItem: {
+    minWidth: 86,
 
-  timeBottomSheetSearchBar: {},
-  timeBottomSheetSearchBarLabel: {},
-  timeBottomSheetSearchResultLabel: {},
-  timeBottomSheetSearchResultContainer: {},
-  timeBottomSheetSearchResultItem: {},
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderWidth: 1,
+    borderColor: color.gray["200"],
+    borderRadius: 8,
+  },
+  selectedItemText: {
+    fontSize: font.body["2"].size,
+    fontWeight: font.body["2"].weight,
+    lineHeight: font.body["2"].height,
+    color: color.gray["500"],
+  },
+  selectedTimeItemCloseIcon: {
+    width: 18,
+    height: 18,
+    tintColor: color.gray["300"],
+  },
 });
