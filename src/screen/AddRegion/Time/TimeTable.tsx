@@ -4,7 +4,6 @@ import { color } from "@/styles/color";
 import { font } from "@/styles/font";
 import React from "react";
 import { Button } from "@/components/button";
-import { useObservableState } from "@/hook/useObservableState";
 import TimeGridList from "@/screen/AddRegion/Time/TimeGridList";
 
 const TimeTable = () => {
