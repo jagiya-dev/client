@@ -18,13 +18,17 @@ type Props = {
   onSelected: (index: number) => void;
 };
 
-const TimeTableItem = ({ time, index, state, onSelected }: Props) => (
-  <TouchableOpacity onPress={() => onSelected(index)}>
-    <View style={makeViewStyle(state)}>
-      <Text style={makeLabelStyle(state)}>{time}</Text>
-    </View>
-  </TouchableOpacity>
-);
+const TimeTableItem = ({ time, index, state, onSelected }: Props) => {
+  const bDisabled = state === ETimeTableItemState.disabled;
+
+  return (
+    <TouchableOpacity onPress={() => onSelected(index)} disabled={bDisabled}>
+      <View style={makeViewStyle(state)}>
+        <Text style={makeLabelStyle(state)}>{time}</Text>
+      </View>
+    </TouchableOpacity>
+  );
+};
 
 export default TimeTableItem;
 
@@ -38,17 +42,19 @@ const s = StyleSheet.create({
     paddingVertical: 12,
 
     borderRadius: 32,
+    borderWidth: 1,
   },
   timeItemNormal: {
     backgroundColor: color.gray["50"],
-    borderWidth: 1,
     borderColor: color.gray["100"],
   },
   timeItemDisabled: {
     backgroundColor: color.gray["100"],
+    borderColor: color.gray["100"],
   },
   timeItemSelected: {
     backgroundColor: color.primary["600"],
+    borderColor: color.primary["600"],
   },
 
   timeItemLabel: {

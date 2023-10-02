@@ -5,8 +5,9 @@ import { color } from "@/styles/color";
 import { font } from "@/styles/font";
 import {
   amTimetable$,
+  behaviours,
   pmTimetable$,
-} from "@/state/region/RegionTimetable.state";
+} from "@/state/region/regionTimetable.state";
 import { useObservableState } from "@/hook/useObservableState";
 import TimeTableItem from "@/screen/AddRegion/Time/TimeTableItem";
 
@@ -14,6 +15,14 @@ const TimeGridList = () => {
   const amTimetables = useObservableState({
     observable: amTimetable$,
   });
+
+  const toggleTimeTableItemStateOfAM = (index: number) => {
+    behaviours.toggleTimeTableStateOfAM(index);
+  };
+
+  const toggleTimeTableItemStateOfPM = (index: number) => {
+    behaviours.toggleTimeTableStateOfPM(index);
+  };
 
   const pmTimetables = useObservableState({
     observable: pmTimetable$,
@@ -24,13 +33,15 @@ const TimeGridList = () => {
       {/* 3-1. 오전 AM */}
       <View style={s.timeGridSet}>
         <Text style={s.timeLabel}>오전</Text>
+
         <View style={s.timeGrid}>
           {!!amTimetables &&
             amTimetables.map((data, i) => (
               <TimeTableItem
+                key={data.time}
                 time={data.time}
                 index={i}
-                onSelected={(i) => {}}
+                onSelected={(i) => toggleTimeTableItemStateOfAM(i)}
                 state={data.state}
               />
             ))}
@@ -40,13 +51,15 @@ const TimeGridList = () => {
       {/* 3-2. 오후 PM */}
       <View style={s.timeGridSet}>
         <Text style={s.timeLabel}>오후</Text>
+
         <View style={s.timeGrid}>
           {!!pmTimetables &&
             pmTimetables.map((data, i) => (
               <TimeTableItem
+                key={data.time}
                 time={data.time}
                 index={i}
-                onSelected={(i) => {}}
+                onSelected={(i) => toggleTimeTableItemStateOfPM(i)}
                 state={data.state}
               />
             ))}
