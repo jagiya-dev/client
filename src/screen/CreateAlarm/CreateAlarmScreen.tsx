@@ -35,6 +35,9 @@ import { StackParamList } from "@/typing";
 import BottomSheet, {
   EBottomSheetOpenState,
 } from "@/components/bottom-sheet/BottomSheet";
+import RepeatContainer from "@/screen/CreateAlarm/Repeat/RepeatContainer";
+import AlarmSoundContainer from "@/screen/CreateAlarm/AlarmSound/AlarmSoundContainer";
+import ReminderContainer from "@/screen/CreateAlarm/Reminder/ReminderContainer";
 
 type ScreenProps = NativeStackScreenProps<StackParamList, "CreateAlarm">;
 
@@ -317,7 +320,9 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
         <BottomSheet
           bOpen={repeatBottomSheetState}
           setIsOpen={setRepeatBottomSheetState}
-        ></BottomSheet>
+        >
+          <RepeatContainer />
+        </BottomSheet>
       )}
 
       {/* 알람 사운드 바텀시트 */}
@@ -325,7 +330,9 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
         <BottomSheet
           bOpen={alarmSoundBottomSheetState}
           setIsOpen={setAlarmSoundBottomSheetState}
-        ></BottomSheet>
+        >
+          <AlarmSoundContainer />
+        </BottomSheet>
       )}
 
       {/* 다시 알림 바텀시트 */}
@@ -333,7 +340,9 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
         <BottomSheet
           bOpen={reminderBottomSheetState}
           setIsOpen={setReminderBottomSheetState}
-        ></BottomSheet>
+        >
+          <ReminderContainer />
+        </BottomSheet>
       )}
     </SafeAreaView>
   );
