@@ -339,7 +339,6 @@ const s = StyleSheet.create({
   // 4. set alarm sound
   alarmSoundContainer: {
     marginTop: 16,
-    // paddingHorizontal: 20,
     paddingVertical: 16,
   },
   alarmSoundLabel: {
@@ -378,7 +377,6 @@ const s = StyleSheet.create({
   // 5. set location
   regionContainer: {
     paddingTop: 16,
-    flex: 1,
     width: "100%",
     paddingHorizontal: 20,
   },
@@ -399,7 +397,7 @@ const s = StyleSheet.create({
     paddingTop: 16,
     gap: 12,
     paddingLeft: 20,
-    flex: 1,
+    // flex: 1,
     width: "100%",
     flexWrap: "wrap",
     flexDirection: "row",
