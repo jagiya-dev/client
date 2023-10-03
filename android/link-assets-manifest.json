@@ -16,6 +16,50 @@
     {
       "path": "assets/fonts/Pretendard-SemiBold.ttf",
       "sha1": "75346154e3ad0d13eda425d66b625f007ef00f1b"
+    },
+    {
+      "path": "assets/audio/android/emergency.ogg",
+      "sha1": "e89e652813981b295fae7ebef69b67cbd28c8ba5"
+    },
+    {
+      "path": "assets/audio/android/gravel_rain.ogg",
+      "sha1": "51dc103506411b997523e9f3738fd3d71894e90a"
+    },
+    {
+      "path": "assets/audio/android/pedestrian_rain.ogg",
+      "sha1": "d26f3c956cb4f54f1e9bbd5b6c0d6fa932806ad0"
+    },
+    {
+      "path": "assets/audio/android/table_clock.ogg",
+      "sha1": "f27453965a2aa088a99a56d6d0d0131c846d37f3"
+    },
+    {
+      "path": "assets/audio/android/tamac_rain.ogg",
+      "sha1": "87233db710717b07206a8a517f92b68debfb8515"
+    },
+    {
+      "path": "assets/audio/android/thunder.ogg",
+      "sha1": "f147f25f78279c70de18665c1f680694c42cfcb6"
+    },
+    {
+      "path": "assets/audio/android/thunder_rain.ogg",
+      "sha1": "98c83a1cc0dc0c5ad62a9c43506af2c00c1f940b"
+    },
+    {
+      "path": "assets/audio/android/thunder_rain_2.ogg",
+      "sha1": "de8ba824deed8784c758bd0073c919d20b758c92"
+    },
+    {
+      "path": "assets/audio/android/trail_rain.ogg",
+      "sha1": "4f701e7aba7b14e364b9ed6eaef13918ceb6bd15"
+    },
+    {
+      "path": "assets/audio/android/underRoot_rain.ogg",
+      "sha1": "af3a2f700ed7e557d36e50ff42afd5acfec0e5aa"
+    },
+    {
+      "path": "assets/audio/android/valley_rain.ogg",
+      "sha1": "e1e66c506407a4a32c57cd2b36e6314673943cc3"
     }
   ]
 }
