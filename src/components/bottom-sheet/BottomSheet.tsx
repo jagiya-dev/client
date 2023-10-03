@@ -11,7 +11,6 @@ export enum EBottomSheetOpenState {
 type Props = {
   bOpen: EBottomSheetOpenState;
   setIsOpen: (bOpen: EBottomSheetOpenState) => void;
-  title: string;
   height?: number;
 } & PropsWithChildren;
 

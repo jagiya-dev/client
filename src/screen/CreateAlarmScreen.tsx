@@ -25,12 +25,16 @@ import { widthPercentageToDP } from "react-native-responsive-screen";
 import { Slider } from "@miblanchard/react-native-slider";
 import { SliderOnChangeCallback } from "@miblanchard/react-native-slider/lib/types";
 import { useObservableState } from "@/hook/useObservableState";
-import { whenSoundVolumeChange } from "@/state/sound/sound.state";
-import { behaviours as soundBehaviours } from "@/state/sound/sound.state";
+import {
+  behaviours as soundBehaviours,
+  whenSoundVolumeChange,
+} from "@/state/sound/sound.state";
 import { Button } from "@/components/button";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackParamList } from "@/typing";
-import { behaviours as AlarmBehaviours } from "@/state/alarm/alarm.state";
+import BottomSheet, {
+  EBottomSheetOpenState,
+} from "@/components/bottom-sheet/BottomSheet";
 
 type ScreenProps = NativeStackScreenProps<StackParamList, "CreateAlarm">;
 
@@ -41,6 +45,16 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
     "부산시",
     "대구시",
   ]);
+
+  const [repeatBottomSheetState, setRepeatBottomSheetState] =
+    useState<EBottomSheetOpenState>(EBottomSheetOpenState.CLOSE);
+
+  const [reminderBottomSheetState, setReminderBottomSheetState] =
+    useState<EBottomSheetOpenState>(EBottomSheetOpenState.CLOSE);
+
+  const [alarmSoundBottomSheetState, setAlarmSoundBottomSheetState] =
+    useState<EBottomSheetOpenState>(EBottomSheetOpenState.CLOSE);
+
   const onPressButton_deleteRegion = (index: number) => {
     setRegionNames((prev) => [
       ...prev.slice(0, index),
@@ -89,6 +103,30 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
     // todo: set a new notification.
   };
 
+  const onPress_openRepeatBottomSheet = () => {
+    if (
+      reminderBottomSheetState === EBottomSheetOpenState.OPEN ||
+      alarmSoundBottomSheetState === EBottomSheetOpenState.OPEN
+    )
+      return;
+
+    setRepeatBottomSheetState(EBottomSheetOpenState.OPEN);
+  };
+
+  const onPress_openReminderBottomSheet = () => {
+    if (
+      repeatBottomSheetState === EBottomSheetOpenState.OPEN ||
+      alarmSoundBottomSheetState === EBottomSheetOpenState.OPEN
+    )
+      return;
+
+    setReminderBottomSheetState(EBottomSheetOpenState.OPEN);
+  };
+
+  const onPress_openAlarmSoundBottomSheet = () => {
+    setAlarmSoundBottomSheetState(EBottomSheetOpenState.OPEN);
+  };
+
   return (
     <SafeAreaView style={s.root}>
       <ScrollView
@@ -111,15 +149,20 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
           style={s.itemBlockShadow}
           stretch
         >
-          <View style={s.itemBlockContainer}>
-            <Text style={s.itemBlockLabel}>반복</Text>
+          <TouchableNativeFeedback
+            style={s.itemBlockTouchable}
+            onPress={onPress_openRepeatBottomSheet}
+          >
+            <View style={s.itemBlockContainer}>
+              <Text style={s.itemBlockLabel}>반복</Text>
 
-            <View style={s.itemBlockRight}>
-              <Text style={s.itemBlockLabel}>주중</Text>
-              <View style={s.itemBlockRightSpacer} />
-              <RightArrowIcon style={s.itemBlockIcon} useTouch />
+              <View style={s.itemBlockRight}>
+                <Text style={s.itemBlockLabel}>주중</Text>
+                <View style={s.itemBlockRightSpacer} />
+                <RightArrowIcon style={s.itemBlockIcon} useTouch />
+              </View>
             </View>
-          </View>
+          </TouchableNativeFeedback>
         </Shadow>
 
         {/* 3. set alarm sound */}
@@ -134,15 +177,20 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
             stretch
           >
             <View style={s.alarmSoundItemContainer}>
-              <View style={[s.alarmSoundItem, s.alarmSoundItemBorderBottom]}>
-                <Text style={s.itemBlockLabel}>사운드</Text>
+              <TouchableNativeFeedback
+                style={s.itemBlockTouchable}
+                onPress={onPress_openAlarmSoundBottomSheet}
+              >
+                <View style={[s.alarmSoundItem, s.alarmSoundItemBorderBottom]}>
+                  <Text style={s.itemBlockLabel}>사운드</Text>
 
-                <View style={s.itemBlockRight}>
-                  <Text style={s.itemBlockLabel}>기본알람</Text>
-                  <View style={s.itemBlockRightSpacer} />
-                  <RightArrowIcon style={s.itemBlockIcon} useTouch />
+                  <View style={s.itemBlockRight}>
+                    <Text style={s.itemBlockLabel}>기본알람</Text>
+                    <View style={s.itemBlockRightSpacer} />
+                    <RightArrowIcon style={s.itemBlockIcon} useTouch />
+                  </View>
                 </View>
-              </View>
+              </TouchableNativeFeedback>
 
               <View style={[s.alarmSoundItem, s.alarmSoundItemBorderBottom]}>
                 <Text style={s.itemBlockLabel}>볼륨</Text>
@@ -175,15 +223,20 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
                 <VibrationIcon />
               </View>
 
-              <View style={s.alarmSoundItem}>
-                <Text style={s.itemBlockLabel}>다시알림</Text>
+              <TouchableNativeFeedback
+                style={s.itemBlockTouchable}
+                onPress={onPress_openReminderBottomSheet}
+              >
+                <View style={s.alarmSoundItem}>
+                  <Text style={s.itemBlockLabel}>다시알림</Text>
 
-                <View style={s.itemBlockRight}>
-                  <Text style={s.itemBlockLabel}>5분</Text>
-                  <View style={s.itemBlockRightSpacer} />
-                  <RightArrowIcon style={s.itemBlockIcon} />
+                  <View style={s.itemBlockRight}>
+                    <Text style={s.itemBlockLabel}>5분</Text>
+                    <View style={s.itemBlockRightSpacer} />
+                    <RightArrowIcon style={s.itemBlockIcon} />
+                  </View>
                 </View>
-              </View>
+              </TouchableNativeFeedback>
             </View>
           </Shadow>
         </View>
@@ -258,6 +311,30 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
           <Text style={s.saveButtonInnerText}>완료</Text>
         </Button>
       </View>
+
+      {/* 반복 바텀시트 */}
+      {repeatBottomSheetState === EBottomSheetOpenState.OPEN && (
+        <BottomSheet
+          bOpen={repeatBottomSheetState}
+          setIsOpen={setRepeatBottomSheetState}
+        ></BottomSheet>
+      )}
+
+      {/* 알람 사운드 바텀시트 */}
+      {alarmSoundBottomSheetState === EBottomSheetOpenState.OPEN && (
+        <BottomSheet
+          bOpen={alarmSoundBottomSheetState}
+          setIsOpen={setAlarmSoundBottomSheetState}
+        ></BottomSheet>
+      )}
+
+      {/* 다시 알림 바텀시트 */}
+      {reminderBottomSheetState === EBottomSheetOpenState.OPEN && (
+        <BottomSheet
+          bOpen={reminderBottomSheetState}
+          setIsOpen={setReminderBottomSheetState}
+        ></BottomSheet>
+      )}
     </SafeAreaView>
   );
 };
@@ -298,6 +375,9 @@ const s = StyleSheet.create({
         marginBottom: 2,
       },
     }),
+  },
+  itemBlockTouchable: {
+    borderRadius: 8,
   },
   itemBlockContainer: {
     width: 317,

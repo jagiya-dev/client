@@ -33,10 +33,10 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 type ScreenProps = NativeStackScreenProps<StackParamList, "AddRegion">;
 
 const AddRegionScreen = ({ route, navigation }: ScreenProps) => {
-  const [isRegionBottomSheetOpen, setIsRegionBottomSheetOpen] =
+  const [regionBottomSheetState, setRegionBottomSheetState] =
     useState<EBottomSheetOpenState>(EBottomSheetOpenState.CLOSE);
 
-  const [isTimeBottomSheetOpen, setIsTimeBottomSheetOpen] =
+  const [timeBottomSheetState, setTimeBottomSheetState] =
     useState<EBottomSheetOpenState>(EBottomSheetOpenState.CLOSE);
 
   const allSelectedTimes = useObservableState({
@@ -71,23 +71,19 @@ const AddRegionScreen = ({ route, navigation }: ScreenProps) => {
   };
 
   const onPress_RegionSearchBar = () => {
-    if (isTimeBottomSheetOpen === EBottomSheetOpenState.OPEN) {
+    if (timeBottomSheetState === EBottomSheetOpenState.OPEN) {
       return;
     }
 
-    setIsRegionBottomSheetOpen((prev) =>
-      prev === EBottomSheetOpenState.OPEN
-        ? EBottomSheetOpenState.CLOSE
-        : EBottomSheetOpenState.OPEN,
-    );
+    setRegionBottomSheetState(EBottomSheetOpenState.OPEN);
   };
 
   const onPress_TimeContainer = () => {
-    setIsTimeBottomSheetOpen((prev) =>
-      prev === EBottomSheetOpenState.OPEN
-        ? EBottomSheetOpenState.CLOSE
-        : EBottomSheetOpenState.OPEN,
-    );
+    if (regionBottomSheetState === EBottomSheetOpenState.OPEN) {
+      return;
+    }
+
+    setTimeBottomSheetState(EBottomSheetOpenState.OPEN);
   };
 
   const onPress_saveButton = () => {
@@ -118,11 +114,10 @@ const AddRegionScreen = ({ route, navigation }: ScreenProps) => {
         </View>
       </TouchableNativeFeedback>
 
-      {isRegionBottomSheetOpen === EBottomSheetOpenState.OPEN && (
+      {regionBottomSheetState === EBottomSheetOpenState.OPEN && (
         <BottomSheet
-          bOpen={isRegionBottomSheetOpen}
-          setIsOpen={setIsRegionBottomSheetOpen}
-          title="지역 검색"
+          bOpen={regionBottomSheetState}
+          setIsOpen={setRegionBottomSheetState}
         >
           <SearchResult />
         </BottomSheet>
@@ -156,11 +151,10 @@ const AddRegionScreen = ({ route, navigation }: ScreenProps) => {
         </TouchableNativeFeedback>
       </Shadow>
 
-      {isTimeBottomSheetOpen === EBottomSheetOpenState.OPEN && (
+      {timeBottomSheetState === EBottomSheetOpenState.OPEN && (
         <BottomSheet
-          bOpen={isTimeBottomSheetOpen}
-          setIsOpen={setIsTimeBottomSheetOpen}
-          title="시간 선택"
+          bOpen={timeBottomSheetState}
+          setIsOpen={setTimeBottomSheetState}
           height={85}
         >
           <TimeTable />
