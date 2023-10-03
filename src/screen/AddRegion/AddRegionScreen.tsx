@@ -25,11 +25,14 @@ import { useObservableState } from "@/hook/useObservableState";
 import {
   allTimeSelected$,
   behaviours,
-  briefSelectedTimes$,
 } from "@/state/region/regionTimetable.state";
-import { ETimeTableItemState } from "@/typing";
+import { ETimeTableItemState, StackParamList } from "@/typing";
+import { Button } from "@/components/button";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-const AddRegionScreen = () => {
+type ScreenProps = NativeStackScreenProps<StackParamList, "AddRegion">;
+
+const AddRegionScreen = ({ route, navigation }: ScreenProps) => {
   const [isRegionBottomSheetOpen, setIsRegionBottomSheetOpen] =
     useState<EBottomSheetOpenState>(EBottomSheetOpenState.CLOSE);
 
@@ -85,6 +88,20 @@ const AddRegionScreen = () => {
         ? EBottomSheetOpenState.CLOSE
         : EBottomSheetOpenState.OPEN,
     );
+  };
+
+  const onPress_saveButton = () => {
+    // todo: save operation!
+
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    }
+  };
+
+  const onPress_closeButton = () => {
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    }
   };
 
   return (
@@ -164,6 +181,25 @@ const AddRegionScreen = () => {
               />
             </View>
           ))}
+      </View>
+
+      <View style={s.spacer} />
+
+      {/* save or cancel */}
+      <View style={s.saveContainer}>
+        <Button
+          style={[s.applyButton, s.cancelButton]}
+          onPress={onPress_closeButton}
+        >
+          <Text style={[s.applyLabel, s.cancelButtonLabel]}>취소</Text>
+        </Button>
+
+        <Button
+          style={[s.applyButton, s.saveButton]}
+          onPress={onPress_saveButton}
+        >
+          <Text style={[s.applyLabel, s.saveButtonLabel]}>저장</Text>
+        </Button>
       </View>
     </SafeAreaView>
   );
@@ -278,5 +314,55 @@ const s = StyleSheet.create({
     width: 18,
     height: 18,
     tintColor: color.gray["300"],
+  },
+  saveContainer: {
+    flexDirection: "row",
+    gap: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 20,
+    ...Platform.select({
+      android: {
+        marginBottom: 100,
+      },
+      ios: {
+        marginBottom: 40,
+      },
+    }),
+  },
+  applyButton: {
+    minWidth: 170,
+    borderRadius: 99,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  applyLabel: {
+    fontSize: font.title["2"].size,
+    fontWeight: font.title["2"].weight,
+    lineHeight: font.title["2"].height,
+  },
+  saveButton: {
+    paddingHorizontal: 25,
+    paddingVertical: 17,
+    backgroundColor: color.primary["600"],
+  },
+  saveButtonLabel: {
+    color: "white",
+  },
+  cancelButton: {
+    paddingHorizontal: 24,
+    paddingVertical: 16,
+    backgroundColor: "white",
+    borderWidth: 1,
+    borderColor: color.gray["100"],
+  },
+  cancelButtonLabel: {
+    color: color.gray["700"],
+    fontSize: font.title["2"].size,
+    fontWeight: font.title["2"].weight,
+    lineHeight: font.title["2"].height,
+  },
+  spacer: {
+    flex: 1,
   },
 });
