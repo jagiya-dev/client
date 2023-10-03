@@ -22,7 +22,11 @@ import BottomSheet, {
 import SearchResult from "@/screen/AddRegion/Region/SearchRegion";
 import TimeTable from "@/screen/AddRegion/Time/TimeTable";
 import { useObservableState } from "@/hook/useObservableState";
-import { allTimeSelected$ } from "@/state/region/regionTimetable.state";
+import {
+  allTimeSelected$,
+  behaviours,
+} from "@/state/region/regionTimetable.state";
+import { ETimeTableItemState } from "@/typing";
 
 const AddRegionScreen = () => {
   const [isRegionBottomSheetOpen, setIsRegionBottomSheetOpen] =
@@ -34,6 +38,23 @@ const AddRegionScreen = () => {
   const allSelectedTimes = useObservableState({
     observable: allTimeSelected$,
   });
+
+  const deleteFromSelectedTimes = (index: number) => {
+    if (!allSelectedTimes) return;
+
+    const { time, isAM } = allSelectedTimes[index];
+
+    if (isAM) {
+      behaviours.updateTimeTableStateOfAMFromTime(
+        time,
+        ETimeTableItemState.none,
+      );
+
+      return;
+    }
+
+    behaviours.updateTimeTableStateOfPMFromTime(time, ETimeTableItemState.none);
+  };
 
   const onPress_RegionSearchBar = () => {
     if (isTimeBottomSheetOpen === EBottomSheetOpenState.OPEN) {
@@ -121,11 +142,13 @@ const AddRegionScreen = () => {
         {allSelectedTimes !== undefined &&
           allSelectedTimes.length > 0 &&
           allSelectedTimes.map((data, i) => (
-            <View style={s.selectedTimeItem}>
-              <Text key={i} style={s.selectedItemText}>
-                {data.time}
-              </Text>
-              <CloseIcon style={s.selectedTimeItemCloseIcon} useTouch />
+            <View key={i} style={s.selectedTimeItem}>
+              <Text style={s.selectedItemText}>{data.time}</Text>
+              <CloseIcon
+                style={s.selectedTimeItemCloseIcon}
+                useTouch
+                onPress={() => deleteFromSelectedTimes(i)}
+              />
             </View>
           ))}
       </View>
@@ -219,14 +242,15 @@ const s = StyleSheet.create({
     marginTop: 54,
   },
   selectedTimeItem: {
-    minWidth: 86,
+    width: 98,
 
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     alignItems: "center",
 
     paddingHorizontal: 12,
     paddingVertical: 8,
+
     borderWidth: 1,
     borderColor: color.gray["200"],
     borderRadius: 8,

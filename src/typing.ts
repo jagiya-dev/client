@@ -50,4 +50,5 @@ export enum ETimeTableItemState {
 export type TimetableItem = {
   time: string;
   state: ETimeTableItemState;
+  isAM: boolean;
 };

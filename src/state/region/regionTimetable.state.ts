@@ -8,7 +8,9 @@ import {
   map,
   merge,
   mergeWith,
+  repeat,
   ReplaySubject,
+  skipUntil,
   Subject,
 } from "rxjs";
 import { amItems, pmItems } from "@/state/region/regionTimetable.data";
@@ -51,6 +53,15 @@ const updateTimeTableStateOfAM = (
   ]);
 };
 
+const updateTimeTableStateOfAMFromTime = (
+  time: string,
+  newState: ETimeTableItemState,
+) => {
+  const { value } = amTimetableSubject;
+  const index = value.findIndex((item) => item.time === time);
+  updateTimeTableStateOfAM(index, newState);
+};
+
 const toggleTimeTableStateOfAM = (index: number) => {
   const { value } = amTimetableSubject;
   const currentState = value[index].state;
@@ -76,6 +87,15 @@ const updateTimeTableStateOfPM = (
   ]);
 };
 
+const updateTimeTableStateOfPMFromTime = (
+  time: string,
+  newState: ETimeTableItemState,
+) => {
+  const { value } = pmTimetableSubject;
+  const index = value.findIndex((item) => item.time === time);
+  updateTimeTableStateOfPM(index, newState);
+};
+
 const toggleTimeTableStateOfPM = (index: number) => {
   const { value } = pmTimetableSubject;
   const currentState = value[index].state;
@@ -91,6 +111,8 @@ const toggleTimeTableStateOfPM = (index: number) => {
 export const behaviours = {
   updateTimeTableStateOfAM,
   toggleTimeTableStateOfAM,
+  updateTimeTableStateOfAMFromTime,
   updateTimeTableStateOfPM,
   toggleTimeTableStateOfPM,
+  updateTimeTableStateOfPMFromTime,
 };
