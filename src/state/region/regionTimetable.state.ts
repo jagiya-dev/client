@@ -12,6 +12,8 @@ import {
   ReplaySubject,
   skipUntil,
   Subject,
+  take,
+  tap,
 } from "rxjs";
 import { amItems, pmItems } from "@/state/region/regionTimetable.data";
 import { ETimeTableItemState } from "@/typing";

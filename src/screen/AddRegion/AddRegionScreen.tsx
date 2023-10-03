@@ -25,6 +25,7 @@ import { useObservableState } from "@/hook/useObservableState";
 import {
   allTimeSelected$,
   behaviours,
+  briefSelectedTimes$,
 } from "@/state/region/regionTimetable.state";
 import { ETimeTableItemState } from "@/typing";
 
@@ -38,6 +39,16 @@ const AddRegionScreen = () => {
   const allSelectedTimes = useObservableState({
     observable: allTimeSelected$,
   });
+
+  const briefSelectedTimesAsFormattedString = (() => {
+    if (allSelectedTimes === undefined) return "시간 선택";
+    if (allSelectedTimes.length === 0) return "시간 선택";
+
+    const cnt = allSelectedTimes.length - 1;
+    if (cnt === 0) return allSelectedTimes?.[0].time;
+
+    return `${allSelectedTimes?.[0].time} 외 ${cnt}건`;
+  })();
 
   const deleteFromSelectedTimes = (index: number) => {
     if (!allSelectedTimes) return;
@@ -119,7 +130,9 @@ const AddRegionScreen = () => {
           <View style={s.timeContainer}>
             <View style={s.timeContainerLeft}>
               <TimeIcon />
-              <Text style={s.timeContainerLeftLabel}>시간 선택</Text>
+              <Text style={s.timeContainerLeftLabel}>
+                {briefSelectedTimesAsFormattedString}
+              </Text>
             </View>
             <DownArrowIcon useTouch />
           </View>
