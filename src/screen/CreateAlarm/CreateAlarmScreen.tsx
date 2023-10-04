@@ -162,7 +162,7 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
               <View style={s.itemBlockRight}>
                 <Text style={s.itemBlockLabel}>주중</Text>
                 <View style={s.itemBlockRightSpacer} />
-                <RightArrowIcon style={s.itemBlockIcon} useTouch />
+                <RightArrowIcon style={s.itemBlockIcon} />
               </View>
             </View>
           </TouchableNativeFeedback>
@@ -190,7 +190,7 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
                   <View style={s.itemBlockRight}>
                     <Text style={s.itemBlockLabel}>기본알람</Text>
                     <View style={s.itemBlockRightSpacer} />
-                    <RightArrowIcon style={s.itemBlockIcon} useTouch />
+                    <RightArrowIcon style={s.itemBlockIcon} />
                   </View>
                 </View>
               </TouchableNativeFeedback>
