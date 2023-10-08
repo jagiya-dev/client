@@ -1,34 +1,25 @@
-import { sounds } from "@/audio";
+import { ESoundName, sounds } from "@/audio";
 import Text from "@/components/Text";
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { RadioGroup } from "react-native-radio-buttons-group";
 
-const radioButtons = [
-  {
-    id: "1",
-    label: "sound 1",
-    value: "sound 1",
-  },
-  {
-    id: "2",
-    label: "sound 2",
-    value: "sound 2",
-  },
-  {
-    id: "3",
-    label: "sound 3",
-    value: "sound 3",
-  },
-];
+const radioButtons = Object.values(ESoundName).map((soundName) => ({
+  id: soundName,
+  label: soundName,
+  value: soundName,
+  selected: false,
+}));
 
 const AlarmSoundContainer = () => {
   const [selectedId, setSelectedId] = useState<string>("");
 
   const onPress_Sound = (soundId: string) => {
+    console.log("selected sound id: ", soundId);
+
     setSelectedId(soundId);
 
-    const sound = sounds.get("table_clock");
+    const sound = sounds.get(soundId as ESoundName);
     if (!sound) return;
     if (sound.isLoaded()) {
       sound.play((success) => {

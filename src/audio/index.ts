@@ -5,37 +5,53 @@ import Sound from "react-native-sound";
 Sound.setCategory("Playback");
 
 const getAudioFileExtensionByPlatform = () =>
-  Platform.OS === "android" ? `ogg` : `aac`;
+  Platform.OS === "android" ? ".ogg" : ".aac";
 
-const defaultSoundLoadCallback = (error: Error) => {
+export enum ESoundName {
+  emergency = "emergency",
+  gravelRain = "gravel_rain",
+  pedestrianRain = "pedestrian_rain",
+  tableClock = "table_clock",
+  tamacRain = "tamac_rain",
+  thunderRain2 = "thunder_rain2",
+  thunderRain = "thunder_rain",
+  trailRain = "trail_rain",
+  underRoofRain = "underRoof_rain",
+  valleyRain = "valley_rain",
+}
+const soundName: ReadonlyArray<string> = Object.values(ESoundName);
+
+const defaultSoundLoadCallback = (
+  error: Error,
+  soundResult: Sound,
+  soundName: string,
+) => {
   if (error) {
-    console.log(`[${Platform.OS}] failed to load the sound`, error);
+    console.log(
+      `[${Platform.OS}] failed to load the sound ${soundName}`,
+      error,
+    );
     return;
   }
 
   // loaded successfully
   console.log(
-    `[${Platform.OS}] LOAD SUCCESS! `,
-    // duration: ${tableClockSound.getDuration().toFixed(2)}s,
-    // number of channels: ${tableClockSound.getNumberOfChannels()}`,
+    `[${Platform.OS}] LOAD SUCCESS! 
+     loaded file: ${soundName},
+     duration: ${soundResult.getDuration().toFixed(2)}s,
+     number of channels: ${soundResult.getNumberOfChannels()}`,
   );
 };
 
-const soundName: ReadonlyArray<string> = ["table_clock", "emergency"];
-
-const soundInitializer = () => soundInitializer;
-
-export const sounds = new Map<string, Sound>(
+export const sounds = new Map<ESoundName, Sound>(
   soundName.map((config) => {
-    const key = config[0] as string;
+    const soundName = config as string;
+    const soundResult: Sound = new Sound(
+      soundName + getAudioFileExtensionByPlatform(),
+      Sound.MAIN_BUNDLE,
+      (error) => defaultSoundLoadCallback(error, soundResult, soundName),
+    );
 
-    return [
-      key,
-      new Sound(
-        key + getAudioFileExtensionByPlatform(),
-        Sound.MAIN_BUNDLE,
-        defaultSoundLoadCallback,
-      ),
-    ];
+    return [soundName as ESoundName, soundResult];
   }),
 );

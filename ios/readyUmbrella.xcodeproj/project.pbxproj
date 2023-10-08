@@ -15,7 +15,6 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		20DD9599318E4550818E881E /* table_clock.aac in Resources */ = {isa = PBXBuildFile; fileRef = 7019F9D025CE4D1D9B690CDA /* table_clock.aac */; };
-		496EAC90804C491B904ADC79 /* underRoot_rain.aac in Resources */ = {isa = PBXBuildFile; fileRef = 0CCBCEE4A1A348D58E068269 /* underRoot_rain.aac */; };
 		49D482F278F649C482EE4367 /* pedestrian_rain.aac in Resources */ = {isa = PBXBuildFile; fileRef = 29DCA7911DED46B196BC9710 /* pedestrian_rain.aac */; };
 		5E6215212F1F42EF8CA3088F /* emergency.aac in Resources */ = {isa = PBXBuildFile; fileRef = 73A284BC85B247E8AD8D480F /* emergency.aac */; };
 		7072F494150D43309408E926 /* thunder_rain.aac in Resources */ = {isa = PBXBuildFile; fileRef = AFB72A38E2A14D98904B43DE /* thunder_rain.aac */; };
@@ -31,6 +30,7 @@
 		E4CC1301900F4E58A4F7C6D7 /* trail_rain.aac in Resources */ = {isa = PBXBuildFile; fileRef = C0DD177574AD475797CD0B3F /* trail_rain.aac */; };
 		E7486EABD5634819A14C05B8 /* valley_rain.aac in Resources */ = {isa = PBXBuildFile; fileRef = 815C6F1EA9104697BD578B38 /* valley_rain.aac */; };
 		FF54325816454455AB77E1E4 /* thunder_rain_2.aac in Resources */ = {isa = PBXBuildFile; fileRef = 1514B9C0904B4FEBB6489A71 /* thunder_rain_2.aac */; };
+		61CE41C2125F464E8C979AA7 /* underRoof_rain.aac in Resources */ = {isa = PBXBuildFile; fileRef = 0E220E6781BC432699155E61 /* underRoof_rain.aac */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,7 +48,6 @@
 		00E356EE1AD99517003FC87E /* readyUmbrellaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = readyUmbrellaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* readyUmbrellaTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = readyUmbrellaTests.m; sourceTree = "<group>"; };
-		0CCBCEE4A1A348D58E068269 /* underRoot_rain.aac */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = underRoot_rain.aac; path = ../assets/audio/ios/underRoot_rain.aac; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* readyUmbrella.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = readyUmbrella.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = readyUmbrella/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = readyUmbrella/AppDelegate.mm; sourceTree = "<group>"; };
@@ -82,6 +81,7 @@
 		CE7DC411E3B74287934B43BA /* thunder.aac */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = thunder.aac; path = ../assets/audio/ios/thunder.aac; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		EDB35456EBA74ABDAD235971 /* tamac_rain.aac */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = tamac_rain.aac; path = ../assets/audio/ios/tamac_rain.aac; sourceTree = "<group>"; };
+		0E220E6781BC432699155E61 /* underRoof_rain.aac */ = {isa = PBXFileReference; name = "underRoof_rain.aac"; path = "../assets/audio/ios/underRoof_rain.aac"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -210,8 +210,8 @@
 				AFB72A38E2A14D98904B43DE /* thunder_rain.aac */,
 				1514B9C0904B4FEBB6489A71 /* thunder_rain_2.aac */,
 				C0DD177574AD475797CD0B3F /* trail_rain.aac */,
-				0CCBCEE4A1A348D58E068269 /* underRoot_rain.aac */,
 				815C6F1EA9104697BD578B38 /* valley_rain.aac */,
+				0E220E6781BC432699155E61 /* underRoof_rain.aac */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -327,8 +327,8 @@
 				7072F494150D43309408E926 /* thunder_rain.aac in Resources */,
 				FF54325816454455AB77E1E4 /* thunder_rain_2.aac in Resources */,
 				E4CC1301900F4E58A4F7C6D7 /* trail_rain.aac in Resources */,
-				496EAC90804C491B904ADC79 /* underRoot_rain.aac in Resources */,
 				E7486EABD5634819A14C05B8 /* valley_rain.aac in Resources */,
+				61CE41C2125F464E8C979AA7 /* underRoof_rain.aac in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
