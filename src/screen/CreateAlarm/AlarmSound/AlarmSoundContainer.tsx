@@ -96,7 +96,6 @@ const s = StyleSheet.create({
   radioGroupItem: {
     width: "100%",
 
-    flex: 1,
     alignItems: "center",
 
     paddingVertical: 17,

@@ -52,3 +52,9 @@ export type TimetableItem = {
   state: ETimeTableItemState;
   isAM: boolean;
 };
+
+export type RepeatItem = {
+  id: string;
+  label: string;
+  isSelected: boolean;
+};
