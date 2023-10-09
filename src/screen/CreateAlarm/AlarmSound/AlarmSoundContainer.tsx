@@ -1,4 +1,4 @@
-import { ESoundName, soundNameAsLabel, sounds } from "@/audio";
+import { behaviours, ESoundName, soundNameAsLabel, sounds } from "@/audio";
 import Text from "@/components/Text";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
@@ -33,8 +33,10 @@ const AlarmSoundContainer = () => {
     console.log("selected sound id: ", soundId);
 
     setSelectedId(soundId);
+    const soundNameAsEnum = soundId as ESoundName;
+    behaviours.selectSound(soundNameAsEnum);
 
-    const sound = sounds.get(soundId as ESoundName);
+    const sound = sounds.get(soundNameAsEnum);
     if (!sound) return;
     if (sound.isLoaded()) {
       sound.play((success) => {
