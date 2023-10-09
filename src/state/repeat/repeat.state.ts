@@ -1,4 +1,4 @@
-import { BehaviorSubject, filter } from "rxjs";
+import { BehaviorSubject, map } from "rxjs";
 import { RepeatItem } from "@/typing";
 
 const repeatItemData: readonly RepeatItem[] = [
@@ -45,12 +45,12 @@ const repeatStateSubject = new BehaviorSubject<readonly RepeatItem[]>(
 
 export const whenRepeatStateChanges = repeatStateSubject.asObservable();
 export const onlySelectedRepeatItems$ = repeatStateSubject.pipe(
-  filter((items) => items.some((item) => item.isSelected)),
+  map((items) => items.filter((item) => item.isSelected)),
 );
 
-const toggleRepeatItem = (id: string) => {
+const toggleRepeatItem = (id: string): void => {
   const { value } = repeatStateSubject;
-  if (!value) return value;
+  if (!value) return;
 
   const newRepeatItems = value.map((item) =>
     item.id === id

@@ -53,8 +53,15 @@ export type TimetableItem = {
   isAM: boolean;
 };
 
-export type RepeatItem = {
+export type RadioButtonUnderlyingType = {
   id: string;
-  label: string;
+  label?: string;
+};
+
+export type RepeatItem = RadioButtonUnderlyingType & {
+  isSelected: boolean;
+};
+
+export type SoundItem = RadioButtonUnderlyingType & {
   isSelected: boolean;
 };

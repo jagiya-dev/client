@@ -1,54 +1,18 @@
-import { behaviours, ESoundName, soundNameAsLabel, sounds } from "@/audio";
+import { ESoundName, soundResourcesMap } from "@/audio";
 import Text from "@/components/Text";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
-import { useMemo, useState } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
-import RadioButtonsGroup, {
-  type RadioButtonProps,
-} from "react-native-radio-buttons-group";
+import { StyleSheet, View } from "react-native";
 import { widthPercentageToDP } from "react-native-responsive-screen";
+import { behaviours, whenSoundItemsChange } from "@/state/sound/sound.state";
+import RadioButtonContainer from "@/components/radioButtons/RadioButtonContainer";
+import { useObservableState } from "@/hook/useObservableState";
 
 const AlarmSoundContainer = () => {
-  const [selectedId, setSelectedId] = useState<string>("");
-
-  const radioButtons: RadioButtonProps[] = useMemo(
-    () =>
-      Object.values(ESoundName).map((soundName: ESoundName, i) => ({
-        id: soundName,
-        label: soundNameAsLabel(soundName),
-        value: soundName,
-
-        borderColor: color.gray["200"],
-        borderSize: 2.5,
-        size: 28,
-
-        labelStyle: s.radioButtonItemText,
-        containerStyle: s.radioGroupItem,
-      })),
-    [s],
-  );
-
-  const onPress_Sound = (soundId: string) => {
-    console.log("selected sound id: ", soundId);
-
-    setSelectedId(soundId);
-    const soundNameAsEnum = soundId as ESoundName;
-    behaviours.selectSound(soundNameAsEnum);
-
-    const sound = sounds.get(soundNameAsEnum);
-    if (!sound) return;
-    if (sound.isLoaded()) {
-      sound.play((success) => {
-        if (success) {
-          console.log("successfully finished playing");
-          return;
-        }
-
-        console.log("playback failed due to audio decoding errors");
-      });
-    }
-  };
+  const soundItems = useObservableState({
+    observable: whenSoundItemsChange,
+  });
+  if (!soundItems) return null;
 
   return (
     <View style={s.root}>
@@ -56,14 +20,11 @@ const AlarmSoundContainer = () => {
         <Text style={s.title}>사운드</Text>
       </View>
 
-      <ScrollView horizontal={false} showsHorizontalScrollIndicator={false}>
-        <RadioButtonsGroup
-          radioButtons={radioButtons}
-          containerStyle={s.radioGroupContainer}
-          onPress={onPress_Sound}
-          selectedId={selectedId}
-        />
-      </ScrollView>
+      <RadioButtonContainer
+        data={soundItems}
+        isSelected={behaviours.isSelected}
+        onPressItem={behaviours.selectSound}
+      />
     </View>
   );
 };

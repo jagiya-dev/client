@@ -25,10 +25,6 @@ import { widthPercentageToDP } from "react-native-responsive-screen";
 import { Slider } from "@miblanchard/react-native-slider";
 import { SliderOnChangeCallback } from "@miblanchard/react-native-slider/lib/types";
 import { useObservableState } from "@/hook/useObservableState";
-import {
-  behaviours as soundBehaviours,
-  whenSoundVolumeChange,
-} from "@/state/sound/sound.state";
 import { Button } from "@/components/button";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackParamList } from "@/typing";
@@ -38,6 +34,10 @@ import BottomSheet, {
 import RepeatContainer from "@/screen/CreateAlarm/Repeat/RepeatContainer";
 import AlarmSoundContainer from "@/screen/CreateAlarm/AlarmSound/AlarmSoundContainer";
 import ReminderContainer from "@/screen/CreateAlarm/Reminder/ReminderContainer";
+import {
+  behaviours,
+  whenSoundVolumeChange,
+} from "@/state/sound/soundVolume.state";
 
 type ScreenProps = NativeStackScreenProps<StackParamList, "CreateAlarm">;
 
@@ -76,7 +76,7 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
     if (isNaN(value[0])) return;
 
     const volume = Number(value[0].toFixed(2));
-    soundBehaviours.setSoundVolume(volume);
+    behaviours.setSoundVolume(volume);
   };
 
   useEffect(() => {

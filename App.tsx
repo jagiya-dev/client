@@ -2,9 +2,7 @@ import { Platform, StatusBar } from "react-native";
 
 import Codepush from "@/util/codepush";
 
-import { RecoilRoot } from "recoil";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { RecoilDebugObserver } from "reactotron-recoil-plugin";
 import { instance } from "./reactotron.config";
 import { useRegisterForegroundReceive } from "@/firebase/fcm/useSetForegroundPushNotification";
 import { ProcessPermission } from "@/permissions";
@@ -45,11 +43,8 @@ const App = () => {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <RecoilRoot>
-        <RecoilDebugObserver instance={instance} />
-        <StatusBar />
-        <Navigation />
-      </RecoilRoot>
+      <StatusBar />
+      <Navigation />
     </GestureHandlerRootView>
   );
 };

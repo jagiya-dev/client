@@ -1,6 +1,5 @@
 import { Platform } from "react-native";
 import Sound from "react-native-sound";
-import { BehaviorSubject } from "rxjs";
 
 // init react-native-sound
 Sound.setCategory("Playback");
@@ -69,7 +68,7 @@ const defaultSoundLoadCallback = (
   // );
 };
 
-export const sounds = new Map<ESoundName, Sound>(
+export const soundResourcesMap = new Map<ESoundName, Sound>(
   soundName.map((config) => {
     const soundName = config as string;
     const soundResult: Sound = new Sound(
@@ -81,16 +80,3 @@ export const sounds = new Map<ESoundName, Sound>(
     return [soundName as ESoundName, soundResult];
   }),
 );
-
-const selectedSoundSubject = new BehaviorSubject<ESoundName | undefined>(
-  undefined,
-);
-export const whenSelectedSoundChanges = selectedSoundSubject.asObservable();
-
-const selectSound = (soundName: ESoundName) => {
-  selectedSoundSubject.next(soundName);
-};
-
-export const behaviours = {
-  selectSound,
-};
