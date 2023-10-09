@@ -99,4 +99,11 @@ export const font = {
       weight: "400", // regular
     },
   },
+  selector: {
+    "1": {
+      size: 24,
+      height: 30,
+      weight: "400", // semibold
+    },
+  },
 } as const;

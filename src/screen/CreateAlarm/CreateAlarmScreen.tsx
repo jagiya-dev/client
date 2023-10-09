@@ -340,6 +340,7 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
         <BottomSheet
           bOpen={reminderBottomSheetState}
           setIsOpen={setReminderBottomSheetState}
+          height={60}
         >
           <ReminderContainer />
         </BottomSheet>

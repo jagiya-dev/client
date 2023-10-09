@@ -1,4 +1,3 @@
-import { ESoundName, soundResourcesMap } from "@/audio";
 import Text from "@/components/Text";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";

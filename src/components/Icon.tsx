@@ -129,6 +129,18 @@ export const UmbrellaDisabledIcon = (props: IconProps) => (
   </TouchableOpacity>
 );
 
+export const SelectedCircle = (props: IconProps) => (
+  <TouchableOpacity disabled={!props.useTouch}>
+    <Image source={require("#/icons/selected_circle.png")} {...props} />
+  </TouchableOpacity>
+);
+
+export const UnselectedCircle = (props: IconProps) => (
+  <TouchableOpacity disabled={!props.useTouch}>
+    <Image source={require("#/icons/unselected_circle.png")} {...props} />
+  </TouchableOpacity>
+);
+
 export const IconFactoryByWeatherModel = (
   weather: WeatherModel["weather"],
   style: StyleProp<ImageStyle>,

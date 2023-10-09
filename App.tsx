@@ -3,7 +3,6 @@ import { Platform, StatusBar } from "react-native";
 import Codepush from "@/util/codepush";
 
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { instance } from "./reactotron.config";
 import { useRegisterForegroundReceive } from "@/firebase/fcm/useSetForegroundPushNotification";
 import { ProcessPermission } from "@/permissions";
 // import { useInitNotification } from "@/util/notification/useInitNotification";

@@ -53,15 +53,17 @@ export type TimetableItem = {
   isAM: boolean;
 };
 
-export type RadioButtonUnderlyingType = {
+export type ListItemsUnderLyingType = {
   id: string;
   label?: string;
 };
 
-export type RepeatItem = RadioButtonUnderlyingType & {
+export type RepeatItem = ListItemsUnderLyingType & {
   isSelected: boolean;
 };
 
-export type SoundItem = RadioButtonUnderlyingType & {
+export type SoundItem = ListItemsUnderLyingType & {
   isSelected: boolean;
 };
+
+export type ReminderIntervalItem = ListItemsUnderLyingType & {};

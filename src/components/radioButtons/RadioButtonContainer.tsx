@@ -3,16 +3,17 @@ import Text from "@/components/Text";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import { font } from "@/styles/font";
 import { color } from "@/styles/color";
-import { RadioButtonUnderlyingType } from "@/typing";
+import { ListItemsUnderLyingType } from "@/typing";
+import { SelectedCircle, UnselectedCircle } from "@/components/Icon";
 
-type Props<T extends RadioButtonUnderlyingType> = {
+type Props<T extends ListItemsUnderLyingType> = {
   data: readonly T[];
   isSelected: (id: string) => boolean;
   onPressItem?: (id: string) => void;
   isHorizontal?: boolean;
 };
 
-const RadioButtonContainer = <T extends RadioButtonUnderlyingType>(
+const RadioButtonContainer = <T extends ListItemsUnderLyingType>(
   props: Props<T>,
 ) => (
   <ScrollView
@@ -29,12 +30,11 @@ const RadioButtonContainer = <T extends RadioButtonUnderlyingType>(
       >
         {/* radio button circle */}
         <View style={s.item}>
-          <View
-            style={[
-              s.radioButton,
-              props.isSelected(item.id) ? s.radioButtonSelected : {},
-            ]}
-          />
+          {props.isSelected(item.id) ? (
+            <SelectedCircle />
+          ) : (
+            <UnselectedCircle />
+          )}
 
           {!!item.label && <Text style={s.itemText}>{item.label}</Text>}
         </View>
