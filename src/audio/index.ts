@@ -19,6 +19,31 @@ export enum ESoundName {
   underRoofRain = "underRoof_rain",
   valleyRain = "valley_rain",
 }
+
+export const soundNameAsLabel = (soundName: ESoundName) => {
+  switch (soundName) {
+    case ESoundName.emergency:
+      return "긴급";
+    case ESoundName.gravelRain:
+      return "자갈밭";
+    case ESoundName.pedestrianRain:
+      return "보도블럭";
+    case ESoundName.tableClock:
+      return "탁상시계";
+    case ESoundName.tamacRain:
+      return "아스팔트";
+    case ESoundName.thunderRain:
+      return "천둥";
+    case ESoundName.thunderRain2:
+      return "천둥2";
+    case ESoundName.trailRain:
+      return "산책로";
+    case ESoundName.underRoofRain:
+      return "지붕아래";
+    case ESoundName.valleyRain:
+      return "계곡";
+  }
+};
 const soundName: ReadonlyArray<string> = Object.values(ESoundName);
 
 const defaultSoundLoadCallback = (
@@ -35,12 +60,12 @@ const defaultSoundLoadCallback = (
   }
 
   // loaded successfully
-  console.log(
-    `[${Platform.OS}] LOAD SUCCESS! 
-     loaded file: ${soundName},
-     duration: ${soundResult.getDuration().toFixed(2)}s,
-     number of channels: ${soundResult.getNumberOfChannels()}`,
-  );
+  // console.log(
+  //   `[${Platform.OS}] LOAD SUCCESS!
+  //    loaded file: ${soundName},
+  //    duration: ${soundResult.getDuration().toFixed(2)}s,
+  //    number of channels: ${soundResult.getNumberOfChannels()}`,
+  // );
 };
 
 export const sounds = new Map<ESoundName, Sound>(
