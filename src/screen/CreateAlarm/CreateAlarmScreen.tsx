@@ -38,6 +38,7 @@ import {
   behaviours,
   whenSoundVolumeChange,
 } from "@/state/sound/soundVolume.state";
+import BottomButton from "@/components/fixed/BottomButton";
 
 type ScreenProps = NativeStackScreenProps<StackParamList, "CreateAlarm">;
 
@@ -305,21 +306,17 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
         </View>
       </ScrollView>
 
-      {/* 5. save */}
-      <View style={s.saveContainer}>
-        <Button
-          style={s.saveButton}
-          onPress={onPressButton_SaveAndSetNewNotification}
-        >
-          <Text style={s.saveButtonInnerText}>완료</Text>
-        </Button>
-      </View>
+      <BottomButton
+        onPress={onPressButton_SaveAndSetNewNotification}
+        text="확인"
+      />
 
       {/* 반복 바텀시트 */}
       {repeatBottomSheetState === EBottomSheetOpenState.OPEN && (
         <BottomSheet
           bOpen={repeatBottomSheetState}
           setIsOpen={setRepeatBottomSheetState}
+          height={70}
         >
           <RepeatContainer />
         </BottomSheet>

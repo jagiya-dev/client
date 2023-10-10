@@ -1,17 +1,26 @@
 import Text from "@/components/Text";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
-import { StyleSheet, View } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import { behaviours, whenSoundItemsChange } from "@/state/sound/sound.state";
 import RadioButtonContainer from "@/components/radioButtons/RadioButtonContainer";
 import { useObservableState } from "@/hook/useObservableState";
+import { Button } from "@/components/button";
+import { useBottomSheet } from "@gorhom/bottom-sheet";
+import BottomButton from "@/components/fixed/BottomButton";
 
 const AlarmSoundContainer = () => {
+  const { close } = useBottomSheet();
+
   const soundItems = useObservableState({
     observable: whenSoundItemsChange,
   });
   if (!soundItems) return null;
+
+  const onPress_saveAlarmSound = () => {
+    close();
+  };
 
   return (
     <View style={s.root}>
@@ -24,6 +33,8 @@ const AlarmSoundContainer = () => {
         isSelected={behaviours.isSelected}
         onPressItem={behaviours.selectSound}
       />
+
+      <BottomButton onPress={onPress_saveAlarmSound} text="확인" />
     </View>
   );
 };

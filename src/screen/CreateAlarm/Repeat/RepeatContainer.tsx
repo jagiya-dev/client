@@ -6,13 +6,21 @@ import { widthPercentageToDP } from "react-native-responsive-screen";
 import { behaviors, whenRepeatStateChanges } from "@/state/repeat/repeat.state";
 import { useObservableState } from "@/hook/useObservableState";
 import RadioButtonContainer from "@/components/radioButtons/RadioButtonContainer";
+import { useBottomSheet } from "@gorhom/bottom-sheet";
+import BottomButton from "@/components/fixed/BottomButton";
 
 const RepeatContainer = () => {
+  const { close } = useBottomSheet();
+
   const repeatItemData = useObservableState({
     observable: whenRepeatStateChanges,
   });
 
   if (!repeatItemData) return null;
+
+  const onPress_saveRepeat = () => {
+    close();
+  };
 
   return (
     <View style={s.root}>
@@ -25,6 +33,8 @@ const RepeatContainer = () => {
         isSelected={behaviors.isSelected}
         onPressItem={behaviors.toggleRepeatItem}
       />
+
+      <BottomButton onPress={onPress_saveRepeat} text="확인" />
     </View>
   );
 };
