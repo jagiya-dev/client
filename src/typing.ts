@@ -32,13 +32,38 @@ export type StackParamList = {
   KakaoLogin: {
     redirectUrl: string;
   };
-  Alarm: undefined;
+  CreateAlarm: undefined;
   ActivatedAlarm: undefined;
   AlarmDetail: undefined;
+  AddRegion: undefined;
   Settings: undefined;
-  AlarmDefer: undefined;
 };
 
-export type LocationModel = {
+export type LocationModel = {};
 
+export enum ETimeTableItemState {
+  none,
+  selected,
+  disabled,
+}
+
+export type TimetableItem = {
+  time: string;
+  state: ETimeTableItemState;
+  isAM: boolean;
 };
+
+export type ListItemsUnderLyingType = {
+  id: string;
+  label?: string;
+};
+
+export type RepeatItem = ListItemsUnderLyingType & {
+  isSelected: boolean;
+};
+
+export type SoundItem = ListItemsUnderLyingType & {
+  isSelected: boolean;
+};
+
+export type ReminderIntervalItem = ListItemsUnderLyingType & {};

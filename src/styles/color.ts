@@ -24,6 +24,7 @@ export const color = {
     200: "#C5C8CB",
     100: "#EDF0F3",
     50: "#F9FAFB",
+    10: "#212121",
     0: "#FFFFFF",
   },
   warning: "#ED7267",

@@ -16,6 +16,50 @@
     {
       "path": "assets/fonts/Pretendard-SemiBold.ttf",
       "sha1": "75346154e3ad0d13eda425d66b625f007ef00f1b"
+    },
+    {
+      "path": "assets/audio/ios/emergency.aac",
+      "sha1": "55168c63f99829c099108be2be5b17883543147c"
+    },
+    {
+      "path": "assets/audio/ios/gravel_rain.aac",
+      "sha1": "4c798529dc11cbc4eaf877841b4c69a498f24522"
+    },
+    {
+      "path": "assets/audio/ios/pedestrian_rain.aac",
+      "sha1": "21045673d5b99deef0d132fde92210d8b76b8065"
+    },
+    {
+      "path": "assets/audio/ios/table_clock.aac",
+      "sha1": "a13900460937c816a7dfc457731adcd9e4b2998b"
+    },
+    {
+      "path": "assets/audio/ios/tamac_rain.aac",
+      "sha1": "7b66f181f3f6c4cca62795da8e9a11894d3265ac"
+    },
+    {
+      "path": "assets/audio/ios/thunder.aac",
+      "sha1": "0b1c1965d6494800e5001ba7269e0910d848baa5"
+    },
+    {
+      "path": "assets/audio/ios/thunder_rain.aac",
+      "sha1": "6273e20a05913d156bb9c258fd1375da21415254"
+    },
+    {
+      "path": "assets/audio/ios/thunder_rain_2.aac",
+      "sha1": "af85ea5db74891b95e7a4291d7ff2c96eca1fd4b"
+    },
+    {
+      "path": "assets/audio/ios/trail_rain.aac",
+      "sha1": "cf5162a91a795e1a3ebb46d86b0e669f20ba70b3"
+    },
+    {
+      "path": "assets/audio/ios/underRoof_rain.aac",
+      "sha1": "8701889bb4f7b7a63faf36818cf77f63201b5feb"
+    },
+    {
+      "path": "assets/audio/ios/valley_rain.aac",
+      "sha1": "83ad8b9775e21effce447dd8cf59269a34aaf57d"
     }
   ]
 }

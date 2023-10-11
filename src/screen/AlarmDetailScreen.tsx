@@ -8,8 +8,8 @@ import {
 import { Button } from "@/components/button";
 import { CloseIcon } from "@/components/Icon";
 import { useObservableState } from "@/hook/useObservableState";
-import { alarmModelSubject } from "@/state/alarm/alarm.state";
-import { useMemo, useState } from "react";
+import { whenAlarmModel } from "@/state/alarm/alarm.state";
+import { useMemo } from "react";
 import LocationItem from "@/components/location/LocationItem";
 import { font } from "@/styles/font";
 import { color } from "@/styles/color";
@@ -19,7 +19,7 @@ import { StackParamList } from "@/typing";
 type ScreenProps = NativeStackScreenProps<StackParamList, "AlarmDetail">;
 const AlarmDetailScreen = ({ route, navigation }: ScreenProps) => {
   const alarms = useObservableState({
-    observable: alarmModelSubject
+    observable: whenAlarmModel
   });
 
   const onPressButton_ExitAlarmDetailScreen = () => {

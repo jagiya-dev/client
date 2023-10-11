@@ -6,13 +6,15 @@ import { widthPercentageToDP } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AlarmDeferModal from "@/components/alarm/AlarmDeferModal";
+import { startCountdown } from "@/state/alarmDefer/alarmDefer.state";
+import DeviceInfo from "react-native-device-info";
 
 type PageProps = NativeStackScreenProps<StackParamList, "ActivatedAlarm">;
 
 const ActivatedAlarmScreen = ({ route, navigation }: PageProps) => {
-  const [ isDeferred, setDeferred ] = useState<boolean>(false);
+  const [isDeferred, setDeferred] = useState<boolean>(false);
 
   const onPressButton_closeAlarm = () => {
     navigation.navigate("AlarmDetail");
@@ -23,6 +25,7 @@ const ActivatedAlarmScreen = ({ route, navigation }: PageProps) => {
     // todo : notify later.
 
     setDeferred(true);
+    startCountdown();
   };
 
   return (
@@ -139,12 +142,10 @@ const s = StyleSheet.create({
   weatherImage: {
     width: 274.883,
     height: 304.739,
-    backgroundColor: "black",
   },
   rainImage: {
     width: 274.883,
     height: 304.739,
-    backgroundColor: "black",
     position: "absolute",
     top: 0,
     zIndex: -1,

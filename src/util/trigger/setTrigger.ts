@@ -1,10 +1,12 @@
-import { AndroidNotificationSetting } from "./../../../node_modules/@notifee/react-native/src/types/NotificationAndroid";
+import {
+  AndroidNotificationSetting
+} from "./../../../node_modules/@notifee/react-native/src/types/NotificationAndroid";
 import notifee from "@notifee/react-native";
 import { TriggerType } from "@notifee/react-native/src/types/Trigger";
 import { TimestampTrigger } from "@notifee/react-native/dist/types/Trigger";
 import dayjs from "dayjs";
 
-export async function setTrigger() {
+async function setTrigger() {
   const settings = await notifee.getNotificationSettings();
   if (settings.android.alarm == AndroidNotificationSetting.DISABLED) {
     await notifee.openAlarmPermissionSettings();
@@ -41,3 +43,12 @@ export async function setTrigger() {
     trigger,
   );
 }
+
+export const createNewTrigger = async () => {
+  try {
+    await setTrigger();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
