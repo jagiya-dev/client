@@ -1,115 +1,88 @@
 import Text from "@/components/Text";
-import { Platform, ScrollView, StyleSheet, View } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
 import { font } from "@/styles/font";
 import { color } from "@/styles/color";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import { ReminderIntervalItem } from "@/typing";
-import { useRef } from "react";
 import { BottomSheetScrollView, useBottomSheet } from "@gorhom/bottom-sheet";
-import { Button } from "@/components/button";
 import BottomButton from "@/components/fixed/BottomButton";
 
-const reminderIntervals: ReminderIntervalItem[] = [
-  // {
-  //   id: "0",
-  //   label: "",
-  // },
-  {
-    id: "1",
-    label: "",
-  },
-  {
-    id: "2",
-    label: "",
-  },
-  {
-    id: "3",
-    label: "",
-  },
+const reminderItemsIOS: readonly ReminderIntervalItem[] = [
+  ...new Array(4).fill(0).map((_, i) => ({ id: i.toString(), label: "" })),
   {
     id: "4",
-    label: "",
-  },
-  {
-    id: "5",
-    label: "",
-  },
-  {
-    id: "6",
     label: "1분",
   },
   {
-    id: "7",
+    id: "5",
     label: "3분",
   },
   {
-    id: "8",
+    id: "6",
     label: "5분",
   },
   {
-    id: "9",
+    id: "7",
     label: "10분",
   },
   {
-    id: "10",
+    id: "8",
     label: "15분",
   },
   {
-    id: "11",
+    id: "9",
     label: "30분",
   },
   {
-    id: "12",
+    id: "10",
     label: "60분",
+  }, // 6
+  ...new Array(6).fill(0).map((_, i) => ({ id: i.toString(), label: "" })),
+];
+
+const reminderItemsAndroid: readonly ReminderIntervalItem[] = [
+  ...new Array(4).fill(0).map((_, i) => ({ id: i.toString(), label: "" })),
+  {
+    id: "4",
+    label: "1분",
   },
   {
-    id: "13",
-    label: "",
+    id: "5",
+    label: "3분",
   },
   {
-    id: "14",
-    label: "",
+    id: "6",
+    label: "5분",
   },
   {
-    id: "15",
-    label: "",
+    id: "7",
+    label: "10분",
   },
   {
-    id: "16",
-    label: "",
+    id: "8",
+    label: "15분",
   },
   {
-    id: "17",
-    label: "",
+    id: "9",
+    label: "30분",
   },
   {
-    id: "18",
-    label: "",
-  },
-  {
-    id: "19",
-    label: "",
-  },
-  // {
-  //   id: "20",
-  //   label: "",
-  // },
+    id: "10",
+    label: "60분",
+  }, // 6
+  ...new Array(8).fill(0).map((_, i) => ({ id: i.toString(), label: "" })),
 ];
 
 const ReminderContainer = () => {
   const { close } = useBottomSheet();
-  const scrollViewRef = useRef<ScrollView>(null);
-
-  // useEffect(() => {
-  //   scrollViewRef.current?.scrollTo({
-  //     y: 36 + 6,
-  //     animated: true,
-  //   });
-  // }, []);
 
   const onPress_saveReminder = () => {
     close();
   };
+
+  const reminderItems =
+    Platform.OS === "ios" ? reminderItemsIOS : reminderItemsAndroid;
+  console.log(reminderItems);
 
   return (
     <View style={s.root}>
@@ -118,14 +91,14 @@ const ReminderContainer = () => {
       </View>
 
       <View style={s.highlightingReminderItem} />
+
       <BottomSheetScrollView
-        // ref={scrollViewRef}
         nestedScrollEnabled
         snapToAlignment={Platform.OS === "ios" ? "center" : "start"}
-        snapToInterval={Platform.OS === "ios" ? 36 : 36 - 10}
+        snapToInterval={Platform.OS === "ios" ? 36 : 36}
         contentContainerStyle={s.reminderItemContainer}
       >
-        {reminderIntervals.map((item) => (
+        {reminderItems.map((item) => (
           <View key={item.id} style={s.reminderItem}>
             <Text style={s.reminderItemText}>{item.label}</Text>
           </View>
@@ -166,7 +139,8 @@ const s = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     height: 36,
-    paddingVertical: 3,
+    // maxHeight: 36,
+    // paddingVertical: 3,
     // ...Platform.select({
     //   ios: {
     //     paddingVertical: 3,
@@ -189,8 +163,15 @@ const s = StyleSheet.create({
     width: "90%",
 
     position: "absolute",
-    top: "42%",
     left: 20,
+    ...Platform.select({
+      ios: {
+        top: "42%",
+      },
+      android: {
+        top: "38%",
+      },
+    }),
   },
 
   saveContainer: {
