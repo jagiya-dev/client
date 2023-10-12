@@ -37,6 +37,7 @@ export type StackParamList = {
   AlarmDetail: undefined;
   AddRegion: undefined;
   Settings: undefined;
+  MyInfo: undefined;
 };
 
 export type LocationModel = {};

@@ -13,13 +13,14 @@ import {
   createNavigationContainerRef,
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import MyInfoScreen from "@/screen/MyInfo";
 
 const Stack = createNativeStackNavigator<StackParamList>();
 const navRef = createNavigationContainerRef();
 
 const Navigation = () => (
   <NavigationContainer ref={navRef}>
-    <Stack.Navigator initialRouteName="CreateAlarm">
+    <Stack.Navigator initialRouteName="MyInfo">
       <Stack.Screen
         name="Main"
         component={MainScreen}
@@ -44,6 +45,7 @@ const Navigation = () => (
           headerTitleStyle: {
             fontSize: font.body["1"].size,
             fontWeight: font.body["1"].weight,
+            fontFamily: "Pretendard",
           },
         }}
       />
@@ -82,13 +84,59 @@ const Navigation = () => (
           headerTitleStyle: {
             fontSize: font.body["1"].size,
             fontWeight: font.body["1"].weight,
+            fontFamily: "Pretendard",
           },
         }}
       />
       <Stack.Screen
         name="Settings"
         component={SettingsScreen}
-        options={{ title: "", headerShown: false }}
+        options={{
+          title: "설정",
+          headerLeft: (props) => (
+            <LeftArrowIcon
+              onPress={() => {
+                if (props.canGoBack) {
+                  navRef.goBack();
+                }
+              }}
+              useTouch
+            />
+          ),
+          headerShadowVisible: false,
+          headerBackTitleVisible: false,
+          headerTitleAlign: "center",
+          headerTitleStyle: {
+            fontSize: font.body["1"].size,
+            fontWeight: font.body["1"].weight,
+            fontFamily: "Pretendard",
+          },
+        }}
+      />
+      <Stack.Screen
+        name="MyInfo"
+        component={MyInfoScreen}
+        options={{
+          title: "내 정보",
+          headerLeft: (props) => (
+            <LeftArrowIcon
+              onPress={() => {
+                if (props.canGoBack) {
+                  navRef.goBack();
+                }
+              }}
+              useTouch
+            />
+          ),
+          headerShadowVisible: false,
+          headerBackTitleVisible: false,
+          headerTitleAlign: "center",
+          headerTitleStyle: {
+            fontSize: font.body["1"].size,
+            fontWeight: font.body["1"].weight,
+            fontFamily: "Pretendard",
+          },
+        }}
       />
     </Stack.Navigator>
   </NavigationContainer>
