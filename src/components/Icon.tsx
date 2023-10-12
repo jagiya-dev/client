@@ -141,6 +141,46 @@ export const UnselectedCircle = (props: IconProps) => (
   </TouchableOpacity>
 );
 
+export const AppleLogoEnabled = (props: IconProps) => (
+  <TouchableOpacity disabled={!props.useTouch}>
+    <Image source={require("#/icons/apple_logo_enabled.png")} {...props} />
+  </TouchableOpacity>
+);
+
+export const AppleLogoDisabled = (props: IconProps) => (
+  <TouchableOpacity disabled={!props.useTouch}>
+    <Image source={require("#/icons/apple_logo_disabled.png")} {...props} />
+  </TouchableOpacity>
+);
+
+export const KakaoLogoEnabled = (props: IconProps) => (
+  <TouchableOpacity disabled={!props.useTouch}>
+    <Image source={require("#/icons/kakao_logo_enabled.png")} {...props} />
+  </TouchableOpacity>
+);
+
+export const KakaoLogoDisabled = (props: IconProps) => (
+  <TouchableOpacity disabled={!props.useTouch}>
+    <Image source={require("#/icons/kakao_logo_disabled.png")} {...props} />
+  </TouchableOpacity>
+);
+
+export const MeIcon = (props: IconProps) => (
+  <TouchableOpacity disabled={!props.useTouch}>
+    <Image source={require("#/icons/me.png")} {...props} />
+  </TouchableOpacity>
+);
+export const ShareIcon = (props: IconProps) => (
+  <TouchableOpacity disabled={!props.useTouch}>
+    <Image source={require("#/icons/share.png")} {...props} />
+  </TouchableOpacity>
+);
+export const PrivacyIcon = (props: IconProps) => (
+  <TouchableOpacity disabled={!props.useTouch}>
+    <Image source={require("#/icons/privacy.png")} {...props} />
+  </TouchableOpacity>
+);
+
 export const IconFactoryByWeatherModel = (
   weather: WeatherModel["weather"],
   style: StyleProp<ImageStyle>,
