@@ -1,16 +1,23 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { widthPercentageToDP } from "react-native-responsive-screen";
 
-type Props = {}
+type Props = {};
 
 const SettingsScreen = (props: Props) => {
-    return (
-        <View>
-            <Text>SettingsScreen</Text>
-        </View>
-    )
-}
+  return (
+    <SafeAreaView style={s.root}>
+      <Text>SettingsScreen</Text>
+    </SafeAreaView>
+  );
+};
 
-export default SettingsScreen
+export default SettingsScreen;
 
-const styles = StyleSheet.create({})
+const s = StyleSheet.create({
+  root: {
+    flex: 1,
+    width: widthPercentageToDP("100%"),
+    paddingHorizontal: 20,
+  },
+});
