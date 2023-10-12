@@ -6,10 +6,7 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export interface UserRes {
-  userId?: number;
-  snsId?: string;
-  name?: string;
-  email?: string;
-  snsName?: string;
+export interface HtmlResponse {
+  /** html소스 */
+  html?: string;
 }

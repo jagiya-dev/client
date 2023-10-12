@@ -7,12 +7,12 @@
  */
 
 export interface LocationResponse {
-  시도명?: string;
-  시군구명?: string;
-  읍면동명?: string;
-  행정구역코드?: string;
-  위도?: string;
-  경도?: string;
-  X좌표?: string;
-  Y좌표?: string;
+  /** 시도명) */
+  cityDo?: string;
+  /** 시군구명 */
+  guGun?: string;
+  /** 읍면동명 */
+  eupMyun?: string;
+  /** 행정구역코드 */
+  regionCd?: string;
 }

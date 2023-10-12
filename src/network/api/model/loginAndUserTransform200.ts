@@ -5,11 +5,10 @@
  * Springdoc을 사용한 Swagger UI
  * OpenAPI spec version: 1.0.0
  */
+import type { UserRes } from "./userRes";
 
-export interface UserRes {
-  userId?: number;
-  snsId?: string;
-  name?: string;
-  email?: string;
-  snsName?: string;
-}
+export type LoginAndUserTransform200 = {
+  code?: string;
+  data?: UserRes;
+  message?: string;
+};

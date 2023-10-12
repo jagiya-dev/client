@@ -6,10 +6,9 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export interface UserRes {
-  userId?: number;
-  snsId?: string;
-  name?: string;
-  email?: string;
-  snsName?: string;
+export interface RecentLocationResponse {
+  시도명?: string;
+  시군구명?: string;
+  읍면동명?: string;
+  행정구역코드?: string;
 }

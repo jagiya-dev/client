@@ -6,11 +6,15 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type LoginParams = {
+export type LoginAndUserTransformParams = {
   /**
-   * 소셜 계정 ID (비회원은 디바이스 ID)
+   * 비회원 계정 ID
    */
-  snsId: string;
+  userId: string;
+  /**
+   * 소셜계정 ID
+   */
+  tobeSnsId: string;
   /**
    * 이름
    */

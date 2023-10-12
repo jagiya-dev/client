@@ -6,10 +6,9 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export interface UserRes {
+export interface UserDetailUpdateRequest {
+  /** 유저ID */
   userId?: number;
-  snsId?: string;
+  /** 유저이름 */
   name?: string;
-  email?: string;
-  snsName?: string;
 }

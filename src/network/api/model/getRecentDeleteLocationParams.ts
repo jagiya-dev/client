@@ -6,10 +6,9 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export interface UserRes {
-  userId?: number;
-  snsId?: string;
-  name?: string;
-  email?: string;
-  snsName?: string;
-}
+export type GetRecentDeleteLocationParams = {
+  /**
+   * recentLocationId
+   */
+  recentLocationId: string;
+};
