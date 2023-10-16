@@ -100,18 +100,12 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
     observable: whenSelectedReminderChange,
   });
 
-  if (reminderState) console.log(reminderState.minute);
-
   const onChangeSliderValue: SliderOnChangeCallback = (value) => {
     if (isNaN(value[0])) return;
 
     const volume = Number(value[0].toFixed(2));
     behaviours.setSoundVolume(volume);
   };
-
-  useEffect(() => {
-    console.log(`current time: ${alarmHours}:${alarmMinutes} ${alarmAMPM}`);
-  }, [alarmDate]);
 
   useHandleForegroundNotification();
 
@@ -143,6 +137,8 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
         volume: soundVolume,
         vibration: soundVolume === 0 ? 1 : 0,
         weekList: [],
+        reminder: (reminderState?.minute ?? 0).toString(),
+        // alarmSoundId: selectedSound,
       });
 
       const { data } = response;
