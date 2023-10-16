@@ -51,6 +51,7 @@ import {
   whenSoundItemsChange,
 } from "@/state/sound/sound.state";
 import { soundNameAsLabel } from "@/audio";
+import { whenSelectedReminderChange } from "@/screen/CreateAlarm/Reminder/reminder.state";
 
 type ScreenProps = NativeStackScreenProps<StackParamList, "CreateAlarm">;
 
@@ -94,6 +95,12 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
   const selectedSound = useObservableState({
     observable: whenSelectedSoundChange,
   });
+
+  const reminderState = useObservableState({
+    observable: whenSelectedReminderChange,
+  });
+
+  if (reminderState) console.log(reminderState.minute);
 
   const onChangeSliderValue: SliderOnChangeCallback = (value) => {
     if (isNaN(value[0])) return;
@@ -283,7 +290,9 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
                   <Text style={s.itemBlockLabel}>다시알림</Text>
 
                   <View style={s.itemBlockRight}>
-                    <Text style={s.itemBlockLabel}>5분</Text>
+                    <Text style={s.itemBlockLabel}>
+                      {reminderState ? reminderState.minute + "분" : "-"}
+                    </Text>
                     <View style={s.itemBlockRightSpacer} />
                     <RightArrowIcon style={s.itemBlockIcon} />
                   </View>

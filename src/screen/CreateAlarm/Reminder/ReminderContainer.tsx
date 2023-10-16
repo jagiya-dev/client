@@ -1,15 +1,32 @@
 import Text from "@/components/Text";
-import { Platform, StyleSheet, View } from "react-native";
+import {
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  Platform,
+  StyleSheet,
+  View,
+} from "react-native";
 import { font } from "@/styles/font";
 import { color } from "@/styles/color";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import { ReminderIntervalItem } from "@/typing";
-import { BottomSheetScrollView, useBottomSheet } from "@gorhom/bottom-sheet";
+import {
+  BottomSheetScrollView,
+  BottomSheetScrollViewMethods,
+  useBottomSheet,
+} from "@gorhom/bottom-sheet";
 import BottomButton from "@/components/fixed/BottomButton";
 import {
   reminderItemsAndroid,
   reminderItemsIOS,
 } from "@/screen/CreateAlarm/Reminder/Reminder.data";
+import {
+  behaviours,
+  whenSelectedReminderChange,
+} from "@/screen/CreateAlarm/Reminder/reminder.state";
+import { useObservableState } from "@/hook/useObservableState";
+import { min } from "rxjs";
+import { useRef } from "react";
 
 const ReminderContainer = () => {
   const { close } = useBottomSheet();
@@ -20,6 +37,16 @@ const ReminderContainer = () => {
 
   const reminderItems =
     Platform.OS === "ios" ? reminderItemsIOS : reminderItemsAndroid;
+
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const {
+      nativeEvent: {
+        contentOffset: { y },
+      },
+    } = event;
+
+    behaviours.setReminderState(y);
+  };
 
   return (
     <View style={s.root}>
@@ -34,6 +61,7 @@ const ReminderContainer = () => {
         snapToAlignment={Platform.OS === "ios" ? "center" : "start"}
         snapToInterval={36}
         contentContainerStyle={s.reminderItemContainer}
+        onScroll={handleScroll}
       >
         {reminderItems.map((item) => (
           <View key={item.id} style={s.reminderItem}>

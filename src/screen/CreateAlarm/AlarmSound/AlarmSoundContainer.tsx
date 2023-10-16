@@ -7,7 +7,7 @@ import { behaviours, whenSoundItemsChange } from "@/state/sound/sound.state";
 import RadioButtonContainer from "@/components/radioButtons/RadioButtonContainer";
 import { useObservableState } from "@/hook/useObservableState";
 import { Button } from "@/components/button";
-import { useBottomSheet } from "@gorhom/bottom-sheet";
+import { BottomSheetView, useBottomSheet } from "@gorhom/bottom-sheet";
 import BottomButton from "@/components/fixed/BottomButton";
 
 const AlarmSoundContainer = () => {
@@ -23,7 +23,7 @@ const AlarmSoundContainer = () => {
   };
 
   return (
-    <View style={s.root}>
+    <BottomSheetView style={s.root}>
       <View style={s.titleContainer}>
         <Text style={s.title}>사운드</Text>
       </View>
@@ -35,7 +35,7 @@ const AlarmSoundContainer = () => {
       />
 
       <BottomButton onPress={onPress_saveAlarmSound} text="확인" />
-    </View>
+    </BottomSheetView>
   );
 };
 export default AlarmSoundContainer;
