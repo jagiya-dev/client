@@ -46,6 +46,11 @@ import {
   whenRepeatDaysAbbreviated,
   whenRepeatStateChanges,
 } from "@/state/repeat/repeat.state";
+import {
+  whenSelectedSoundChange,
+  whenSoundItemsChange,
+} from "@/state/sound/sound.state";
+import { soundNameAsLabel } from "@/audio";
 
 type ScreenProps = NativeStackScreenProps<StackParamList, "CreateAlarm">;
 
@@ -82,18 +87,12 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
     observable: whenRepeatDaysAbbreviated,
   });
 
-  const onPressButton_deleteRegion = (index: number) => {
-    setRegionNames((prev) => [
-      ...prev.slice(0, index),
-      ...prev.slice(index + 1),
-    ]);
-  };
-
   const soundVolume = useObservableState({
     observable: whenSoundVolumeChange,
-    subscribeFn(value) {
-      console.log("sound volume changed to ", value);
-    },
+  });
+
+  const selectedSound = useObservableState({
+    observable: whenSelectedSoundChange,
   });
 
   const onChangeSliderValue: SliderOnChangeCallback = (value) => {
@@ -113,6 +112,13 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
   if (loading) {
     return null;
   }
+
+  const onPressButton_deleteRegion = (index: number) => {
+    setRegionNames((prev) => [
+      ...prev.slice(0, index),
+      ...prev.slice(index + 1),
+    ]);
+  };
 
   const onPressButton_AddNewRegion = () => {
     navigation.navigate("AddRegion");
@@ -227,7 +233,11 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
                   <Text style={s.itemBlockLabel}>사운드</Text>
 
                   <View style={s.itemBlockRight}>
-                    <Text style={s.itemBlockLabel}>기본알람</Text>
+                    <Text style={s.itemBlockLabel}>
+                      {selectedSound
+                        ? soundNameAsLabel(selectedSound)
+                        : "기본알람"}
+                    </Text>
                     <View style={s.itemBlockRightSpacer} />
                     <RightArrowIcon style={s.itemBlockIcon} />
                   </View>
