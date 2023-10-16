@@ -32,7 +32,7 @@ const ReminderContainer = () => {
       <BottomSheetScrollView
         nestedScrollEnabled
         snapToAlignment={Platform.OS === "ios" ? "center" : "start"}
-        snapToInterval={Platform.OS === "ios" ? 36 : 36}
+        snapToInterval={36}
         contentContainerStyle={s.reminderItemContainer}
       >
         {reminderItems.map((item) => (

@@ -21,8 +21,10 @@ export type WeatherModel = {
   isAddNewWeather?: boolean;
 };
 
+export type DateOfWeek = "월" | "화" | "수" | "목" | "금" | "토" | "일";
+export type SelectedDateOfWeek = readonly DateOfWeek[];
 export type DateModel = {
-  label: "월" | "화" | "수" | "목" | "금" | "토" | "일";
+  label: DateOfWeek;
 } & IsEnabled;
 
 export type StackParamList = {
@@ -40,7 +42,32 @@ export type StackParamList = {
   MyInfo: undefined;
 };
 
-export type LocationModel = {};
+export type AlarmDate = {
+  date: Date;
+};
+
+export type AlarmRepeat = {
+  repeatDate: Date;
+  repeatTime: number;
+};
+
+export type SoundSelect = {
+  soundVolume: number;
+  soundName: ESoundName;
+};
+
+export enum ESoundName {
+  emergency = "emergency",
+  gravelRain = "gravel_rain",
+  pedestrianRain = "pedestrian_rain",
+  tableClock = "table_clock",
+  tamacRain = "tamac_rain",
+  thunderRain2 = "thunder_rain2",
+  thunderRain = "thunder_rain",
+  trailRain = "trail_rain",
+  underRoofRain = "underRoof_rain",
+  valleyRain = "valley_rain",
+}
 
 export enum ETimeTableItemState {
   none,
@@ -60,6 +87,7 @@ export type ListItemsUnderLyingType = {
 };
 
 export type RepeatItem = ListItemsUnderLyingType & {
+  date: number;
   isSelected: boolean;
 };
 
