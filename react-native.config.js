@@ -3,4 +3,8 @@ module.exports = {
   assets: ["./assets/fonts/"],
   iosAssets: ["./assets/audio/ios/"],
   androidAssets: ["./assets/audio/android/"],
+  project: {
+    ios: {},
+    android: {},
+  },
 };
