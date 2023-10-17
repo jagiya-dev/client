@@ -2,7 +2,7 @@ import { Platform } from "react-native";
 import Sound from "react-native-sound";
 
 // init react-native-sound
-Sound.setCategory("Playback");
+Sound.setCategory("Alarm", true);
 
 const getAudioFileExtensionByPlatform = () =>
   Platform.OS === "android" ? ".ogg" : ".aac";

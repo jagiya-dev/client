@@ -130,7 +130,7 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
 
     // todo: set a new notification.
     try {
-      const response = await insertAlarm({
+      const params = {
         timeOfDay: alarmAMPM,
         alarmTime: alarmHours + alarmMinutes,
         alarmLocationList: [],
@@ -139,7 +139,9 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
         weekList: [],
         reminder: (reminderState?.minute ?? 0).toString(),
         // alarmSoundId: selectedSound,
-      });
+      };
+      console.log("insert alarm: ", params);
+      const response = await insertAlarm(params);
 
       const { data } = response;
       console.log(data);

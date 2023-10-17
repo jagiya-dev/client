@@ -9,13 +9,20 @@ import { useObservableState } from "@/hook/useObservableState";
 import { Button } from "@/components/button";
 import { BottomSheetView, useBottomSheet } from "@gorhom/bottom-sheet";
 import BottomButton from "@/components/fixed/BottomButton";
+import { whenSoundVolumeChange } from "@/state/sound/soundVolume.state";
 
 const AlarmSoundContainer = () => {
   const { close } = useBottomSheet();
 
+  const currentSoundVolume = useObservableState({
+    observable: whenSoundVolumeChange,
+  });
+
   const soundItems = useObservableState({
     observable: whenSoundItemsChange,
   });
+
+  if (!currentSoundVolume) return null;
   if (!soundItems) return null;
 
   const onPress_saveAlarmSound = () => {
@@ -31,7 +38,7 @@ const AlarmSoundContainer = () => {
       <RadioButtonContainer
         data={soundItems}
         isSelected={behaviours.isSelected}
-        onPressItem={behaviours.selectSound}
+        onPressItem={(item) => behaviours.selectSound(item, currentSoundVolume)}
       />
 
       <BottomButton onPress={onPress_saveAlarmSound} text="확인" />
