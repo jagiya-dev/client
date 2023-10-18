@@ -20,7 +20,7 @@ const navRef = createNavigationContainerRef();
 
 const Navigation = () => (
   <NavigationContainer ref={navRef}>
-    <Stack.Navigator initialRouteName="CreateAlarm">
+    <Stack.Navigator initialRouteName="Main">
       <Stack.Screen
         name="Main"
         component={MainScreen}

@@ -1,22 +1,21 @@
-import AlarmLocationItem from "@/components/alarm/Alarm.LocationItem";
 import { Button, DateTextButton } from "@/components/button";
 import { UmbrellaDisabledIcon, UmbrellaEnabledIcon } from "@/components/Icon";
 import Text from "@/components/Text";
 import { dummyDates } from "@/state/date/dummy";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
-import type { AlarmModel } from "@/typing";
 import { Animated, FlatList, Platform, StyleSheet, View } from "react-native";
 import { Shadow } from "react-native-shadow-2";
 import Toggle from "../toggle";
 import Swipeable from "react-native-gesture-handler/Swipeable";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { whenToggleDeleteMode } from "@/state/main/main.state";
-import { behaviours as AlarmBehaviours } from "@/state/alarm/alarm.state";
 import { useObservableEffect } from "@/hook/useObservableEffect";
 import { cond } from "@/util/StyleHelper";
+import type { AlarmResponse } from "@/network/api";
 
-function AlarmItem(props: AlarmModel) {
+function AlarmItem(props: AlarmResponse) {
+  const isEnabled = props.enabled === 1;
   const swipeableRef = useRef<Swipeable>(null);
 
   useObservableEffect({
@@ -32,10 +31,15 @@ function AlarmItem(props: AlarmModel) {
     dependencies: [swipeableRef],
   });
 
-  const onCloseLeftAction = () => AlarmBehaviours.deleteAlarmItem(props.id);
+  const onCloseLeftAction = () => {
+    console.log("close left action! delete");
+    // AlarmBehaviours.deleteAlarmItem(props);
+  };
 
-  const onPress_alarmToggleEnabled = () =>
-    AlarmBehaviours.toggleAlarmToggleEnabled(props.id);
+  const onPress_alarmToggleEnabled = () => {
+    console.log("onPress_alarmToggleEnabled");
+    // AlarmBehaviours.toggleAlarmToggleEnabled(props.id);
+  };
 
   return (
     <Swipeable
@@ -68,7 +72,7 @@ function AlarmItem(props: AlarmModel) {
         startColor="rgba(0, 0, 0, 0.1)"
         stretch
         style={cond({
-          predicate: () => !props.isEnabled,
+          predicate: () => isEnabled,
           true$: s.disabledRoot,
           underlyingStyles: s.root,
         })}
@@ -77,11 +81,7 @@ function AlarmItem(props: AlarmModel) {
         <View style={s.up}>
           {/* 1-1. 날씨 아이콘 (enabled/disabled) */}
           <View>
-            {props.isEnabled ? (
-              <UmbrellaEnabledIcon />
-            ) : (
-              <UmbrellaDisabledIcon />
-            )}
+            {isEnabled ? <UmbrellaEnabledIcon /> : <UmbrellaDisabledIcon />}
           </View>
 
           {/* 1-2. 알람 날짜 표시 (enabled/disabled) */}
@@ -92,7 +92,7 @@ function AlarmItem(props: AlarmModel) {
                 <DateTextButton
                   key={dateModel.index}
                   label={dateModel.item.label}
-                  isEnabled={props.isEnabled && dateModel.item.isEnabled}
+                  isEnabled={isEnabled && dateModel.item.isEnabled}
                   onPress={() => {}}
                 />
               )}
@@ -103,22 +103,21 @@ function AlarmItem(props: AlarmModel) {
             <Text style={s.timeContainer}>
               <Text
                 style={cond({
-                  predicate: () => !props.isEnabled,
+                  predicate: () => isEnabled,
                   true$: s.disabledText,
                   underlyingStyles: s.time12Text,
                 })}
               >
-                {" "}
-                {props.time}
+                {props.alarmTime}
               </Text>
               <Text
                 style={cond({
-                  predicate: () => !props.isEnabled,
+                  predicate: () => !isEnabled,
                   true$: s.disabledText,
                   underlyingStyles: s.timeAMPMText,
                 })}
               >
-                {props.dateOfTime}
+                {props.timeOfDay}
               </Text>
             </Text>
           </View>
@@ -126,32 +125,32 @@ function AlarmItem(props: AlarmModel) {
           {/* 1-4. 알람 활성화 여부 토글 */}
           <Toggle
             onValueChange={onPress_alarmToggleEnabled}
-            disabled={!props.isEnabled}
+            disabled={!isEnabled}
           />
         </View>
 
         {/* 2-1. 하단 부분 */}
         <View style={s.down}>
-          <FlatList
-            data={props.weathers.map((weather) => ({
-              ...weather,
-              isEnabled: props.isEnabled,
-              bHasIcon: true,
-            }))}
-            renderItem={(data) => (
-              <AlarmLocationItem key={data.index} {...data.item} />
-            )}
-            style={{
-              ...Platform.select({
-                android: {
-                  zIndex: 5,
-                },
-              }),
-            }}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            scrollEnabled={props.isEnabled}
-          />
+          {/*<FlatList*/}
+          {/*  data={props.weathers.map((weather) => ({*/}
+          {/*    ...weather,*/}
+          {/*    isEnabled: isEnabled,*/}
+          {/*    bHasIcon: true,*/}
+          {/*  }))}*/}
+          {/*  renderItem={(data) => (*/}
+          {/*    <AlarmLocationItem key={data.index} {...data.item} />*/}
+          {/*  )}*/}
+          {/*  style={{*/}
+          {/*    ...Platform.select({*/}
+          {/*      android: {*/}
+          {/*        zIndex: 5,*/}
+          {/*      },*/}
+          {/*    }),*/}
+          {/*  }}*/}
+          {/*  horizontal*/}
+          {/*  showsHorizontalScrollIndicator={false}*/}
+          {/*  scrollEnabled={isEnabled}*/}
+          {/*/>*/}
         </View>
       </Shadow>
     </Swipeable>
