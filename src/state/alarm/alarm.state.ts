@@ -14,10 +14,10 @@ const fetchGetAlarmList = fromFetch<GetAlarmList200>(
 );
 export const alarmList$ = fetchGetAlarmList.pipe(
   map((parsed) => parsed.data),
-  catchError((err) => {
-    console.error(err);
-    return of({ error: true, message: err.message });
-  }),
+  // catchError((err) => {
+  //   console.error(err);
+  //   return of({ error: true, message: err.message });
+  // }),
 );
 
 const addNewAlarmItem = (newItem: AlarmModel) => {
@@ -31,6 +31,7 @@ const deleteAlarmItem = (id: number) => {
 };
 
 const toggleAlarmToggleEnabled = (id: number) => {
+  // todo: PUT 으로 실제 알람 수정
   // fetchGetAlarmList.next(
   //   fetchGetAlarmList.value.map((item) =>
   //     item.id == id ? { ...item, isEnabled: !item.isEnabled } : item,

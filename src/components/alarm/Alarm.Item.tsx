@@ -13,9 +13,12 @@ import { whenToggleDeleteMode } from "@/state/main/main.state";
 import { useObservableEffect } from "@/hook/useObservableEffect";
 import { cond } from "@/util/StyleHelper";
 import type { AlarmResponse } from "@/network/api";
+import AlarmLocationItem from "@/components/alarm/Alarm.LocationItem";
+import AlarmAddLocationItem from "@/components/alarm/Alarm.AddLocationItem";
+import { behaviours as AlarmBehaviours } from "@/state/alarm/alarm.state";
 
 function AlarmItem(props: AlarmResponse) {
-  const isEnabled = props.enabled === 1;
+  const isItemEnabled = props.enabled === 1;
   const swipeableRef = useRef<Swipeable>(null);
 
   useObservableEffect({
@@ -37,8 +40,9 @@ function AlarmItem(props: AlarmResponse) {
   };
 
   const onPress_alarmToggleEnabled = () => {
+    if (!props.alarmId) return;
     console.log("onPress_alarmToggleEnabled");
-    // AlarmBehaviours.toggleAlarmToggleEnabled(props.id);
+    AlarmBehaviours.toggleAlarmToggleEnabled(props.alarmId);
   };
 
   return (
@@ -72,7 +76,7 @@ function AlarmItem(props: AlarmResponse) {
         startColor="rgba(0, 0, 0, 0.1)"
         stretch
         style={cond({
-          predicate: () => isEnabled,
+          predicate: () => isItemEnabled,
           true$: s.disabledRoot,
           underlyingStyles: s.root,
         })}
@@ -81,7 +85,7 @@ function AlarmItem(props: AlarmResponse) {
         <View style={s.up}>
           {/* 1-1. 날씨 아이콘 (enabled/disabled) */}
           <View>
-            {isEnabled ? <UmbrellaEnabledIcon /> : <UmbrellaDisabledIcon />}
+            {isItemEnabled ? <UmbrellaEnabledIcon /> : <UmbrellaDisabledIcon />}
           </View>
 
           {/* 1-2. 알람 날짜 표시 (enabled/disabled) */}
@@ -92,7 +96,7 @@ function AlarmItem(props: AlarmResponse) {
                 <DateTextButton
                   key={dateModel.index}
                   label={dateModel.item.label}
-                  isEnabled={isEnabled && dateModel.item.isEnabled}
+                  isEnabled={isItemEnabled && dateModel.item.isEnabled}
                   onPress={() => {}}
                 />
               )}
@@ -103,7 +107,7 @@ function AlarmItem(props: AlarmResponse) {
             <Text style={s.timeContainer}>
               <Text
                 style={cond({
-                  predicate: () => isEnabled,
+                  predicate: () => isItemEnabled,
                   true$: s.disabledText,
                   underlyingStyles: s.time12Text,
                 })}
@@ -112,7 +116,7 @@ function AlarmItem(props: AlarmResponse) {
               </Text>
               <Text
                 style={cond({
-                  predicate: () => !isEnabled,
+                  predicate: () => !isItemEnabled,
                   true$: s.disabledText,
                   underlyingStyles: s.timeAMPMText,
                 })}
@@ -125,32 +129,38 @@ function AlarmItem(props: AlarmResponse) {
           {/* 1-4. 알람 활성화 여부 토글 */}
           <Toggle
             onValueChange={onPress_alarmToggleEnabled}
-            disabled={!isEnabled}
+            disabled={!isItemEnabled}
           />
         </View>
 
         {/* 2-1. 하단 부분 */}
         <View style={s.down}>
-          {/*<FlatList*/}
-          {/*  data={props.weathers.map((weather) => ({*/}
-          {/*    ...weather,*/}
-          {/*    isEnabled: isEnabled,*/}
-          {/*    bHasIcon: true,*/}
-          {/*  }))}*/}
-          {/*  renderItem={(data) => (*/}
-          {/*    <AlarmLocationItem key={data.index} {...data.item} />*/}
-          {/*  )}*/}
-          {/*  style={{*/}
-          {/*    ...Platform.select({*/}
-          {/*      android: {*/}
-          {/*        zIndex: 5,*/}
-          {/*      },*/}
-          {/*    }),*/}
-          {/*  }}*/}
-          {/*  horizontal*/}
-          {/*  showsHorizontalScrollIndicator={false}*/}
-          {/*  scrollEnabled={isEnabled}*/}
-          {/*/>*/}
+          <FlatList
+            // 알람 위치 마지막에 + 버튼 추가
+            data={[...(props.alarmLocation ?? []), { isAddNewItem: true }]}
+            renderItem={(data) => {
+              if ("isAddNewItem" in data.item)
+                return <AlarmAddLocationItem isEnabled={isItemEnabled} />;
+
+              return (
+                <AlarmLocationItem
+                  key={data.index}
+                  isEnabled={isItemEnabled}
+                  {...data.item}
+                />
+              );
+            }}
+            style={{
+              ...Platform.select({
+                android: {
+                  zIndex: 5,
+                },
+              }),
+            }}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            scrollEnabled={isItemEnabled}
+          />
         </View>
       </Shadow>
     </Swipeable>

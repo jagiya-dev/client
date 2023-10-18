@@ -7,6 +7,7 @@ import {
   ImageStyle,
 } from "react-native";
 import { WeatherModel } from "@/typing";
+import { AlarmLocationResponse } from "@/network/api";
 
 type IconProps = Partial<Exclude<ImageProps, "source">> & {
   useTouch?: boolean;
@@ -182,17 +183,17 @@ export const PrivacyIcon = (props: IconProps) => (
 );
 
 export const IconFactoryByWeatherModel = (
-  weather: WeatherModel["weather"],
+  weather: AlarmLocationResponse["timeOfDay"],
   style: StyleProp<ImageStyle>,
 ) => {
   switch (weather) {
-    case "day":
+    case "AM":
       return <DayIcon width={20} height={20} style={style} />;
 
-    case "night":
+    case "PM":
       return <NightIcon width={20} height={20} style={style} />;
 
-    case "day-night":
+    case "ALL":
       return <DayNightIcon width={20} height={20} style={style} />;
 
     default:

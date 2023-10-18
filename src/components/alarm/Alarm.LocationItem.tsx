@@ -1,59 +1,44 @@
 import { StyleSheet, View } from "react-native";
 import Text from "@/components/Text";
-import { IconFactoryByWeatherModel, PlusIcon } from "@/components/Icon";
+import { IconFactoryByWeatherModel } from "@/components/Icon";
 import Tag from "@/components/Tag";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
-import { IsEnabled, WeatherModel } from "@/typing";
+import { IsEnabled } from "@/typing";
 import { cond } from "@/util/StyleHelper";
+import type { AlarmLocationResponse } from "@/network/api";
 
-type Props = WeatherModel & IsEnabled;
+type Props = AlarmLocationResponse & IsEnabled;
 
-const AlarmLocationItem = (props: Props) => {
-  if (props.isAddNewWeather) {
-    return (
-      <Tag
-        style={cond({
-          predicate: () => !props.isEnabled,
-          true$: s.disabledBG,
-          underlyingStyles: s.addNewWeatherRoot
-        })}
-      >
-        <PlusIcon style={s.plusIcon}/>
-      </Tag>
-    );
-  }
+const AlarmLocationItem = (props: Props) => (
+  <Tag
+    style={cond({
+      predicate: () => !props.isEnabled,
+      true$: s.disabledBorder,
+      underlyingStyles: s.root,
+    })}
+  >
+    {IconFactoryByWeatherModel(
+      props.timeOfDay,
+      cond({
+        predicate: () => !props.isEnabled,
+        true$: s.disabledWeatherIcon,
+      }),
+    )}
 
-  return (
-    <Tag
+    <View style={s.spacer} />
+
+    <Text
       style={cond({
         predicate: () => !props.isEnabled,
-        true$: s.disabledBorder,
-        underlyingStyles: s.root
+        true$: s.disabledText,
+        underlyingStyles: s.locationText,
       })}
     >
-      {props.bHasIcon && IconFactoryByWeatherModel(
-        props.weather,
-        cond({
-          predicate: () => !props.isEnabled,
-          true$: s.disabledWeatherIcon,
-        }))
-      }
-
-      <View style={s.spacer}/>
-
-      <Text
-        style={cond({
-          predicate: () => !props.isEnabled,
-          true$: s.disabledText,
-          underlyingStyles: s.locationText
-        })}
-      >
-        {props.location}
-      </Text>
-    </Tag>
-  );
-};
+      {props.eupMyun}
+    </Text>
+  </Tag>
+);
 export default AlarmLocationItem;
 
 const s = StyleSheet.create({
@@ -64,16 +49,6 @@ const s = StyleSheet.create({
     paddingRight: 12,
     paddingVertical: 6,
     borderWidth: 1,
-  },
-  addNewWeatherRoot: {
-    backgroundColor: color.sub["200"],
-    paddingHorizontal: 14,
-    paddingVertical: 6,
-  },
-  plusIcon: {
-    width: 20,
-    height: 20,
-    tintColor: "#FFFFFF",
   },
   spacer: {
     marginRight: 4,
@@ -94,7 +69,4 @@ const s = StyleSheet.create({
   disabledBorder: {
     borderColor: color.gray["100"],
   },
-  disabledBG: {
-    backgroundColor: color.gray["200"],
-  }
 });
