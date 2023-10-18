@@ -6,19 +6,21 @@ import {
 } from "@react-native-seoul/kakao-login";
 import { BehaviorSubject } from "rxjs";
 
-let kakaoOauthTokenSubject = new BehaviorSubject<KakaoOAuthToken | null>(null);
-export const kakaoOAuthToken$ = kakaoOauthTokenSubject.asObservable();
+let kakaoOAuthTokenSubject = new BehaviorSubject<KakaoOAuthToken | null>(null);
+export const getKakaoOAuthToken = () => kakaoOAuthTokenSubject.getValue();
+export const kakaoOAuthToken$ = kakaoOAuthTokenSubject.asObservable();
 
 let kakaoProfileSubject = new BehaviorSubject<KakaoProfile | null>(null);
+export const getKakaoProfile = () => kakaoProfileSubject.getValue();
 export const kakaoProfile$ = kakaoProfileSubject.asObservable();
 
-export const loginToKakao = async () => {
+const loginToKakao = async () => {
   try {
-    kakaoOauthTokenSubject = new BehaviorSubject<KakaoOAuthToken | null>(null);
+    kakaoOAuthTokenSubject = new BehaviorSubject<KakaoOAuthToken | null>(null);
 
     const oAuthToken: KakaoOAuthToken = await login();
     console.log("Login Success", JSON.stringify(oAuthToken, null, 2));
-    kakaoOauthTokenSubject.next(oAuthToken);
+    kakaoOAuthTokenSubject.next(oAuthToken);
 
     await getKakaoProfile();
   } catch (error: any) {
@@ -29,11 +31,11 @@ export const loginToKakao = async () => {
 
     console.log(`Login Fail(code:${error.code})`, error.message);
   } finally {
-    kakaoOauthTokenSubject.complete();
+    kakaoOAuthTokenSubject.complete();
   }
 };
 
-export const getKakaoProfile = async () => {
+const fetchKakaoProfile = async () => {
   kakaoProfileSubject = new BehaviorSubject<KakaoProfile | null>(null);
 
   try {
@@ -45,4 +47,9 @@ export const getKakaoProfile = async () => {
   } finally {
     kakaoProfileSubject.complete();
   }
+};
+
+export const behaviours = {
+  loginToKakao,
+  getKakaoProfile: fetchKakaoProfile,
 };

@@ -1,7 +1,7 @@
 import { View, Image, StyleSheet, SafeAreaView } from "react-native";
 import Text from "@/components/Text";
 import { Button } from "@/components/button";
-import { loginToKakao } from "@/state/auth/auth.state";
+import { behaviours as AuthBehaviours } from "@/state/auth/auth.state";
 
 const LoginScreen = () => {
   const onPressAppleLoginButton = () => {
@@ -25,7 +25,7 @@ const LoginScreen = () => {
       <View style={s.loginView}>
         <Button
           style={{ ...s.loginButton, ...s.loginButtonKakao }}
-          onPress={loginToKakao}
+          onPress={AuthBehaviours.loginToKakao}
         >
           <Text style={s.loginButtonText}>카카오 로그인</Text>
         </Button>
