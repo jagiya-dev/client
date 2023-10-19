@@ -14,7 +14,7 @@ let kakaoProfileSubject = new BehaviorSubject<KakaoProfile | null>(null);
 export const getKakaoProfile = () => kakaoProfileSubject.getValue();
 export const kakaoProfile$ = kakaoProfileSubject.asObservable();
 
-const loginToKakao = async () => {
+const loginToKakao = async (): Promise<void> => {
   try {
     kakaoOAuthTokenSubject = new BehaviorSubject<KakaoOAuthToken | null>(null);
 
@@ -35,7 +35,7 @@ const loginToKakao = async () => {
   }
 };
 
-const fetchKakaoProfile = async () => {
+const fetchKakaoProfile = async (): Promise<void> => {
   kakaoProfileSubject = new BehaviorSubject<KakaoProfile | null>(null);
 
   try {

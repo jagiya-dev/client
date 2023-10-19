@@ -28,4 +28,7 @@ export const color = {
     0: "#FFFFFF",
   },
   warning: "#ED7267",
+  black: {
+    1: "#050708",
+  },
 } as const;
