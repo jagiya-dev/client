@@ -16,13 +16,22 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MyInfoScreen from "@/screen/MyInfo";
 import Text from "@/components/Text";
 import { TouchableOpacity } from "react-native";
+import DeviceInfo from "react-native-device-info";
 
 const Stack = createNativeStackNavigator<StackParamList>();
 const navRef = createNavigationContainerRef();
 
 const Navigation = () => {
-  const onPress_SkipToMainWithoutLogin = () => {
-    console.log("skip to main without login");
+  const onPress_SkipToMainWithoutLogin = async () => {
+    try {
+      const deviceId = await DeviceInfo.getUniqueId();
+      console.log("skip to main without login. deviceId: ", deviceId);
+      // TODO: 로그인 없음 처리
+
+      navRef.navigate("Main");
+    } catch (error) {
+      console.error("error: ", error);
+    }
   };
 
   return (
