@@ -17,18 +17,20 @@ import MyInfoScreen from "@/screen/MyInfo";
 import Text from "@/components/Text";
 import { TouchableOpacity } from "react-native";
 import DeviceInfo from "react-native-device-info";
+import { behaviours as AuthBehaviours } from "@/state/auth/auth.state";
 
 const Stack = createNativeStackNavigator<StackParamList>();
 const navRef = createNavigationContainerRef();
 
 const Navigation = () => {
   const onPress_SkipToMainWithoutLogin = async () => {
+    navRef.navigate("Main");
     try {
       const deviceId = await DeviceInfo.getUniqueId();
       console.log("skip to main without login. deviceId: ", deviceId);
-      // TODO: 로그인 없음 처리
 
-      navRef.navigate("Main");
+      AuthBehaviours.localLogin("guest");
+      await AuthBehaviours.updateLoginInfo();
     } catch (error) {
       console.error("error: ", error);
     }

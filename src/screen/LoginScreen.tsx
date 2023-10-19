@@ -11,12 +11,21 @@ import { behaviours as AuthBehaviours } from "@/state/auth/auth.state";
 import { font } from "@/styles/font";
 import { AppleLogo, KakaoLogo } from "@/components/Icon";
 import { color } from "@/styles/color";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { StackParamList } from "@/typing";
 
-const LoginScreen = () => {
+type Props = NativeStackScreenProps<StackParamList, "Login">;
+
+const LoginScreen = ({ route, navigation }: Props) => {
   const onPress_KakaoLoginButton = async () => {
-    console.log("kakao login button pressed");
+    const navigateToMain = () => navigation.navigate("Main");
+
     try {
       await AuthBehaviours.loginToKakao();
+      await AuthBehaviours.fetchKakaoProfile(navigateToMain);
+
+      AuthBehaviours.localLogin("kakao");
+      await AuthBehaviours.updateLoginInfo();
     } catch (error) {
       console.error(error);
     }
@@ -24,6 +33,12 @@ const LoginScreen = () => {
 
   const onPressAppleLoginButton = () => {
     console.log("apple login button pressed");
+
+    try {
+      AuthBehaviours.localLogin("apple");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const onPress_useAndCondition = () => {

@@ -2,6 +2,11 @@ import { DateFlag } from "@/state/date/dataFlag";
 
 export type DateFlagT = typeof DateFlag;
 
+export type LocalAuthState = {
+  isLoggedIn: boolean;
+  whichLoginType?: "kakao" | "apple" | "guest";
+};
+
 export type IsEnabled = {
   isEnabled: boolean;
 };
@@ -30,10 +35,9 @@ export type DateModel = {
 export type StackParamList = {
   Main: undefined;
   Login: undefined;
-  Playground: undefined;
-  KakaoLogin: {
-    redirectUrl: string;
-  };
+  // KakaoLogin: {
+  //   redirectUrl: string;
+  // };
   CreateAlarm: undefined;
   ActivatedAlarm: undefined;
   AlarmDetail: undefined;
