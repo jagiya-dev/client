@@ -142,6 +142,12 @@ export const UnselectedCircle = (props: IconProps) => (
   </TouchableOpacity>
 );
 
+export const AppleLogo = (props: IconProps) => (
+  <TouchableOpacity disabled={!props.useTouch}>
+    <Image source={require("#/icons/apple_logo.png")} {...props} />
+  </TouchableOpacity>
+);
+
 export const AppleLogoEnabled = (props: IconProps) => (
   <TouchableOpacity disabled={!props.useTouch}>
     <Image source={require("#/icons/apple_logo_enabled.png")} {...props} />
@@ -157,6 +163,12 @@ export const AppleLogoDisabled = (props: IconProps) => (
 export const KakaoLogoEnabled = (props: IconProps) => (
   <TouchableOpacity disabled={!props.useTouch}>
     <Image source={require("#/icons/kakao_logo_enabled.png")} {...props} />
+  </TouchableOpacity>
+);
+
+export const KakaoLogo = (props: IconProps) => (
+  <TouchableOpacity disabled={!props.useTouch}>
+    <Image source={require("#/icons/kakao_logo.png")} {...props} />
   </TouchableOpacity>
 );
 
