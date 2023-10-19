@@ -13,85 +13,174 @@ import {
   createNavigationContainerRef,
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import MyInfoScreen from "@/screen/MyInfo";
+import Text from "@/components/Text";
+import { TouchableOpacity } from "react-native";
+import DeviceInfo from "react-native-device-info";
+import { behaviours as AuthBehaviours } from "@/state/auth/auth.state";
 
 const Stack = createNativeStackNavigator<StackParamList>();
 const navRef = createNavigationContainerRef();
 
-const Navigation = () => (
-  <NavigationContainer ref={navRef}>
-    <Stack.Navigator initialRouteName="CreateAlarm">
-      <Stack.Screen
-        name="Main"
-        component={MainScreen}
-        options={{ title: "", headerShown: false }}
-      />
-      <Stack.Screen
-        name="Login"
-        component={LoginScreen}
-        options={{ title: "", headerShown: false }}
-      />
-      <Stack.Screen
-        name="CreateAlarm"
-        component={CreateAlarmScreen}
-        options={{
-          title: "알람설정",
-          headerRight: () => (
-            <CloseIcon onPress={() => navRef.navigate("Main")} useTouch />
-          ),
-          headerShadowVisible: false,
-          headerBackTitleVisible: false,
-          headerTitleAlign: "center",
-          headerTitleStyle: {
-            fontSize: font.body["1"].size,
-            fontWeight: font.body["1"].weight,
-          },
-        }}
-      />
-      <Stack.Screen
-        name="ActivatedAlarm"
-        component={ActivatedAlarmScreen}
-        options={{
-          title: "",
-          headerShown: false,
-          gestureDirection: "horizontal",
-        }}
-      />
-      <Stack.Screen
-        name="AlarmDetail"
-        component={AlarmDetailScreen}
-        options={{ title: "", headerShown: false }}
-      />
-      <Stack.Screen
-        name="AddRegion"
-        component={AddRegionScreen}
-        options={{
-          title: "지역추가",
-          headerLeft: (props) => (
-            <LeftArrowIcon
-              onPress={() => {
-                if (props.canGoBack) {
-                  navRef.goBack();
-                }
-              }}
-              useTouch
-            />
-          ),
-          headerShadowVisible: false,
-          headerBackTitleVisible: false,
-          headerTitleAlign: "center",
-          headerTitleStyle: {
-            fontSize: font.body["1"].size,
-            fontWeight: font.body["1"].weight,
-          },
-        }}
-      />
-      <Stack.Screen
-        name="Settings"
-        component={SettingsScreen}
-        options={{ title: "", headerShown: false }}
-      />
-    </Stack.Navigator>
-  </NavigationContainer>
-);
+const Navigation = () => {
+  const onPress_SkipToMainWithoutLogin = async () => {
+    navRef.navigate("Main");
+    try {
+      const deviceId = await DeviceInfo.getUniqueId();
+      console.log("skip to main without login. deviceId: ", deviceId);
+
+      AuthBehaviours.localLogin("guest");
+      await AuthBehaviours.updateLoginInfo();
+    } catch (error) {
+      console.error("error: ", error);
+    }
+  };
+
+  return (
+    <NavigationContainer ref={navRef}>
+      <Stack.Navigator initialRouteName="Login">
+        <Stack.Screen
+          name="Main"
+          component={MainScreen}
+          options={{ title: "", headerShown: false }}
+        />
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{
+            title: "로그인",
+            headerRight: () => (
+              <TouchableOpacity onPress={onPress_SkipToMainWithoutLogin}>
+                <Text
+                  style={{
+                    fontSize: font.body["5"].size,
+                    fontWeight: font.body["5"].weight,
+                  }}
+                >
+                  건너뛰기
+                </Text>
+              </TouchableOpacity>
+            ),
+            headerShadowVisible: false,
+            headerBackTitleVisible: false,
+            headerTitleAlign: "center",
+            headerTitleStyle: {
+              fontSize: font.body["1"].size,
+              fontWeight: font.body["1"].weight,
+              fontFamily: "Pretendard",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="CreateAlarm"
+          component={CreateAlarmScreen}
+          options={{
+            title: "알람설정",
+            headerRight: () => (
+              <CloseIcon onPress={() => navRef.navigate("Main")} useTouch />
+            ),
+            headerShadowVisible: false,
+            headerBackTitleVisible: false,
+            headerTitleAlign: "center",
+            headerTitleStyle: {
+              fontSize: font.body["1"].size,
+              fontWeight: font.body["1"].weight,
+              fontFamily: "Pretendard",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="ActivatedAlarm"
+          component={ActivatedAlarmScreen}
+          options={{
+            title: "",
+            headerShown: false,
+            gestureDirection: "horizontal",
+          }}
+        />
+        <Stack.Screen
+          name="AlarmDetail"
+          component={AlarmDetailScreen}
+          options={{ title: "", headerShown: false }}
+        />
+        <Stack.Screen
+          name="AddRegion"
+          component={AddRegionScreen}
+          options={{
+            title: "지역추가",
+            headerLeft: (props) => (
+              <LeftArrowIcon
+                onPress={() => {
+                  if (props.canGoBack) {
+                    navRef.goBack();
+                  }
+                }}
+                useTouch
+              />
+            ),
+            headerShadowVisible: false,
+            headerBackTitleVisible: false,
+            headerTitleAlign: "center",
+            headerTitleStyle: {
+              fontSize: font.body["1"].size,
+              fontWeight: font.body["1"].weight,
+              fontFamily: "Pretendard",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="Settings"
+          component={SettingsScreen}
+          options={{
+            title: "설정",
+            headerLeft: (props) => (
+              <LeftArrowIcon
+                onPress={() => {
+                  if (props.canGoBack) {
+                    navRef.goBack();
+                  }
+                }}
+                useTouch
+              />
+            ),
+            headerShadowVisible: false,
+            headerBackTitleVisible: false,
+            headerTitleAlign: "center",
+            headerTitleStyle: {
+              fontSize: font.body["1"].size,
+              fontWeight: font.body["1"].weight,
+              fontFamily: "Pretendard",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="MyInfo"
+          component={MyInfoScreen}
+          options={{
+            title: "내 정보",
+            headerLeft: (props) => (
+              <LeftArrowIcon
+                onPress={() => {
+                  if (props.canGoBack) {
+                    navRef.goBack();
+                  }
+                }}
+                useTouch
+              />
+            ),
+            headerShadowVisible: false,
+            headerBackTitleVisible: false,
+            headerTitleAlign: "center",
+            headerTitleStyle: {
+              fontSize: font.body["1"].size,
+              fontWeight: font.body["1"].weight,
+              fontFamily: "Pretendard",
+            },
+          }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
 
 export default Navigation;

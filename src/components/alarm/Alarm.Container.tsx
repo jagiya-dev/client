@@ -3,15 +3,18 @@ import AlarmItem from "./Alarm.Item";
 import Text from "../Text";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
-import { whenAlarmModel } from "@/state/alarm/alarm.state";
+import { alarmList$ } from "@/state/alarm/alarm.state";
 import { useObservableState } from "@/hook/useObservableState";
+import { useEffect, useState } from "react";
+import { AlarmResponse, getAlarmList } from "@/network/api";
 
 const AlarmContainer = () => {
-  const alarms = useObservableState({
-    observable: whenAlarmModel
+  const alarmDataArr = useObservableState({
+    observable: alarmList$,
   });
 
-  if (!alarms?.length) {
+  if (!alarmDataArr) return null;
+  if (alarmDataArr.length === 0) {
     return (
       <View style={s.nothingTextContainer}>
         <Text style={s.nothingText}>알람을 추가해주세요.</Text>
@@ -22,7 +25,7 @@ const AlarmContainer = () => {
   return (
     <View style={s.root}>
       <FlatList
-        data={alarms}
+        data={alarmDataArr}
         renderItem={(data) => <AlarmItem {...data.item} />}
         horizontal={false}
         automaticallyAdjustKeyboardInsets

@@ -1,11 +1,21 @@
 import type { PropsWithChildren } from "react";
-import { StyleSheet, View, ViewProps } from "react-native";
+import {
+  StyleSheet,
+  TouchableNativeFeedback,
+  TouchableNativeFeedbackProps,
+  View,
+  ViewProps,
+} from "react-native";
 import { color } from "@/styles/color";
 
-const Tag = (props: PropsWithChildren<ViewProps>) => (
-  <View {...props} style={[s.root, props.style]}>
-    {props.children}
-  </View>
+type Props = ViewProps & TouchableNativeFeedbackProps;
+
+const Tag = (props: PropsWithChildren<Props>) => (
+  <TouchableNativeFeedback {...props} onPress={() => console.log("press Tag")}>
+    <View {...props} style={[s.root, props.style]}>
+      {props.children}
+    </View>
+  </TouchableNativeFeedback>
 );
 export default Tag;
 

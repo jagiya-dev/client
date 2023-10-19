@@ -7,6 +7,7 @@ import {
   ImageStyle,
 } from "react-native";
 import { WeatherModel } from "@/typing";
+import { AlarmLocationResponse } from "@/network/api";
 
 type IconProps = Partial<Exclude<ImageProps, "source">> & {
   useTouch?: boolean;
@@ -141,18 +142,70 @@ export const UnselectedCircle = (props: IconProps) => (
   </TouchableOpacity>
 );
 
+export const AppleLogo = (props: IconProps) => (
+  <TouchableOpacity disabled={!props.useTouch}>
+    <Image source={require("#/icons/apple_logo.png")} {...props} />
+  </TouchableOpacity>
+);
+
+export const AppleLogoEnabled = (props: IconProps) => (
+  <TouchableOpacity disabled={!props.useTouch}>
+    <Image source={require("#/icons/apple_logo_enabled.png")} {...props} />
+  </TouchableOpacity>
+);
+
+export const AppleLogoDisabled = (props: IconProps) => (
+  <TouchableOpacity disabled={!props.useTouch}>
+    <Image source={require("#/icons/apple_logo_disabled.png")} {...props} />
+  </TouchableOpacity>
+);
+
+export const KakaoLogoEnabled = (props: IconProps) => (
+  <TouchableOpacity disabled={!props.useTouch}>
+    <Image source={require("#/icons/kakao_logo_enabled.png")} {...props} />
+  </TouchableOpacity>
+);
+
+export const KakaoLogo = (props: IconProps) => (
+  <TouchableOpacity disabled={!props.useTouch}>
+    <Image source={require("#/icons/kakao_logo.png")} {...props} />
+  </TouchableOpacity>
+);
+
+export const KakaoLogoDisabled = (props: IconProps) => (
+  <TouchableOpacity disabled={!props.useTouch}>
+    <Image source={require("#/icons/kakao_logo_disabled.png")} {...props} />
+  </TouchableOpacity>
+);
+
+export const MeIcon = (props: IconProps) => (
+  <TouchableOpacity disabled={!props.useTouch}>
+    <Image source={require("#/icons/me.png")} {...props} />
+  </TouchableOpacity>
+);
+export const ShareIcon = (props: IconProps) => (
+  <TouchableOpacity disabled={!props.useTouch}>
+    <Image source={require("#/icons/share.png")} {...props} />
+  </TouchableOpacity>
+);
+export const PrivacyIcon = (props: IconProps) => (
+  <TouchableOpacity disabled={!props.useTouch}>
+    <Image source={require("#/icons/privacy.png")} {...props} />
+  </TouchableOpacity>
+);
+
 export const IconFactoryByWeatherModel = (
-  weather: WeatherModel["weather"],
+  weather: AlarmLocationResponse["timeOfDay"],
   style: StyleProp<ImageStyle>,
 ) => {
   switch (weather) {
-    case "day":
+    case "AM":
       return <DayIcon width={20} height={20} style={style} />;
 
-    case "night":
+    case "PM":
       return <NightIcon width={20} height={20} style={style} />;
 
-    case "day-night":
+    case "ALL":
       return <DayNightIcon width={20} height={20} style={style} />;
 
     default:

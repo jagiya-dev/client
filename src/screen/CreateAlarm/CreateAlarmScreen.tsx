@@ -16,7 +16,7 @@ import {
   SoundVolumeIcon,
   VibrationIcon,
 } from "@/components/Icon";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import DatePicker from "react-native-date-picker";
 import { color } from "@/styles/color";
 import { Shadow } from "react-native-shadow-2";
@@ -39,16 +39,41 @@ import {
   whenSoundVolumeChange,
 } from "@/state/sound/soundVolume.state";
 import BottomButton from "@/components/fixed/BottomButton";
+import { insertAlarm } from "@/network/api";
+import { min } from "rxjs";
+import {
+  whenOnlySelectedRepeatItems,
+  whenRepeatDaysAbbreviated,
+  whenRepeatStateChanges,
+} from "@/state/repeat/repeat.state";
+import {
+  whenSelectedSoundChange,
+  whenSoundItemsChange,
+} from "@/state/sound/sound.state";
+import { soundNameAsLabel } from "@/audio";
+import { whenSelectedReminderChange } from "@/screen/CreateAlarm/Reminder/reminder.state";
 
 type ScreenProps = NativeStackScreenProps<StackParamList, "CreateAlarm">;
 
 const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
-  const [date, setDate] = useState<Date>(new Date());
-  const [regionNames, setRegionNames] = useState<string[]>([
-    "서울시",
-    "부산시",
-    "대구시",
-  ]);
+  const [alarmDate, setAlarmDate] = useState<Date>(new Date());
+
+  const alarmHours = useMemo(
+    () => alarmDate.getHours().toString().padStart(2, "0"),
+    [alarmDate],
+  );
+
+  const alarmMinutes = useMemo(
+    () => alarmDate.getMinutes().toString().padStart(2, "0"),
+    [alarmDate],
+  );
+
+  const alarmAMPM = useMemo(
+    () => (alarmDate.getHours() >= 12 ? "pm" : "am"),
+    [alarmDate],
+  );
+
+  const [regionNames, setRegionNames] = useState<string[]>([]);
 
   const [repeatBottomSheetState, setRepeatBottomSheetState] =
     useState<EBottomSheetOpenState>(EBottomSheetOpenState.CLOSE);
@@ -59,18 +84,20 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
   const [alarmSoundBottomSheetState, setAlarmSoundBottomSheetState] =
     useState<EBottomSheetOpenState>(EBottomSheetOpenState.CLOSE);
 
-  const onPressButton_deleteRegion = (index: number) => {
-    setRegionNames((prev) => [
-      ...prev.slice(0, index),
-      ...prev.slice(index + 1),
-    ]);
-  };
+  const repeatDaysAbbreviated = useObservableState({
+    observable: whenRepeatDaysAbbreviated,
+  });
 
   const soundVolume = useObservableState({
     observable: whenSoundVolumeChange,
-    subscribeFn(value) {
-      console.log("sound volume changed to ", value);
-    },
+  });
+
+  const selectedSound = useObservableState({
+    observable: whenSelectedSoundChange,
+  });
+
+  const reminderState = useObservableState({
+    observable: whenSelectedReminderChange,
   });
 
   const onChangeSliderValue: SliderOnChangeCallback = (value) => {
@@ -80,10 +107,6 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
     behaviours.setSoundVolume(volume);
   };
 
-  useEffect(() => {
-    console.log("current date: ", date.toDateString());
-  }, [date]);
-
   useHandleForegroundNotification();
 
   const loading = useInitNotification();
@@ -91,20 +114,40 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
     return null;
   }
 
+  const onPressButton_deleteRegion = (index: number) => {
+    setRegionNames((prev) => [
+      ...prev.slice(0, index),
+      ...prev.slice(index + 1),
+    ]);
+  };
+
   const onPressButton_AddNewRegion = () => {
     navigation.navigate("AddRegion");
   };
 
-  const onPressButton_SaveAndSetNewNotification = () => {
+  const onPressButton_SaveAndSetNewNotification = async () => {
     console.log("Save and set new notification");
 
-    // todo: add new alarm in the state.
-    // AlarmBehaviours.addNewAlarmItem({
-    //   isEnabled: true,
-    //   time:
-    // })
-
     // todo: set a new notification.
+    try {
+      const params = {
+        timeOfDay: alarmAMPM,
+        alarmTime: alarmHours + alarmMinutes,
+        alarmLocationList: [],
+        volume: soundVolume,
+        vibration: soundVolume === 0 ? 1 : 0,
+        weekList: [],
+        reminder: (reminderState?.minute ?? 0).toString(),
+        // alarmSoundId: selectedSound,
+      };
+      console.log("insert alarm: ", params);
+      const response = await insertAlarm(params);
+
+      const { data } = response;
+      console.log(data);
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   const onPress_openRepeatBottomSheet = () => {
@@ -142,7 +185,11 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
       >
         {/* 1. timepicker */}
         <View style={s.timePickerContainer}>
-          <DatePicker date={date} onDateChange={setDate} mode="time" />
+          <DatePicker
+            date={alarmDate}
+            onDateChange={setAlarmDate}
+            mode="time"
+          />
         </View>
 
         {/* 2. set repeat */}
@@ -161,7 +208,9 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
               <Text style={s.itemBlockLabel}>반복</Text>
 
               <View style={s.itemBlockRight}>
-                <Text style={s.itemBlockLabel}>주중</Text>
+                <Text style={s.itemBlockLabel}>
+                  {repeatDaysAbbreviated ?? "-"}
+                </Text>
                 <View style={s.itemBlockRightSpacer} />
                 <RightArrowIcon style={s.itemBlockIcon} />
               </View>
@@ -189,7 +238,11 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
                   <Text style={s.itemBlockLabel}>사운드</Text>
 
                   <View style={s.itemBlockRight}>
-                    <Text style={s.itemBlockLabel}>기본알람</Text>
+                    <Text style={s.itemBlockLabel}>
+                      {selectedSound
+                        ? soundNameAsLabel(selectedSound)
+                        : "기본알람"}
+                    </Text>
                     <View style={s.itemBlockRightSpacer} />
                     <RightArrowIcon style={s.itemBlockIcon} />
                   </View>
@@ -235,7 +288,9 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
                   <Text style={s.itemBlockLabel}>다시알림</Text>
 
                   <View style={s.itemBlockRight}>
-                    <Text style={s.itemBlockLabel}>5분</Text>
+                    <Text style={s.itemBlockLabel}>
+                      {reminderState ? reminderState.minute + "분" : "-"}
+                    </Text>
                     <View style={s.itemBlockRightSpacer} />
                     <RightArrowIcon style={s.itemBlockIcon} />
                   </View>
@@ -316,7 +371,7 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
         <BottomSheet
           bOpen={repeatBottomSheetState}
           setIsOpen={setRepeatBottomSheetState}
-          height={70}
+          height={80}
         >
           <RepeatContainer />
         </BottomSheet>

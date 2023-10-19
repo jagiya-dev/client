@@ -1,77 +1,21 @@
 import Text from "@/components/Text";
-import { Platform, StyleSheet, View } from "react-native";
+import {
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  Platform,
+  StyleSheet,
+  View,
+} from "react-native";
 import { font } from "@/styles/font";
 import { color } from "@/styles/color";
 import { widthPercentageToDP } from "react-native-responsive-screen";
-import { ReminderIntervalItem } from "@/typing";
 import { BottomSheetScrollView, useBottomSheet } from "@gorhom/bottom-sheet";
 import BottomButton from "@/components/fixed/BottomButton";
-
-const reminderItemsIOS: readonly ReminderIntervalItem[] = [
-  ...new Array(4).fill(0).map((_, i) => ({ id: i.toString(), label: "" })),
-  {
-    id: "4",
-    label: "1분",
-  },
-  {
-    id: "5",
-    label: "3분",
-  },
-  {
-    id: "6",
-    label: "5분",
-  },
-  {
-    id: "7",
-    label: "10분",
-  },
-  {
-    id: "8",
-    label: "15분",
-  },
-  {
-    id: "9",
-    label: "30분",
-  },
-  {
-    id: "10",
-    label: "60분",
-  }, // 6
-  ...new Array(6).fill(0).map((_, i) => ({ id: i.toString(), label: "" })),
-];
-
-const reminderItemsAndroid: readonly ReminderIntervalItem[] = [
-  ...new Array(4).fill(0).map((_, i) => ({ id: i.toString(), label: "" })),
-  {
-    id: "4",
-    label: "1분",
-  },
-  {
-    id: "5",
-    label: "3분",
-  },
-  {
-    id: "6",
-    label: "5분",
-  },
-  {
-    id: "7",
-    label: "10분",
-  },
-  {
-    id: "8",
-    label: "15분",
-  },
-  {
-    id: "9",
-    label: "30분",
-  },
-  {
-    id: "10",
-    label: "60분",
-  }, // 6
-  ...new Array(8).fill(0).map((_, i) => ({ id: i.toString(), label: "" })),
-];
+import {
+  reminderItemsAndroid,
+  reminderItemsIOS,
+} from "@/screen/CreateAlarm/Reminder/Reminder.data";
+import { behaviours } from "@/screen/CreateAlarm/Reminder/reminder.state";
 
 const ReminderContainer = () => {
   const { close } = useBottomSheet();
@@ -82,7 +26,10 @@ const ReminderContainer = () => {
 
   const reminderItems =
     Platform.OS === "ios" ? reminderItemsIOS : reminderItemsAndroid;
-  console.log(reminderItems);
+
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    behaviours.setReminderState(event.nativeEvent.contentOffset.y);
+  };
 
   return (
     <View style={s.root}>
@@ -95,8 +42,9 @@ const ReminderContainer = () => {
       <BottomSheetScrollView
         nestedScrollEnabled
         snapToAlignment={Platform.OS === "ios" ? "center" : "start"}
-        snapToInterval={Platform.OS === "ios" ? 36 : 36}
+        snapToInterval={36}
         contentContainerStyle={s.reminderItemContainer}
+        onScroll={handleScroll}
       >
         {reminderItems.map((item) => (
           <View key={item.id} style={s.reminderItem}>

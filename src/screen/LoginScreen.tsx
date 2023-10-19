@@ -1,134 +1,206 @@
-import {View, Image, StyleSheet, SafeAreaView} from "react-native";
+import {
+  View,
+  Image,
+  StyleSheet,
+  SafeAreaView,
+  TouchableWithoutFeedback,
+} from "react-native";
 import Text from "@/components/Text";
-import {Button} from "@/components/button";
-import {login, getProfile} from "@react-native-seoul/kakao-login";
+import { Button } from "@/components/button";
+import { behaviours as AuthBehaviours } from "@/state/auth/auth.state";
+import { font } from "@/styles/font";
+import { AppleLogo, KakaoLogo } from "@/components/Icon";
+import { color } from "@/styles/color";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { StackParamList } from "@/typing";
 
-const LoginScreen = () => {
-    const onPressKakaoLoginButton = async () => {
-        const response = await fetch("https://www.readyumbrelladata.com/auth/getKakaoUrl");
-        if (!response.ok) throw new Error("Network response was not ok");
+type Props = NativeStackScreenProps<StackParamList, "Login">;
 
-        console.log("response", response);
+const LoginScreen = ({ route, navigation }: Props) => {
+  const onPress_KakaoLoginButton = async () => {
+    const navigateToMain = () => navigation.navigate("Main");
 
+    try {
+      await AuthBehaviours.loginToKakao();
+      await AuthBehaviours.fetchKakaoProfile(navigateToMain);
 
-        try {
-            const result = await login();
-            // console.log("Login Success", JSON.stringify(result));
-            await getKakaoProfile();
-        } catch (error: any) {
-            if (error.code === 'E_CANCELLED_OPERATION') {
-                console.log("Login Cancel", error.message);
-                return;
-            }
-
-            console.log(`Login Fail(code:${error.code})`, error.message);
-        }
-    };
-
-    const getKakaoProfile = async () => {
-        const profile = await getProfile();
-        // profile.
-        console.log("GetProfile Success", JSON.stringify(profile));
+      AuthBehaviours.localLogin("kakao");
+      await AuthBehaviours.updateLoginInfo();
+    } catch (error) {
+      console.error(error);
     }
+  };
 
-    const onPressAppleLoginButton = () => {
-        console.log("apple login button pressed");
-    };
+  const onPressAppleLoginButton = () => {
+    console.log("apple login button pressed");
 
-    return (
-        <SafeAreaView style={s.root}>
-            {/* Image Section */}
-            <Image
-                style={s.image}
-                source={{uri: "https://example.com/image.jpg"}}
-            />
+    try {
+      AuthBehaviours.localLogin("apple");
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-            <View style={s.descView}>
-                <Text style={s.descText}>레디우산에 로그인하시고</Text>
-                <Text style={s.descText}>더 많은 기능을 이용해 보세요!</Text>
-            </View>
+  const onPress_useAndCondition = () => {
+    console.log("use and condition button pressed");
+  };
 
-            {/* Login Section */}
-            <View style={s.loginView}>
-                <Button
-                    style={{...s.loginButton, ...s.loginButtonKakao}}
-                    onPress={onPressKakaoLoginButton}
-                >
-                    <Text style={s.loginButtonText}>카카오 로그인</Text>
-                </Button>
+  const onPress_privacyPolicy = () => {
+    console.log("privacy policy button pressed");
+  };
 
-                <Button
-                    style={{...s.loginButton, ...s.loginButtonApple}}
-                    onPress={onPressAppleLoginButton}
-                >
-                    <Text style={s.loginButtonText}>애플 로그인</Text>
-                </Button>
-            </View>
+  return (
+    <SafeAreaView style={s.root}>
+      {/* Image Section */}
+      <Image style={s.image} source={require("#/images/umbrella.png")} />
 
-            <View style={s.privacyView}>
-                <Text style={s.privacyText}>로그인을 진행하시면 이용약관과</Text>
-                <Text style={s.privacyText}>
-                    개인정보처리방침에 동의한 것으로 간주힙니다.
-                </Text>
-            </View>
-        </SafeAreaView>
-    );
+      {/* 설명 텍스트 */}
+      <View style={s.descView}>
+        <View style={s.descTextView}>
+          <Text style={s.descText}>레디우산에 로그인하시고</Text>
+          <Text style={s.descText}>더 많은 기능을 이용해 보세요!</Text>
+        </View>
+      </View>
+
+      {/* Login Section */}
+      <View style={s.loginView}>
+        <Button
+          style={[s.loginButton, s.loginButtonKakao]}
+          onPress={onPress_KakaoLoginButton}
+        >
+          <KakaoLogo style={s.loginButtonLogo} />
+          <Text style={[s.loginButtonText, s.loginButtonTextKakao]}>
+            카카오 로그인
+          </Text>
+        </Button>
+
+        <Button
+          style={[s.loginButton, s.loginButtonApple]}
+          onPress={onPressAppleLoginButton}
+        >
+          <AppleLogo style={s.loginButtonLogo} />
+          <Text style={[s.loginButtonText, s.loginButtonTextApple]}>
+            애플 로그인
+          </Text>
+        </Button>
+      </View>
+
+      {/* 이용약관 & 개인정보처리방침 */}
+      <View style={s.privacyView}>
+        <View style={s.privacyViewTextView}>
+          <Text style={s.privacyText}>로그인을 진행하시면</Text>
+        </View>
+
+        <View style={s.privacyViewTextView}>
+          <TouchableWithoutFeedback onPress={onPress_useAndCondition}>
+            <Text style={[s.privacyTextInside, s.privacyText]}>이용약관</Text>
+          </TouchableWithoutFeedback>
+          <Text>과 </Text>
+          <TouchableWithoutFeedback onPress={onPress_privacyPolicy}>
+            <Text style={[s.privacyTextInside, s.privacyText]}>
+              개인정보처리방침
+            </Text>
+          </TouchableWithoutFeedback>
+          <Text style={s.privacyText}>에 동의한 것으로 간주힙니다.</Text>
+        </View>
+      </View>
+    </SafeAreaView>
+  );
 };
 
 export default LoginScreen;
 
 const s = StyleSheet.create({
-    root: {
-        justifyContent: "center",
-        alignItems: "center",
-        flex: 1,
-        zIndex: 0,
-    },
-    image: {
-        width: 200,
-        height: 200,
-        backgroundColor: "black",
-    },
-    descView: {
-        justifyContent: "center",
-        alignItems: "center",
-        paddingTop: 3,
-    },
-    descText: {
-        color: "black",
-        fontSize: 20,
-    },
-    loginView: {
-        justifyContent: "center",
-        alignItems: "center",
-        height: "20%",
-        width: "100%",
-    },
-    loginButton: {
-        justifyContent: "center",
-        alignItems: "center",
-        paddingVertical: 5,
-        marginVertical: 5,
-        width: "50%",
-        borderRadius: 7,
-        zIndex: 10,
-    },
-    loginButtonText: {
-        color: "black",
-        fontSize: 15,
-    },
-    loginButtonKakao: {
-        backgroundColor: "yellow",
-    },
-    loginButtonApple: {
-        backgroundColor: "lightgray",
-    },
-    privacyView: {
-        alignItems: "center",
-        height: "10%",
-    },
-    privacyText: {
-        color: "black",
-        fontSize: 10,
-    },
+  root: {
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
+    zIndex: 0,
+  },
+  image: {
+    width: 200,
+    height: 200,
+    paddingTop: 49.78,
+  },
+  descView: {
+    justifyContent: "center",
+    alignItems: "center",
+    paddingTop: 16,
+  },
+  descTextView: {
+    alignItems: "center",
+  },
+  descText: {
+    color: "black",
+    fontSize: font.title["2"].size,
+    fontWeight: font.title["2"].weight,
+    lineHeight: font.title["2"].height,
+  },
+  loginView: {
+    // justifyContent: "center",
+    // alignItems: "center",
+    marginTop: 128,
+    marginBottom: 32,
+  },
+  loginButton: {
+    width: 300,
+
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+
+    paddingHorizontal: 15,
+    paddingVertical: 12,
+    borderRadius: 6,
+
+    zIndex: 10,
+
+    height: 45,
+    // ...Platform.select({
+    //   android: {
+    //     minHeight: 45,
+    //   },
+    //   ios: {
+    //     height: 45,
+    //   },
+    // }),
+  },
+  loginButtonLogo: {
+    width: 18,
+    height: 18,
+    marginRight: 8,
+  },
+  loginButtonText: {
+    fontSize: font.button.login.size,
+    fontWeight: font.button.login.weight,
+  },
+  loginButtonTextKakao: {
+    color: "black",
+  },
+  loginButtonKakao: {
+    backgroundColor: "yellow",
+    marginBottom: 16,
+  },
+  loginButtonTextApple: {
+    color: "white",
+  },
+  loginButtonApple: {
+    backgroundColor: color.black["1"],
+  },
+  privacyView: {
+    alignItems: "center",
+    height: "10%",
+  },
+  privacyText: {
+    color: "black",
+    fontSize: font.caption["2"].size,
+    fontWeight: font.caption["2"].weight,
+    lineHeight: font.caption["2"].height,
+  },
+  privacyTextInside: {
+    textDecorationLine: "underline",
+  },
+  privacyViewTextView: {
+    flexDirection: "row",
+  },
 });

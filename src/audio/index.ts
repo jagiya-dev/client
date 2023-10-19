@@ -2,7 +2,7 @@ import { Platform } from "react-native";
 import Sound from "react-native-sound";
 
 // init react-native-sound
-Sound.setCategory("Playback");
+Sound.setCategory("Alarm", true);
 
 const getAudioFileExtensionByPlatform = () =>
   Platform.OS === "android" ? ".ogg" : ".aac";
@@ -13,10 +13,10 @@ export enum ESoundName {
   pedestrianRain = "pedestrian_rain",
   tableClock = "table_clock",
   tamacRain = "tamac_rain",
-  thunderRain2 = "thunder_rain2",
+  thunderRainy = "thunder_rainy",
   thunderRain = "thunder_rain",
   trailRain = "trail_rain",
-  underRoofRain = "underRoof_rain",
+  underRoofRain = "under_roof_rain",
   valleyRain = "valley_rain",
 }
 
@@ -34,7 +34,7 @@ export const soundNameAsLabel = (soundName: ESoundName) => {
       return "아스팔트";
     case ESoundName.thunderRain:
       return "천둥";
-    case ESoundName.thunderRain2:
+    case ESoundName.thunderRainy:
       return "천둥2";
     case ESoundName.trailRain:
       return "산책로";
@@ -60,12 +60,12 @@ const defaultSoundLoadCallback = (
   }
 
   // loaded successfully
-  // console.log(
-  //   `[${Platform.OS}] LOAD SUCCESS!
-  //    loaded file: ${soundName},
-  //    duration: ${soundResult.getDuration().toFixed(2)}s,
-  //    number of channels: ${soundResult.getNumberOfChannels()}`,
-  // );
+  console.log(
+    `[${Platform.OS}] LOAD SUCCESS!
+     loaded file: ${soundName},
+     duration: ${soundResult.getDuration().toFixed(2)}s,
+     number of channels: ${soundResult.getNumberOfChannels()}`,
+  );
 };
 
 export const soundResourcesMap = new Map<ESoundName, Sound>(

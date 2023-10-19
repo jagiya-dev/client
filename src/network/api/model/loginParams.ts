@@ -14,7 +14,7 @@ export type LoginParams = {
   /**
    * 이름
    */
-  name: string;
+  name?: string;
   /**
    * 이메일 (선택 동의했을 경우)
    */

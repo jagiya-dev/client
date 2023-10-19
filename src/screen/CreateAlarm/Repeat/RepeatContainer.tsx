@@ -6,7 +6,7 @@ import { widthPercentageToDP } from "react-native-responsive-screen";
 import { behaviors, whenRepeatStateChanges } from "@/state/repeat/repeat.state";
 import { useObservableState } from "@/hook/useObservableState";
 import RadioButtonContainer from "@/components/radioButtons/RadioButtonContainer";
-import { useBottomSheet } from "@gorhom/bottom-sheet";
+import { BottomSheetView, useBottomSheet } from "@gorhom/bottom-sheet";
 import BottomButton from "@/components/fixed/BottomButton";
 
 const RepeatContainer = () => {
@@ -23,7 +23,7 @@ const RepeatContainer = () => {
   };
 
   return (
-    <View style={s.root}>
+    <BottomSheetView style={s.root}>
       <View style={s.titleContainer}>
         <Text style={s.title}>반복</Text>
       </View>
@@ -35,7 +35,7 @@ const RepeatContainer = () => {
       />
 
       <BottomButton onPress={onPress_saveRepeat} text="확인" />
-    </View>
+    </BottomSheetView>
   );
 };
 

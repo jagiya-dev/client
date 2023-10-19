@@ -1,37 +1,47 @@
 import { AlarmModel } from "@/typing";
-import { BehaviorSubject } from "rxjs";
-import { genRandomAlarmItem } from "./alarm.helper";
+import { catchError, map, of } from "rxjs";
+import { fromFetch } from "rxjs/fetch";
 
-const alarmModelSubject = new BehaviorSubject<ReadonlyArray<AlarmModel>>(
-  new Array(5).fill(0).map(() => genRandomAlarmItem()),
+import { URL_ROOT } from "@/network/api/api.mutator";
+import { GetAlarmList200 } from "@/network/api";
+
+const fetchGetAlarmList = fromFetch<GetAlarmList200>(
+  `${URL_ROOT}/alarm/getAlarmList?userId=${1}`,
+  {
+    method: "GET",
+    selector: (response) => response.json(),
+  },
 );
-export const whenAlarmModel = alarmModelSubject.asObservable();
+export const alarmList$ = fetchGetAlarmList.pipe(
+  map((parsed) => parsed.data),
+  // catchError((err) => {
+  //   console.error(err);
+  //   return of({ error: true, message: err.message });
+  // }),
+);
 
 const addNewAlarmItem = (newItem: AlarmModel) => {
-  alarmModelSubject.next([ ...alarmModelSubject.value, newItem ]);
+  // fetchGetAlarmList.next([...fetchGetAlarmList.value, newItem]);
 };
 
 const deleteAlarmItem = (id: number) => {
-  alarmModelSubject.next(
-    alarmModelSubject.value.filter((item) => item.id !== id),
-  );
+  // fetchGetAlarmList.next(
+  //   fetchGetAlarmList.value.filter((item) => item.id !== id),
+  // );
 };
 
 const toggleAlarmToggleEnabled = (id: number) => {
-  alarmModelSubject.next(
-    alarmModelSubject.value.map((item) =>
-      item.id == id ?
-        { ...item, isEnabled: !item.isEnabled } :
-        item
-    ),
-  );
+  // todo: PUT 으로 실제 알람 수정
+  // fetchGetAlarmList.next(
+  //   fetchGetAlarmList.value.map((item) =>
+  //     item.id == id ? { ...item, isEnabled: !item.isEnabled } : item,
+  //   ),
+  // );
 };
 
-const closeCurrentAlarm = () => {
-};
+const closeCurrentAlarm = () => {};
 
-const deferCurrentAlarm = () => {
-};
+const deferCurrentAlarm = () => {};
 
 export const behaviours = {
   addNewAlarmItem,

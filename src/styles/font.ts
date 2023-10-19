@@ -86,6 +86,10 @@ export const font = {
       height: 20,
       weight: "500", // medium
     },
+    login: {
+      size: 14.5,
+      weight: "400",
+    },
   },
   caption: {
     "1": {

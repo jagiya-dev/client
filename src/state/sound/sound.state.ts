@@ -1,6 +1,7 @@
 import { BehaviorSubject } from "rxjs";
 import { ESoundName, soundNameAsLabel, soundResourcesMap } from "@/audio";
 import { SoundItem } from "@/typing";
+import { Platform } from "react-native";
 
 const alarmSoundItems: SoundItem[] = Object.values(ESoundName).map(
   (soundName: ESoundName, i) => ({
@@ -47,7 +48,7 @@ const isSelected = (soundId: string) => {
   return soundItem.isSelected;
 };
 
-const selectSound = (soundId: string) => {
+const selectSound = (soundId: string, playbackSoundVolume: number) => {
   toggleSoundItem(soundId);
 
   const asEnum = soundId as ESoundName;
@@ -57,6 +58,12 @@ const selectSound = (soundId: string) => {
   if (!sound) return;
 
   if (sound.isLoaded()) {
+    if (sound.isPlaying()) {
+      sound.stop();
+      sound.play();
+    }
+
+    sound.setVolume(playbackSoundVolume);
     sound.play((success) => {
       if (success) {
         console.log("successfully finished playing");

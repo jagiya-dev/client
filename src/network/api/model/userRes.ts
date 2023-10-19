@@ -12,6 +12,4 @@ export interface UserRes {
   name?: string;
   email?: string;
   snsName?: string;
-  deleteFlag?: number;
-  deleteDate?: string;
 }

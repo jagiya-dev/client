@@ -15,9 +15,9 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		20DD9599318E4550818E881E /* table_clock.aac in Resources */ = {isa = PBXBuildFile; fileRef = 7019F9D025CE4D1D9B690CDA /* table_clock.aac */; };
+		3735485E420840C294335D28 /* under_roof_rain.aac in Resources */ = {isa = PBXBuildFile; fileRef = DEACE3CB965A43E780043450 /* under_roof_rain.aac */; };
 		49D482F278F649C482EE4367 /* pedestrian_rain.aac in Resources */ = {isa = PBXBuildFile; fileRef = 29DCA7911DED46B196BC9710 /* pedestrian_rain.aac */; };
 		5E6215212F1F42EF8CA3088F /* emergency.aac in Resources */ = {isa = PBXBuildFile; fileRef = 73A284BC85B247E8AD8D480F /* emergency.aac */; };
-		61CE41C2125F464E8C979AA7 /* underRoof_rain.aac in Resources */ = {isa = PBXBuildFile; fileRef = 0E220E6781BC432699155E61 /* underRoof_rain.aac */; };
 		7072F494150D43309408E926 /* thunder_rain.aac in Resources */ = {isa = PBXBuildFile; fileRef = AFB72A38E2A14D98904B43DE /* thunder_rain.aac */; };
 		73FA5A87444F73CB2664D1E4 /* Pods_readyUmbrella_readyUmbrellaTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0045CA98911DC726063FCAB6 /* Pods_readyUmbrella_readyUmbrellaTests.framework */; };
 		766E112E2A87647200165CBB /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 766E112D2A87647200165CBB /* libz.tbd */; };
@@ -30,7 +30,7 @@
 		DBC72A0FD0024D0BB921F362 /* tamac_rain.aac in Resources */ = {isa = PBXBuildFile; fileRef = EDB35456EBA74ABDAD235971 /* tamac_rain.aac */; };
 		E4CC1301900F4E58A4F7C6D7 /* trail_rain.aac in Resources */ = {isa = PBXBuildFile; fileRef = C0DD177574AD475797CD0B3F /* trail_rain.aac */; };
 		E7486EABD5634819A14C05B8 /* valley_rain.aac in Resources */ = {isa = PBXBuildFile; fileRef = 815C6F1EA9104697BD578B38 /* valley_rain.aac */; };
-		FF54325816454455AB77E1E4 /* thunder_rain_2.aac in Resources */ = {isa = PBXBuildFile; fileRef = 1514B9C0904B4FEBB6489A71 /* thunder_rain_2.aac */; };
+		8A37A089B1A348739CBBB508 /* thunder_rainy.aac in Resources */ = {isa = PBXBuildFile; fileRef = A8D9CD510AAC48288C158735 /* thunder_rainy.aac */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,14 +48,12 @@
 		00E356EE1AD99517003FC87E /* readyUmbrellaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = readyUmbrellaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* readyUmbrellaTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = readyUmbrellaTests.m; sourceTree = "<group>"; };
-		0E220E6781BC432699155E61 /* underRoof_rain.aac */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = underRoof_rain.aac; path = ../assets/audio/ios/underRoof_rain.aac; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* readyUmbrella.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = readyUmbrella.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = readyUmbrella/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = readyUmbrella/AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = readyUmbrella/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = readyUmbrella/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = readyUmbrella/main.m; sourceTree = "<group>"; };
-		1514B9C0904B4FEBB6489A71 /* thunder_rain_2.aac */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = thunder_rain_2.aac; path = ../assets/audio/ios/thunder_rain_2.aac; sourceTree = "<group>"; };
 		29DCA7911DED46B196BC9710 /* pedestrian_rain.aac */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = pedestrian_rain.aac; path = ../assets/audio/ios/pedestrian_rain.aac; sourceTree = "<group>"; };
 		36380F4B60B2475DB7950495 /* Pretendard-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Pretendard-SemiBold.ttf"; path = "../assets/fonts/Pretendard-SemiBold.ttf"; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-readyUmbrella.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-readyUmbrella.debug.xcconfig"; path = "Target Support Files/Pods-readyUmbrella/Pods-readyUmbrella.debug.xcconfig"; sourceTree = "<group>"; };
@@ -80,8 +78,10 @@
 		B7090F1D92E84F7B87DE6AC1 /* gravel_rain.aac */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = gravel_rain.aac; path = ../assets/audio/ios/gravel_rain.aac; sourceTree = "<group>"; };
 		C0DD177574AD475797CD0B3F /* trail_rain.aac */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = trail_rain.aac; path = ../assets/audio/ios/trail_rain.aac; sourceTree = "<group>"; };
 		CE7DC411E3B74287934B43BA /* thunder.aac */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = thunder.aac; path = ../assets/audio/ios/thunder.aac; sourceTree = "<group>"; };
+		DEACE3CB965A43E780043450 /* under_roof_rain.aac */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = under_roof_rain.aac; path = ../assets/audio/ios/under_roof_rain.aac; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		EDB35456EBA74ABDAD235971 /* tamac_rain.aac */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = tamac_rain.aac; path = ../assets/audio/ios/tamac_rain.aac; sourceTree = "<group>"; };
+		A8D9CD510AAC48288C158735 /* thunder_rainy.aac */ = {isa = PBXFileReference; name = "thunder_rainy.aac"; path = "../assets/audio/ios/thunder_rainy.aac"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -208,10 +208,10 @@
 				EDB35456EBA74ABDAD235971 /* tamac_rain.aac */,
 				CE7DC411E3B74287934B43BA /* thunder.aac */,
 				AFB72A38E2A14D98904B43DE /* thunder_rain.aac */,
-				1514B9C0904B4FEBB6489A71 /* thunder_rain_2.aac */,
 				C0DD177574AD475797CD0B3F /* trail_rain.aac */,
 				815C6F1EA9104697BD578B38 /* valley_rain.aac */,
-				0E220E6781BC432699155E61 /* underRoof_rain.aac */,
+				DEACE3CB965A43E780043450 /* under_roof_rain.aac */,
+				A8D9CD510AAC48288C158735 /* thunder_rainy.aac */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -325,10 +325,10 @@
 				DBC72A0FD0024D0BB921F362 /* tamac_rain.aac in Resources */,
 				DB2F092B92A7417F8A425FE4 /* thunder.aac in Resources */,
 				7072F494150D43309408E926 /* thunder_rain.aac in Resources */,
-				FF54325816454455AB77E1E4 /* thunder_rain_2.aac in Resources */,
 				E4CC1301900F4E58A4F7C6D7 /* trail_rain.aac in Resources */,
 				E7486EABD5634819A14C05B8 /* valley_rain.aac in Resources */,
-				61CE41C2125F464E8C979AA7 /* underRoof_rain.aac in Resources */,
+				3735485E420840C294335D28 /* under_roof_rain.aac in Resources */,
+				8A37A089B1A348739CBBB508 /* thunder_rainy.aac in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

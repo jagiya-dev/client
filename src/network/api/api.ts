@@ -6,21 +6,35 @@
  * OpenAPI spec version: 1.0.0
  */
 import type {
+  UpdateUserName200,
+  UserDetailUpdateRequest,
   UpdateAlarm200,
-  AlarmRequest,
+  AlarmUpdateRequest,
   UpdateAlarmEnabled200,
   AlarmEnabledRequest,
   InsertAlarm200,
+  AlarmInsertRequest,
   RefreshLocationForWeather200,
   RefreshLocationForWeatherParams,
   GetLocationForWeather200,
   GetLocationForWeatherParams,
-  MemberDelete200,
-  MemberDeleteParams,
-  GetLocation200,
-  GetLocationParams,
   Login200,
   LoginParams,
+  LoginAndUserTransform200,
+  LoginAndUserTransformParams,
+  GetUserDetail200,
+  GetUserDetailParams,
+  GetTermsAndPrivacy200,
+  MemberDelete200,
+  MemberDeleteParams,
+  GetRecentSelectLocation200,
+  GetRecentSelectLocationParams,
+  GetRecentLocation200,
+  GetRecentLocationParams,
+  GetRecentDeleteLocationParams,
+  GetLocation200,
+  GetLocationParams,
+  GetAlarmSoundList200,
   GetAlarmLocationWeather200,
   GetAlarmLocationWeatherParams,
   GetAlarmLocationWeatherDetail200,
@@ -44,11 +58,30 @@ type SecondParameter<T extends (...args: any) => any> = T extends (
   : never;
 
 /**
+ * 이름 변경
+ * @summary 이름 변경
+ */
+export const updateUserName = (
+  userDetailUpdateRequest: BodyType<UserDetailUpdateRequest>,
+  options?: SecondParameter<typeof getInstance>,
+) => {
+  return getInstance<UpdateUserName200>(
+    {
+      url: `/user/updateUserName`,
+      method: "put",
+      headers: { "Content-Type": "application/json;charset=UTF-8" },
+      data: userDetailUpdateRequest,
+    },
+    options,
+  );
+};
+
+/**
  * 알람 수정
  * @summary 알람 수정
  */
 export const updateAlarm = (
-  alarmRequest: BodyType<AlarmRequest>,
+  alarmUpdateRequest: BodyType<AlarmUpdateRequest>,
   options?: SecondParameter<typeof getInstance>,
 ) => {
   return getInstance<UpdateAlarm200>(
@@ -56,7 +89,7 @@ export const updateAlarm = (
       url: `/alarm/updateAlarm`,
       method: "put",
       headers: { "Content-Type": "application/json;charset=UTF-8" },
-      data: alarmRequest,
+      data: alarmUpdateRequest,
     },
     options,
   );
@@ -86,7 +119,7 @@ export const updateAlarmEnabled = (
  * @summary 알람 등록
  */
 export const insertAlarm = (
-  alarmRequest: BodyType<AlarmRequest>,
+  alarmInsertRequest: BodyType<AlarmInsertRequest>,
   options?: SecondParameter<typeof getInstance>,
 ) => {
   return getInstance<InsertAlarm200>(
@@ -94,7 +127,7 @@ export const insertAlarm = (
       url: `/alarm/insertAlarm`,
       method: "post",
       headers: { "Content-Type": "application/json;charset=UTF-8" },
-      data: alarmRequest,
+      data: alarmInsertRequest,
     },
     options,
   );
@@ -129,6 +162,61 @@ export const getLocationForWeather = (
 };
 
 /**
+ * 로그인
+ * @summary 로그인
+ */
+export const login = (
+  params: LoginParams,
+  options?: SecondParameter<typeof getInstance>,
+) => {
+  return getInstance<Login200>(
+    { url: `/user/login`, method: "get", params },
+    options,
+  );
+};
+
+/**
+ * 회원전환 로그인
+ * @summary 회원전환 로그인
+ */
+export const loginAndUserTransform = (
+  params: LoginAndUserTransformParams,
+  options?: SecondParameter<typeof getInstance>,
+) => {
+  return getInstance<LoginAndUserTransform200>(
+    { url: `/user/loginAndUserTransform `, method: "get", params },
+    options,
+  );
+};
+
+/**
+ * 회원조회
+ * @summary 회원조회
+ */
+export const getUserDetail = (
+  params: GetUserDetailParams,
+  options?: SecondParameter<typeof getInstance>,
+) => {
+  return getInstance<GetUserDetail200>(
+    { url: `/user/getUserDetail`, method: "get", params },
+    options,
+  );
+};
+
+/**
+ * 약관및개인정보처리방침 조회
+ * @summary 약관및개인정보처리방침 조회
+ */
+export const getTermsAndPrivacy = (
+  options?: SecondParameter<typeof getInstance>,
+) => {
+  return getInstance<GetTermsAndPrivacy200>(
+    { url: `/user/getTermsAndPrivacy`, method: "get" },
+    options,
+  );
+};
+
+/**
  * 탈퇴
  * @summary 탈퇴
  */
@@ -138,6 +226,48 @@ export const memberDelete = (
 ) => {
   return getInstance<MemberDelete200>(
     { url: `/memberInfo/delete`, method: "get", params },
+    options,
+  );
+};
+
+/**
+ * 최근 검색한 주소목록
+ * @summary 최근검색 주소목록
+ */
+export const getRecentSelectLocation = (
+  params: GetRecentSelectLocationParams,
+  options?: SecondParameter<typeof getInstance>,
+) => {
+  return getInstance<GetRecentSelectLocation200>(
+    { url: `/location/getRecentSelectLocation`, method: "get", params },
+    options,
+  );
+};
+
+/**
+ * 검색한 주소를 저장한다
+ * @summary 검색 주소 저장
+ */
+export const getRecentLocation = (
+  params: GetRecentLocationParams,
+  options?: SecondParameter<typeof getInstance>,
+) => {
+  return getInstance<GetRecentLocation200>(
+    { url: `/location/getRecentLocation`, method: "get", params },
+    options,
+  );
+};
+
+/**
+ * 최근 검색한 주소삭제
+ * @summary 최근검색 주소삭제
+ */
+export const getRecentDeleteLocation = (
+  params: GetRecentDeleteLocationParams,
+  options?: SecondParameter<typeof getInstance>,
+) => {
+  return getInstance<void>(
+    { url: `/location/getRecentDeleteLocation`, method: "get", params },
     options,
   );
 };
@@ -157,15 +287,14 @@ export const getLocation = (
 };
 
 /**
- * 로그인
- * @summary 로그인
+ * 알람소리리스트 조회
+ * @summary 알람소리리스트 조회
  */
-export const login = (
-  params: LoginParams,
+export const getAlarmSoundList = (
   options?: SecondParameter<typeof getInstance>,
 ) => {
-  return getInstance<Login200>(
-    { url: `/auth/login`, method: "get", params },
+  return getInstance<GetAlarmSoundList200>(
+    { url: `/alarm/getAlarmSoundList`, method: "get" },
     options,
   );
 };
@@ -245,6 +374,9 @@ export const deleteAlarm = (
   );
 };
 
+export type UpdateUserNameResult = NonNullable<
+  Awaited<ReturnType<typeof updateUserName>>
+>;
 export type UpdateAlarmResult = NonNullable<
   Awaited<ReturnType<typeof updateAlarm>>
 >;
@@ -260,13 +392,34 @@ export type RefreshLocationForWeatherResult = NonNullable<
 export type GetLocationForWeatherResult = NonNullable<
   Awaited<ReturnType<typeof getLocationForWeather>>
 >;
+export type LoginResult = NonNullable<Awaited<ReturnType<typeof login>>>;
+export type LoginAndUserTransformResult = NonNullable<
+  Awaited<ReturnType<typeof loginAndUserTransform>>
+>;
+export type GetUserDetailResult = NonNullable<
+  Awaited<ReturnType<typeof getUserDetail>>
+>;
+export type GetTermsAndPrivacyResult = NonNullable<
+  Awaited<ReturnType<typeof getTermsAndPrivacy>>
+>;
 export type MemberDeleteResult = NonNullable<
   Awaited<ReturnType<typeof memberDelete>>
+>;
+export type GetRecentSelectLocationResult = NonNullable<
+  Awaited<ReturnType<typeof getRecentSelectLocation>>
+>;
+export type GetRecentLocationResult = NonNullable<
+  Awaited<ReturnType<typeof getRecentLocation>>
+>;
+export type GetRecentDeleteLocationResult = NonNullable<
+  Awaited<ReturnType<typeof getRecentDeleteLocation>>
 >;
 export type GetLocationResult = NonNullable<
   Awaited<ReturnType<typeof getLocation>>
 >;
-export type LoginResult = NonNullable<Awaited<ReturnType<typeof login>>>;
+export type GetAlarmSoundListResult = NonNullable<
+  Awaited<ReturnType<typeof getAlarmSoundList>>
+>;
 export type GetAlarmLocationWeatherResult = NonNullable<
   Awaited<ReturnType<typeof getAlarmLocationWeather>>
 >;
