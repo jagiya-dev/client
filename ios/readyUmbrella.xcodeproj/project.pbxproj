@@ -24,13 +24,13 @@
 		767BA4A42AA6406F00519CFC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 767BA4A32AA6406F00519CFC /* GoogleService-Info.plist */; };
 		790237A0BC9F402C9E8321C2 /* gravel_rain.aac in Resources */ = {isa = PBXBuildFile; fileRef = B7090F1D92E84F7B87DE6AC1 /* gravel_rain.aac */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		8A37A089B1A348739CBBB508 /* thunder_rainy.aac in Resources */ = {isa = PBXBuildFile; fileRef = A8D9CD510AAC48288C158735 /* thunder_rainy.aac */; };
 		B05D920BF8FE4650A83826CC /* Pretendard-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8489E8543ED544C591DC6DFB /* Pretendard-ExtraBold.ttf */; };
 		C38BDF5A4FD9BF0648B9CC75 /* Pods_readyUmbrella.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 738E953EA807C010B308A872 /* Pods_readyUmbrella.framework */; };
 		DB2F092B92A7417F8A425FE4 /* thunder.aac in Resources */ = {isa = PBXBuildFile; fileRef = CE7DC411E3B74287934B43BA /* thunder.aac */; };
 		DBC72A0FD0024D0BB921F362 /* tamac_rain.aac in Resources */ = {isa = PBXBuildFile; fileRef = EDB35456EBA74ABDAD235971 /* tamac_rain.aac */; };
 		E4CC1301900F4E58A4F7C6D7 /* trail_rain.aac in Resources */ = {isa = PBXBuildFile; fileRef = C0DD177574AD475797CD0B3F /* trail_rain.aac */; };
 		E7486EABD5634819A14C05B8 /* valley_rain.aac in Resources */ = {isa = PBXBuildFile; fileRef = 815C6F1EA9104697BD578B38 /* valley_rain.aac */; };
-		8A37A089B1A348739CBBB508 /* thunder_rainy.aac in Resources */ = {isa = PBXBuildFile; fileRef = A8D9CD510AAC48288C158735 /* thunder_rainy.aac */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,34 +54,34 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = readyUmbrella/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = readyUmbrella/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = readyUmbrella/main.m; sourceTree = "<group>"; };
-		29DCA7911DED46B196BC9710 /* pedestrian_rain.aac */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = pedestrian_rain.aac; path = ../assets/audio/ios/pedestrian_rain.aac; sourceTree = "<group>"; };
+		29DCA7911DED46B196BC9710 /* pedestrian_rain.aac */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = pedestrian_rain.aac; path = ../assets/audio/ios/pedestrian_rain.aac; sourceTree = "<group>"; };
 		36380F4B60B2475DB7950495 /* Pretendard-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Pretendard-SemiBold.ttf"; path = "../assets/fonts/Pretendard-SemiBold.ttf"; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-readyUmbrella.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-readyUmbrella.debug.xcconfig"; path = "Target Support Files/Pods-readyUmbrella/Pods-readyUmbrella.debug.xcconfig"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-readyUmbrella.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-readyUmbrella.release.xcconfig"; path = "Target Support Files/Pods-readyUmbrella/Pods-readyUmbrella.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-readyUmbrella-readyUmbrellaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-readyUmbrella-readyUmbrellaTests.debug.xcconfig"; path = "Target Support Files/Pods-readyUmbrella-readyUmbrellaTests/Pods-readyUmbrella-readyUmbrellaTests.debug.xcconfig"; sourceTree = "<group>"; };
-		7019F9D025CE4D1D9B690CDA /* table_clock.aac */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = table_clock.aac; path = ../assets/audio/ios/table_clock.aac; sourceTree = "<group>"; };
+		7019F9D025CE4D1D9B690CDA /* table_clock.aac */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = table_clock.aac; path = ../assets/audio/ios/table_clock.aac; sourceTree = "<group>"; };
 		738E953EA807C010B308A872 /* Pods_readyUmbrella.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_readyUmbrella.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		73A284BC85B247E8AD8D480F /* emergency.aac */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = emergency.aac; path = ../assets/audio/ios/emergency.aac; sourceTree = "<group>"; };
+		73A284BC85B247E8AD8D480F /* emergency.aac */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = emergency.aac; path = ../assets/audio/ios/emergency.aac; sourceTree = "<group>"; };
 		7658CA022AA8C62C009F4930 /* readyUmbrella.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = readyUmbrella.entitlements; path = readyUmbrella/readyUmbrella.entitlements; sourceTree = "<group>"; };
 		766E112D2A87647200165CBB /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		767BA4A32AA6406F00519CFC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		767BA4A52AA6464600519CFC /* CodePush.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CodePush.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		76A8E5E52A877CAB00466D8E /* libCodePush.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libCodePush.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		76A8E5E92A877CC800466D8E /* libCodePush.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libCodePush.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		815C6F1EA9104697BD578B38 /* valley_rain.aac */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = valley_rain.aac; path = ../assets/audio/ios/valley_rain.aac; sourceTree = "<group>"; };
+		815C6F1EA9104697BD578B38 /* valley_rain.aac */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = valley_rain.aac; path = ../assets/audio/ios/valley_rain.aac; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = readyUmbrella/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8489E8543ED544C591DC6DFB /* Pretendard-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Pretendard-ExtraBold.ttf"; path = "../assets/fonts/Pretendard-ExtraBold.ttf"; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-readyUmbrella-readyUmbrellaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-readyUmbrella-readyUmbrellaTests.release.xcconfig"; path = "Target Support Files/Pods-readyUmbrella-readyUmbrellaTests/Pods-readyUmbrella-readyUmbrellaTests.release.xcconfig"; sourceTree = "<group>"; };
 		911BE3DC8F5B4CBCA129252B /* Pretendard-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Pretendard-Bold.ttf"; path = "../assets/fonts/Pretendard-Bold.ttf"; sourceTree = "<group>"; };
-		AFB72A38E2A14D98904B43DE /* thunder_rain.aac */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = thunder_rain.aac; path = ../assets/audio/ios/thunder_rain.aac; sourceTree = "<group>"; };
+		A8D9CD510AAC48288C158735 /* thunder_rainy.aac */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = thunder_rainy.aac; path = ../assets/audio/ios/thunder_rainy.aac; sourceTree = "<group>"; };
+		AFB72A38E2A14D98904B43DE /* thunder_rain.aac */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = thunder_rain.aac; path = ../assets/audio/ios/thunder_rain.aac; sourceTree = "<group>"; };
 		B17FFA0525E6460CA8D9E211 /* Pretendard-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Pretendard-Regular.ttf"; path = "../assets/fonts/Pretendard-Regular.ttf"; sourceTree = "<group>"; };
-		B7090F1D92E84F7B87DE6AC1 /* gravel_rain.aac */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = gravel_rain.aac; path = ../assets/audio/ios/gravel_rain.aac; sourceTree = "<group>"; };
-		C0DD177574AD475797CD0B3F /* trail_rain.aac */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = trail_rain.aac; path = ../assets/audio/ios/trail_rain.aac; sourceTree = "<group>"; };
-		CE7DC411E3B74287934B43BA /* thunder.aac */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = thunder.aac; path = ../assets/audio/ios/thunder.aac; sourceTree = "<group>"; };
-		DEACE3CB965A43E780043450 /* under_roof_rain.aac */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = under_roof_rain.aac; path = ../assets/audio/ios/under_roof_rain.aac; sourceTree = "<group>"; };
+		B7090F1D92E84F7B87DE6AC1 /* gravel_rain.aac */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = gravel_rain.aac; path = ../assets/audio/ios/gravel_rain.aac; sourceTree = "<group>"; };
+		C0DD177574AD475797CD0B3F /* trail_rain.aac */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = trail_rain.aac; path = ../assets/audio/ios/trail_rain.aac; sourceTree = "<group>"; };
+		CE7DC411E3B74287934B43BA /* thunder.aac */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = thunder.aac; path = ../assets/audio/ios/thunder.aac; sourceTree = "<group>"; };
+		DEACE3CB965A43E780043450 /* under_roof_rain.aac */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = under_roof_rain.aac; path = ../assets/audio/ios/under_roof_rain.aac; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		EDB35456EBA74ABDAD235971 /* tamac_rain.aac */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = tamac_rain.aac; path = ../assets/audio/ios/tamac_rain.aac; sourceTree = "<group>"; };
-		A8D9CD510AAC48288C158735 /* thunder_rainy.aac */ = {isa = PBXFileReference; name = "thunder_rainy.aac"; path = "../assets/audio/ios/thunder_rainy.aac"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		EDB35456EBA74ABDAD235971 /* tamac_rain.aac */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = tamac_rain.aac; path = ../assets/audio/ios/tamac_rain.aac; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -587,11 +587,9 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = readyUmbrella/readyUmbrella.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = XQ24HP64B3;
+				DEVELOPMENT_TEAM = XQ24HP64B3;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = readyUmbrella/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "레디우산";
@@ -609,7 +607,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.jagiya.readyUmbrella;
 				PRODUCT_NAME = readyUmbrella;
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = readyUmbrella;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -717,10 +714,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_CFLAGS = "$(inherited)  ";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DFOLLY_NO_CONFIG",
@@ -793,10 +787,7 @@
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_CFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_CFLAGS = "$(inherited)  ";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DFOLLY_NO_CONFIG",
