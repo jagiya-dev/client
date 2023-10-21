@@ -22,8 +22,9 @@ const AlarmDetailScreen = ({ route, navigation }: ScreenProps) => {
     navigation.navigate("Main");
   };
 
-  const weathers = useMemo(
-    () => alarms?.flatMap((alarm) => alarm.weathers).slice(0, alarms.length),
+  const locations = useMemo(
+    () =>
+      alarms?.flatMap((alarm) => alarm.alarmLocation).slice(0, alarms.length),
     [alarms],
   );
 
@@ -46,10 +47,10 @@ const AlarmDetailScreen = ({ route, navigation }: ScreenProps) => {
 
       {/* 3. locations */}
       <View style={s.locationContainer}>
-        {!!weathers && weathers.length > 0 && (
+        {!!locations && locations.length > 0 && (
           <FlatList
-            data={weathers.map((weather) => ({
-              location: weather.location,
+            data={locations.map((location) => ({
+              location: location?.eupMyun,
               isSelected: false,
             }))}
             renderItem={(data) => (
@@ -66,10 +67,10 @@ const AlarmDetailScreen = ({ route, navigation }: ScreenProps) => {
         <FlatList
           data={alarms}
           renderItem={(data) => (
-            <View style={s.timeItemContainer} key={data.item.id}>
+            <View style={s.timeItemContainer} key={data.item.alarmId}>
               <View style={s.timeItem}>
-                <Text style={s.timeItemText}>{data.item.time}</Text>
-                <Text style={s.timeItemTextDate}>{data.item.dateOfTime}</Text>
+                <Text style={s.timeItemText}>{data.item.alarmTime}</Text>
+                <Text style={s.timeItemTextDate}>{data.item.timeOfDay}</Text>
               </View>
             </View>
           )}

@@ -5,13 +5,11 @@ import { requestPermissionsIOS } from "@/permissions/ios";
 
 export async function ProcessPermission() {
   if (Platform.OS === "android") {
-    requestPermissionsAndroid().then(() => {
-      // console.log(`request for android permission done`);
-    });
+    await requestPermissionsAndroid();
   }
 
   if (Platform.OS === "ios") {
-    requestPermissionsIOS().then(() => {});
+    await requestPermissionsIOS();
   }
 
   // init notifee

@@ -3,7 +3,7 @@ import { EventType } from "@notifee/react-native/src/types/Notification";
 import { useEffect } from "react";
 import { Platform } from "react-native";
 
-export const handleBackgroundNotification = async () => {
+export const handleBackgroundNotification = () => {
   notifee.onBackgroundEvent(async ({ type, detail }) => {
     switch (type) {
       case EventType.DISMISSED:

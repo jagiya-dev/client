@@ -10,6 +10,8 @@ export const useHandleForegroundNotification = () => {
   useEffect(() => {
     return notifee.onForegroundEvent(async ({ type, detail }) => {
       switch (type) {
+        case EventType.UNKNOWN:
+          break;
         case EventType.DISMISSED:
           console.log(
             `[${Platform.OS}] User dismissed notification`,
@@ -46,12 +48,18 @@ export const useHandleForegroundNotification = () => {
             detail.notification,
           );
           break;
+        case EventType.CHANNEL_BLOCKED:
+          break;
+        case EventType.CHANNEL_GROUP_BLOCKED:
+          break;
 
         case EventType.TRIGGER_NOTIFICATION_CREATED:
           console.log(
             `[${Platform.OS}] Trigger notification created`,
             detail.notification,
           );
+          break;
+        case EventType.FG_ALREADY_EXIST:
           break;
 
         default:
