@@ -7,59 +7,49 @@ import {
 } from "@/components/Icon";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
-import {
-  GestureResponderEvent,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
-import { behaviours as AlarmBehaviours } from "@/state/alarm/alarm.state";
-import { genRandomAlarmItem } from "@/state/alarm/alarm.helper";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { StackParamList } from "@/typing";
 
-/** click **/
-const onPressButton_Mode01 = () => {
-  console.log("onPressButton_Mode01");
-};
-const onPressButton_Mode02 = () => {
-  console.log("onPressButton_Mode02");
-};
-const onPressButton_Mode03 = () => {
-  console.log("onPressButton_Mode03");
-};
-const onPressButton_Mode04 = () => {
-  console.log("onPressButton_Mode04");
-};
-const onPressButton_Mode05 = () => {
-  console.log("onPressButton_Mode05");
-};
+type Props = NativeStackScreenProps<StackParamList, "Settings">;
 
-const onPressButton_AddNewAlarmItem = (_: GestureResponderEvent) => {
-  AlarmBehaviours.addNewAlarmItem(genRandomAlarmItem());
-};
+const Settings = ({ route, navigation }: Props) => {
+  /** click **/
+  const onPressButton_Mode01 = () => {
+    console.log("onPressButton_Mode01");
+  };
+  const onPressButton_Mode02 = () => {
+    console.log("onPressButton_Mode02");
+  };
+  const onPressButton_Mode03 = () => {
+    console.log("onPressButton_Mode03");
+  };
+  const onPressButton_Mode04 = () => {
+    console.log("onPressButton_Mode04");
+  };
+  const onPressButton_Mode05 = () => {
+    console.log("onPressButton_Mode05");
+  };
 
-const onPressButton_DetailButton = (event: GestureResponderEvent) => {
-  console.log("onPressButton_DetailButton");
-};
+  const onPressHeaderButton_GoBack = () => {
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    }
+  };
 
-type Props = {};
-
-const Settings = (props: Props) => {
   return (
     <SafeAreaView style={s.root}>
       <View style={s.innerRoot}>
         {/* 1. head */}
-
         <View style={s.headContainer}>
-          <Button style={s.detailButton} onPress={onPressButton_DetailButton}>
+          <Button style={s.detailButton} onPress={onPressHeaderButton_GoBack}>
             <LeftArrowIcon02 />
           </Button>
           <Text style={s.headText}>설정</Text>
         </View>
 
         {/* 2. content View */}
-
         <View style={s.contentLabelContainer}>
           <View style={s.contentTitleLabelContainer}>
             <Text style={s.contentTitleLabel}>일반</Text>
