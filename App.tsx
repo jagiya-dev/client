@@ -14,8 +14,7 @@ import { handleBackgroundNotification } from "@/util/notification/useHandleBackg
 import { useAndroidBatteryOptimize } from "@/util/notification/useAndroidBatterOptimize";
 import { useAndroidPowerManager } from "@/util/notification/useAndroidPowerManager";
 import Navigation from "./Navigation";
-import BootSplash from "react-native-bootsplash";
-import { useEffect } from "react";
+import "react-native-get-random-values";
 
 // init dayjs
 dayjs.extend(utc);
