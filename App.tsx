@@ -14,6 +14,8 @@ import { handleBackgroundNotification } from "@/util/notification/useHandleBackg
 import { useAndroidBatteryOptimize } from "@/util/notification/useAndroidBatterOptimize";
 import { useAndroidPowerManager } from "@/util/notification/useAndroidPowerManager";
 import Navigation from "./Navigation";
+import BootSplash from "react-native-bootsplash";
+import { useEffect } from "react";
 
 // init dayjs
 dayjs.extend(utc);
@@ -27,6 +29,17 @@ if (Platform.OS === "android") {
 }
 
 const App = () => {
+  useEffect(() => {
+    const init = async () => {
+      // …do multiple sync or async tasks
+    };
+
+    init().finally(async () => {
+      await BootSplash.hide({ fade: true });
+      console.log("BootSplash has been hidden successfully");
+    });
+  }, []);
+
   // run codepush first of all
   const { progress, bHasUpdate } = Codepush.useSyncOrUpdateCode();
   if (bHasUpdate) {
