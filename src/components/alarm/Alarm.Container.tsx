@@ -5,8 +5,6 @@ import { color } from "@/styles/color";
 import { font } from "@/styles/font";
 import { alarmList$ } from "@/state/alarm/alarm.state";
 import { useObservableState } from "@/hook/useObservableState";
-import { useEffect, useState } from "react";
-import { AlarmResponse, getAlarmList } from "@/network/api";
 
 const AlarmContainer = () => {
   const alarmDataArr = useObservableState({

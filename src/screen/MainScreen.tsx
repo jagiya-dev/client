@@ -18,8 +18,6 @@ import { useHandleForegroundNotification } from "@/util/notification/useHandleFo
 import { deleteModeToggleSubject } from "@/state/main/main.state";
 import { behaviours as AlarmBehaviours } from "@/state/alarm/alarm.state";
 import { useObservableState } from "@/hook/useObservableState";
-import { useEffect, useState } from "react";
-import { AlarmResponse, getAlarmList } from "@/network/api";
 
 const MainScreen = () => {
   const isDeleteMode = useObservableState({
@@ -80,12 +78,10 @@ const MainScreen = () => {
       <AlarmContainer />
 
       {/* 5. Add New Alarm Item Button and its additive shadow */}
-      <View style={s.addNewAlarmItembuttonRoot}>
-        <AddNewAlarmItemButton
-          style={s.addNewAlarmItemButton}
-          onPress={onPressButton_AddNewAlarmItem}
-        />
-      </View>
+      <AddNewAlarmItemButton
+        style={s.addNewAlarmItemButton}
+        onPress={onPressButton_AddNewAlarmItem}
+      />
     </SafeAreaView>
   );
 };
@@ -96,6 +92,7 @@ const s = StyleSheet.create({
   root: {
     width: wp("100%"),
     flex: 1,
+    position: "relative",
   },
   innerRoot: {
     paddingHorizontal: 20,
@@ -158,9 +155,6 @@ const s = StyleSheet.create({
   },
   alarmContainerView: {
     marginTop: 16,
-  },
-  addNewAlarmItembuttonRoot: {
-    position: "relative",
   },
   addNewAlarmItemButton: {
     position: "absolute",
