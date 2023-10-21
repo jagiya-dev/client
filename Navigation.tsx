@@ -18,6 +18,7 @@ import Text from "@/components/Text";
 import { TouchableOpacity } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import { behaviours as AuthBehaviours } from "@/state/auth/auth.state";
+import BootSplash from "react-native-bootsplash";
 
 const Stack = createNativeStackNavigator<StackParamList>();
 const navRef = createNavigationContainerRef();
@@ -37,7 +38,13 @@ const Navigation = () => {
   };
 
   return (
-    <NavigationContainer ref={navRef}>
+    <NavigationContainer
+      ref={navRef}
+      onReady={() => {
+        BootSplash.hide({ fade: true });
+        console.log("BootSplash has been hidden successfully");
+      }}
+    >
       <Stack.Navigator initialRouteName="Login">
         <Stack.Screen
           name="Main"
