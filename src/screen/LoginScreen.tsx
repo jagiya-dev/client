@@ -8,10 +8,6 @@ import {
 } from "react-native";
 import Text from "@/components/Text";
 import { Button } from "@/components/button";
-import {
-  behaviours as AuthBehaviours,
-  isSupportAppleLogin$,
-} from "@/state/auth/auth.state";
 import { font } from "@/styles/font";
 import { AppleLogo, KakaoLogo } from "@/components/Icon";
 import { color } from "@/styles/color";
@@ -20,12 +16,15 @@ import { StackParamList } from "@/typing";
 import appleAuth from "@invertase/react-native-apple-authentication";
 import { useEffect } from "react";
 import { useObservableState } from "@/hook/useObservableState";
+import { apple } from "@/state/auth/auth.state.apple";
+import { kakao } from "@/state/auth/auth.state.kakao";
+import { local } from "@/state/auth/auth.state.local";
 
 type Props = NativeStackScreenProps<StackParamList, "Login">;
 
 const LoginScreen = ({ route, navigation }: Props) => {
   const isSupportAppleLogin = useObservableState({
-    observable: isSupportAppleLogin$,
+    observable: apple.isSupportAppleLogin$,
   });
 
   const navigateToMain = () => navigation.navigate("Main");
@@ -43,15 +42,10 @@ const LoginScreen = ({ route, navigation }: Props) => {
   }, []); // passing in an empty array as the second argument ensures this is only ran once when component mounts initially.
 
   const onPress_KakaoLoginButton = async () => {
-    try {
-      await AuthBehaviours.kakao.login();
-      await AuthBehaviours.kakao.getProfile(navigateToMain);
+    await kakao.login();
 
-      AuthBehaviours.local.login("kakao");
-      await AuthBehaviours.local.update();
-    } catch (error) {
-      console.error(error);
-    }
+    local.login("kakao");
+    await local.update();
   };
 
   const onPressAppleLoginButton = async () => {
@@ -63,20 +57,10 @@ const LoginScreen = ({ route, navigation }: Props) => {
       return;
     }
 
-    try {
-      if (Platform.OS === "ios") {
-        await AuthBehaviours.apple.login(navigateToMain);
-      }
+    await apple.login();
 
-      if (Platform.OS === "android") {
-        await AuthBehaviours.apple.login(navigateToMain);
-      }
-
-      AuthBehaviours.local.login("apple");
-      await AuthBehaviours.local.update();
-    } catch (error) {
-      console.error(error);
-    }
+    local.login("apple");
+    await local.update();
   };
 
   const onPress_useAndCondition = () => {

@@ -1,4 +1,9 @@
-import { CloseIcon, LeftArrowIcon } from "@/components/Icon";
+import { StackParamList } from "@/typing";
+import {
+  NavigationContainer,
+  createNavigationContainerRef,
+} from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ActivatedAlarmScreen from "@/screen/ActivatedAlarmScreen";
 import AddRegionScreen from "@/screen/AddRegion/AddRegionScreen";
 import AlarmDetailScreen from "@/screen/AlarmDetailScreen";
@@ -6,19 +11,17 @@ import CreateAlarmScreen from "@/screen/CreateAlarm/CreateAlarmScreen";
 import LoginScreen from "@/screen/LoginScreen";
 import MainScreen from "@/screen/MainScreen";
 import SettingsScreen from "@/screen/SettingsScreen";
-import { font } from "@/styles/font";
-import { StackParamList } from "@/typing";
-import {
-  NavigationContainer,
-  createNavigationContainerRef,
-} from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MyInfoScreen from "@/screen/MyInfo";
+
+import { font } from "@/styles/font";
 import Text from "@/components/Text";
+
 import { TouchableOpacity } from "react-native";
 import DeviceInfo from "react-native-device-info";
-import { behaviours as AuthBehaviours } from "@/state/auth/auth.state";
 import BootSplash from "react-native-bootsplash";
+import { local } from "@/state/auth/auth.state.local";
+
+import { CloseIcon, LeftArrowIcon } from "@/components/Icon";
 
 const Stack = createNativeStackNavigator<StackParamList>();
 const navRef = createNavigationContainerRef();
@@ -30,8 +33,8 @@ const Navigation = () => {
       const deviceId = await DeviceInfo.getUniqueId();
       console.log("skip to main without login. deviceId: ", deviceId);
 
-      AuthBehaviours.localLogin("guest");
-      await AuthBehaviours.updateLoginInfo();
+      local.login("guest");
+      await local.update();
     } catch (error) {
       console.error("error: ", error);
     }
