@@ -59,6 +59,37 @@ export const LeftArrowIcon = (props: IconProps & TouchableOpacityProps) => (
   </TouchableOpacity>
 );
 
+
+
+
+// 추가
+export const LeftArrowIcon02 = (props: IconProps) => (
+    <TouchableOpacity disabled={!props.useTouch}>
+        <Image source={require("#/icons/LeftArrow.png")} {...props} />
+    </TouchableOpacity>
+);
+
+export const UserMyPageIcon = (props: IconProps) => (
+    <TouchableOpacity disabled={!props.useTouch}>
+        <Image source={require("#/icons/userMyPageIcon.png")} {...props} />
+    </TouchableOpacity>
+);
+
+export const InformationMyPageIcon = (props: IconProps) => (
+    <TouchableOpacity disabled={!props.useTouch}>
+        <Image source={require("#/icons/informationIcon.png")} {...props} />
+    </TouchableOpacity>
+);
+
+export const ShareMyPageIcon = (props: IconProps) => (
+    <TouchableOpacity disabled={!props.useTouch}>
+        <Image source={require("#/icons/shareMyPageIcon.png")} {...props} />
+    </TouchableOpacity>
+);
+
+
+
+
 export const DownArrowIcon = (props: IconProps & TouchableOpacityProps) => (
   <TouchableOpacity disabled={!props.useTouch} {...props}>
     <Image source={require("#/icons/arrow_down.png")} {...props} />
