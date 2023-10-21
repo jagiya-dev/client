@@ -35,9 +35,6 @@ export type DateModel = {
 export type StackParamList = {
   Main: undefined;
   Login: undefined;
-  // KakaoLogin: {
-  //   redirectUrl: string;
-  // };
   CreateAlarm: undefined;
   ActivatedAlarm: undefined;
   AlarmDetail: undefined;

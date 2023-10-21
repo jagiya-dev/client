@@ -10,7 +10,7 @@ import AlarmDetailScreen from "@/screen/AlarmDetailScreen";
 import CreateAlarmScreen from "@/screen/CreateAlarm/CreateAlarmScreen";
 import LoginScreen from "@/screen/LoginScreen";
 import MainScreen from "@/screen/MainScreen";
-import SettingsScreen from "@/screen/SettingsScreen";
+import Settings from "@/screen/Settings";
 import MyInfoScreen from "@/screen/MyInfo";
 
 import { font } from "@/styles/font";
@@ -48,7 +48,7 @@ const Navigation = () => (
       console.log("BootSplash has been hidden successfully");
     }}
   >
-    <Stack.Navigator initialRouteName="Login">
+    <Stack.Navigator initialRouteName="Settings">
       <Stack.Screen
         name="Main"
         component={MainScreen}
@@ -140,27 +140,28 @@ const Navigation = () => (
       />
       <Stack.Screen
         name="Settings"
-        component={SettingsScreen}
+        component={Settings}
         options={{
           title: "설정",
-          headerLeft: (props) => (
-            <LeftArrowIcon
-              onPress={() => {
-                if (props.canGoBack) {
-                  navRef.goBack();
-                }
-              }}
-              useTouch
-            />
-          ),
-          headerShadowVisible: false,
-          headerBackTitleVisible: false,
-          headerTitleAlign: "center",
-          headerTitleStyle: {
-            fontSize: font.body["1"].size,
-            fontWeight: font.body["1"].weight,
-            fontFamily: "Pretendard",
-          },
+          headerShown: false,
+          // headerLeft: (props) => (
+          //   <LeftArrowIcon
+          //     onPress={() => {
+          //       if (props.canGoBack) {
+          //         navRef.goBack();
+          //       }
+          //     }}
+          //     useTouch
+          //   />
+          // ),
+          // headerShadowVisible: false,
+          // headerBackTitleVisible: false,
+          // headerTitleAlign: "center",
+          // headerTitleStyle: {
+          //   fontSize: font.body["1"].size,
+          //   fontWeight: font.body["1"].weight,
+          //   fontFamily: "Pretendard",
+          // },
         }}
       />
       <Stack.Screen
