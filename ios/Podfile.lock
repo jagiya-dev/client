@@ -508,6 +508,8 @@ PODS:
     - React-jsi (= 0.72.3)
     - React-logger (= 0.72.3)
     - React-perflogger (= 0.72.3)
+  - RNAppleAuthentication (2.2.2):
+    - React-Core
   - RNBootSplash (5.0.4):
     - React-Core
   - RNDeviceInfo (10.9.0):
@@ -617,6 +619,7 @@ DEPENDENCIES:
   - React-runtimescheduler (from `../node_modules/react-native/ReactCommon/react/renderer/runtimescheduler`)
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - "RNAppleAuthentication (from `../node_modules/@invertase/react-native-apple-authentication`)"
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
@@ -739,6 +742,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/react/utils"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  RNAppleAuthentication:
+    :path: "../node_modules/@invertase/react-native-apple-authentication"
   RNBootSplash:
     :path: "../node_modules/react-native-bootsplash"
   RNDeviceInfo:
@@ -825,6 +830,7 @@ SPEC CHECKSUMS:
   React-runtimescheduler: 1571b17a6e7f3ec0d1866a1de75f4a971c5922b9
   React-utils: 35e301b60b1e4828d7ef889881798967b660bbf7
   ReactCommon: 2cd9df5999b79ce60406f16f77b9e94ca8624d4d
+  RNAppleAuthentication: 0571c08da8c327ae2afc0261b48b4a515b0286a6
   RNBootSplash: 334668c563e44287ca39d03aa3f738a3c35a74a6
   RNDeviceInfo: 02ea8b23e2280fa18e00a06d7e62804d74028579
   RNFBApp: 8060d3ea89359ae78e0d1e6362a8ce9d2f5d19a8
