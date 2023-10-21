@@ -8,60 +8,54 @@ import {
 } from "react-native";
 import Text from "@/components/Text";
 import { Button } from "@/components/button";
-import { behaviours as AuthBehaviours } from "@/state/auth/auth.state";
+import {
+  behaviours as AuthBehaviours,
+  isSupportAppleLogin$,
+} from "@/state/auth/auth.state";
 import { font } from "@/styles/font";
 import { AppleLogo, KakaoLogo } from "@/components/Icon";
 import { color } from "@/styles/color";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackParamList } from "@/typing";
-import appleAuth, {
-  appleAuthAndroid,
-} from "@invertase/react-native-apple-authentication";
-import { v4 as uuid } from "uuid";
+import appleAuth from "@invertase/react-native-apple-authentication";
 import { useEffect } from "react";
+import { useObservableState } from "@/hook/useObservableState";
 
 type Props = NativeStackScreenProps<StackParamList, "Login">;
 
 const LoginScreen = ({ route, navigation }: Props) => {
-  const bSupportAppleLogin = (() => {
-    if (Platform.OS === "android") {
-      return false;
-      // return appleAuthAndroid.isSupported;
-    }
-
-    if (Platform.OS === "ios") {
-      return Platform.Version >= "13";
-    }
-  })();
+  const isSupportAppleLogin = useObservableState({
+    observable: isSupportAppleLogin$,
+  });
 
   const navigateToMain = () => navigation.navigate("Main");
 
   useEffect(() => {
-    if (bSupportAppleLogin && Platform.OS === "ios") {
-      // onCredentialRevoked returns a function that will remove the event listener. useEffect will call this function when the component unmounts
-      return appleAuth.onCredentialRevoked(async () => {
-        console.warn(
-          "If this function executes, User Credentials have been Revoked",
-        );
-      });
-    }
+    if (Platform.OS !== "ios") return;
+    if (!isSupportAppleLogin) return;
+
+    // onCredentialRevoked returns a function that will remove the event listener. useEffect will call this function when the component unmounts
+    return appleAuth.onCredentialRevoked(async () => {
+      console.warn(
+        "If this function executes, User Credentials have been Revoked",
+      );
+    });
   }, []); // passing in an empty array as the second argument ensures this is only ran once when component mounts initially.
 
   const onPress_KakaoLoginButton = async () => {
     try {
-      await AuthBehaviours.loginToKakao();
-      await AuthBehaviours.fetchKakaoProfile(navigateToMain);
+      await AuthBehaviours.kakao.login();
+      await AuthBehaviours.kakao.getProfile(navigateToMain);
 
-      AuthBehaviours.localLogin("kakao");
-      await AuthBehaviours.updateLoginInfo();
+      AuthBehaviours.local.login("kakao");
+      await AuthBehaviours.local.update();
     } catch (error) {
       console.error(error);
     }
   };
 
   const onPressAppleLoginButton = async () => {
-    console.log("apple login button pressed");
-    if (!bSupportAppleLogin) {
+    if (!isSupportAppleLogin) {
       console.log(
         "This device doesn't support Sign in with Apple because API is",
         Platform.Version,
@@ -71,77 +65,15 @@ const LoginScreen = ({ route, navigation }: Props) => {
 
     try {
       if (Platform.OS === "ios") {
-        // performs login request
-        const appleAuthRequestResponse = await appleAuth.performRequest({
-          requestedOperation: appleAuth.Operation.LOGIN,
-          // Note: it appears putting FULL_NAME first is important, see issue #293
-          requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
-        });
-
-        // get current authentication state for user
-        // /!\ This method must be tested on a real device. On the iOS simulator it always throws an error.
-        const credentialState = await appleAuth.getCredentialStateForUser(
-          appleAuthRequestResponse.user,
-        );
-
-        // use credentialState response to ensure the user is authenticated
-        if (credentialState === appleAuth.State.AUTHORIZED) {
-          console.log(
-            "sign in with apple success: ",
-            credentialState.toString(),
-            JSON.stringify(appleAuthRequestResponse, null, 2),
-          );
-          AuthBehaviours.localLogin("apple");
-          navigateToMain();
-        } else {
-          console.log(
-            "sign in with apple failed: ",
-            credentialState.toString(),
-            JSON.stringify(appleAuthRequestResponse, null, 2),
-          );
-        }
-        return;
+        await AuthBehaviours.apple.login(navigateToMain);
       }
 
-      // if (Platform.OS === "android") {
-      //   // Generate secure, random values for state and nonce;
-      //   const rawNonce = uuid();
-      //   const state = uuid();
-      //
-      //   // Configure the request
-      //   appleAuthAndroid.configure({
-      //     // The Service ID you registered with Apple
-      //     clientId: "com.jagiya.readyUmbrella",
-      //
-      //     // Return URL added to your Apple dev console. We intercept this redirect, but it must still match
-      //     // the URL you provided to Apple. It can be an empty route on your backend as it's never called.
-      //     // redirectUri: "https://example.com/auth/callback",
-      //     redirectUri: "",
-      //
-      //     // The type of response requested - code, id_token, or both.
-      //     responseType: appleAuthAndroid.ResponseType.ALL,
-      //
-      //     // The amount of user information requested from Apple.
-      //     scope: appleAuthAndroid.Scope.EMAIL,
-      //
-      //     // Random nonce value that will be SHA256 hashed before sending to Apple.
-      //     nonce: rawNonce,
-      //
-      //     // Unique state value used to prevent CSRF attacks. A UUID will be generated if nothing is provided.
-      //     state,
-      //   });
-      //
-      //   // Open the browser window for user sign in
-      //   const response = await appleAuthAndroid.signIn();
-      //
-      //   // Send the authorization code to your backend for verification
-      //   console.log(
-      //     "sign in with Apple success!",
-      //     JSON.stringify(response, null, 2),
-      //   );
-      //
-      //   return;
-      // }
+      if (Platform.OS === "android") {
+        await AuthBehaviours.apple.login(navigateToMain);
+      }
+
+      AuthBehaviours.local.login("apple");
+      await AuthBehaviours.local.update();
     } catch (error) {
       console.error(error);
     }
@@ -180,7 +112,7 @@ const LoginScreen = ({ route, navigation }: Props) => {
           </Text>
         </Button>
 
-        {bSupportAppleLogin && (
+        {isSupportAppleLogin && (
           <Button
             style={[s.loginButton, s.loginButtonApple]}
             onPress={onPressAppleLoginButton}
