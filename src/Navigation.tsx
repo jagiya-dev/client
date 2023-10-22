@@ -54,31 +54,25 @@ const commonHeaderOptions: NativeStackNavigationOptions = {
   },
 };
 
+const onPress_goBack = () => {
+  if (navRef.canGoBack()) {
+    navRef.goBack();
+  }
+};
+
+const onPress_goToMain = () => {
+  navRef.navigate("Main");
+};
+
+const onReady = async () => {
+  await BootSplash.hide({ fade: true });
+  console.log("BootSplash has been hidden successfully");
+};
+
 const Navigation = () => {
-  const onPress_goBack = () => {
-    if (navRef.canGoBack()) {
-      navRef.goBack();
-    }
-  };
-
-  const onPress_goToMain = () => {
-    navRef.navigate("Main");
-  };
-
-  const onReady = async () => {
-    await BootSplash.hide({ fade: true });
-    console.log("BootSplash has been hidden successfully");
-  };
-
   return (
     <NavigationContainer ref={navRef} onReady={onReady}>
-      <Stack.Navigator initialRouteName="MyInfo">
-        <Stack.Screen
-          name="Main"
-          component={MainScreen}
-          options={{ title: "", headerShown: false }}
-        />
-
+      <Stack.Navigator initialRouteName="Login">
         <Stack.Screen
           name="Login"
           component={LoginScreen}
@@ -98,6 +92,12 @@ const Navigation = () => {
             ),
             ...commonHeaderOptions,
           }}
+        />
+
+        <Stack.Screen
+          name="Main"
+          component={MainScreen}
+          options={{ title: "", headerShown: false }}
         />
 
         <Stack.Screen
