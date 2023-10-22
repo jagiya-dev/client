@@ -35,6 +35,10 @@ const MainScreen = ({ route, navigation }: Props) => {
     return null;
   }
 
+  const onPressButton_goToSettings = () => {
+    navigation.navigate("Settings");
+  };
+
   const onPressButton_toggleDeleteMode = () => {
     deleteModeToggleSubject.next(!isDeleteMode);
     // AlarmBehaviours.toggleAlarmToggleEnabled();
@@ -54,7 +58,11 @@ const MainScreen = ({ route, navigation }: Props) => {
         {/* 1. head */}
         <View style={s.headContainer}>
           <Text style={s.headText}>레디우산</Text>
-          <SettingsIcon style={s.settingsIcon} useTouch />
+          <SettingsIcon
+            style={s.settingsIcon}
+            useTouch
+            onPress={onPressButton_goToSettings}
+          />
         </View>
 
         {/* 2. conversation */}

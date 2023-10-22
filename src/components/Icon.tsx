@@ -1,18 +1,17 @@
 import {
   Image,
   type ImageProps,
+  ImageStyle,
+  StyleProp,
   TouchableOpacity,
   TouchableOpacityProps,
-  StyleProp,
-  ImageStyle,
 } from "react-native";
-import { WeatherModel } from "@/typing";
 import { AlarmLocationResponse } from "@/network/api";
-import { NavigationContainerRefWithCurrent } from "@react-navigation/native";
 
-type IconProps = Partial<Exclude<ImageProps, "source">> & {
-  useTouch?: boolean;
-};
+type IconProps = Partial<Exclude<ImageProps, "source">> &
+  TouchableOpacityProps & {
+    useTouch?: boolean;
+  };
 
 // day
 export const DayIcon = (props: IconProps) => (
