@@ -1,47 +1,25 @@
-import { StackParamList } from "@/typing";
+import type { StackParamList } from "@/typing";
 import {
   createNavigationContainerRef,
   NavigationContainer,
 } from "@react-navigation/native";
+import { TouchableOpacity } from "react-native";
+
 import {
   createNativeStackNavigator,
   NativeStackNavigationOptions,
 } from "@react-navigation/native-stack";
-import ActivatedAlarmScreen from "@/screen/ActivatedAlarmScreen";
-import AddRegionScreen from "@/screen/AddRegion/AddRegionScreen";
-import AlarmDetailScreen from "@/screen/AlarmDetailScreen";
-import CreateAlarmScreen from "@/screen/CreateAlarm/CreateAlarmScreen";
-import LoginScreen from "@/screen/LoginScreen";
-import MainScreen from "@/screen/MainScreen";
-import SettingsScreen from "@/screen/SettingsScreen";
-import MyInfoScreen from "@/screen/MyInfoScreen";
-
+import Screens from "@/screen";
 import { font } from "@/styles/font";
 import Text from "@/components/Text";
 
-import { TouchableOpacity } from "react-native";
-import DeviceInfo from "react-native-device-info";
 import BootSplash from "react-native-bootsplash";
-import { local } from "@/state/auth/auth.state.local";
 
 import { CloseIcon, LeftArrowIcon } from "@/components/Icon";
+import navUtils from "@/util/NavigationUtil";
 
 const Stack = createNativeStackNavigator<StackParamList>();
-const navRef = createNavigationContainerRef();
-
-const onPress_SkipToMainWithoutLogin = async () => {
-  try {
-    const deviceId = await DeviceInfo.getUniqueId();
-    console.log("skip to main without login. deviceId: ", deviceId);
-
-    local.login("guest");
-    await local.update();
-
-    navRef.navigate("Main");
-  } catch (error) {
-    console.error("error: ", error);
-  }
-};
+export const navRef = createNavigationContainerRef();
 
 const commonHeaderOptions: NativeStackNavigationOptions = {
   headerShadowVisible: false,
@@ -52,16 +30,6 @@ const commonHeaderOptions: NativeStackNavigationOptions = {
     fontWeight: font.body["1"].weight,
     fontFamily: "Pretendard",
   },
-};
-
-const onPress_goBack = () => {
-  if (navRef.canGoBack()) {
-    navRef.goBack();
-  }
-};
-
-const onPress_goToMain = () => {
-  navRef.navigate("Main");
 };
 
 const onReady = async () => {
@@ -75,11 +43,13 @@ const Navigation = () => {
       <Stack.Navigator initialRouteName="Login">
         <Stack.Screen
           name="Login"
-          component={LoginScreen}
+          component={Screens.LoginScreen}
           options={{
             title: "로그인",
             headerRight: () => (
-              <TouchableOpacity onPress={onPress_SkipToMainWithoutLogin}>
+              <TouchableOpacity
+                onPress={navUtils.onPress_SkipToMainWithoutLogin}
+              >
                 <Text
                   style={{
                     fontSize: font.body["5"].size,
@@ -96,17 +66,17 @@ const Navigation = () => {
 
         <Stack.Screen
           name="Main"
-          component={MainScreen}
+          component={Screens.MainScreen}
           options={{ title: "", headerShown: false }}
         />
 
         <Stack.Screen
           name="CreateAlarm"
-          component={CreateAlarmScreen}
+          component={Screens.CreateAlarmScreen}
           options={{
             title: "알람설정",
             headerRight: () => (
-              <CloseIcon onPress={onPress_goToMain} useTouch />
+              <CloseIcon onPress={navUtils.onPress_goToMain} useTouch />
             ),
             ...commonHeaderOptions,
           }}
@@ -114,7 +84,7 @@ const Navigation = () => {
 
         <Stack.Screen
           name="ActivatedAlarm"
-          component={ActivatedAlarmScreen}
+          component={Screens.ActivatedAlarmScreen}
           options={{
             title: "",
             headerShown: false,
@@ -124,17 +94,17 @@ const Navigation = () => {
 
         <Stack.Screen
           name="AlarmDetail"
-          component={AlarmDetailScreen}
+          component={Screens.AlarmDetailScreen}
           options={{ title: "", headerShown: false }}
         />
 
         <Stack.Screen
           name="AddRegion"
-          component={AddRegionScreen}
+          component={Screens.AddRegionScreen}
           options={{
             title: "지역추가",
             headerLeft: (_) => (
-              <LeftArrowIcon onPress={onPress_goBack} useTouch />
+              <LeftArrowIcon onPress={navUtils.onPress_goBack} useTouch />
             ),
             ...commonHeaderOptions,
           }}
@@ -142,11 +112,11 @@ const Navigation = () => {
 
         <Stack.Screen
           name="Settings"
-          component={SettingsScreen}
+          component={Screens.SettingsScreen}
           options={{
             title: "설정",
             headerLeft: (_) => (
-              <LeftArrowIcon onPress={onPress_goBack} useTouch />
+              <LeftArrowIcon onPress={navUtils.onPress_goBack} useTouch />
             ),
             ...commonHeaderOptions,
           }}
@@ -154,11 +124,11 @@ const Navigation = () => {
 
         <Stack.Screen
           name="MyInfo"
-          component={MyInfoScreen}
+          component={Screens.MyInfoScreen}
           options={{
             title: "내 정보",
             headerLeft: (_) => (
-              <LeftArrowIcon onPress={onPress_goBack} useTouch />
+              <LeftArrowIcon onPress={navUtils.onPress_goBack} useTouch />
             ),
             ...commonHeaderOptions,
           }}

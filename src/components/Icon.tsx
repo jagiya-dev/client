@@ -9,7 +9,7 @@ import {
 import { AlarmLocationResponse } from "@/network/api";
 
 type IconProps = Partial<Exclude<ImageProps, "source">> &
-  TouchableOpacityProps & {
+  Pick<TouchableOpacityProps, "onPress"> & {
     useTouch?: boolean;
   };
 

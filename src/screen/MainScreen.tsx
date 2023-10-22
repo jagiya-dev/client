@@ -2,24 +2,17 @@ import { Button } from "@/components/button";
 import { RightArrowIcon, SettingsIcon } from "@/components/Icon";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
-import {
-  GestureResponderEvent,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { SafeAreaView, StyleSheet, View } from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import AlarmContainer from "@/components/alarm/Alarm.Container";
 import AddNewAlarmItemButton from "@/components/button/AddNewAlarmItem.button";
-import { genRandomAlarmItem } from "@/state/alarm/alarm.helper";
 import { useInitNotification } from "@/util/notification/useInitNotification";
 import { useHandleForegroundNotification } from "@/util/notification/useHandleForegroundNotification";
 import { deleteModeToggleSubject } from "@/state/main/main.state";
-import { behaviours as AlarmBehaviours } from "@/state/alarm/alarm.state";
 import { useObservableState } from "@/hook/useObservableState";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { StackParamList } from "@/typing";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import type { StackParamList } from "@/typing";
+import Text from "@/components/Text";
 
 type Props = NativeStackScreenProps<StackParamList, "Main">;
 
@@ -44,11 +37,11 @@ const MainScreen = ({ route, navigation }: Props) => {
     // AlarmBehaviours.toggleAlarmToggleEnabled();
   };
 
-  const onPressButton_AddNewAlarmItem = (_: GestureResponderEvent) => {
+  const onPressButton_AddNewAlarmItem = () => {
     navigation.navigate("CreateAlarm");
   };
 
-  const onPressButton_DetailButton = (event: GestureResponderEvent) => {
+  const onPressButton_DetailButton = () => {
     navigation.navigate("AlarmDetail");
   };
 
