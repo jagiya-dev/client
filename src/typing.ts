@@ -41,6 +41,7 @@ export type StackParamList = {
   AddRegion: undefined;
   Settings: undefined;
   MyInfo: undefined;
+  Playground: undefined;
 };
 
 export type AlarmDate = {

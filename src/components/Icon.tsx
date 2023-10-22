@@ -7,6 +7,7 @@ import {
   TouchableOpacityProps,
 } from "react-native";
 import { AlarmLocationResponse } from "@/network/api";
+import { EDialogType } from "@/typing";
 
 type IconProps = Partial<Exclude<ImageProps, "source">> &
   Pick<TouchableOpacityProps, "onPress"> & {
@@ -256,6 +257,24 @@ export const PrivacyIcon = (props: IconProps) => (
   </TouchableOpacity>
 );
 
+export const CheckIcon = (props: IconProps) => (
+  <TouchableOpacity disabled={!props.useTouch}>
+    <Image source={require("#/icons/check.png")} {...props} />
+  </TouchableOpacity>
+);
+
+export const ExitIcon = (props: IconProps) => (
+  <TouchableOpacity disabled={!props.useTouch}>
+    <Image source={require("#/icons/exit.png")} {...props} />
+  </TouchableOpacity>
+);
+
+export const NoticeIcon = (props: IconProps) => (
+  <TouchableOpacity disabled={!props.useTouch}>
+    <Image source={require("#/icons/notice.png")} {...props} />
+  </TouchableOpacity>
+);
+
 export const IconFactoryByWeatherModel = (
   weather: AlarmLocationResponse["timeOfDay"],
   style: StyleProp<ImageStyle>,
@@ -272,5 +291,21 @@ export const IconFactoryByWeatherModel = (
 
     default:
       return <DayNightIcon width={20} height={20} style={style} />;
+  }
+};
+
+export const IconFactoryForDialog = (type: EDialogType) => {
+  const sharedStyles = {
+    width: 50,
+    marginBottom: 16,
+  };
+
+  switch (type) {
+    case "withdraw":
+      return <NoticeIcon style={sharedStyles} />;
+    case "withdrawComplete":
+      return <CheckIcon style={sharedStyles} />;
+    case "createAlarm":
+      return <ExitIcon style={sharedStyles} />;
   }
 };

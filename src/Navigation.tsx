@@ -37,105 +37,107 @@ const onReady = async () => {
   console.log("BootSplash has been hidden successfully");
 };
 
-const Navigation = () => {
-  return (
-    <NavigationContainer ref={navRef} onReady={onReady}>
-      <Stack.Navigator initialRouteName="Login">
-        <Stack.Screen
-          name="Login"
-          component={Screens.LoginScreen}
-          options={{
-            title: "로그인",
-            headerRight: () => (
-              <TouchableOpacity
-                onPress={navUtils.onPress_SkipToMainWithoutLogin}
+const Navigation = () => (
+  <NavigationContainer ref={navRef} onReady={onReady}>
+    <Stack.Navigator initialRouteName="Playground">
+      <Stack.Screen
+        name="Playground"
+        component={Screens.PlaygroundScreen}
+        options={{ title: "Playground" }}
+      />
+
+      <Stack.Screen
+        name="Login"
+        component={Screens.LoginScreen}
+        options={{
+          title: "로그인",
+          headerRight: () => (
+            <TouchableOpacity onPress={navUtils.onPress_SkipToMainWithoutLogin}>
+              <Text
+                style={{
+                  fontSize: font.body["5"].size,
+                  fontWeight: font.body["5"].weight,
+                }}
               >
-                <Text
-                  style={{
-                    fontSize: font.body["5"].size,
-                    fontWeight: font.body["5"].weight,
-                  }}
-                >
-                  건너뛰기
-                </Text>
-              </TouchableOpacity>
-            ),
-            ...commonHeaderOptions,
-          }}
-        />
+                건너뛰기
+              </Text>
+            </TouchableOpacity>
+          ),
+          ...commonHeaderOptions,
+        }}
+      />
 
-        <Stack.Screen
-          name="Main"
-          component={Screens.MainScreen}
-          options={{ title: "", headerShown: false }}
-        />
+      <Stack.Screen
+        name="Main"
+        component={Screens.MainScreen}
+        options={{ title: "", headerShown: false }}
+      />
 
-        <Stack.Screen
-          name="CreateAlarm"
-          component={Screens.CreateAlarmScreen}
-          options={{
-            title: "알람설정",
-            headerRight: () => (
-              <CloseIcon onPress={navUtils.onPress_goToMain} useTouch />
-            ),
-            ...commonHeaderOptions,
-          }}
-        />
+      <Stack.Screen
+        name="CreateAlarm"
+        component={Screens.CreateAlarmScreen}
+        options={{
+          title: "알람설정",
+          headerRight: () => (
+            <CloseIcon onPress={navUtils.onPress_goToMain} useTouch />
+          ),
+          ...commonHeaderOptions,
+        }}
+      />
 
-        <Stack.Screen
-          name="ActivatedAlarm"
-          component={Screens.ActivatedAlarmScreen}
-          options={{
-            title: "",
-            headerShown: false,
-            gestureDirection: "horizontal",
-          }}
-        />
+      <Stack.Screen
+        name="ActivatedAlarm"
+        component={Screens.ActivatedAlarmScreen}
+        options={{
+          title: "",
+          headerShown: false,
+          gestureDirection: "horizontal",
+        }}
+      />
 
-        <Stack.Screen
-          name="AlarmDetail"
-          component={Screens.AlarmDetailScreen}
-          options={{ title: "", headerShown: false }}
-        />
+      <Stack.Screen
+        name="AlarmDetail"
+        component={Screens.AlarmDetailScreen}
+        options={{ title: "", headerShown: false }}
+      />
 
-        <Stack.Screen
-          name="AddRegion"
-          component={Screens.AddRegionScreen}
-          options={{
-            title: "지역추가",
-            headerLeft: (_) => (
-              <LeftArrowIcon onPress={navUtils.onPress_goBack} useTouch />
-            ),
-            ...commonHeaderOptions,
-          }}
-        />
+      <Stack.Screen
+        name="AddRegion"
+        component={Screens.AddRegionScreen}
+        options={{
+          title: "지역추가",
+          headerLeft: (_) => (
+            <LeftArrowIcon onPress={navUtils.onPress_goBack} useTouch />
+          ),
+          ...commonHeaderOptions,
+        }}
+      />
 
-        <Stack.Screen
-          name="Settings"
-          component={Screens.SettingsScreen}
-          options={{
-            title: "설정",
-            headerLeft: (_) => (
-              <LeftArrowIcon onPress={navUtils.onPress_goBack} useTouch />
-            ),
-            ...commonHeaderOptions,
-          }}
-        />
+      <Stack.Screen
+        name="Settings"
+        component={Screens.SettingsScreen}
+        options={{
+          title: "설정",
+          headerLeft: (_) => (
+            <LeftArrowIcon onPress={navUtils.onPress_goBack} useTouch />
+          ),
+          ...commonHeaderOptions,
+        }}
+      />
 
-        <Stack.Screen
-          name="MyInfo"
-          component={Screens.MyInfoScreen}
-          options={{
-            title: "내 정보",
-            headerLeft: (_) => (
-              <LeftArrowIcon onPress={navUtils.onPress_goBack} useTouch />
-            ),
-            ...commonHeaderOptions,
-          }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-};
+      <Stack.Screen
+        name="MyInfo"
+        component={Screens.MyInfoScreen}
+        options={{
+          title: "내 정보",
+          headerLeft: (_) => (
+            <LeftArrowIcon onPress={navUtils.onPress_goBack} useTouch />
+          ),
+          ...commonHeaderOptions,
+        }}
+      />
+    </Stack.Navigator>
+  </NavigationContainer>
+);
 
 export default Navigation;
