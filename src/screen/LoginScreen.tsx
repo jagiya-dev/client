@@ -46,6 +46,8 @@ const LoginScreen = ({ route, navigation }: Props) => {
 
     local.login("kakao");
     await local.update();
+
+    navigateToMain();
   };
 
   const onPressAppleLoginButton = async () => {
@@ -61,6 +63,8 @@ const LoginScreen = ({ route, navigation }: Props) => {
 
     local.login("apple");
     await local.update();
+
+    navigateToMain();
   };
 
   const onPress_useAndCondition = () => {
