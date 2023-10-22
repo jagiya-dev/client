@@ -18,8 +18,12 @@ import { useHandleForegroundNotification } from "@/util/notification/useHandleFo
 import { deleteModeToggleSubject } from "@/state/main/main.state";
 import { behaviours as AlarmBehaviours } from "@/state/alarm/alarm.state";
 import { useObservableState } from "@/hook/useObservableState";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { StackParamList } from "@/typing";
 
-const MainScreen = () => {
+type Props = NativeStackScreenProps<StackParamList, "Main">;
+
+const MainScreen = ({ route, navigation }: Props) => {
   const isDeleteMode = useObservableState({
     observable: deleteModeToggleSubject,
   });
@@ -37,7 +41,7 @@ const MainScreen = () => {
   };
 
   const onPressButton_AddNewAlarmItem = (_: GestureResponderEvent) => {
-    AlarmBehaviours.addNewAlarmItem(genRandomAlarmItem());
+    navigation.navigate("CreateAlarm");
   };
 
   const onPressButton_DetailButton = (event: GestureResponderEvent) => {
