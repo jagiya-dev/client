@@ -20,6 +20,6 @@ export async function ProcessPermission() {
   if (settings.authorizationStatus === AuthorizationStatus.DENIED) {
     console.log(`permission denied`);
   } else {
-    console.log(`permission granted`);
+    // console.log(`permission granted`);
   }
 }

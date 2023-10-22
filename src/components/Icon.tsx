@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { WeatherModel } from "@/typing";
 import { AlarmLocationResponse } from "@/network/api";
+import { NavigationContainerRefWithCurrent } from "@react-navigation/native";
 
 type IconProps = Partial<Exclude<ImageProps, "source">> & {
   useTouch?: boolean;
@@ -59,66 +60,67 @@ export const LeftArrowIcon = (props: IconProps & TouchableOpacityProps) => (
   </TouchableOpacity>
 );
 
-
-
-
 // 추가
 export const LeftArrowIcon02 = (props: IconProps) => (
-    <TouchableOpacity disabled={!props.useTouch}>
-        <Image source={require("#/icons/LeftArrow.png")} {...props} />
-    </TouchableOpacity>
+  <TouchableOpacity disabled={!props.useTouch}>
+    <Image source={require("#/icons/LeftArrow.png")} {...props} />
+  </TouchableOpacity>
 );
 
 export const UserMyPageIcon = (props: IconProps) => (
-    <TouchableOpacity disabled={!props.useTouch}>
-        <Image source={require("#/icons/userMyPageIcon.png")} {...props} />
-    </TouchableOpacity>
+  <TouchableOpacity disabled={!props.useTouch}>
+    <Image source={require("#/icons/userMyPageIcon.png")} {...props} />
+  </TouchableOpacity>
 );
 
 export const InformationMyPageIcon = (props: IconProps) => (
-    <TouchableOpacity disabled={!props.useTouch}>
-        <Image source={require("#/icons/informationIcon.png")} {...props} />
-    </TouchableOpacity>
+  <TouchableOpacity disabled={!props.useTouch}>
+    <Image source={require("#/icons/informationIcon.png")} {...props} />
+  </TouchableOpacity>
 );
 
 export const ShareMyPageIcon = (props: IconProps) => (
-    <TouchableOpacity disabled={!props.useTouch}>
-        <Image source={require("#/icons/shareMyPageIcon.png")} {...props} />
-    </TouchableOpacity>
+  <TouchableOpacity disabled={!props.useTouch}>
+    <Image source={require("#/icons/shareMyPageIcon.png")} {...props} />
+  </TouchableOpacity>
 );
-
-
 
 // 추가 : 내 정보
 export const KakaoIdLoginOnIcon = (props: IconProps) => (
-    <TouchableOpacity disabled={!props.useTouch}>
-        <Image source={require("#/icons/kakao_id_login_on=Default.png")} {...props} />
-    </TouchableOpacity>
+  <TouchableOpacity disabled={!props.useTouch}>
+    <Image
+      source={require("#/icons/kakao_id_login_on=Default.png")}
+      {...props}
+    />
+  </TouchableOpacity>
 );
 
 export const AppleIdLoginOnIcon = (props: IconProps) => (
-    <TouchableOpacity disabled={!props.useTouch}>
-        <Image source={require("#/icons/apple_id_login_on=Default.png")} {...props} />
-    </TouchableOpacity>
+  <TouchableOpacity disabled={!props.useTouch}>
+    <Image
+      source={require("#/icons/apple_id_login_on=Default.png")}
+      {...props}
+    />
+  </TouchableOpacity>
 );
 
 export const KakaoIdLoginOffIcon = (props: IconProps) => (
-    <TouchableOpacity disabled={!props.useTouch}>
-        <Image source={require("#/icons/kakao_id_login_off=Default.png")} {...props} />
-    </TouchableOpacity>
+  <TouchableOpacity disabled={!props.useTouch}>
+    <Image
+      source={require("#/icons/kakao_id_login_off=Default.png")}
+      {...props}
+    />
+  </TouchableOpacity>
 );
 
 export const AppleIdLoginOffIcon = (props: IconProps) => (
-    <TouchableOpacity disabled={!props.useTouch}>
-        <Image source={require("#/icons/apple_id_login_off=Default.png")} {...props} />
-    </TouchableOpacity>
+  <TouchableOpacity disabled={!props.useTouch}>
+    <Image
+      source={require("#/icons/apple_id_login_off=Default.png")}
+      {...props}
+    />
+  </TouchableOpacity>
 );
-
-
-
-
-
-
 
 export const DownArrowIcon = (props: IconProps & TouchableOpacityProps) => (
   <TouchableOpacity disabled={!props.useTouch} {...props}>
