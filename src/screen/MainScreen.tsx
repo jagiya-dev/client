@@ -49,7 +49,7 @@ const MainScreen = ({ route, navigation }: Props) => {
   };
 
   const onPressButton_DetailButton = (event: GestureResponderEvent) => {
-    console.log("onPressButton_DetailButton");
+    navigation.navigate("AlarmDetail");
   };
 
   return (
