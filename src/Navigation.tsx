@@ -3,7 +3,10 @@ import {
   createNavigationContainerRef,
   NavigationContainer,
 } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import {
+  createNativeStackNavigator,
+  NativeStackNavigationOptions,
+} from "@react-navigation/native-stack";
 import ActivatedAlarmScreen from "@/screen/ActivatedAlarmScreen";
 import AddRegionScreen from "@/screen/AddRegion/AddRegionScreen";
 import AlarmDetailScreen from "@/screen/AlarmDetailScreen";
@@ -38,6 +41,17 @@ const onPress_SkipToMainWithoutLogin = async () => {
   } catch (error) {
     console.error("error: ", error);
   }
+};
+
+const commonHeaderOptions: NativeStackNavigationOptions = {
+  headerShadowVisible: false,
+  headerBackTitleVisible: false,
+  headerTitleAlign: "center",
+  headerTitleStyle: {
+    fontSize: font.body["1"].size,
+    fontWeight: font.body["1"].weight,
+    fontFamily: "Pretendard",
+  },
 };
 
 const Navigation = () => {
@@ -82,14 +96,7 @@ const Navigation = () => {
                 </Text>
               </TouchableOpacity>
             ),
-            headerShadowVisible: false,
-            headerBackTitleVisible: false,
-            headerTitleAlign: "center",
-            headerTitleStyle: {
-              fontSize: font.body["1"].size,
-              fontWeight: font.body["1"].weight,
-              fontFamily: "Pretendard",
-            },
+            ...commonHeaderOptions,
           }}
         />
 
@@ -101,14 +108,7 @@ const Navigation = () => {
             headerRight: () => (
               <CloseIcon onPress={onPress_goToMain} useTouch />
             ),
-            headerShadowVisible: false,
-            headerBackTitleVisible: false,
-            headerTitleAlign: "center",
-            headerTitleStyle: {
-              fontSize: font.body["1"].size,
-              fontWeight: font.body["1"].weight,
-              fontFamily: "Pretendard",
-            },
+            ...commonHeaderOptions,
           }}
         />
 
@@ -136,14 +136,7 @@ const Navigation = () => {
             headerLeft: (_) => (
               <LeftArrowIcon onPress={onPress_goBack} useTouch />
             ),
-            headerShadowVisible: false,
-            headerBackTitleVisible: false,
-            headerTitleAlign: "center",
-            headerTitleStyle: {
-              fontSize: font.body["1"].size,
-              fontWeight: font.body["1"].weight,
-              fontFamily: "Pretendard",
-            },
+            ...commonHeaderOptions,
           }}
         />
 
@@ -155,14 +148,7 @@ const Navigation = () => {
             headerLeft: (_) => (
               <LeftArrowIcon onPress={onPress_goBack} useTouch />
             ),
-            headerShadowVisible: false,
-            headerBackTitleVisible: false,
-            headerTitleAlign: "center",
-            headerTitleStyle: {
-              fontSize: font.body["1"].size,
-              fontWeight: font.body["1"].weight,
-              fontFamily: "Pretendard",
-            },
+            ...commonHeaderOptions,
           }}
         />
 
@@ -174,14 +160,7 @@ const Navigation = () => {
             headerLeft: (_) => (
               <LeftArrowIcon onPress={onPress_goBack} useTouch />
             ),
-            headerShadowVisible: false,
-            headerBackTitleVisible: false,
-            headerTitleAlign: "center",
-            headerTitleStyle: {
-              fontSize: font.body["1"].size,
-              fontWeight: font.body["1"].weight,
-              fontFamily: "Pretendard",
-            },
+            ...commonHeaderOptions,
           }}
         />
       </Stack.Navigator>
