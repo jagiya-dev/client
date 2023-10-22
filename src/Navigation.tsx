@@ -11,7 +11,7 @@ import CreateAlarmScreen from "@/screen/CreateAlarm/CreateAlarmScreen";
 import LoginScreen from "@/screen/LoginScreen";
 import MainScreen from "@/screen/MainScreen";
 import SettingsScreen from "@/screen/SettingsScreen";
-import MyInfoScreen from "@/screen/MyInfo";
+import MyInfoScreen from "@/screen/MyInfoScreen";
 
 import { font } from "@/styles/font";
 import Text from "@/components/Text";
@@ -51,20 +51,20 @@ const Navigation = () => {
     navRef.navigate("Main");
   };
 
+  const onReady = async () => {
+    await BootSplash.hide({ fade: true });
+    console.log("BootSplash has been hidden successfully");
+  };
+
   return (
-    <NavigationContainer
-      ref={navRef}
-      onReady={() => {
-        BootSplash.hide({ fade: true });
-        console.log("BootSplash has been hidden successfully");
-      }}
-    >
-      <Stack.Navigator initialRouteName="Settings">
+    <NavigationContainer ref={navRef} onReady={onReady}>
+      <Stack.Navigator initialRouteName="MyInfo">
         <Stack.Screen
           name="Main"
           component={MainScreen}
           options={{ title: "", headerShown: false }}
         />
+
         <Stack.Screen
           name="Login"
           component={LoginScreen}
@@ -92,6 +92,7 @@ const Navigation = () => {
             },
           }}
         />
+
         <Stack.Screen
           name="CreateAlarm"
           component={CreateAlarmScreen}
@@ -110,6 +111,7 @@ const Navigation = () => {
             },
           }}
         />
+
         <Stack.Screen
           name="ActivatedAlarm"
           component={ActivatedAlarmScreen}
@@ -119,17 +121,19 @@ const Navigation = () => {
             gestureDirection: "horizontal",
           }}
         />
+
         <Stack.Screen
           name="AlarmDetail"
           component={AlarmDetailScreen}
           options={{ title: "", headerShown: false }}
         />
+
         <Stack.Screen
           name="AddRegion"
           component={AddRegionScreen}
           options={{
             title: "지역추가",
-            headerLeft: _ => (
+            headerLeft: (_) => (
               <LeftArrowIcon onPress={onPress_goBack} useTouch />
             ),
             headerShadowVisible: false,
@@ -142,12 +146,13 @@ const Navigation = () => {
             },
           }}
         />
+
         <Stack.Screen
           name="Settings"
           component={SettingsScreen}
           options={{
             title: "설정",
-            headerLeft: _ => (
+            headerLeft: (_) => (
               <LeftArrowIcon onPress={onPress_goBack} useTouch />
             ),
             headerShadowVisible: false,
@@ -160,12 +165,13 @@ const Navigation = () => {
             },
           }}
         />
+
         <Stack.Screen
           name="MyInfo"
           component={MyInfoScreen}
           options={{
             title: "내 정보",
-            headerLeft: _ => (
+            headerLeft: (_) => (
               <LeftArrowIcon onPress={onPress_goBack} useTouch />
             ),
             headerShadowVisible: false,
