@@ -1,7 +1,6 @@
 import { Button } from "@/components/button";
 import {
   InformationMyPageIcon,
-  LeftArrowIcon02,
   ShareMyPageIcon,
   UserMyPageIcon,
 } from "@/components/Icon";
@@ -14,7 +13,7 @@ import { StackParamList } from "@/typing";
 
 type Props = NativeStackScreenProps<StackParamList, "Settings">;
 
-const Settings = ({ route, navigation }: Props) => {
+const SettingsScreen = ({ route, navigation }: Props) => {
   /** click **/
   const onPressButton_Mode01 = () => {
     console.log("onPressButton_Mode01");
@@ -32,23 +31,9 @@ const Settings = ({ route, navigation }: Props) => {
     console.log("onPressButton_Mode05");
   };
 
-  const onPressHeaderButton_GoBack = () => {
-    if (navigation.canGoBack()) {
-      navigation.goBack();
-    }
-  };
-
   return (
     <SafeAreaView style={s.root}>
       <View style={s.innerRoot}>
-        {/* 1. head */}
-        <View style={s.headContainer}>
-          <Button style={s.detailButton} onPress={onPressHeaderButton_GoBack}>
-            <LeftArrowIcon02 />
-          </Button>
-          <Text style={s.headText}>설정</Text>
-        </View>
-
         {/* 2. content View */}
         <View style={s.contentLabelContainer}>
           <View style={s.contentTitleLabelContainer}>
@@ -104,7 +89,7 @@ const Settings = ({ route, navigation }: Props) => {
   );
 };
 
-export default Settings;
+export default SettingsScreen;
 
 const s = StyleSheet.create({
   root: {
