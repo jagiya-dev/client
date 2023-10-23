@@ -2,7 +2,7 @@ import DeviceInfo from "react-native-device-info";
 import { local } from "@/state/auth/auth.state.local";
 import { NativeStackNavigationOptions } from "@react-navigation/native-stack";
 import { font } from "@/styles/font";
-import { navRef } from "@/navigation";
+import { navRef } from "@/navigation/navigation";
 
 const onPress_SkipToMainWithoutLogin = async () => {
   try {

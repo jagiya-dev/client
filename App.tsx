@@ -11,7 +11,7 @@ import timezone from "dayjs/plugin/timezone";
 import { handleBackgroundNotification } from "@/util/notification/useHandleBackgroundNotification";
 import { useAndroidBatteryOptimize } from "@/util/notification/useAndroidBatterOptimize";
 import { useAndroidPowerManager } from "@/util/notification/useAndroidPowerManager";
-import Index from "@/navigation";
+import Navigation from "@/navigation/navigation";
 
 import "react-native-get-random-values";
 
@@ -46,7 +46,7 @@ const App = () => {
         animated
         showHideTransition="fade"
       />
-      <Index />
+      <Navigation />
     </GestureHandlerRootView>
   );
 };

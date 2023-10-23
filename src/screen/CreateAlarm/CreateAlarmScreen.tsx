@@ -44,7 +44,7 @@ import { whenRepeatDaysAbbreviated } from "@/state/repeat/repeat.state";
 import { whenSelectedSoundChange } from "@/state/sound/sound.state";
 import { soundNameAsLabel } from "@/audio";
 import { whenSelectedReminderChange } from "@/screen/CreateAlarm/Reminder/reminder.state";
-import { navRef } from "@/navigation";
+import { navRef } from "@/navigation/navigation";
 import CreateAlarmDialog from "@/components/dialog/CreateAlarm.Dialog";
 
 type ScreenProps = NativeStackScreenProps<StackParamList, "CreateAlarm">;
@@ -60,8 +60,8 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
   const onPressButton_createAlarmOK = () => {
     closeCreateAlarmDialog();
 
-    if (navRef.canGoBack()) {
-      navRef.goBack();
+    if (navigation.canGoBack()) {
+      navigation.goBack();
     }
   };
 
