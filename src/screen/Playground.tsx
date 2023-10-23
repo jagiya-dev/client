@@ -1,25 +1,35 @@
-import {
-  SafeAreaView,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  View,
-} from "react-native";
+import { SafeAreaView, StyleSheet } from "react-native";
 import React from "react";
 import {
-  heightPercentageToDP,
-  widthPercentageToDP,
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
-import Toggle from "@/components/toggle";
-import Text from "@/components/Text";
-import { color } from "@/styles/color";
+import Dialog from "@/components/dialog/Dialog";
+import { EDialogType } from "@/components/dialog/EDialogType";
 
 const PlaygroundScreen = () => {
   return (
     <SafeAreaView style={s.root}>
-      <View style={s.headerContainer}>
-        <Text style={s.headerText}>Playground!</Text>
-      </View>
-      <Toggle />
+      <Dialog
+        type={EDialogType.withdraw}
+        title="정말 탈퇴하시겠어요?"
+        subTitle="탈퇴하셨더라도 다시 가입하면 이전에 등록한 알람 정보를 바로 불러올 수 있어요"
+        ok="탈퇴하기"
+        cancel="취소"
+      />
+
+      <Dialog
+        type={EDialogType.withdrawComplete}
+        title="탈퇴가 완료되었습니다."
+        ok="확인"
+      />
+
+      <Dialog
+        type={EDialogType.createAlarm}
+        title="알람을 저장하지 않고 나가겠습니까?"
+        ok="나가기"
+        cancel="취소"
+      />
     </SafeAreaView>
   );
 };
@@ -28,22 +38,12 @@ export default PlaygroundScreen;
 
 const s = StyleSheet.create({
   root: {
-    width: widthPercentageToDP("100%"),
     flex: 1,
-  },
-  headerContainer: {
-    flexDirection: "row",
+    width: wp("100%"),
+    height: hp("100%"),
+
     justifyContent: "center",
-    alignItems: "center",
-    height: heightPercentageToDP("8%"),
-  },
-  headerText: {
-    color: "black",
-    fontSize: 20,
-  },
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+
+    // ...StyleSheet.absoluteFillObject,
   },
 });
