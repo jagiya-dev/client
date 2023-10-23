@@ -7,7 +7,7 @@ import {
   TouchableOpacityProps,
 } from "react-native";
 import { AlarmLocationResponse } from "@/network/api";
-import { EDialogType } from "@/typing";
+import { EDialogType } from "@/components/dialog/EDialogType";
 
 type IconProps = Partial<Exclude<ImageProps, "source">> &
   Pick<TouchableOpacityProps, "onPress"> & {
