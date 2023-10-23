@@ -1,49 +1,36 @@
-import { StyleSheet, TouchableWithoutFeedback, View } from "react-native";
-import { IconFactoryForDialog } from "@/components/Icon";
-import Text from "@/components/Text";
-import { Button } from "@/components/button";
+import { StyleSheet, View } from "react-native";
 import { font } from "@/styles/font";
 import { color } from "@/styles/color";
-import { EDialogType } from "@/components/dialog/EDialogType";
+import React from "react";
+import { DialogProps } from "@/components/dialog/type";
 import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from "react-native-responsive-screen";
-import { useState } from "react";
+import { IconFactoryForDialog } from "@/components/Icon";
+import Text from "@/components/Text";
+import { Button } from "@/components/button";
 
-type Props = {
-  type: EDialogType;
-  title: string;
-  subTitle?: string;
-  ok: string;
-  cancel?: string;
-  onPressBackdrop?: () => void;
-};
-
-const Dialog = (props: Props) => {
-  const [isOpen, setIsOpen] = useState(true);
-
-  if (!isOpen) return null;
+const Dialog = (props: DialogProps) => {
+  if (!props.isOpen) return null;
 
   return (
     <>
-      <TouchableWithoutFeedback onPress={() => setIsOpen(false)}>
-        <View style={s.backdrop} />
-      </TouchableWithoutFeedback>
+      <View style={s.backdrop} />
 
-      <View style={s.root}>
+      <View style={s.dialog}>
         {IconFactoryForDialog(props.type)}
 
         <Text style={s.title}>{props.title}</Text>
 
         {props.subTitle && <Text style={s.subtitle}>{props.subTitle}</Text>}
 
-        <Button style={s.okButton}>
+        <Button style={s.okButton} onPress={props.onPressOk}>
           <Text style={s.okButtonText}>{props.ok}</Text>
         </Button>
 
         {props.cancel && (
-          <Button style={s.cancelButton}>
+          <Button style={s.cancelButton} onPress={props.onPressCancel}>
             <Text style={s.cancelButtonText}>{props.cancel}</Text>
           </Button>
         )}
@@ -54,11 +41,20 @@ const Dialog = (props: Props) => {
 export default Dialog;
 
 const s = StyleSheet.create({
-  root: {
+  backdrop: {
     position: "absolute",
+    backgroundColor: color.gray["600"],
+    opacity: 0.8,
+    zIndex: 100,
+    width: widthPercentageToDP("100%"),
+    height: heightPercentageToDP("100%"),
+  },
 
+  dialog: {
+    zIndex: 110,
+    position: "absolute",
+    top: heightPercentageToDP("50%") - 152,
     width: 304,
-    // maxHeight: 286,
 
     paddingHorizontal: 24,
     paddingVertical: 36,
@@ -115,11 +111,5 @@ const s = StyleSheet.create({
   },
   cancelButtonText: {
     color: color.gray["400"],
-  },
-  backdrop: {
-    backgroundColor: color.gray["600"],
-    opacity: 0.8,
-    width: widthPercentageToDP("100%"),
-    height: heightPercentageToDP("100%"),
   },
 });

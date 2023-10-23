@@ -27,7 +27,7 @@ const s = StyleSheet.create({
 
     ...Platform.select({
       android: {
-        bottom: 40,
+        bottom: 0,
       },
       ios: {
         bottom: -10,

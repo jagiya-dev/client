@@ -5,6 +5,7 @@ import {
   ScrollView,
   StyleSheet,
   TouchableNativeFeedback,
+  TouchableOpacity,
   View,
 } from "react-native";
 import { useInitNotification } from "@/util/notification/useInitNotification";
@@ -16,7 +17,7 @@ import {
   SoundVolumeIcon,
   VibrationIcon,
 } from "@/components/Icon";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import DatePicker from "react-native-date-picker";
 import { color } from "@/styles/color";
 import { Shadow } from "react-native-shadow-2";
@@ -25,7 +26,6 @@ import { widthPercentageToDP } from "react-native-responsive-screen";
 import { Slider } from "@miblanchard/react-native-slider";
 import { SliderOnChangeCallback } from "@miblanchard/react-native-slider/lib/types";
 import { useObservableState } from "@/hook/useObservableState";
-import { Button } from "@/components/button";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackParamList } from "@/typing";
 import BottomSheet, {
@@ -40,22 +40,35 @@ import {
 } from "@/state/sound/soundVolume.state";
 import BottomButton from "@/components/fixed/BottomButton";
 import { insertAlarm } from "@/network/api";
-import { min } from "rxjs";
-import {
-  whenOnlySelectedRepeatItems,
-  whenRepeatDaysAbbreviated,
-  whenRepeatStateChanges,
-} from "@/state/repeat/repeat.state";
-import {
-  whenSelectedSoundChange,
-  whenSoundItemsChange,
-} from "@/state/sound/sound.state";
+import { whenRepeatDaysAbbreviated } from "@/state/repeat/repeat.state";
+import { whenSelectedSoundChange } from "@/state/sound/sound.state";
 import { soundNameAsLabel } from "@/audio";
 import { whenSelectedReminderChange } from "@/screen/CreateAlarm/Reminder/reminder.state";
+import { navRef } from "@/navigation";
+import CreateAlarmDialog from "@/components/dialog/CreateAlarm.Dialog";
 
 type ScreenProps = NativeStackScreenProps<StackParamList, "CreateAlarm">;
 
 const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
+  const [isCreateAlarmDialogOpen, setIsCreateAlarmDialogOpen] = useState<
+    boolean | undefined
+  >(undefined);
+
+  const openCreateAlarmDialog = () => setIsCreateAlarmDialogOpen(true);
+  const closeCreateAlarmDialog = () => setIsCreateAlarmDialogOpen(false);
+
+  const onPressButton_createAlarmOK = () => {
+    closeCreateAlarmDialog();
+
+    if (navRef.canGoBack()) {
+      navRef.goBack();
+    }
+  };
+
+  const onPressButton_createAlarmOKCancel = () => {
+    closeCreateAlarmDialog();
+  };
+
   const [alarmDate, setAlarmDate] = useState<Date>(new Date());
 
   const alarmHours = useMemo(
@@ -176,6 +189,21 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
 
   return (
     <SafeAreaView style={s.root}>
+      {/* 0. header */}
+      <View style={s.header}>
+        <Text style={s.headerTitle}>알람 설정</Text>
+
+        <TouchableOpacity
+          onPress={() => openCreateAlarmDialog()}
+          style={s.headerCloseIconButton}
+        >
+          <Image
+            source={require("#/icons/close.png")}
+            style={s.headerCloseIcon}
+          />
+        </TouchableOpacity>
+      </View>
+
       <ScrollView
         contentContainerStyle={s.scrollRoot}
         nestedScrollEnabled
@@ -397,6 +425,12 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
           <ReminderContainer />
         </BottomSheet>
       )}
+
+      <CreateAlarmDialog
+        onPressOk={onPressButton_createAlarmOK}
+        onPressCancel={onPressButton_createAlarmOKCancel}
+        isOpen={isCreateAlarmDialogOpen ?? false}
+      />
     </SafeAreaView>
   );
 };
@@ -410,6 +444,36 @@ const s = StyleSheet.create({
     backgroundColor: color.gray["50"],
     position: "relative",
   },
+
+  header: {
+    position: "relative",
+
+    height: 70,
+    // paddingVertical: 20,
+
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  headerTitle: {
+    fontSize: font.body["1"].size,
+    fontWeight: font.body["1"].weight,
+    lineHeight: font.body["1"].height,
+  },
+  headerCloseIconButton: {
+    width: 30,
+    height: 30,
+    zIndex: 10,
+    position: "absolute",
+    top: 20,
+    bottom: 0,
+    right: -140,
+  },
+  headerCloseIcon: {
+    width: 30,
+    height: 30,
+  },
+
   scrollRoot: {
     alignItems: "center",
     paddingHorizontal: 20,
