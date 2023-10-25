@@ -1,24 +1,12 @@
 import { Platform } from "react-native";
 import Sound from "react-native-sound";
+import { ESoundName } from "@/typing";
 
 // init react-native-sound
 Sound.setCategory("Alarm", true);
 
 const getAudioFileExtensionByPlatform = () =>
   Platform.OS === "android" ? ".ogg" : ".aac";
-
-export enum ESoundName {
-  emergency = "emergency",
-  gravelRain = "gravel_rain",
-  pedestrianRain = "pedestrian_rain",
-  tableClock = "table_clock",
-  tamacRain = "tamac_rain",
-  thunderRainy = "thunder_rainy",
-  thunderRain = "thunder_rain",
-  trailRain = "trail_rain",
-  underRoofRain = "under_roof_rain",
-  valleyRain = "valley_rain",
-}
 
 export const soundNameAsLabel = (soundName: ESoundName) => {
   switch (soundName) {

@@ -3,45 +3,45 @@ import { RepeatItem } from "@/typing";
 
 const repeatItemData: readonly RepeatItem[] = [
   {
-    id: "0",
-    label: "월요일",
-    date: 0,
-    isSelected: false,
-  },
-  {
     id: "1",
-    label: "화요일",
+    label: "월요일",
     date: 1,
     isSelected: false,
   },
   {
     id: "2",
-    label: "수요일",
+    label: "화요일",
     date: 2,
     isSelected: false,
   },
   {
     id: "3",
-    label: "목요일",
+    label: "수요일",
     date: 3,
     isSelected: false,
   },
   {
     id: "4",
-    label: "금요일",
+    label: "목요일",
     date: 4,
     isSelected: false,
   },
   {
     id: "5",
-    label: "토요일",
+    label: "금요일",
     date: 5,
     isSelected: false,
   },
   {
     id: "6",
-    label: "일요일",
+    label: "토요일",
     date: 6,
+    isSelected: false,
+  },
+  {
+    id: "7",
+    label: "일요일",
+    date: 7,
     isSelected: false,
   },
 ];

@@ -1,6 +1,6 @@
 import { BehaviorSubject } from "rxjs";
-import { ESoundName, soundNameAsLabel, soundResourcesMap } from "@/audio";
-import { SoundItem } from "@/typing";
+import { soundNameAsLabel, soundResourcesMap } from "@/audio";
+import { ESoundName, SoundItem } from "@/typing";
 
 const alarmSoundItems: SoundItem[] = Object.values(ESoundName).map(
   (soundName: ESoundName, i) => ({

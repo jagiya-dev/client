@@ -1,6 +1,7 @@
 import type { SliderOnChangeCallback } from "@miblanchard/react-native-slider/lib/types";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import type { StackParamList } from "@/typing";
+import { ESoundName } from "@/typing";
 import {
   Image,
   Platform,
@@ -31,7 +32,7 @@ import { useObservableState } from "@/hook/useObservableState";
 import BottomSheet, {
   EBottomSheetOpenState,
 } from "@/components/bottom-sheet/BottomSheet";
-import { insertAlarm } from "@/network/api";
+import { AlarmInsertRequest, insertAlarm } from "@/network/api";
 import { soundNameAsLabel } from "@/audio";
 
 import CreateAlarmDialog from "@/components/dialog/CreateAlarm.Dialog";
@@ -46,6 +47,7 @@ import {
 } from "@/state/createAlarm/sound/soundVolume.state";
 import {
   behaviors as repeatBehaviours,
+  whenOnlySelectedRepeatItems,
   whenRepeatDaysAbbreviated,
 } from "@/state/createAlarm/repeat/repeat.state";
 import {
@@ -110,6 +112,10 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
     observable: whenRepeatDaysAbbreviated,
   });
 
+  const repeatDatsAsData = useObservableState({
+    observable: whenOnlySelectedRepeatItems,
+  });
+
   const soundVolume = useObservableState({
     observable: whenSoundVolumeChange,
   });
@@ -152,15 +158,24 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
 
     // todo: set a new notification.
     try {
-      const params = {
+      const params: AlarmInsertRequest = {
         timeOfDay: alarmAMPM,
         alarmTime: alarmHours + alarmMinutes,
         alarmLocationList: [],
         volume: soundVolume,
         vibration: soundVolume === 0 ? 1 : 0,
-        weekList: [],
+        weekList:
+          repeatDatsAsData?.map((date) => {
+            const id = Number(date.id);
+            return {
+              alarmWeekId: id,
+              weekId: id,
+            };
+          }) ?? [],
         reminder: (reminderState?.minute ?? 0).toString(),
-        // alarmSoundId: selectedSound,
+        alarmSoundId: Object.values(ESoundName).findIndex(
+          (name) => name === selectedSound,
+        ),
       };
       console.log("insert alarm: ", params);
       const response = await insertAlarm(params);

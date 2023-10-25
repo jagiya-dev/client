@@ -64,10 +64,10 @@ export enum ESoundName {
   pedestrianRain = "pedestrian_rain",
   tableClock = "table_clock",
   tamacRain = "tamac_rain",
-  thunderRain2 = "thunder_rain2",
+  thunderRainy = "thunder_rainy",
   thunderRain = "thunder_rain",
   trailRain = "trail_rain",
-  underRoofRain = "underRoof_rain",
+  underRoofRain = "under_roof_rain",
   valleyRain = "valley_rain",
 }
 
