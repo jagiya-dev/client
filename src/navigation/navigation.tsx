@@ -34,7 +34,6 @@ const commonHeaderOptions: NativeStackNavigationOptions = {
 
 const onReady = async () => {
   await BootSplash.hide({ fade: true });
-  console.log("BootSplash has been hidden successfully");
 };
 
 const Navigation = () => (
