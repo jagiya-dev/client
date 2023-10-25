@@ -78,7 +78,7 @@ const selectSound = (soundId: string, playbackSoundVolume: number) => {
   }
 };
 
-export const soundBehaviours = {
+export const behaviours = {
   selectSound,
   reset: resetSelectedSound,
   toggleSoundItem,

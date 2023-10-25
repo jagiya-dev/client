@@ -6,9 +6,9 @@ import appleAuth, {
 import { Platform } from "react-native";
 
 export class Apple {
-  //#region fields
+  //#addRegion fields
 
-  // #region isSupportApple
+  // #addRegion isSupportApple
   private readonly _isSupportAppleLogin: BehaviorSubject<boolean>;
 
   public get isSupportAppleLogin$() {
@@ -17,7 +17,7 @@ export class Apple {
 
   // #endregion isSupportApple
 
-  //#region apple info
+  //#addRegion apple info
   private readonly _appleInfoSubject: BehaviorSubject<AppleRequestResponse | null>;
 
   public get appleInfo$() {
@@ -57,7 +57,7 @@ export class Apple {
     }
   }
 
-  //#region impl
+  //#addRegion impl
 
   private init_isSupportAppleLogin(): boolean {
     if (Platform.OS === "android") {

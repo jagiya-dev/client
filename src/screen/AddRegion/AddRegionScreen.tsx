@@ -25,7 +25,7 @@ import { useObservableState } from "@/hook/useObservableState";
 import {
   allTimeSelected$,
   behaviours,
-} from "@/state/region/regionTimetable.state";
+} from "@/state/addRegion/regionTimetable.state";
 import { ETimeTableItemState, StackParamList } from "@/typing";
 import { Button } from "@/components/button";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";

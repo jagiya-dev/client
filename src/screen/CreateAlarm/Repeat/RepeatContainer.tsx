@@ -3,7 +3,10 @@ import { StyleSheet, View } from "react-native";
 import { font } from "@/styles/font";
 import { color } from "@/styles/color";
 import { widthPercentageToDP } from "react-native-responsive-screen";
-import { behaviors, whenRepeatStateChanges } from "@/state/repeat/repeat.state";
+import {
+  behaviors,
+  whenRepeatStateChanges,
+} from "@/state/createAlarm/repeat/repeat.state";
 import { useObservableState } from "@/hook/useObservableState";
 import RadioButtonContainer from "@/components/radioButtons/RadioButtonContainer";
 import { BottomSheetView, useBottomSheet } from "@gorhom/bottom-sheet";

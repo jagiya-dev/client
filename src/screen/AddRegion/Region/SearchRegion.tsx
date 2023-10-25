@@ -10,7 +10,7 @@ import { useObservableState } from "@/hook/useObservableState";
 import {
   behaviours,
   searchResults$,
-} from "@/state/region/search/searchResults.state";
+} from "@/state/addRegion/search/searchResults.state";
 
 const recentSearches = [
   "서울시 관악구 봉천동",

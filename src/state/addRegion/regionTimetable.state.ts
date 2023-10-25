@@ -1,21 +1,10 @@
 import {
   BehaviorSubject,
   combineLatest,
-  concat,
-  concatWith,
   distinctUntilChanged,
-  filter,
   map,
-  merge,
-  mergeWith,
-  repeat,
-  ReplaySubject,
-  skipUntil,
-  Subject,
-  take,
-  tap,
 } from "rxjs";
-import { amItems, pmItems } from "@/state/region/regionTimetable.data";
+import { amItems, pmItems } from "@/state/addRegion/regionTimetable.data";
 import { ETimeTableItemState } from "@/typing";
 
 const amTimetableSubject = new BehaviorSubject(amItems);

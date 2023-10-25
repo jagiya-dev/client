@@ -7,15 +7,15 @@ import {
 } from "@react-native-seoul/kakao-login";
 
 export class Kakao {
-  //#region fields
+  //#addRegion fields
 
-  //#region kakao oauth token
+  //#addRegion kakao oauth token
   // let kakaoOAuthTokenSubject = new BehaviorSubject<KakaoOAuthToken | null>(null);
   // export const getKakaoOAuthToken = () => kakaoOAuthTokenSubject.getValue();
   // export const kakaoOAuthToken$ = kakaoOAuthTokenSubject.asObservable();
   //#endregion kakao oauth token
 
-  //#region kakao profile
+  //#addRegion kakao profile
   private readonly _kakaoProfileSubject: BehaviorSubject<KakaoProfile | null>;
 
   public get kakaoProfile() {
@@ -33,7 +33,7 @@ export class Kakao {
     this._kakaoProfileSubject = new BehaviorSubject<KakaoProfile | null>(null);
   }
 
-  //#region behaviours
+  //#addRegion behaviours
 
   public async login(): Promise<void> {
     try {

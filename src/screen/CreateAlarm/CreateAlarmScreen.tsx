@@ -1,3 +1,6 @@
+import type { SliderOnChangeCallback } from "@miblanchard/react-native-slider/lib/types";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import type { StackParamList } from "@/typing";
 import {
   Image,
   Platform,
@@ -24,36 +27,35 @@ import { Shadow } from "react-native-shadow-2";
 import { font } from "@/styles/font";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import { Slider } from "@miblanchard/react-native-slider";
-import { SliderOnChangeCallback } from "@miblanchard/react-native-slider/lib/types";
 import { useObservableState } from "@/hook/useObservableState";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { StackParamList } from "@/typing";
 import BottomSheet, {
   EBottomSheetOpenState,
 } from "@/components/bottom-sheet/BottomSheet";
+import { insertAlarm } from "@/network/api";
+import { soundNameAsLabel } from "@/audio";
+
+import CreateAlarmDialog from "@/components/dialog/CreateAlarm.Dialog";
 import RepeatContainer from "@/screen/CreateAlarm/Repeat/RepeatContainer";
 import AlarmSoundContainer from "@/screen/CreateAlarm/AlarmSound/AlarmSoundContainer";
 import ReminderContainer from "@/screen/CreateAlarm/Reminder/ReminderContainer";
+import BottomButton from "@/components/fixed/BottomButton";
+
 import {
   behaviours as soundVolumeBehaviours,
   whenSoundVolumeChange,
-} from "@/state/sound/soundVolume.state";
-import BottomButton from "@/components/fixed/BottomButton";
-import { insertAlarm } from "@/network/api";
+} from "@/state/createAlarm/sound/soundVolume.state";
 import {
   behaviors as repeatBehaviours,
   whenRepeatDaysAbbreviated,
-} from "@/state/repeat/repeat.state";
-import {
-  soundBehaviours,
-  whenSelectedSoundChange,
-} from "@/state/sound/sound.state";
-import { soundNameAsLabel } from "@/audio";
+} from "@/state/createAlarm/repeat/repeat.state";
 import {
   behaviours as reminderBehaviours,
   whenSelectedReminderChange,
 } from "@/screen/CreateAlarm/Reminder/reminder.state";
-import CreateAlarmDialog from "@/components/dialog/CreateAlarm.Dialog";
+import {
+  behaviours as soundBehaviours,
+  whenSelectedSoundChange,
+} from "@/state/createAlarm/sound/sound.state";
 
 type ScreenProps = NativeStackScreenProps<StackParamList, "CreateAlarm">;
 

@@ -6,8 +6,8 @@ import { apple, Apple } from "@/state/auth/auth.state.apple";
 import { kakao, Kakao } from "@/state/auth/auth.state.kakao";
 
 export class Local {
-  //#region fields
-  //#region local auth state
+  //#addRegion fields
+  //#addRegion local auth state
   private readonly _localAuthStateSubject: BehaviorSubject<LocalAuthState>;
 
   public get localAuthState() {
@@ -31,7 +31,7 @@ export class Local {
     });
   }
 
-  //#region behaviours
+  //#addRegion behaviours
   public login(whichLoginType: LocalAuthState["whichLoginType"]) {
     this._localAuthStateSubject.next({
       isLoggedIn: true,

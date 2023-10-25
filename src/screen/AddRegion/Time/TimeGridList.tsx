@@ -7,7 +7,7 @@ import {
   amTimetable$,
   behaviours,
   pmTimetable$,
-} from "@/state/region/regionTimetable.state";
+} from "@/state/addRegion/regionTimetable.state";
 import { useObservableState } from "@/hook/useObservableState";
 import TimeTableItem from "@/screen/AddRegion/Time/TimeTableItem";
 
