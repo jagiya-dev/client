@@ -1,4 +1,4 @@
-import { DateFlag } from "@/state/date/dataFlag";
+import { DateFlag } from "@/util/dateHelper";
 
 export type DateFlagT = typeof DateFlag;
 

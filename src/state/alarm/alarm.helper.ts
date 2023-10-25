@@ -1,6 +1,6 @@
 import { AlarmModel } from "@/typing";
 import * as rnd from "@/util/RandomHelper";
-import { AllDateFlag, LenDateFlags } from "../date/dataFlag";
+import { AllDateFlag, LenDateFlags } from "../../util/dateHelper";
 
 let uorder = 0;
 function getUniqueId(): number {

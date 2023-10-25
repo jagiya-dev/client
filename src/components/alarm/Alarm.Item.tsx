@@ -1,7 +1,7 @@
 import { Button, DateTextButton } from "@/components/button";
 import { UmbrellaDisabledIcon, UmbrellaEnabledIcon } from "@/components/Icon";
 import Text from "@/components/Text";
-import { dummyDates } from "@/state/date/dummy";
+import { dummyDates } from "@/util/dateHelper";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
 import { Animated, FlatList, Platform, StyleSheet, View } from "react-native";
