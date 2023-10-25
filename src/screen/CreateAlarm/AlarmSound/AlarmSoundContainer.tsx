@@ -3,7 +3,10 @@ import { color } from "@/styles/color";
 import { font } from "@/styles/font";
 import { Platform, StyleSheet, View } from "react-native";
 import { widthPercentageToDP } from "react-native-responsive-screen";
-import { behaviours, whenSoundItemsChange } from "@/state/sound/sound.state";
+import {
+  soundBehaviours,
+  whenSoundItemsChange,
+} from "@/state/sound/sound.state";
 import RadioButtonContainer from "@/components/radioButtons/RadioButtonContainer";
 import { useObservableState } from "@/hook/useObservableState";
 import { Button } from "@/components/button";
@@ -37,8 +40,10 @@ const AlarmSoundContainer = () => {
 
       <RadioButtonContainer
         data={soundItems}
-        isSelected={behaviours.isSelected}
-        onPressItem={(item) => behaviours.selectSound(item, currentSoundVolume)}
+        isSelected={soundBehaviours.isSelected}
+        onPressItem={(item) =>
+          soundBehaviours.selectSound(item, currentSoundVolume)
+        }
       />
 
       <BottomButton onPress={onPress_saveAlarmSound} text="확인" />

@@ -35,15 +35,24 @@ import RepeatContainer from "@/screen/CreateAlarm/Repeat/RepeatContainer";
 import AlarmSoundContainer from "@/screen/CreateAlarm/AlarmSound/AlarmSoundContainer";
 import ReminderContainer from "@/screen/CreateAlarm/Reminder/ReminderContainer";
 import {
-  behaviours,
+  behaviours as soundVolumeBehaviours,
   whenSoundVolumeChange,
 } from "@/state/sound/soundVolume.state";
 import BottomButton from "@/components/fixed/BottomButton";
 import { insertAlarm } from "@/network/api";
-import { whenRepeatDaysAbbreviated } from "@/state/repeat/repeat.state";
-import { whenSelectedSoundChange } from "@/state/sound/sound.state";
+import {
+  behaviors as repeatBehaviours,
+  whenRepeatDaysAbbreviated,
+} from "@/state/repeat/repeat.state";
+import {
+  soundBehaviours,
+  whenSelectedSoundChange,
+} from "@/state/sound/sound.state";
 import { soundNameAsLabel } from "@/audio";
-import { whenSelectedReminderChange } from "@/screen/CreateAlarm/Reminder/reminder.state";
+import {
+  behaviours as reminderBehaviours,
+  whenSelectedReminderChange,
+} from "@/screen/CreateAlarm/Reminder/reminder.state";
 import CreateAlarmDialog from "@/components/dialog/CreateAlarm.Dialog";
 
 type ScreenProps = NativeStackScreenProps<StackParamList, "CreateAlarm">;
@@ -58,6 +67,7 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
 
   const onPressButton_createAlarmOK = () => {
     closeCreateAlarmDialog();
+    resetWithoutSave();
 
     navigation.navigate("Main");
   };
@@ -114,7 +124,7 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
     if (isNaN(value[0])) return;
 
     const volume = Number(value[0].toFixed(2));
-    behaviours.setSoundVolume(volume);
+    soundVolumeBehaviours.setSoundVolume(volume);
   };
 
   useHandleForegroundNotification();
@@ -182,6 +192,15 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
 
   const onPress_openAlarmSoundBottomSheet = () => {
     setAlarmSoundBottomSheetState(EBottomSheetOpenState.OPEN);
+  };
+
+  const resetWithoutSave = () => {
+    setAlarmDate(new Date());
+    repeatBehaviours.reset();
+    soundBehaviours.reset();
+    soundVolumeBehaviours.setSoundVolume(0.2);
+    reminderBehaviours.reset();
+    // TODO: 지역 선택 초기화.
   };
 
   return (

@@ -28,7 +28,7 @@ const ReminderContainer = () => {
     Platform.OS === "ios" ? reminderItemsIOS : reminderItemsAndroid;
 
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    behaviours.setReminderState(event.nativeEvent.contentOffset.y);
+    behaviours.setReminder(event.nativeEvent.contentOffset.y);
   };
 
   return (

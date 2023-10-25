@@ -1,4 +1,4 @@
-import { BehaviorSubject, debounceTime, map, min, tap } from "rxjs";
+import { BehaviorSubject, debounceTime, map } from "rxjs";
 import { Platform } from "react-native";
 
 export type ReminderState = {
@@ -24,7 +24,7 @@ export const whenSelectedReminderChange = selectedReminderSubject
 // 144 - 15 min
 // 180 - 30 min
 // 216 - 60 min
-const setReminderState = (pos: number) => {
+const setReminder = (pos: number) => {
   let minute: number = 1;
   if (Platform.OS === "android") {
     pos += 10;
@@ -50,6 +50,11 @@ const setReminderState = (pos: number) => {
   selectedReminderSubject.next({ pos, minute });
 };
 
+const resetReminder = () => {
+  selectedReminderSubject.next({ pos: 0, minute: 0 });
+};
+
 export const behaviours = {
-  setReminderState,
+  setReminder,
+  reset: resetReminder,
 };

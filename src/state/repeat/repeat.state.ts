@@ -87,6 +87,15 @@ export const whenRepeatDaysAbbreviated = whenOnlySelectedRepeatItems.pipe(
   map(getRepeatDaysAbbreviated),
 );
 
+const reset = () => {
+  const { value } = repeatStateSubject;
+  if (!value) return;
+
+  repeatStateSubject.next(
+    value.map((item) => ({ ...item, isSelected: false })),
+  );
+};
+
 const toggleRepeatItem = (id: string): void => {
   const { value } = repeatStateSubject;
   if (!value) return;
@@ -115,5 +124,6 @@ const isSelected = (id: string) => {
 
 export const behaviors = {
   toggleRepeatItem,
+  reset,
   isSelected,
 };
