@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import TextInput from "@/components/TextInput";
 import Text from "@/components/Text";
 import { color } from "@/styles/color";
@@ -11,6 +11,7 @@ import {
   behaviours,
   searchResults$,
 } from "@/state/addRegion/search/searchResults.state";
+import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 
 const recentSearches = [
   "서울시 관악구 봉천동",
@@ -46,23 +47,25 @@ const SearchResult = () => {
         <Text style={s.title}>지역 검색</Text>
       </View>
 
-      {/*<View style={s.regionSearchBarContainer}>*/}
-      {/*<SearchIcon style={s.regionSearchBarIcon} />*/}
-      <TextInput
-        style={s.regionSearchBar}
-        placeholder="지역구, 동으로 검색"
-        value={searchKeyword}
-        onChangeText={setSearchKeyword}
-        autoFocus
-      />
-      {/*</View>*/}
+      <View style={s.regionSearchBarContainer}>
+        <SearchIcon style={s.regionSearchBarIcon} />
+        <TextInput
+          style={s.regionSearchBar}
+          placeholder="지역구, 동으로 검색"
+          value={searchKeyword}
+          onChangeText={setSearchKeyword}
+          autoFocus
+          multiline={false}
+        />
+      </View>
 
-      <Text style={s.label}>{bHasSearched ? "주소 검색" : "최근 검색"}</Text>
+      <View style={s.labelContainer}>
+        <Text style={s.label}>{bHasSearched ? "주소 검색" : "최근 검색"}</Text>
+      </View>
 
-      <FlatList
-        data={recentSearches}
-        renderItem={(data) => (
-          <View key={data.index} style={s.searchListRoot}>
+      <BottomSheetScrollView>
+        {recentSearches.map((data, i) => (
+          <View key={i} style={s.searchListRoot}>
             {/* 1. map icon with circle background */}
             <View style={s.mapIconBackground}>
               <MapIcon style={s.mapIcon} />
@@ -73,15 +76,15 @@ const SearchResult = () => {
 
             {/* 3. location text */}
             <View style={s.rightContainer}>
-              <Text>{data.item}</Text>
+              <Text>{data}</Text>
 
               <Button style={s.deleteButton}>
                 <Text style={s.deleteButtonInnerText}>삭제</Text>
               </Button>
             </View>
           </View>
-        )}
-      />
+        ))}
+      </BottomSheetScrollView>
     </View>
   );
 };
@@ -103,12 +106,7 @@ const s = StyleSheet.create({
     lineHeight: font.title["2"].height,
     alignSelf: "center",
   },
-  label: {
-    color: color.gray["300"],
-    fontSize: font.body["5"].size,
-    fontWeight: font.body["5"].weight,
-    lineHeight: font.body["5"].height,
-  },
+
   regionSearchBarContainer: {
     position: "relative",
   },
@@ -121,25 +119,37 @@ const s = StyleSheet.create({
     alignItems: "center",
 
     marginBottom: 32,
-    paddingHorizontal: 13,
+    paddingHorizontal: 37,
     paddingVertical: 13,
   },
-  // regionSearchBarIcon: {
-  //   width: 18,
-  //   height: 18,
-  //   tintColor: color.gray["200"],
-  //   marginRight: 5,
-  //
-  //   position: "absolute",
-  //
-  //   left: 15,
-  //   top: 0,
-  // },
+  regionSearchBarIcon: {
+    width: 18,
+    height: 18,
+
+    zIndex: 10,
+    tintColor: color.gray["200"],
+    marginRight: 5,
+
+    position: "absolute",
+
+    left: 15,
+    top: 13,
+  },
   regionSearchBarInnerText: {
     color: color.gray["300"],
     fontSize: font.body["5"].size,
     fontWeight: font.body["5"].weight,
     lineHeight: font.body["5"].height,
+  },
+
+  labelContainer: {
+    // height: 6,
+  },
+  label: {
+    color: color.gray["300"],
+    fontSize: font.body["5"].size,
+    fontWeight: font.body["5"].weight,
+    lineHeight: font.body["5"].heig,
   },
 
   searchListRoot: {

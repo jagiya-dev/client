@@ -89,15 +89,11 @@ const AddRegionScreen = ({ route, navigation }: ScreenProps) => {
   const onPress_saveButton = () => {
     // todo: save operation!
 
-    if (navigation.canGoBack()) {
-      navigation.goBack();
-    }
+    navigation.navigate("CreateAlarm");
   };
 
   const onPress_closeButton = () => {
-    if (navigation.canGoBack()) {
-      navigation.goBack();
-    }
+    navigation.navigate("CreateAlarm");
   };
 
   return (

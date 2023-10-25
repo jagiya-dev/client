@@ -38,7 +38,7 @@ const onReady = async () => {
 
 const Navigation = () => (
   <NavigationContainer ref={navRef} onReady={onReady}>
-    <Stack.Navigator initialRouteName="CreateAlarm">
+    <Stack.Navigator initialRouteName="AlarmDetail">
       <Stack.Screen name="Playground" component={Screens.PlaygroundScreen} />
 
       <Stack.Screen
