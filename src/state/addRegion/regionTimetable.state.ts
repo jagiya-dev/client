@@ -31,6 +31,18 @@ export const allTimeSelected$ = combineLatest([
   map(([amTimetables, pmTimetables]) => [...amTimetables, ...pmTimetables]),
 );
 
+export const briefSelectedTimesAsFormattedString$ = allTimeSelected$.pipe(
+  map((allSelectedTimes) => {
+    if (allSelectedTimes === undefined || allSelectedTimes.length === 0)
+      return "시간 선택";
+
+    const cnt = allSelectedTimes.length - 1;
+    if (cnt === 0) return allSelectedTimes?.[0].time;
+
+    return `${allSelectedTimes?.[0].time} 외 ${cnt}건`;
+  }),
+);
+
 const updateTimeTableStateOfAM = (
   index: number,
   newState: ETimeTableItemState,

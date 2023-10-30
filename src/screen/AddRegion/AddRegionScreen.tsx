@@ -19,12 +19,13 @@ import { Shadow } from "react-native-shadow-2";
 import BottomSheet, {
   EBottomSheetOpenState,
 } from "@/components/bottom-sheet/BottomSheet";
-import SearchResult from "@/screen/AddRegion/Region/SearchRegion";
+import SearchRegion from "@/screen/AddRegion/Region/SearchRegion";
 import TimeTable from "@/screen/AddRegion/Time/TimeTable";
 import { useObservableState } from "@/hook/useObservableState";
 import {
   allTimeSelected$,
   behaviours,
+  briefSelectedTimesAsFormattedString$,
 } from "@/state/addRegion/regionTimetable.state";
 import { ETimeTableItemState, StackParamList } from "@/typing";
 import { Button } from "@/components/button";
@@ -43,15 +44,9 @@ const AddRegionScreen = ({ route, navigation }: ScreenProps) => {
     observable: allTimeSelected$,
   });
 
-  const briefSelectedTimesAsFormattedString = (() => {
-    if (allSelectedTimes === undefined) return "시간 선택";
-    if (allSelectedTimes.length === 0) return "시간 선택";
-
-    const cnt = allSelectedTimes.length - 1;
-    if (cnt === 0) return allSelectedTimes?.[0].time;
-
-    return `${allSelectedTimes?.[0].time} 외 ${cnt}건`;
-  })();
+  const briefSelectedTimesAsFormattedString = useObservableState({
+    observable: briefSelectedTimesAsFormattedString$,
+  });
 
   const deleteFromSelectedTimes = (index: number) => {
     if (!allSelectedTimes) return;
@@ -115,7 +110,7 @@ const AddRegionScreen = ({ route, navigation }: ScreenProps) => {
           bOpen={regionBottomSheetState}
           setIsOpen={setRegionBottomSheetState}
         >
-          <SearchResult />
+          <SearchRegion />
         </BottomSheet>
       )}
 

@@ -3,7 +3,7 @@ import TextInput from "@/components/TextInput";
 import Text from "@/components/Text";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { MapIcon, SearchIcon } from "@/components/Icon";
 import { Button } from "@/components/button";
 import { useObservableState } from "@/hook/useObservableState";
@@ -28,7 +28,7 @@ const initialSearchResults = [
   "서울시 중구 을지로동",
 ];
 
-const SearchResult = () => {
+const SearchRegion = () => {
   const [searchKeyword, setSearchKeyword] = useState<string>("");
 
   const bHasSearched = searchKeyword.length === 0;
@@ -36,6 +36,8 @@ const SearchResult = () => {
   const searchResults = useObservableState({
     observable: searchResults$,
   });
+
+  console.log(searchResults);
 
   useEffect(() => {
     behaviours.fetchRecentSearchResults();
@@ -88,7 +90,7 @@ const SearchResult = () => {
     </View>
   );
 };
-export default SearchResult;
+export default SearchRegion;
 
 const s = StyleSheet.create({
   root: {
@@ -149,7 +151,7 @@ const s = StyleSheet.create({
     color: color.gray["300"],
     fontSize: font.body["5"].size,
     fontWeight: font.body["5"].weight,
-    lineHeight: font.body["5"].heig,
+    lineHeight: font.body["5"].height,
   },
 
   searchListRoot: {

@@ -27,7 +27,7 @@ export class Local {
   ) {
     this._localAuthStateSubject = new BehaviorSubject<LocalAuthState>({
       isLoggedIn: false,
-      whichLoginType: undefined,
+      whichLoginType: "guest",
     });
   }
 
