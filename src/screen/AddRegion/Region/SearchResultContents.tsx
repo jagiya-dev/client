@@ -6,7 +6,6 @@ import {
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { MapIcon } from "@/components/Icon";
 import Text from "@/components/Text";
-import { Button } from "@/components/button";
 import React, { useEffect } from "react";
 import {
   behaviours,
@@ -94,7 +93,7 @@ const SearchResultContents = () => {
               >
                 {/* 1. map icon with circle background */}
                 <View style={s.mapIconBackground}>
-                  <MapIcon style={s.mapIcon} />
+                  <MapIcon />
                 </View>
 
                 {/* 2. spacer */}
@@ -102,16 +101,17 @@ const SearchResultContents = () => {
 
                 {/* 3. location text */}
                 <View style={s.rightContainer}>
-                  <Text>{location}</Text>
+                  <Text style={s.deleteButtonInnerText}>{location}</Text>
 
-                  <Button
-                    style={s.deleteButton}
+                  <TouchableOpacity
                     onPress={() =>
                       onPress_deleteRecentLocation(data.recentLocationId)
                     }
                   >
-                    <Text style={s.deleteButtonInnerText}>삭제</Text>
-                  </Button>
+                    <View style={s.deleteButton}>
+                      <Text style={s.deleteButtonInnerText}>삭제</Text>
+                    </View>
+                  </TouchableOpacity>
                 </View>
               </TouchableOpacity>
             );
@@ -135,7 +135,7 @@ const SearchResultContents = () => {
             >
               {/* 1. map icon with circle background */}
               <View style={s.mapIconBackground}>
-                <MapIcon style={s.mapIcon} />
+                <MapIcon />
               </View>
 
               {/* 2. spacer */}
@@ -168,7 +168,6 @@ const s = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  mapIcon: {},
 
   itemSpacer: {
     marginRight: 12,
@@ -182,12 +181,21 @@ const s = StyleSheet.create({
   },
 
   deleteButton: {
-    paddingHorizontal: 12,
     paddingVertical: 4,
     backgroundColor: color.gray["100"],
     borderRadius: 16,
+    width: 58,
+    justifyContent: "center",
+    alignItems: "center",
   },
   deleteButtonInnerText: {
+    color: "black",
+    fontSize: font.caption["2"].size,
+    fontWeight: font.caption["2"].weight,
+    lineHeight: font.caption["2"].height,
+  },
+
+  locationText: {
     color: color.gray["700"],
     fontSize: font.body["2"].size,
     fontWeight: font.body["2"].weight,
