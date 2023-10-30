@@ -24,13 +24,17 @@ import TimeTable from "@/screen/AddRegion/Time/TimeTable";
 import { useObservableState } from "@/hook/useObservableState";
 import {
   allTimeSelected$,
-  behaviours,
+  behaviours as timeTableBehaviours,
   briefSelectedTimesAsFormattedString$,
 } from "@/state/addRegion/regionTimetable.state";
 import { ETimeTableItemState, StackParamList } from "@/typing";
 import { Button } from "@/components/button";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { selectedLocationAsStr$ } from "@/state/addRegion/search/searchResults.state";
+import {
+  selectedLocation,
+  selectedLocationAsStr$,
+} from "@/state/addRegion/search/searchResults.state";
+import { behaviours } from "@/state/createAlarm/location.state";
 
 type ScreenProps = NativeStackScreenProps<StackParamList, "AddRegion">;
 
@@ -49,10 +53,9 @@ const AddRegionScreen = ({ route, navigation }: ScreenProps) => {
     observable: briefSelectedTimesAsFormattedString$,
   });
 
-  const searchedRegion = useObservableState({
+  const searchedRegionAsStr = useObservableState({
     observable: selectedLocationAsStr$,
   });
-  console.log("searchedRegion: ", searchedRegion);
 
   const deleteFromSelectedTimes = (index: number) => {
     if (!allSelectedTimes) return;
@@ -60,7 +63,7 @@ const AddRegionScreen = ({ route, navigation }: ScreenProps) => {
     const { time, isAM } = allSelectedTimes[index];
 
     if (isAM) {
-      behaviours.updateTimeTableStateOfAMFromTime(
+      timeTableBehaviours.updateTimeTableStateOfAMFromTime(
         time,
         ETimeTableItemState.none,
       );
@@ -68,7 +71,10 @@ const AddRegionScreen = ({ route, navigation }: ScreenProps) => {
       return;
     }
 
-    behaviours.updateTimeTableStateOfPMFromTime(time, ETimeTableItemState.none);
+    timeTableBehaviours.updateTimeTableStateOfPMFromTime(
+      time,
+      ETimeTableItemState.none,
+    );
   };
 
   const onPress_RegionSearchBar = () => {
@@ -88,7 +94,11 @@ const AddRegionScreen = ({ route, navigation }: ScreenProps) => {
   };
 
   const onPress_saveButton = () => {
-    // todo: save operation!
+    const { value } = selectedLocation;
+    if (!value) return;
+    if (!allSelectedTimes) return;
+
+    behaviours.addLocation(value);
 
     navigation.navigate("CreateAlarm");
   };
@@ -106,9 +116,9 @@ const AddRegionScreen = ({ route, navigation }: ScreenProps) => {
         <View style={s.regionSearchBar}>
           <SearchIcon style={s.regionSearchBarIcon} />
           <Text style={s.regionSearchBarInnerText}>
-            {searchedRegion === "" || !searchedRegion
+            {searchedRegionAsStr === "" || !searchedRegionAsStr
               ? "원하는 지역을 검색해주세요."
-              : searchedRegion}
+              : searchedRegionAsStr}
           </Text>
         </View>
       </TouchableNativeFeedback>

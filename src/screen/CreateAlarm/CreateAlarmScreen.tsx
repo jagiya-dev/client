@@ -58,6 +58,10 @@ import {
   behaviours as soundBehaviours,
   whenSelectedSoundChange,
 } from "@/state/createAlarm/sound/sound.state";
+import {
+  addedLocationForUI$,
+  addedLocations$,
+} from "@/state/createAlarm/location.state";
 
 type ScreenProps = NativeStackScreenProps<StackParamList, "CreateAlarm">;
 
@@ -128,6 +132,14 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
     observable: whenSelectedReminderChange,
   });
 
+  const addedLocations = useObservableState({
+    observable: addedLocations$,
+  });
+
+  const addedLocationsForUI = useObservableState({
+    observable: addedLocationForUI$,
+  });
+
   const onChangeSliderValue: SliderOnChangeCallback = (value) => {
     if (isNaN(value[0])) return;
 
@@ -161,7 +173,7 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
       const params: AlarmInsertRequest = {
         timeOfDay: alarmAMPM,
         alarmTime: alarmHours + alarmMinutes,
-        alarmLocationList: [],
+        alarmLocationList: addedLocations,
         volume: soundVolume,
         vibration: soundVolume === 0 ? 1 : 0,
         weekList:
@@ -372,53 +384,57 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
 
         {/* 4-2. set location */}
         <View style={s.regionItemContainer}>
-          {regionNames.map((name, i) => (
+          {addedLocationsForUI &&
+            addedLocationsForUI.length > 0 &&
+            addedLocationsForUI.map((name, i) => (
+              <Shadow
+                key={i}
+                offset={[0, 2]}
+                distance={2}
+                startColor="rgba(0, 0, 0, 0.1)"
+                style={s.itemBlockShadow}
+                stretch
+              >
+                <View style={s.regionItem}>
+                  <Text style={s.itemBlockLabel}>{name}</Text>
+
+                  <View style={s.itemBlockRight}>
+                    <View style={s.regionItemRightSpacer} />
+                    <CloseIcon
+                      style={s.itemBlockIcon}
+                      useTouch
+                      onPress={() => onPressButton_deleteRegion(i)}
+                    />
+                  </View>
+                </View>
+              </Shadow>
+            ))}
+
+          {/* 4-3. add new bottom-sheet */}
+          {addedLocationsForUI && addedLocationsForUI.length < 4 && (
             <Shadow
-              key={i}
               offset={[0, 2]}
               distance={2}
               startColor="rgba(0, 0, 0, 0.1)"
               style={s.itemBlockShadow}
               stretch
             >
-              <View style={s.regionItem}>
-                <Text style={s.itemBlockLabel}>{name}</Text>
-
-                <View style={s.itemBlockRight}>
-                  <View style={s.regionItemRightSpacer} />
-                  <CloseIcon
-                    style={s.itemBlockIcon}
-                    useTouch
-                    onPress={() => onPressButton_deleteRegion(i)}
-                  />
+              <TouchableNativeFeedback
+                onPress={onPressButton_AddNewRegion}
+                style={s.regionItemInside}
+              >
+                <View style={[s.regionItem, s.regionAddItem]}>
+                  <Text style={s.regionAddItemLabel}>지역 추가</Text>
+                  <View style={s.regionAddItemButton}>
+                    <Image
+                      source={require("#/icons/plus.png")}
+                      style={s.regionAddItemIcon}
+                    />
+                  </View>
                 </View>
-              </View>
+              </TouchableNativeFeedback>
             </Shadow>
-          ))}
-
-          {/* 4-3. add new bottom-sheet */}
-          <Shadow
-            offset={[0, 2]}
-            distance={2}
-            startColor="rgba(0, 0, 0, 0.1)"
-            style={s.itemBlockShadow}
-            stretch
-          >
-            <TouchableNativeFeedback
-              onPress={onPressButton_AddNewRegion}
-              style={s.regionItemInside}
-            >
-              <View style={[s.regionItem, s.regionAddItem]}>
-                <Text style={s.regionAddItemLabel}>지역 추가</Text>
-                <View style={s.regionAddItemButton}>
-                  <Image
-                    source={require("#/icons/plus.png")}
-                    style={s.regionAddItemIcon}
-                  />
-                </View>
-              </View>
-            </TouchableNativeFeedback>
-          </Shadow>
+          )}
         </View>
       </ScrollView>
 
@@ -644,6 +660,7 @@ const s = StyleSheet.create({
     alignItems: "flex-start",
   },
   regionItem: {
+    flex: 1,
     width: 136,
     height: 54,
 
@@ -661,7 +678,7 @@ const s = StyleSheet.create({
     borderRadius: 8,
   },
   regionItemRightSpacer: {
-    marginRight: 16,
+    // marginRight: 16,
   },
   regionAddItem: {
     backgroundColor: color.primary["100"],

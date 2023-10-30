@@ -1,4 +1,5 @@
 import { DateFlag } from "@/util/dateHelper";
+import { LocationResponse } from "@/network/api";
 
 export type DateFlagT = typeof DateFlag;
 
@@ -35,7 +36,10 @@ export type DateModel = {
 export type StackParamList = {
   Main: undefined;
   Login: undefined;
-  CreateAlarm: undefined;
+  CreateAlarm: {
+    selectedLocation: LocationResponse;
+    selectedTimes: TimetableItem[];
+  };
   ActivatedAlarm: undefined;
   AlarmDetail: undefined;
   AddRegion: undefined;
