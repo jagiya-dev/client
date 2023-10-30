@@ -7,6 +7,7 @@ import {
   of,
   switchMap,
   tap,
+  toArray,
 } from "rxjs";
 import {
   getRecentSelectLocation,
@@ -45,7 +46,7 @@ export const searchResult$ = searchInput$.pipe(
   ),
 );
 
-const recentSearchResults = new BehaviorSubject<readonly RecentLocation[]>([]);
+const recentSearchResults = new BehaviorSubject<RecentLocation[]>([]);
 export const recentSearchResults$ = recentSearchResults.asObservable();
 
 const selectedLocation = new BehaviorSubject<LocationResponse | undefined>(

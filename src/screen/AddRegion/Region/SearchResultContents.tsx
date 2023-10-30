@@ -7,7 +7,7 @@ import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { MapIcon } from "@/components/Icon";
 import Text from "@/components/Text";
 import { Button } from "@/components/button";
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   behaviours,
   recentSearchResults$,
@@ -29,6 +29,8 @@ const SearchResultContents = () => {
     observable: recentSearchResults$,
   });
 
+  recentSearches?.reverse();
+
   useEffect(() => {
     behaviours.fetchRecentSearchResults();
   }, []);
@@ -49,10 +51,13 @@ const SearchResultContents = () => {
     }
   };
 
-  const onPress_selectLocation = useCallback(
-    async (location: LocationResponse) => {
-      behaviours.updateSelectedLocation(location);
+  const onPress_selectLocation = async (
+    location: LocationResponse,
+    bRecentLocationItem: boolean = false,
+  ) => {
+    behaviours.updateSelectedLocation(location);
 
+    if (!bRecentLocationItem) {
       const { snsId, snsType } = await Local.getSnsInfo(
         local.localAuthState.whichLoginType,
       );
@@ -66,11 +71,10 @@ const SearchResultContents = () => {
         snsType,
       });
       console.log("최근 검색 추가: ", JSON.stringify(data, null, 2));
+    }
 
-      close();
-    },
-    [searchResults],
-  );
+    close();
+  };
 
   const bHasSearched = searchResults && searchResults.length > 0;
   if (!bHasSearched) {
@@ -83,7 +87,11 @@ const SearchResultContents = () => {
             const location = `${cityDo} ${guGun} ${eupMyun}`;
 
             return (
-              <View key={i} style={s.searchListRoot}>
+              <TouchableOpacity
+                key={i}
+                style={s.searchListRoot}
+                onPress={() => onPress_selectLocation(data)}
+              >
                 {/* 1. map icon with circle background */}
                 <View style={s.mapIconBackground}>
                   <MapIcon style={s.mapIcon} />
@@ -105,7 +113,7 @@ const SearchResultContents = () => {
                     <Text style={s.deleteButtonInnerText}>삭제</Text>
                   </Button>
                 </View>
-              </View>
+              </TouchableOpacity>
             );
           })}
       </>
@@ -120,25 +128,24 @@ const SearchResultContents = () => {
           const location = `${cityDo} ${guGun} ${eupMyun}`;
 
           return (
-            <View key={data.regionCd}>
-              <TouchableOpacity
-                style={s.searchListRoot}
-                onPress={() => onPress_selectLocation(data)}
-              >
-                {/* 1. map icon with circle background */}
-                <View style={s.mapIconBackground}>
-                  <MapIcon style={s.mapIcon} />
-                </View>
+            <TouchableOpacity
+              style={s.searchListRoot}
+              key={data.regionCd}
+              onPress={() => onPress_selectLocation(data)}
+            >
+              {/* 1. map icon with circle background */}
+              <View style={s.mapIconBackground}>
+                <MapIcon style={s.mapIcon} />
+              </View>
 
-                {/* 2. spacer */}
-                <View style={s.itemSpacer} />
+              {/* 2. spacer */}
+              <View style={s.itemSpacer} />
 
-                {/* 3. location text */}
-                <View style={s.rightContainer}>
-                  <Text>{location}</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
+              {/* 3. location text */}
+              <View style={s.rightContainer}>
+                <Text>{location}</Text>
+              </View>
+            </TouchableOpacity>
           );
         })}
     </>

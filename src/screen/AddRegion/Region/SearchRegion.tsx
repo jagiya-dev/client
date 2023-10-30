@@ -8,7 +8,6 @@ import { useObservableState } from "@/hook/useObservableState";
 import {
   behaviours,
   searchInput$,
-  searchResult$,
 } from "@/state/addRegion/search/searchResults.state";
 import React, { useEffect } from "react";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
