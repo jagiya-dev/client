@@ -3,15 +3,15 @@ import TextInput from "@/components/TextInput";
 import Text from "@/components/Text";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
-import { useEffect, useState } from "react";
 import { MapIcon, SearchIcon } from "@/components/Icon";
 import { Button } from "@/components/button";
 import { useObservableState } from "@/hook/useObservableState";
 import {
   behaviours,
-  searchResults$,
+  searchInput$,
+  searchResult$,
 } from "@/state/addRegion/search/searchResults.state";
-import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
+import { useEffect } from "react";
 
 const recentSearches = [
   "서울시 관악구 봉천동",
@@ -29,19 +29,30 @@ const initialSearchResults = [
 ];
 
 const SearchRegion = () => {
-  const [searchKeyword, setSearchKeyword] = useState<string>("");
+  const updateSearchKeywords = (input: string) => {
+    behaviours.updateSearchKeywords(input);
+  };
 
-  const bHasSearched = searchKeyword.length === 0;
+  const searchInput = useObservableState({
+    observable: searchInput$,
+  });
+  const bHasSearched = searchInput !== "";
 
   const searchResults = useObservableState({
-    observable: searchResults$,
+    observable: searchResult$,
   });
 
-  console.log(searchResults);
+  if (searchResults) {
+    console.log("search results: ", searchResults);
+  }
 
   useEffect(() => {
-    behaviours.fetchRecentSearchResults();
+    behaviours.reset();
   }, []);
+
+  // useEffect(() => {
+  //   behaviours.fetchRecentSearchResults();
+  // }, []);
 
   return (
     <View style={s.root}>
@@ -54,8 +65,8 @@ const SearchRegion = () => {
         <TextInput
           style={s.regionSearchBar}
           placeholder="지역구, 동으로 검색"
-          value={searchKeyword}
-          onChangeText={setSearchKeyword}
+          value={searchInput}
+          onChangeText={updateSearchKeywords}
           autoFocus
           multiline={false}
         />
@@ -65,28 +76,53 @@ const SearchRegion = () => {
         <Text style={s.label}>{bHasSearched ? "주소 검색" : "최근 검색"}</Text>
       </View>
 
-      <BottomSheetScrollView>
-        {recentSearches.map((data, i) => (
-          <View key={i} style={s.searchListRoot}>
-            {/* 1. map icon with circle background */}
-            <View style={s.mapIconBackground}>
-              <MapIcon style={s.mapIcon} />
+      {/*<BottomSheetScrollView>*/}
+      {bHasSearched
+        ? searchResults &&
+          searchResults.map((data, i) => {
+            console.log("data:", data);
+            const { eupMyun, regionCd, cityDo, guGun } = data;
+            // const location = (cityDo ?? "") + (guGun ?? "") + (eupMyun ?? "");
+            const location = `${cityDo} ${guGun} ${eupMyun}`;
+
+            return (
+              <View key={i} style={s.searchListRoot}>
+                {/* 1. map icon with circle background */}
+                <View style={s.mapIconBackground}>
+                  <MapIcon style={s.mapIcon} />
+                </View>
+
+                {/* 2. spacer */}
+                <View style={s.itemSpacer} />
+
+                {/* 3. location text */}
+                <View style={s.rightContainer}>
+                  <Text>{location}</Text>
+                </View>
+              </View>
+            );
+          })
+        : recentSearches.map((data, i) => (
+            <View key={i} style={s.searchListRoot}>
+              {/* 1. map icon with circle background */}
+              <View style={s.mapIconBackground}>
+                <MapIcon style={s.mapIcon} />
+              </View>
+
+              {/* 2. spacer */}
+              <View style={s.itemSpacer} />
+
+              {/* 3. location text */}
+              <View style={s.rightContainer}>
+                <Text>{data}</Text>
+
+                <Button style={s.deleteButton}>
+                  <Text style={s.deleteButtonInnerText}>삭제</Text>
+                </Button>
+              </View>
             </View>
-
-            {/* 2. spacer */}
-            <View style={s.itemSpacer} />
-
-            {/* 3. location text */}
-            <View style={s.rightContainer}>
-              <Text>{data}</Text>
-
-              <Button style={s.deleteButton}>
-                <Text style={s.deleteButtonInnerText}>삭제</Text>
-              </Button>
-            </View>
-          </View>
-        ))}
-      </BottomSheetScrollView>
+          ))}
+      {/*</BottomSheetScrollView>*/}
     </View>
   );
 };

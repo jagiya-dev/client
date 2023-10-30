@@ -1,15 +1,56 @@
-import { BehaviorSubject } from "rxjs";
-import { getRecentSelectLocation } from "@/network/api";
+import {
+  BehaviorSubject,
+  debounceTime,
+  filter,
+  map,
+  mergeMap,
+  of,
+  switchMap,
+  tap,
+} from "rxjs";
+import {
+  getRecentSelectLocation,
+  LocationResponse,
+  RecentLocation,
+} from "@/network/api";
 import { kakao } from "@/state/auth/auth.state.kakao";
 import { local } from "@/state/auth/auth.state.local";
 import { apple } from "@/state/auth/auth.state.apple";
 import DeviceInfo from "react-native-device-info";
+import { fromFetch } from "rxjs/fetch";
 
-const searchResults = new BehaviorSubject<string[]>([]);
-export const searchResults$ = searchResults.asObservable();
+const searchInput = new BehaviorSubject<string>("");
 
-type RecentSearchResults = {
-  data: string[];
+export const searchInput$ = searchInput.asObservable();
+export const searchResult$ = searchInput$.pipe(
+  debounceTime(1000),
+  filter((keyword) => keyword !== "" && keyword.length > 0),
+  tap((keyword) => console.log("검색키워드: ", keyword)),
+  mergeMap((keyword) =>
+    fromFetch(
+      `https://www.readyumbrelladata.com/location/getLocation?keyword=${keyword}`,
+    ).pipe(
+      switchMap((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+
+        return of({
+          error: true,
+          message: `Error ${response.status}`,
+        });
+      }),
+      map((result) => result.data as readonly LocationResponse[]),
+    ),
+  ),
+);
+
+const recentSearchResults = new BehaviorSubject<readonly RecentLocation[]>([]);
+export const recentSearchResults$ = recentSearchResults.asObservable();
+
+const reset = () => {
+  searchInput?.next("");
+  recentSearchResults?.next([]);
 };
 
 const fetchRecentSearchResults = async () => {
@@ -40,10 +81,20 @@ const fetchRecentSearchResults = async () => {
     });
     console.log(JSON.stringify(response.data, null, 2));
 
-    // searchResults.next(json["data"] as string[]);
-  } catch (error) {}
+    if (!response.data) throw new Error(response.message);
+
+    recentSearchResults.next(response.data);
+  } catch (error) {
+    console.error("fetchRecentSearchResults", error);
+  }
+};
+
+const updateSearchKeywords = (keywords: string) => {
+  searchInput.next(keywords);
 };
 
 export const behaviours = {
   fetchRecentSearchResults,
+  updateSearchKeywords,
+  reset,
 };
