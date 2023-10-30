@@ -50,27 +50,22 @@ const SearchResultContents = () => {
     }
   };
 
-  const onPress_selectLocation = async (
-    location: LocationResponse,
-    bRecentLocationItem: boolean = false,
-  ) => {
+  const onPress_selectLocation = async (location: LocationResponse) => {
     behaviours.updateSelectedLocation(location);
 
-    if (!bRecentLocationItem) {
-      const { snsId, snsType } = await Local.getSnsInfo(
-        local.localAuthState.whichLoginType,
-      );
+    const { snsId, snsType } = await Local.getSnsInfo(
+      local.localAuthState.whichLoginType,
+    );
 
-      const { data } = await getRecentLocation({
-        eupMyun: location.eupMyun ?? "",
-        guGun: location.guGun ?? "",
-        cityDo: location.cityDo ?? "",
-        regionCd: location.regionCd ?? "",
-        snsId,
-        snsType,
-      });
-      console.log("최근 검색 추가: ", JSON.stringify(data, null, 2));
-    }
+    const { data } = await getRecentLocation({
+      eupMyun: location.eupMyun ?? "",
+      guGun: location.guGun ?? "",
+      cityDo: location.cityDo ?? "",
+      regionCd: location.regionCd ?? "",
+      snsId,
+      snsType,
+    });
+    console.log("최근 검색 추가: ", JSON.stringify(data, null, 2));
 
     close();
   };

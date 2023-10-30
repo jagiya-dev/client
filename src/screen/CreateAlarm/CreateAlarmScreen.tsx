@@ -61,6 +61,7 @@ import {
 import {
   addedLocationForUI$,
   addedLocations$,
+  behaviours as locationBehaviours,
 } from "@/state/createAlarm/location.state";
 
 type ScreenProps = NativeStackScreenProps<StackParamList, "CreateAlarm">;
@@ -101,8 +102,6 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
     [alarmDate],
   );
 
-  const [regionNames, setRegionNames] = useState<string[]>([]);
-
   const [repeatBottomSheetState, setRepeatBottomSheetState] =
     useState<EBottomSheetOpenState>(EBottomSheetOpenState.CLOSE);
 
@@ -140,6 +139,9 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
     observable: addedLocationForUI$,
   });
 
+  const canAddNewLocation =
+    !addedLocationsForUI || addedLocationsForUI.length < 4;
+
   const onChangeSliderValue: SliderOnChangeCallback = (value) => {
     if (isNaN(value[0])) return;
 
@@ -154,11 +156,8 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
     return null;
   }
 
-  const onPressButton_deleteRegion = (index: number) => {
-    setRegionNames((prev) => [
-      ...prev.slice(0, index),
-      ...prev.slice(index + 1),
-    ]);
+  const onPressButton_deleteRegion = (locationName: string) => {
+    locationBehaviours.removeLocation(locationName);
   };
 
   const onPressButton_AddNewRegion = () => {
@@ -229,7 +228,7 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
     soundBehaviours.reset();
     soundVolumeBehaviours.setSoundVolume(0.2);
     reminderBehaviours.reset();
-    // TODO: 지역 선택 초기화.
+    locationBehaviours.reset();
   };
 
   return (
@@ -403,7 +402,7 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
                     <CloseIcon
                       style={s.itemBlockIcon}
                       useTouch
-                      onPress={() => onPressButton_deleteRegion(i)}
+                      onPress={() => onPressButton_deleteRegion(name)}
                     />
                   </View>
                 </View>
@@ -411,7 +410,7 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
             ))}
 
           {/* 4-3. add new bottom-sheet */}
-          {addedLocationsForUI && addedLocationsForUI.length < 4 && (
+          {canAddNewLocation && (
             <Shadow
               offset={[0, 2]}
               distance={2}
