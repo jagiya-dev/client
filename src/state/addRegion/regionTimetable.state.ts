@@ -43,6 +43,30 @@ export const briefSelectedTimesAsFormattedString$ = allTimeSelected$.pipe(
   }),
 );
 
+const reset = () => {
+  const { value: amValue } = amTimetableSubject;
+  amTimetableSubject.next(
+    amValue.map((value) => ({
+      ...value,
+      state:
+        value.state !== ETimeTableItemState.disabled
+          ? ETimeTableItemState.none
+          : ETimeTableItemState.disabled,
+    })),
+  );
+
+  const { value: pmValue } = pmTimetableSubject;
+  pmTimetableSubject.next(
+    pmValue.map((value) => ({
+      ...value,
+      state:
+        value.state !== ETimeTableItemState.disabled
+          ? ETimeTableItemState.none
+          : ETimeTableItemState.disabled,
+    })),
+  );
+};
+
 const updateTimeTableStateOfAM = (
   index: number,
   newState: ETimeTableItemState,
@@ -118,4 +142,5 @@ export const behaviours = {
   updateTimeTableStateOfPM,
   toggleTimeTableStateOfPM,
   updateTimeTableStateOfPMFromTime,
+  reset,
 };

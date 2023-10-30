@@ -7,7 +7,7 @@ import {
 import Text from "@/components/Text";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Platform,
   StyleSheet,
@@ -33,8 +33,9 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import {
   selectedLocation,
   selectedLocationAsStr$,
+  behaviours as searchResultsBehaviours,
 } from "@/state/addRegion/search/searchResults.state";
-import { behaviours } from "@/state/createAlarm/location.state";
+import { behaviours as locationBehaviours } from "@/state/createAlarm/location.state";
 
 type ScreenProps = NativeStackScreenProps<StackParamList, "AddRegion">;
 
@@ -56,6 +57,11 @@ const AddRegionScreen = ({ route, navigation }: ScreenProps) => {
   const searchedRegionAsStr = useObservableState({
     observable: selectedLocationAsStr$,
   });
+
+  useEffect(() => {
+    timeTableBehaviours.reset();
+    searchResultsBehaviours.reset();
+  }, []);
 
   const deleteFromSelectedTimes = (index: number) => {
     if (!allSelectedTimes) return;
@@ -98,7 +104,7 @@ const AddRegionScreen = ({ route, navigation }: ScreenProps) => {
     if (!value) return;
     if (!allSelectedTimes) return;
 
-    behaviours.addLocation(value);
+    locationBehaviours.addLocation(value);
 
     navigation.navigate("CreateAlarm");
   };

@@ -61,6 +61,7 @@ export const selectedLocationAsStr$ = selectedLocation.pipe(
 const reset = () => {
   searchInput?.next("");
   recentSearchResults?.next([]);
+  selectedLocation?.next(undefined);
 };
 
 const fetchRecentSearchResults = async () => {
