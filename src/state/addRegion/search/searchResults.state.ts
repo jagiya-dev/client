@@ -48,6 +48,17 @@ export const searchResult$ = searchInput$.pipe(
 const recentSearchResults = new BehaviorSubject<readonly RecentLocation[]>([]);
 export const recentSearchResults$ = recentSearchResults.asObservable();
 
+const selectedLocation = new BehaviorSubject<LocationResponse | undefined>(
+  undefined,
+);
+export const selectedLocationAsStr$ = selectedLocation.pipe(
+  map((location) => {
+    if (!location) return undefined;
+    return `${location.cityDo} ${location.guGun} ${location.eupMyun}`;
+  }),
+);
+export const selectedLocation$ = selectedLocation.asObservable();
+
 const reset = () => {
   searchInput?.next("");
   recentSearchResults?.next([]);
@@ -88,13 +99,28 @@ const fetchRecentSearchResults = async () => {
     console.error("fetchRecentSearchResults", error);
   }
 };
+const deleteRecentSearchResult = (recentLocationId: number) => {
+  const { value } = recentSearchResults;
+  recentSearchResults.next(
+    value.filter((x) => x.recentLocationId !== recentLocationId),
+  );
+};
 
 const updateSearchKeywords = (keywords: string) => {
   searchInput.next(keywords);
 };
 
+const updateSelectedLocation = (location: LocationResponse) => {
+  selectedLocation.next(location);
+};
+
 export const behaviours = {
-  fetchRecentSearchResults,
-  updateSearchKeywords,
   reset,
+
+  updateSearchKeywords,
+
+  updateSelectedLocation,
+
+  fetchRecentSearchResults,
+  deleteRecentSearchResult,
 };

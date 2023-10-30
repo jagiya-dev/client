@@ -30,6 +30,7 @@ import {
 import { ETimeTableItemState, StackParamList } from "@/typing";
 import { Button } from "@/components/button";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { selectedLocationAsStr$ } from "@/state/addRegion/search/searchResults.state";
 
 type ScreenProps = NativeStackScreenProps<StackParamList, "AddRegion">;
 
@@ -47,6 +48,11 @@ const AddRegionScreen = ({ route, navigation }: ScreenProps) => {
   const briefSelectedTimesAsFormattedString = useObservableState({
     observable: briefSelectedTimesAsFormattedString$,
   });
+
+  const searchedRegion = useObservableState({
+    observable: selectedLocationAsStr$,
+  });
+  console.log("searchedRegion: ", searchedRegion);
 
   const deleteFromSelectedTimes = (index: number) => {
     if (!allSelectedTimes) return;
@@ -100,7 +106,9 @@ const AddRegionScreen = ({ route, navigation }: ScreenProps) => {
         <View style={s.regionSearchBar}>
           <SearchIcon style={s.regionSearchBarIcon} />
           <Text style={s.regionSearchBarInnerText}>
-            원하는 지역을 검색해주세요.
+            {searchedRegion === "" || !searchedRegion
+              ? "원하는 지역을 검색해주세요."
+              : searchedRegion}
           </Text>
         </View>
       </TouchableNativeFeedback>
