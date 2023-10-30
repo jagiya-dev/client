@@ -3,44 +3,28 @@ import TextInput from "@/components/TextInput";
 import Text from "@/components/Text";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
-import { useEffect, useState } from "react";
-import { MapIcon, SearchIcon } from "@/components/Icon";
-import { Button } from "@/components/button";
+import { SearchIcon } from "@/components/Icon";
 import { useObservableState } from "@/hook/useObservableState";
 import {
   behaviours,
-  searchResults$,
+  searchInput$,
 } from "@/state/addRegion/search/searchResults.state";
+import React, { useEffect } from "react";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
-
-const recentSearches = [
-  "서울시 관악구 봉천동",
-  "서울시 강남구 역삼동",
-  "서울시 용산구 청파동",
-  "경기도 의정부시 민락동",
-  "서울시 서대문구 북가좌1동",
-];
-
-const initialSearchResults = [
-  "대전시 유성구 봉명동",
-  "강원도 춘천시 효자동",
-  "부산구 해운대구 우동",
-  "서울시 중구 을지로동",
-];
+import SearchResultContents from "@/screen/AddRegion/Region/SearchResultContents";
 
 const SearchRegion = () => {
-  const [searchKeyword, setSearchKeyword] = useState<string>("");
+  const updateSearchKeywords = (input: string) => {
+    behaviours.updateSearchKeywords(input);
+  };
 
-  const bHasSearched = searchKeyword.length === 0;
-
-  const searchResults = useObservableState({
-    observable: searchResults$,
+  const searchInput = useObservableState({
+    observable: searchInput$,
   });
-
-  console.log(searchResults);
+  const bHasSearched = searchInput !== "";
 
   useEffect(() => {
-    behaviours.fetchRecentSearchResults();
+    behaviours.reset();
   }, []);
 
   return (
@@ -54,8 +38,8 @@ const SearchRegion = () => {
         <TextInput
           style={s.regionSearchBar}
           placeholder="지역구, 동으로 검색"
-          value={searchKeyword}
-          onChangeText={setSearchKeyword}
+          value={searchInput}
+          onChangeText={updateSearchKeywords}
           autoFocus
           multiline={false}
         />
@@ -65,27 +49,11 @@ const SearchRegion = () => {
         <Text style={s.label}>{bHasSearched ? "주소 검색" : "최근 검색"}</Text>
       </View>
 
-      <BottomSheetScrollView>
-        {recentSearches.map((data, i) => (
-          <View key={i} style={s.searchListRoot}>
-            {/* 1. map icon with circle background */}
-            <View style={s.mapIconBackground}>
-              <MapIcon style={s.mapIcon} />
-            </View>
-
-            {/* 2. spacer */}
-            <View style={s.itemSpacer} />
-
-            {/* 3. location text */}
-            <View style={s.rightContainer}>
-              <Text>{data}</Text>
-
-              <Button style={s.deleteButton}>
-                <Text style={s.deleteButtonInnerText}>삭제</Text>
-              </Button>
-            </View>
-          </View>
-        ))}
+      <BottomSheetScrollView
+        nestedScrollEnabled
+        contentContainerStyle={s.searchListRoot}
+      >
+        <SearchResultContents />
       </BottomSheetScrollView>
     </View>
   );
@@ -94,6 +62,7 @@ export default SearchRegion;
 
 const s = StyleSheet.create({
   root: {
+    flex: 1,
     paddingHorizontal: 20,
     position: "relative",
   },
@@ -155,42 +124,6 @@ const s = StyleSheet.create({
   },
 
   searchListRoot: {
-    flexDirection: "row",
-    paddingVertical: 16,
-    alignItems: "center",
-  },
-
-  mapIconBackground: {
-    width: 26,
-    height: 26,
-    backgroundColor: color.gray["100"],
-    borderRadius: 99,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  mapIcon: {},
-
-  itemSpacer: {
-    marginRight: 12,
-  },
-
-  rightContainer: {
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-
-  deleteButton: {
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    backgroundColor: color.gray["100"],
-    borderRadius: 16,
-  },
-  deleteButtonInnerText: {
-    color: color.gray["700"],
-    fontSize: font.body["2"].size,
-    fontWeight: font.body["2"].weight,
-    lineHeight: font.body["2"].height,
   },
 });

@@ -46,19 +46,49 @@ export class Local {
     });
   }
 
+  public static async getSnsInfo(
+    whichLoginType: LocalAuthState["whichLoginType"],
+  ): Promise<
+    { snsId: string; snsType: string } | { snsId: string; snsType: string }
+  > {
+    let snsId = "";
+    let snsType = "";
+
+    switch (local.localAuthState.whichLoginType) {
+      case "kakao":
+        snsId = kakao.kakaoProfile?.id ?? "";
+        snsType = "1";
+        break;
+
+      case "apple":
+        snsId = apple.appleInfo?.user ?? "";
+        snsType = "2";
+        break;
+
+      case "guest":
+        snsId = await DeviceInfo.getUniqueId();
+        snsType = "0";
+        break;
+    }
+
+    return {
+      snsId,
+      snsType,
+    };
+  }
+
   public async update() {
     const { isLoggedIn, whichLoginType } = this.localAuthState;
     if (!isLoggedIn) {
       console.log("Failed to updateLoginInfo. the user has not logged in yet.");
       return;
     }
+    console.log("login as ", whichLoginType);
 
     let email = "";
     let name = "";
     let snsId = "";
     let snsType = "0";
-
-    console.log("login as ", whichLoginType);
 
     switch (whichLoginType) {
       case "kakao":
