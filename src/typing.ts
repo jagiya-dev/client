@@ -4,6 +4,7 @@ import { LocationResponse } from "@/network/api";
 export type DateFlagT = typeof DateFlag;
 
 export type LocalAuthState = {
+  userId?: number;
   isLoggedIn: boolean;
   whichLoginType?: "kakao" | "apple" | "guest";
 };

@@ -1,7 +1,7 @@
 import type { SliderOnChangeCallback } from "@miblanchard/react-native-slider/lib/types";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import type { StackParamList } from "@/typing";
-import { ESoundName } from "@/typing";
+import { ESoundName, ETimeTableItemState } from "@/typing";
 import {
   Image,
   Platform,
@@ -32,7 +32,11 @@ import { useObservableState } from "@/hook/useObservableState";
 import BottomSheet, {
   EBottomSheetOpenState,
 } from "@/components/bottom-sheet/BottomSheet";
-import { AlarmInsertRequest, insertAlarm } from "@/network/api";
+import {
+  AlarmInsertRequest,
+  AlarmLocationTimeRequest,
+  insertAlarm,
+} from "@/network/api";
 import { soundNameAsLabel } from "@/audio";
 
 import CreateAlarmDialog from "@/components/dialog/CreateAlarm.Dialog";
@@ -63,6 +67,8 @@ import {
   addedLocations$,
   behaviours as locationBehaviours,
 } from "@/state/createAlarm/location.state";
+import { amItems, pmItems } from "@/state/addRegion/regionTimetable.data";
+import { local, Local } from "@/state/auth/auth.state.local";
 
 type ScreenProps = NativeStackScreenProps<StackParamList, "CreateAlarm">;
 
@@ -166,13 +172,27 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
 
   const onPressButton_SaveAndSetNewNotification = async () => {
     console.log("Save and set new notification");
+    console.log(addedLocations);
 
     // todo: set a new notification.
     try {
       const params: AlarmInsertRequest = {
-        timeOfDay: alarmAMPM,
+        userId: local.localAuthState.userId,
+        timeOfDay: alarmAMPM.toUpperCase(),
         alarmTime: alarmHours + alarmMinutes,
-        alarmLocationList: addedLocations,
+        alarmLocationList: addedLocations?.map((loc) => ({
+          ...loc,
+          alarmLocationId: 1,
+          alarmLocationTimeRequest: [...amItems, ...pmItems]
+            .filter((x) => x.state === ETimeTableItemState.selected)
+            .map(
+              (x) =>
+                ({
+                  alarmLocationTimeId: 1,
+                  locationTime: x.time.split(":").join(""),
+                }) as AlarmLocationTimeRequest,
+            ),
+        })),
         volume: soundVolume,
         vibration: soundVolume === 0 ? 1 : 0,
         weekList:
@@ -188,11 +208,10 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
           (name) => name === selectedSound,
         ),
       };
-      console.log("insert alarm: ", params);
+      console.log("insert alarm: ", JSON.stringify(params, null, 2));
       const response = await insertAlarm(params);
 
-      const { data } = response;
-      console.log(data);
+      console.log(JSON.stringify(response, null, 2));
     } catch (e) {
       console.error(e);
     }

@@ -6,7 +6,7 @@ import { font } from "@/styles/font";
 import { SearchIcon } from "@/components/Icon";
 import { useObservableState } from "@/hook/useObservableState";
 import {
-  behaviours,
+  behaviours as searchResultsBehaviours,
   searchInput$,
 } from "@/state/addRegion/search/searchResults.state";
 import React, { useEffect } from "react";
@@ -15,7 +15,7 @@ import SearchResultContents from "@/screen/AddRegion/Region/SearchResultContents
 
 const SearchRegion = () => {
   const updateSearchKeywords = (input: string) => {
-    behaviours.updateSearchKeywords(input);
+    searchResultsBehaviours.updateSearchKeywords(input);
   };
 
   const searchInput = useObservableState({
@@ -24,7 +24,7 @@ const SearchRegion = () => {
   const bHasSearched = searchInput !== "";
 
   useEffect(() => {
-    behaviours.reset();
+    searchResultsBehaviours.reset();
   }, []);
 
   return (

@@ -14,6 +14,8 @@ const TimeTable = () => {
     close();
   };
 
+  const onPressButton_save = () => {};
+
   return (
     <View style={s.root}>
       {/* 1. label */}

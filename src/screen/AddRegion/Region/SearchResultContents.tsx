@@ -8,7 +8,7 @@ import { MapIcon } from "@/components/Icon";
 import Text from "@/components/Text";
 import React, { useEffect } from "react";
 import {
-  behaviours,
+  behaviours as searchResultsBehaviours,
   recentSearchResults$,
   searchResult$,
 } from "@/state/addRegion/search/searchResults.state";
@@ -31,7 +31,7 @@ const SearchResultContents = () => {
   recentSearches?.reverse();
 
   useEffect(() => {
-    behaviours.fetchRecentSearchResults();
+    searchResultsBehaviours.fetchRecentSearchResults();
   }, []);
 
   const onPress_deleteRecentLocation = async (
@@ -44,18 +44,16 @@ const SearchResultContents = () => {
         recentLocationId: recentLocationId.toString(),
       });
 
-      behaviours.deleteRecentSearchResult(recentLocationId);
+      searchResultsBehaviours.deleteRecentSearchResult(recentLocationId);
     } catch (err) {
       console.error(err);
     }
   };
 
   const onPress_selectLocation = async (location: LocationResponse) => {
-    behaviours.updateSelectedLocation(location);
+    searchResultsBehaviours.updateSelectedLocation(location);
 
-    const { snsId, snsType } = await Local.getSnsInfo(
-      local.localAuthState.whichLoginType,
-    );
+    const { snsId, snsType } = await local.getSnsInfo();
 
     const { data } = await getRecentLocation({
       eupMyun: location.eupMyun ?? "",
@@ -77,14 +75,21 @@ const SearchResultContents = () => {
         {recentSearches &&
           recentSearches.length > 0 &&
           recentSearches.map((data, i) => {
-            const { eupMyun, cityDo, guGun } = data;
+            const { eupMyun, cityDo, guGun, regionCd } = data;
             const location = `${cityDo} ${guGun} ${eupMyun}`;
 
             return (
               <TouchableOpacity
                 key={i}
                 style={s.searchListRoot}
-                onPress={() => onPress_selectLocation(data)}
+                onPress={() =>
+                  onPress_selectLocation({
+                    eupMyun,
+                    cityDo,
+                    guGun,
+                    regionCd,
+                  })
+                }
               >
                 {/* 1. map icon with circle background */}
                 <View style={s.mapIconBackground}>

@@ -1,6 +1,6 @@
 import type { LocalAuthState } from "@/typing";
 import DeviceInfo from "react-native-device-info";
-import { login } from "@/network/api";
+import { login, LoginParams } from "@/network/api";
 import { BehaviorSubject } from "rxjs";
 import { apple, Apple } from "@/state/auth/auth.state.apple";
 import { kakao, Kakao } from "@/state/auth/auth.state.kakao";
@@ -46,9 +46,7 @@ export class Local {
     });
   }
 
-  public static async getSnsInfo(
-    whichLoginType: LocalAuthState["whichLoginType"],
-  ): Promise<
+  public async getSnsInfo(): Promise<
     { snsId: string; snsType: string } | { snsId: string; snsType: string }
   > {
     let snsId = "";
@@ -132,7 +130,7 @@ export class Local {
     }
 
     try {
-      const params = {
+      const params: LoginParams = {
         email,
         name,
         snsId,
@@ -142,6 +140,8 @@ export class Local {
 
       const response = await login(params);
       console.log("login response: ", JSON.stringify(response, null, 2));
+
+      this.localAuthState.userId = response.data?.userId;
     } catch (error) {
       console.error(error);
     }
