@@ -8,7 +8,7 @@ import { Animated, FlatList, Platform, StyleSheet, View } from "react-native";
 import { Shadow } from "react-native-shadow-2";
 import Toggle from "../toggle";
 import Swipeable from "react-native-gesture-handler/Swipeable";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { whenToggleDeleteMode } from "@/state/main/main.state";
 import { useObservableEffect } from "@/hook/useObservableEffect";
 import { cond } from "@/util/StyleHelper";
@@ -17,8 +17,12 @@ import AlarmLocationItem from "@/components/alarm/Alarm.LocationItem";
 import AlarmAddLocationItem from "@/components/alarm/Alarm.AddLocationItem";
 import { behaviours as AlarmBehaviours } from "@/state/alarm/alarm.state";
 
-function AlarmItem(props: AlarmResponse) {
-  const isItemEnabled = props.enabled === 1;
+function AlarmItem(alarm: AlarmResponse) {
+  const isItemEnabled = alarm.enabled === 1;
+
+  let time: string = alarm.alarmTime ?? "0000";
+  time = [...time.substring(0, 2), ":", ...time.substring(2, 4)].join("");
+
   const swipeableRef = useRef<Swipeable>(null);
 
   useObservableEffect({
@@ -40,9 +44,10 @@ function AlarmItem(props: AlarmResponse) {
   };
 
   const onPress_alarmToggleEnabled = () => {
-    if (!props.alarmId) return;
+    if (!alarm.alarmId) return;
+
     console.log("onPress_alarmToggleEnabled");
-    AlarmBehaviours.toggleAlarmToggleEnabled(props.alarmId);
+    AlarmBehaviours.toggleAlarmToggleEnabled(alarm.alarmId);
   };
 
   return (
@@ -112,7 +117,7 @@ function AlarmItem(props: AlarmResponse) {
                   underlyingStyles: s.time12Text,
                 })}
               >
-                {props.alarmTime}
+                {time}
               </Text>
               <Text
                 style={cond({
@@ -121,7 +126,7 @@ function AlarmItem(props: AlarmResponse) {
                   underlyingStyles: s.timeAMPMText,
                 })}
               >
-                {props.timeOfDay}
+                {alarm.timeOfDay}
               </Text>
             </Text>
           </View>
@@ -137,7 +142,7 @@ function AlarmItem(props: AlarmResponse) {
         <View style={s.down}>
           <FlatList
             // 알람 위치 마지막에 + 버튼 추가
-            data={[...(props.alarmLocation ?? []), { isAddNewItem: true }]}
+            data={[...(alarm.alarmLocation ?? []), { isAddNewItem: true }]}
             renderItem={(data) => {
               if ("isAddNewItem" in data.item)
                 return <AlarmAddLocationItem isEnabled={isItemEnabled} />;

@@ -39,8 +39,6 @@ const onReady = async () => {
 const Navigation = () => (
   <NavigationContainer ref={navRef} onReady={onReady}>
     <Stack.Navigator initialRouteName="Login">
-      <Stack.Screen name="Playground" component={Screens.PlaygroundScreen} />
-
       <Stack.Screen
         name="Login"
         component={Screens.LoginScreen}

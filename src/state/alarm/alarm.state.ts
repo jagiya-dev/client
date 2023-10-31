@@ -4,9 +4,10 @@ import { fromFetch } from "rxjs/fetch";
 
 import { URL_ROOT } from "@/network/api/api.mutator";
 import { GetAlarmList200 } from "@/network/api";
+import { local } from "@/state/auth/auth.state.local";
 
 const fetchGetAlarmList = fromFetch<GetAlarmList200>(
-  `${URL_ROOT}/alarm/getAlarmList?userId=${1}`,
+  `${URL_ROOT}/alarm/getAlarmList?userId=${local.localAuthState.userId}`,
   {
     method: "GET",
     selector: (response) => response.json(),

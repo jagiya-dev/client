@@ -5,13 +5,16 @@ import { color } from "@/styles/color";
 import { font } from "@/styles/font";
 import { alarmList$ } from "@/state/alarm/alarm.state";
 import { useObservableState } from "@/hook/useObservableState";
+import { AlarmResponse } from "@/network/api";
 
 const AlarmContainer = () => {
-  const alarmDataArr = useObservableState({
-    observable: alarmList$,
-  });
+  const alarmDataArr: readonly AlarmResponse[] =
+    useObservableState({
+      observable: alarmList$,
+    }) ?? [];
 
-  if (!alarmDataArr) return null;
+  console.log(JSON.stringify(alarmDataArr, null, 2));
+
   if (alarmDataArr.length === 0) {
     return (
       <View style={s.nothingTextContainer}>
