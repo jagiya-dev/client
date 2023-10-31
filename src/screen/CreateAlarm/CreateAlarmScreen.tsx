@@ -34,7 +34,9 @@ import BottomSheet, {
 } from "@/components/bottom-sheet/BottomSheet";
 import {
   AlarmInsertRequest,
+  AlarmLocationRequest,
   AlarmLocationTimeRequest,
+  AlarmWeekRequest,
   insertAlarm,
 } from "@/network/api";
 import { soundNameAsLabel } from "@/audio";
@@ -68,7 +70,7 @@ import {
   behaviours as locationBehaviours,
 } from "@/state/createAlarm/location.state";
 import { amItems, pmItems } from "@/state/addRegion/regionTimetable.data";
-import { local, Local } from "@/state/auth/auth.state.local";
+import { local } from "@/state/auth/auth.state.local";
 
 type ScreenProps = NativeStackScreenProps<StackParamList, "CreateAlarm">;
 
@@ -104,7 +106,7 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
   );
 
   const alarmAMPM = useMemo(
-    () => (alarmDate.getHours() >= 12 ? "pm" : "am"),
+    () => (alarmDate.getHours() >= 12 ? "PM" : "AM"),
     [alarmDate],
   );
 
@@ -171,43 +173,49 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
   };
 
   const onPressButton_SaveAndSetNewNotification = async () => {
-    console.log("Save and set new notification");
-    console.log(addedLocations);
+    const alarmLocationTimeRequest: AlarmLocationTimeRequest[] = [
+      ...amItems,
+      ...pmItems,
+    ]
+      .filter((x) => x.state === ETimeTableItemState.selected)
+      .map((x) => ({
+        locationTime: x.time.split(":").join(""),
+      }));
 
-    // todo: set a new notification.
+    const alarmLocationList: AlarmLocationRequest[] =
+      addedLocations?.map((loc) => ({
+        ...loc,
+        alarmLocationTimeRequest,
+      })) ?? [];
+
+    const weekList: AlarmWeekRequest[] =
+      repeatDatsAsData?.map((date) => {
+        const id = Number(date.id);
+        return {
+          alarmWeekId: id,
+          weekId: id,
+        };
+      }) ?? [];
+
+    const alarmSoundId = Object.values(ESoundName).findIndex(
+      (name) => name === selectedSound,
+    );
+
+    const vibration = !soundVolume || soundVolume === 0 ? 1 : soundVolume;
+
     try {
       const params: AlarmInsertRequest = {
         userId: local.localAuthState.userId,
-        timeOfDay: alarmAMPM.toUpperCase(),
+        timeOfDay: alarmAMPM,
         alarmTime: alarmHours + alarmMinutes,
-        alarmLocationList: addedLocations?.map((loc) => ({
-          ...loc,
-          alarmLocationId: 1,
-          alarmLocationTimeRequest: [...amItems, ...pmItems]
-            .filter((x) => x.state === ETimeTableItemState.selected)
-            .map(
-              (x) =>
-                ({
-                  alarmLocationTimeId: 1,
-                  locationTime: x.time.split(":").join(""),
-                }) as AlarmLocationTimeRequest,
-            ),
-        })),
+        alarmLocationList,
         volume: soundVolume,
-        vibration: soundVolume === 0 ? 1 : 0,
-        weekList:
-          repeatDatsAsData?.map((date) => {
-            const id = Number(date.id);
-            return {
-              alarmWeekId: id,
-              weekId: id,
-            };
-          }) ?? [],
+        vibration,
+        weekList,
         reminder: (reminderState?.minute ?? 0).toString(),
-        alarmSoundId: Object.values(ESoundName).findIndex(
-          (name) => name === selectedSound,
-        ),
+        alarmSoundId,
       };
+
       console.log("insert alarm: ", JSON.stringify(params, null, 2));
       const response = await insertAlarm(params);
 
