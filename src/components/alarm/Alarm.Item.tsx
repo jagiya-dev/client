@@ -38,16 +38,12 @@ function AlarmItem(alarm: AlarmResponse) {
     dependencies: [swipeableRef],
   });
 
-  const onCloseLeftAction = () => {
-    console.log("close left action! delete");
-    // AlarmBehaviours.deleteAlarmItem(props);
+  const onClose_deleteAlarm = () => {
+    AlarmBehaviours.closeCurrentAlarm(alarm.alarmId);
   };
 
   const onPress_alarmToggleEnabled = () => {
-    if (!alarm.alarmId) return;
-
-    console.log("onPress_alarmToggleEnabled");
-    AlarmBehaviours.toggleAlarmToggleEnabled(alarm.alarmId);
+    AlarmBehaviours.toggleAlarmToggleEnabled(alarm.alarmId, alarm.enabled);
   };
 
   return (
@@ -61,7 +57,7 @@ function AlarmItem(alarm: AlarmResponse) {
 
         return (
           <Button
-            onPress={onCloseLeftAction}
+            onPress={onClose_deleteAlarm}
             style={s.leftSwipeButtonContainer}
           >
             <Animated.Image

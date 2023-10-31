@@ -13,7 +13,7 @@ const AlarmContainer = () => {
       observable: alarmList$,
     }) ?? [];
 
-  console.log(JSON.stringify(alarmDataArr, null, 2));
+  // console.log(JSON.stringify(alarmDataArr, null, 2));
 
   if (alarmDataArr.length === 0) {
     return (
