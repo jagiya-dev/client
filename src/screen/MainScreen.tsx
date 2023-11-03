@@ -13,9 +13,7 @@ import { useObservableState } from "@/hook/useObservableState";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import type { StackParamList } from "@/typing";
 import Text from "@/components/Text";
-import { useEffect, useState } from "react";
-import { AlarmResponse, getAlarmList } from "@/network/api";
-import { local } from "@/state/auth/auth.state.local";
+import { alarmCount$ } from "@/state/alarm/alarm.state";
 
 type Props = NativeStackScreenProps<StackParamList, "Main">;
 
@@ -23,6 +21,11 @@ const MainScreen = ({ route, navigation }: Props) => {
   const isDeleteMode = useObservableState({
     observable: deleteModeToggleSubject,
   });
+
+  const alarmCount = useObservableState({
+    observable: alarmCount$,
+  });
+  const hasEnoughAlarm = !alarmCount || alarmCount > 4;
 
   useHandleForegroundNotification();
   const loading = useInitNotification();
@@ -86,10 +89,12 @@ const MainScreen = ({ route, navigation }: Props) => {
       <AlarmContainer />
 
       {/* 5. Add New Alarm Item Button and its additive shadow */}
-      <AddNewAlarmItemButton
-        style={s.addNewAlarmItemButton}
-        onPress={onPressButton_AddNewAlarmItem}
-      />
+      {hasEnoughAlarm && (
+        <AddNewAlarmItemButton
+          style={s.addNewAlarmItemButton}
+          onPress={onPressButton_AddNewAlarmItem}
+        />
+      )}
     </SafeAreaView>
   );
 };

@@ -1,5 +1,5 @@
 import { AlarmModel } from "@/typing";
-import { BehaviorSubject, of, take } from "rxjs";
+import { BehaviorSubject, count, of, take } from "rxjs";
 import { fromFetch } from "rxjs/fetch";
 
 import { URL_ROOT } from "@/network/api/api.mutator";
@@ -32,6 +32,7 @@ fetchGetAlarmList
   .subscribe((parsed) => alarms.next(parsed.data ?? []));
 
 export const alarmList$ = alarms.asObservable();
+export const alarmCount$ = alarms.asObservable().pipe(count());
 
 const addNewAlarmItem = (newItem: AlarmModel) => {
   // fetchGetAlarmList.next([...fetchGetAlarmList.value, newItem]);
