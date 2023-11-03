@@ -5,10 +5,10 @@
  * Springdoc을 사용한 Swagger UI
  * OpenAPI spec version: 1.0.0
  */
-import type { AlarmLocationWeatherResponse } from "./alarmLocationWeatherResponse";
+import type { AlarmLocationWeatherDetailResponse } from "./alarmLocationWeatherDetailResponse";
 
 export type GetAlarmLocationWeatherDetail200 = {
   code?: string;
-  data?: AlarmLocationWeatherResponse[];
+  data?: AlarmLocationWeatherDetailResponse[];
   message?: string;
 };

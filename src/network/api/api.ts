@@ -24,7 +24,8 @@ import type {
   LoginAndUserTransformParams,
   GetUserDetail200,
   GetUserDetailParams,
-  GetTermsAndPrivacy200,
+  GetTermsOfUse200,
+  GetPrivacyPolicy200,
   MemberDelete200,
   MemberDeleteParams,
   GetRecentSelectLocation200,
@@ -43,6 +44,10 @@ import type {
   GetAlarmListParams,
   GetAlarmDetail200,
   GetAlarmDetailParams,
+  AlarmAuthorityInsert200,
+  AlarmAuthorityInsertParams,
+  AlarmAuthorityInsert1200,
+  AlarmAuthorityInsert1Params,
   DeleteAlarm200,
   AlarmDeleteRequest,
 } from "./model";
@@ -204,14 +209,27 @@ export const getUserDetail = (
 };
 
 /**
- * 약관및개인정보처리방침 조회
- * @summary 약관및개인정보처리방침 조회
+ * 이용약관 조회
+ * @summary 이용약관 조회
  */
-export const getTermsAndPrivacy = (
+export const getTermsOfUse = (
   options?: SecondParameter<typeof getInstance>,
 ) => {
-  return getInstance<GetTermsAndPrivacy200>(
-    { url: `/user/getTermsAndPrivacy`, method: "get" },
+  return getInstance<GetTermsOfUse200>(
+    { url: `/user/getTermsOfUse`, method: "get" },
+    options,
+  );
+};
+
+/**
+ * 개인정보처리방침 조회
+ * @summary 개인정보처리방침 조회
+ */
+export const getPrivacyPolicy = (
+  options?: SecondParameter<typeof getInstance>,
+) => {
+  return getInstance<GetPrivacyPolicy200>(
+    { url: `/user/getPrivacyPolicy`, method: "get" },
     options,
   );
 };
@@ -356,6 +374,34 @@ export const getAlarmDetail = (
 };
 
 /**
+ * 알림권한조회
+ * @summary 알림권한조회
+ */
+export const alarmAuthorityInsert = (
+  params: AlarmAuthorityInsertParams,
+  options?: SecondParameter<typeof getInstance>,
+) => {
+  return getInstance<AlarmAuthorityInsert200>(
+    { url: `/AuthorityInfo/alarmAuthoritySelect`, method: "get", params },
+    options,
+  );
+};
+
+/**
+ * 알림권한등록
+ * @summary 알림권한등록
+ */
+export const alarmAuthorityInsert1 = (
+  params: AlarmAuthorityInsert1Params,
+  options?: SecondParameter<typeof getInstance>,
+) => {
+  return getInstance<AlarmAuthorityInsert1200>(
+    { url: `/AuthorityInfo/alarmAuthorityInsert`, method: "get", params },
+    options,
+  );
+};
+
+/**
  * 알람삭제
  * @summary 알람삭제
  */
@@ -399,8 +445,11 @@ export type LoginAndUserTransformResult = NonNullable<
 export type GetUserDetailResult = NonNullable<
   Awaited<ReturnType<typeof getUserDetail>>
 >;
-export type GetTermsAndPrivacyResult = NonNullable<
-  Awaited<ReturnType<typeof getTermsAndPrivacy>>
+export type GetTermsOfUseResult = NonNullable<
+  Awaited<ReturnType<typeof getTermsOfUse>>
+>;
+export type GetPrivacyPolicyResult = NonNullable<
+  Awaited<ReturnType<typeof getPrivacyPolicy>>
 >;
 export type MemberDeleteResult = NonNullable<
   Awaited<ReturnType<typeof memberDelete>>
@@ -431,6 +480,12 @@ export type GetAlarmListResult = NonNullable<
 >;
 export type GetAlarmDetailResult = NonNullable<
   Awaited<ReturnType<typeof getAlarmDetail>>
+>;
+export type AlarmAuthorityInsertResult = NonNullable<
+  Awaited<ReturnType<typeof alarmAuthorityInsert>>
+>;
+export type AlarmAuthorityInsert1Result = NonNullable<
+  Awaited<ReturnType<typeof alarmAuthorityInsert1>>
 >;
 export type DeleteAlarmResult = NonNullable<
   Awaited<ReturnType<typeof deleteAlarm>>
