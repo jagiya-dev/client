@@ -288,6 +288,9 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
             date={alarmDate}
             onDateChange={setAlarmDate}
             mode="time"
+            locale="en"
+            is24hourSource="locale"
+            androidVariant="iosClone"
           />
         </View>
 
