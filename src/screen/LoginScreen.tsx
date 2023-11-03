@@ -1,10 +1,10 @@
 import {
-  View,
   Image,
-  StyleSheet,
-  SafeAreaView,
-  TouchableWithoutFeedback,
   Platform,
+  SafeAreaView,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View,
 } from "react-native";
 import Text from "@/components/Text";
 import { Button } from "@/components/button";
@@ -12,22 +12,51 @@ import { font } from "@/styles/font";
 import { AppleLogo, KakaoLogo } from "@/components/Icon";
 import { color } from "@/styles/color";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { StackParamList } from "@/typing";
+import { LocalAuthState, StackParamList } from "@/typing";
 import appleAuth from "@invertase/react-native-apple-authentication";
 import { useEffect } from "react";
 import { useObservableState } from "@/hook/useObservableState";
 import { apple } from "@/state/auth/auth.state.apple";
 import { kakao } from "@/state/auth/auth.state.kakao";
 import { local } from "@/state/auth/auth.state.local";
+import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 
 type Props = NativeStackScreenProps<StackParamList, "Login">;
 
 const LoginScreen = ({ route, navigation }: Props) => {
+  const { getItem, setItem, mergeItem, removeItem } =
+    useAsyncStorage("localAuthState");
+
   const isSupportAppleLogin = useObservableState({
     observable: apple.isSupportAppleLogin$,
   });
 
   const navigateToMain = () => navigation.navigate("Main");
+
+  useEffect(() => {
+    const queryHasLoginHistory = async () => {
+      const jsonValue = await getItem((err, result) => {});
+      if (!jsonValue) {
+        return;
+      }
+
+      const localHistory: LocalAuthState = JSON.parse(jsonValue);
+      if (!localHistory) {
+        return;
+      }
+
+      console.log(`[${Platform.OS}] already has login history`, localHistory);
+
+      local.hydrate(localHistory);
+
+      navigateToMain();
+
+      try {
+      } catch (err) {}
+    };
+
+    queryHasLoginHistory();
+  }, []);
 
   useEffect(() => {
     if (Platform.OS !== "ios") return;
@@ -39,13 +68,18 @@ const LoginScreen = ({ route, navigation }: Props) => {
         "If this function executes, User Credentials have been Revoked",
       );
     });
-  }, []); // passing in an empty array as the second argument ensures this is only ran once when component mounts initially.
+  }, []);
 
   const onPress_KakaoLoginButton = async () => {
     await kakao.login();
 
     local.login("kakao");
     await local.update();
+
+    const persistentLocalAuthState = JSON.stringify(local.localAuthState);
+    console.log(`[${Platform.OS}]`, persistentLocalAuthState);
+
+    await setItem(persistentLocalAuthState);
 
     navigateToMain();
   };
@@ -63,6 +97,11 @@ const LoginScreen = ({ route, navigation }: Props) => {
 
     local.login("apple");
     await local.update();
+
+    const persistentLocalAuthState = JSON.stringify(local.localAuthState);
+    console.log(`[${Platform.OS}]`, persistentLocalAuthState);
+
+    await setItem(persistentLocalAuthState);
 
     navigateToMain();
   };
