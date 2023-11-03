@@ -30,6 +30,9 @@ const commonHeaderOptions: NativeStackNavigationOptions = {
     fontWeight: font.body["1"].weight,
     fontFamily: "Pretendard",
   },
+  headerStyle: {
+    backgroundColor: "white",
+  },
 };
 
 const onReady = async () => {
@@ -121,6 +124,12 @@ const Navigation = () => (
           ),
           ...commonHeaderOptions,
         }}
+      />
+
+      <Stack.Screen
+        name="Webview"
+        component={Screens.WebviewScreen}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   </NavigationContainer>

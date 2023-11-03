@@ -1,5 +1,5 @@
 import { DateFlag } from "@/util/dateHelper";
-import { LocationResponse } from "@/network/api";
+import { AlarmResponse, LocationResponse } from "@/network/api";
 
 export type DateFlagT = typeof DateFlag;
 
@@ -47,6 +47,11 @@ export type StackParamList = {
   Settings: undefined;
   MyInfo: undefined;
   Playground: undefined;
+  Webview: {
+    method?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+    html?: string;
+    uri?: string;
+  };
 };
 
 export type AlarmDate = {
