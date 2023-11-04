@@ -1,10 +1,9 @@
-import {
-  AndroidNotificationSetting
-} from "./../../../node_modules/@notifee/react-native/src/types/NotificationAndroid";
+import { AndroidNotificationSetting } from "./../../../node_modules/@notifee/react-native/src/types/NotificationAndroid";
 import notifee from "@notifee/react-native";
 import { TriggerType } from "@notifee/react-native/src/types/Trigger";
 import { TimestampTrigger } from "@notifee/react-native/dist/types/Trigger";
 import dayjs from "dayjs";
+import { Platform } from "react-native";
 
 async function setTrigger() {
   const settings = await notifee.getNotificationSettings();
@@ -23,6 +22,13 @@ async function setTrigger() {
     },
   };
 
+  if (Platform.OS === "android") {
+    await notifee.createChannel({
+      id: "readyUmbrella",
+      name: "readyUmbrella",
+    });
+  }
+
   // android trigger doesn't open app after notification is pressed
   // https://github.com/invertase/notifee/issues/291
   await notifee.createTriggerNotification(
@@ -30,7 +36,7 @@ async function setTrigger() {
       title: "우산 챙기세요!",
       body: "07 시 강남구에는 비가 올 예정입니다.",
       android: {
-        channelId: "default",
+        channelId: "readyUmbrella",
         pressAction: {
           id: "default",
           launchActivity: "com.jagiya.readyUmbrella.MainActivity",
@@ -51,4 +57,3 @@ export const createNewTrigger = async () => {
     console.error(error);
   }
 };
-
