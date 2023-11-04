@@ -2,7 +2,13 @@ import { Button } from "@/components/button";
 import { RightArrowIcon, SettingsIcon } from "@/components/Icon";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
-import { SafeAreaView, StyleSheet, View } from "react-native";
+import {
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import AlarmContainer from "@/components/alarm/Alarm.Container";
 import AddNewAlarmItemButton from "@/components/button/AddNewAlarmItem.button";
@@ -14,6 +20,7 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import type { StackParamList } from "@/typing";
 import Text from "@/components/Text";
 import { alarmCount$ } from "@/state/alarm/alarm.state";
+import { headerStyles } from "@/components/Header";
 
 type Props = NativeStackScreenProps<StackParamList, "Main">;
 
@@ -26,6 +33,7 @@ const MainScreen = ({ route, navigation }: Props) => {
     observable: alarmCount$,
   });
   const hasEnoughAlarm = !alarmCount || alarmCount > 4;
+  const hasNoAlarm = !alarmCount || alarmCount === 0;
 
   useHandleForegroundNotification();
   const loading = useInitNotification();
@@ -54,14 +62,23 @@ const MainScreen = ({ route, navigation }: Props) => {
   return (
     <SafeAreaView style={s.root}>
       <View style={s.innerRoot}>
-        {/* 1. head */}
-        <View style={s.headContainer}>
-          <Text style={s.headText}>레디우산</Text>
-          <SettingsIcon
-            style={s.settingsIcon}
-            useTouch
+        <View
+          style={[
+            headerStyles.headerContainer,
+            headerStyles.headerSpaceBetween,
+          ]}
+        >
+          <Text style={headerStyles.headerText}>레디우산</Text>
+
+          <TouchableOpacity
+            style={[headerStyles.headerClickable, headerStyles.headerIcon]}
             onPress={onPressButton_goToSettings}
-          />
+          >
+            <Image
+              source={require("#/icons/setting.png")}
+              style={headerStyles.headerIcon}
+            />
+          </TouchableOpacity>
         </View>
 
         {/* 2. conversation */}
@@ -77,7 +94,10 @@ const MainScreen = ({ route, navigation }: Props) => {
         {/* 3. Alarm Label */}
         <View style={s.alarmLabelContainer}>
           <Text style={s.alarmLabel}>My 알람</Text>
-          <Button onPress={onPressButton_toggleDeleteMode}>
+          <Button
+            onPress={onPressButton_toggleDeleteMode}
+            disabled={hasNoAlarm}
+          >
             <Text style={s.alarmToggleDeleteModeText}>
               {isDeleteMode ? "완료" : "삭제"}
             </Text>
@@ -106,30 +126,17 @@ const s = StyleSheet.create({
     width: wp("100%"),
     flex: 1,
     position: "relative",
+    backgroundColor: "white",
   },
   innerRoot: {
     paddingHorizontal: 20,
   },
-  headContainer: {
+  conversationContainer: {
+    height: 68,
+    paddingBottom: 32,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    height: 72,
-  },
-  headText: {
-    color: color.primary["600"],
-    fontSize: 22,
-    fontWeight: "800",
-  },
-  settingsIcon: {
-    tintColor: color.gray["300"],
-  },
-  conversationContainer: {
-    height: 68,
-    // marginBottom: 32,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
   },
   conversationText: {
     fontSize: font.body["1"].size,

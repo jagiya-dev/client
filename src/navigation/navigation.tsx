@@ -46,6 +46,7 @@ const Navigation = () => (
         name="Login"
         component={Screens.LoginScreen}
         options={{
+          // headerShown: false,
           title: "로그인",
           headerRight: () => (
             <TouchableOpacity onPress={navUtils.onPress_SkipToMainWithoutLogin}>
@@ -105,13 +106,7 @@ const Navigation = () => (
       <Stack.Screen
         name="Settings"
         component={Screens.SettingsScreen}
-        options={{
-          title: "설정",
-          headerLeft: (_) => (
-            <LeftArrowIcon onPress={navUtils.onPress_goBack} useTouch />
-          ),
-          ...commonHeaderOptions,
-        }}
+        options={{ headerShown: false }}
       />
 
       <Stack.Screen
