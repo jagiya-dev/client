@@ -57,25 +57,25 @@ export const whenOnlySelectedRepeatItems = repeatStateSubject.pipe(
 
 const getRepeatDaysAbbreviated = (label: readonly number[]) => {
   const weekdays =
-    label.includes(0) ||
     label.includes(1) ||
     label.includes(2) ||
     label.includes(3) ||
-    label.includes(4);
+    label.includes(4) ||
+    label.includes(5);
 
-  const weekend = label.includes(5) || label.includes(6);
+  const weekend = label.includes(6) || label.includes(7);
 
   if (weekdays && !weekend) return "주중";
   if (!weekdays && weekend) return "주말";
 
   if (
-    label.includes(0) &&
     label.includes(1) &&
     label.includes(2) &&
     label.includes(3) &&
     label.includes(4) &&
     label.includes(5) &&
-    label.includes(6)
+    label.includes(6) &&
+    label.includes(7)
   )
     return "매일";
 
