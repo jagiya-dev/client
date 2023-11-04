@@ -177,12 +177,15 @@ const LoginScreen = ({ route, navigation }: Props) => {
           <TouchableWithoutFeedback onPress={onPress_useAndCondition}>
             <Text style={[s.privacyTextInside, s.privacyText]}>이용약관</Text>
           </TouchableWithoutFeedback>
+
           <Text>과 </Text>
+
           <TouchableWithoutFeedback onPress={onPress_privacyPolicy}>
             <Text style={[s.privacyTextInside, s.privacyText]}>
               개인정보처리방침
             </Text>
           </TouchableWithoutFeedback>
+
           <Text style={s.privacyText}>에 동의한 것으로 간주힙니다.</Text>
         </View>
       </View>
@@ -289,5 +292,6 @@ const s = StyleSheet.create({
   },
   privacyViewTextView: {
     flexDirection: "row",
+    alignItems: "baseline",
   },
 });
