@@ -21,7 +21,7 @@ import {
   SoundVolumeIcon,
   VibrationIcon,
 } from "@/components/Icon";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import DatePicker from "react-native-date-picker";
 import { color } from "@/styles/color";
 import { Shadow } from "react-native-shadow-2";
@@ -37,6 +37,7 @@ import {
   AlarmLocationRequest,
   AlarmLocationTimeRequest,
   AlarmWeekRequest,
+  getAlarmDetail,
   insertAlarm,
 } from "@/network/api";
 import { soundNameAsLabel } from "@/audio";
@@ -71,10 +72,49 @@ import {
 } from "@/state/createAlarm/location.state";
 import { amItems, pmItems } from "@/state/addRegion/regionTimetable.data";
 import { local } from "@/state/auth/auth.state.local";
+import dayjs from "dayjs";
+
+const createDateFromHourAndMinute = (hour: string, minute: string) => {
+  const date = new Date();
+  date.setHours(Number(hour));
+  date.setMinutes(Number(minute));
+
+  return date;
+};
 
 type ScreenProps = NativeStackScreenProps<StackParamList, "CreateAlarm">;
 
 const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
+  const { params } = route;
+  const alarm = params?.alarm ?? undefined;
+
+  if (alarm) {
+    console.log(JSON.stringify(alarm, null, 2));
+  }
+
+  useEffect(() => {
+    async function refetchFromEditAlarm() {
+      if (!alarm) return;
+
+      const alarmId = alarm?.alarmId?.toString() ?? "";
+      const response = await getAlarmDetail({
+        alarmId,
+      });
+      console.log("refetch from EditAlarm", JSON.stringify(response, null, 2));
+
+      const { data } = response;
+
+      const soundVolume = data?.volume ?? 0.5;
+      soundVolumeBehaviours.setSoundVolume(soundVolume);
+      reminderBehaviours.setReminderDirectly(Number(data?.reminder) ?? 0);
+      soundBehaviours.selectSound(
+        data?.alarmSoundId?.toString() ?? "0",
+        soundVolume,
+      );
+    }
+    refetchFromEditAlarm();
+  }, [alarm]);
+
   const [isCreateAlarmDialogOpen, setIsCreateAlarmDialogOpen] = useState<
     boolean | undefined
   >(undefined);
@@ -93,7 +133,18 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
     closeCreateAlarmDialog();
   };
 
-  const [alarmDate, setAlarmDate] = useState<Date>(new Date());
+  const [alarmDate, setAlarmDate] = useState<Date>(
+    alarm && alarm.alarmTime
+      ? createDateFromHourAndMinute(
+          alarm.alarmTime?.substring(0, 2) ?? "",
+          alarm.alarmTime?.substring(2, 4) ?? "",
+        )
+      : new Date(),
+  );
+
+  useEffect(() => {
+    console.log("alarmDate changed: ", dayjs(alarmDate));
+  }, [alarmDate]);
 
   const alarmHours = useMemo(
     () => alarmDate.getHours().toString().padStart(2, "0"),
@@ -220,6 +271,7 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
       const response = await insertAlarm(params);
 
       console.log(JSON.stringify(response, null, 2));
+      navigation.navigate("Main");
     } catch (e) {
       console.error(e);
     }
@@ -265,7 +317,7 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
         <Text style={s.headerTitle}>알람 설정</Text>
 
         <TouchableOpacity
-          onPress={() => openCreateAlarmDialog()}
+          onPress={openCreateAlarmDialog}
           style={s.headerCloseIconButton}
         >
           <Image

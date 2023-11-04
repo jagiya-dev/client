@@ -25,7 +25,7 @@ export const useObservableState = <T>({
     });
 
     return () => subscription?.unsubscribe();
-  }, dependencies ?? []);
+  }, [...(dependencies ?? []), observable]);
 
   return state;
 };

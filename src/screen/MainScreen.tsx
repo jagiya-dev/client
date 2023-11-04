@@ -1,5 +1,5 @@
 import { Button } from "@/components/button";
-import { RightArrowIcon, SettingsIcon } from "@/components/Icon";
+import { RightArrowIcon } from "@/components/Icon";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
 import {
@@ -19,12 +19,33 @@ import { useObservableState } from "@/hook/useObservableState";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import type { StackParamList } from "@/typing";
 import Text from "@/components/Text";
-import { alarmCount$ } from "@/state/alarm/alarm.state";
+import { alarmCount$, alarms } from "@/state/alarm/alarm.state";
 import { headerStyles } from "@/components/Header";
+import { getAlarmList } from "@/network/api";
+import { local } from "@/state/auth/auth.state.local";
+import { useFocusEffect } from "@react-navigation/native";
 
 type Props = NativeStackScreenProps<StackParamList, "Main">;
 
 const MainScreen = ({ route, navigation }: Props) => {
+  useFocusEffect(() => {
+    async function loadFirst() {
+      try {
+        const response = await getAlarmList({
+          userId: local.localAuthState.userId?.toString() ?? "",
+        });
+
+        if (response.data) {
+          alarms.next(response.data);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    loadFirst();
+  });
+
   const isDeleteMode = useObservableState({
     observable: deleteModeToggleSubject,
   });
@@ -32,12 +53,14 @@ const MainScreen = ({ route, navigation }: Props) => {
   const alarmCount = useObservableState({
     observable: alarmCount$,
   });
-  const hasEnoughAlarm = !alarmCount || alarmCount > 4;
-  const hasNoAlarm = !alarmCount || alarmCount === 0;
+
+  let hasEnoughAlarm = true;
+
+  if (!alarmCount) hasEnoughAlarm = false;
+  if (alarmCount && alarmCount < 4) hasEnoughAlarm = false;
 
   useHandleForegroundNotification();
   const loading = useInitNotification();
-
   if (loading) {
     return null;
   }
@@ -48,7 +71,6 @@ const MainScreen = ({ route, navigation }: Props) => {
 
   const onPressButton_toggleDeleteMode = () => {
     deleteModeToggleSubject.next(!isDeleteMode);
-    // AlarmBehaviours.toggleAlarmToggleEnabled();
   };
 
   const onPressButton_AddNewAlarmItem = () => {
@@ -94,10 +116,7 @@ const MainScreen = ({ route, navigation }: Props) => {
         {/* 3. Alarm Label */}
         <View style={s.alarmLabelContainer}>
           <Text style={s.alarmLabel}>My 알람</Text>
-          <Button
-            onPress={onPressButton_toggleDeleteMode}
-            disabled={hasNoAlarm}
-          >
+          <Button onPress={onPressButton_toggleDeleteMode}>
             <Text style={s.alarmToggleDeleteModeText}>
               {isDeleteMode ? "완료" : "삭제"}
             </Text>
@@ -109,7 +128,7 @@ const MainScreen = ({ route, navigation }: Props) => {
       <AlarmContainer />
 
       {/* 5. Add New Alarm Item Button and its additive shadow */}
-      {hasEnoughAlarm && (
+      {!hasEnoughAlarm && (
         <AddNewAlarmItemButton
           style={s.addNewAlarmItemButton}
           onPress={onPressButton_AddNewAlarmItem}
@@ -132,7 +151,6 @@ const s = StyleSheet.create({
     paddingHorizontal: 20,
   },
   conversationContainer: {
-    height: 68,
     paddingBottom: 32,
     flexDirection: "row",
     justifyContent: "space-between",
@@ -161,6 +179,7 @@ const s = StyleSheet.create({
   alarmLabelContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
     paddingVertical: 8,
   },
   alarmLabel: {
@@ -179,6 +198,6 @@ const s = StyleSheet.create({
   addNewAlarmItemButton: {
     position: "absolute",
     right: 15,
-    bottom: 39,
+    bottom: 40,
   },
 });

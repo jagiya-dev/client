@@ -1,52 +1,16 @@
-import { AlarmModel } from "@/typing";
-import { BehaviorSubject, count, of, take } from "rxjs";
-import { fromFetch } from "rxjs/fetch";
+import { BehaviorSubject, map } from "rxjs";
 
-import { URL_ROOT } from "@/network/api/api.mutator";
 import {
-  AlarmResponse,
+  type AlarmResponse,
   deleteAlarm,
-  GetAlarmList200,
   updateAlarmEnabled,
 } from "@/network/api";
-import { local } from "@/state/auth/auth.state.local";
 
-const alarms = new BehaviorSubject<readonly AlarmResponse[]>([]);
-
-const fetchGetAlarmList = fromFetch<GetAlarmList200>(
-  `${URL_ROOT}/alarm/getAlarmList?userId=${local.localAuthState.userId}`,
-  {
-    method: "GET",
-    selector: (response) => {
-      if (response.ok) {
-        return response.json();
-      }
-
-      return of({ error: true, message: `Error ${response.status}` });
-    },
-  },
-);
-
-fetchGetAlarmList
-  .pipe(take(4))
-  .subscribe((parsed) => alarms.next(parsed.data ?? []));
-
+export const alarms = new BehaviorSubject<readonly AlarmResponse[]>([]);
 export const alarmList$ = alarms.asObservable();
-export const alarmCount$ = alarms.asObservable().pipe(count());
-
-const addNewAlarmItem = (newItem: AlarmModel) => {
-  // fetchGetAlarmList.next([...fetchGetAlarmList.value, newItem]);
-};
-
-const deleteAlarmItem = (id: number) => {
-  // fetchGetAlarmList.next(
-  //   fetchGetAlarmList.value.filter((item) => item.id !== id),
-  // );
-};
+export const alarmCount$ = alarms.pipe(map((alarms) => alarms.length));
 
 const toggleAlarmToggleEnabled = async (alarmId?: number, enabled?: number) => {
-  console.log(alarmId, enabled);
-
   try {
     const nextEnabled = enabled === 0 ? 1 : 0;
     await updateAlarmEnabled({
@@ -73,12 +37,13 @@ const toggleAlarmToggleEnabled = async (alarmId?: number, enabled?: number) => {
   }
 };
 
-const closeCurrentAlarm = async (alarmId?: number) => {
+const deleteCurrentAlarm = async (alarmId?: number) => {
   try {
-    const response = await deleteAlarm({
+    await deleteAlarm({
       alarmId,
     });
-    console.log(JSON.stringify(response, null, 2));
+
+    // console.log(JSON.stringify(response, null, 2));
 
     const { value: prevAlarms } = alarms;
     const nextAlarms = prevAlarms.filter((alarm) => alarm.alarmId !== alarmId);
@@ -92,9 +57,7 @@ const closeCurrentAlarm = async (alarmId?: number) => {
 const deferCurrentAlarm = (alarmId?: number) => {};
 
 export const behaviours = {
-  addNewAlarmItem,
-  deleteAlarmItem,
   toggleAlarmToggleEnabled,
-  closeCurrentAlarm,
+  deleteCurrentAlarm,
   deferCurrentAlarm,
 };
