@@ -56,8 +56,8 @@ import {
 } from "@/state/createAlarm/sound/soundVolume.state";
 import {
   behaviors as repeatBehaviours,
-  whenOnlySelectedRepeatItems,
-  whenRepeatDaysAbbreviated,
+  onlySelectedRepeatItems$,
+  repeatDaysAbbr$,
 } from "@/state/createAlarm/repeat/repeat.state";
 import {
   behaviours as reminderBehaviours,
@@ -115,6 +115,7 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
         data?.alarmSoundId?.toString() ?? "0",
         soundVolume,
       );
+      repeatBehaviours.setRepeat(data?.alarmWeek ?? []);
     }
     refetchFromEditAlarm();
   }, [alarm]);
@@ -175,11 +176,11 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
     useState<EBottomSheetOpenState>(EBottomSheetOpenState.CLOSE);
 
   const repeatDaysAbbreviated = useObservableState({
-    observable: whenRepeatDaysAbbreviated,
+    observable: repeatDaysAbbr$,
   });
 
   const repeatDatsAsData = useObservableState({
-    observable: whenOnlySelectedRepeatItems,
+    observable: onlySelectedRepeatItems$,
   });
 
   const soundVolume = useObservableState({

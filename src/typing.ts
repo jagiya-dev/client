@@ -1,5 +1,9 @@
 import { DateFlag } from "@/util/dateHelper";
-import { AlarmResponse, LocationResponse } from "@/network/api";
+import {
+  AlarmResponse,
+  AlarmWeekResponse,
+  LocationResponse,
+} from "@/network/api";
 
 export type DateFlagT = typeof DateFlag;
 
@@ -98,10 +102,10 @@ export type ListItemsUnderLyingType = {
   label?: string;
 };
 
-export type RepeatItem = ListItemsUnderLyingType & {
-  date: number;
-  isSelected: boolean;
-};
+export type RepeatItem = ListItemsUnderLyingType &
+  AlarmWeekResponse & {
+    isSelected: boolean;
+  };
 
 export type SoundItem = ListItemsUnderLyingType & {
   isSelected: boolean;

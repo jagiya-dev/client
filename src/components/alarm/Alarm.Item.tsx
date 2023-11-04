@@ -1,14 +1,13 @@
 import { Button, DateTextButton } from "@/components/button";
 import { UmbrellaDisabledIcon, UmbrellaEnabledIcon } from "@/components/Icon";
 import Text from "@/components/Text";
-import { dummyDates } from "@/util/dateHelper";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
 import { Animated, FlatList, Platform, StyleSheet, View } from "react-native";
 import { Shadow } from "react-native-shadow-2";
 import Toggle from "../toggle";
 import Swipeable from "react-native-gesture-handler/Swipeable";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { whenToggleDeleteMode } from "@/state/main/main.state";
 import { useObservableEffect } from "@/hook/useObservableEffect";
 import { cond } from "@/util/StyleHelper";
@@ -17,9 +16,12 @@ import AlarmLocationItem from "@/components/alarm/Alarm.LocationItem";
 import AlarmAddLocationItem from "@/components/alarm/Alarm.AddLocationItem";
 import { behaviours as AlarmBehaviours } from "@/state/alarm/alarm.state";
 import { useNavigation } from "@react-navigation/native";
+import { weekDaysLabel } from "@/state/const";
 
 function AlarmItem(alarm: AlarmResponse) {
   const isItemEnabled = alarm.enabled === 1;
+
+  console.log(JSON.stringify(alarm, null, 2));
 
   let time: string = alarm.alarmTime ?? "0000";
   time = [...time.substring(0, 2), ":", ...time.substring(2, 4)].join("");
@@ -100,18 +102,18 @@ function AlarmItem(alarm: AlarmResponse) {
 
           {/* 1-2. 알람 날짜 표시 (enabled/disabled) */}
           <View style={s.chronoContainer}>
-            <FlatList
-              data={dummyDates}
-              renderItem={(dateModel) => (
+            <View style={s.dateContainer}>
+              {weekDaysLabel.map((label, i) => (
                 <DateTextButton
-                  key={dateModel.index}
-                  label={dateModel.item.label}
-                  isEnabled={isItemEnabled && dateModel.item.isEnabled}
-                  onPress={() => {}}
+                  key={i}
+                  label={label[0]}
+                  isEnabled={
+                    isItemEnabled &&
+                    alarm.alarmWeek?.some((week) => week.alarmWeekId === i + 1)
+                  }
                 />
-              )}
-              style={s.dateContainer}
-            />
+              ))}
+            </View>
 
             {/* 1-3. 시간 표시 */}
             <Text style={s.timeContainer}>

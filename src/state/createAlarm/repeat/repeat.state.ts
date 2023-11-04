@@ -1,57 +1,22 @@
 import { BehaviorSubject, map } from "rxjs";
 import { RepeatItem } from "@/typing";
+import { AlarmWeekResponse } from "@/network/api";
+import { weekDaysLabel } from "@/state/const";
 
-const repeatItemData: readonly RepeatItem[] = [
-  {
-    id: "1",
-    label: "월요일",
-    date: 1,
+const repeatItemInitialData: () => readonly RepeatItem[] = () =>
+  new Array(7).fill(0).map((_, i) => ({
+    id: `${i + 1}`,
+    label: weekDaysLabel[i],
+    weekId: i + 1,
     isSelected: false,
-  },
-  {
-    id: "2",
-    label: "화요일",
-    date: 2,
-    isSelected: false,
-  },
-  {
-    id: "3",
-    label: "수요일",
-    date: 3,
-    isSelected: false,
-  },
-  {
-    id: "4",
-    label: "목요일",
-    date: 4,
-    isSelected: false,
-  },
-  {
-    id: "5",
-    label: "금요일",
-    date: 5,
-    isSelected: false,
-  },
-  {
-    id: "6",
-    label: "토요일",
-    date: 6,
-    isSelected: false,
-  },
-  {
-    id: "7",
-    label: "일요일",
-    date: 7,
-    isSelected: false,
-  },
-];
+  }));
 
 const repeatStateSubject = new BehaviorSubject<readonly RepeatItem[]>(
-  repeatItemData,
+  repeatItemInitialData(),
 );
 
-export const whenRepeatStateChanges = repeatStateSubject.asObservable();
-export const whenOnlySelectedRepeatItems = repeatStateSubject.pipe(
+export const repeatState$ = repeatStateSubject.asObservable();
+export const onlySelectedRepeatItems$ = repeatStateSubject.pipe(
   map((items) => items.filter((item) => item.isSelected)),
 );
 
@@ -82,8 +47,8 @@ const getRepeatDaysAbbreviated = (label: readonly number[]) => {
   if (weekdays && weekend) return "주중+주말";
 };
 
-export const whenRepeatDaysAbbreviated = whenOnlySelectedRepeatItems.pipe(
-  map((items) => [...new Set(items.map((item) => item.date))]),
+export const repeatDaysAbbr$ = onlySelectedRepeatItems$.pipe(
+  map((items) => [...new Set(items.map((item) => item.weekId as number))]),
   map(getRepeatDaysAbbreviated),
 );
 
@@ -122,8 +87,20 @@ const isSelected = (id: string) => {
   return foundItem.isSelected;
 };
 
+const setRepeat = (alarmWeekResponses: AlarmWeekResponse[]) => {
+  repeatStateSubject.next(
+    new Array(7).fill(0).map((_, i) => ({
+      id: `${i + 1}`,
+      weekId: i + 1,
+      isSelected: alarmWeekResponses.some((item) => item.weekId === i + 1),
+      label: weekDaysLabel[i],
+    })),
+  );
+};
+
 export const behaviors = {
   toggleRepeatItem,
   reset,
   isSelected,
+  setRepeat,
 };
