@@ -36,9 +36,11 @@ import {
   AlarmInsertRequest,
   AlarmLocationRequest,
   AlarmLocationTimeRequest,
+  AlarmUpdateRequest,
   AlarmWeekRequest,
   getAlarmDetail,
   insertAlarm,
+  updateAlarm,
 } from "@/network/api";
 import { soundNameAsLabel } from "@/audio";
 
@@ -87,19 +89,21 @@ type ScreenProps = NativeStackScreenProps<StackParamList, "CreateAlarm">;
 const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
   const { params } = route;
   const alarm = params?.alarm ?? undefined;
+  const isEditMode = alarm !== undefined;
 
-  if (alarm) {
+  if (isEditMode) {
     console.log(JSON.stringify(alarm, null, 2));
   }
 
   useEffect(() => {
     async function refetchFromEditAlarm() {
-      if (!alarm) return;
+      if (!isEditMode) return;
 
       const alarmId = alarm?.alarmId?.toString() ?? "";
       const response = await getAlarmDetail({
         alarmId,
       });
+
       console.log("refetch from EditAlarm", JSON.stringify(response, null, 2));
 
       const { data } = response;
@@ -134,7 +138,7 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
   };
 
   const [alarmDate, setAlarmDate] = useState<Date>(
-    alarm && alarm.alarmTime
+    isEditMode
       ? createDateFromHourAndMinute(
           alarm.alarmTime?.substring(0, 2) ?? "",
           alarm.alarmTime?.substring(2, 4) ?? "",
@@ -223,7 +227,7 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
     navigation.navigate("AddRegion");
   };
 
-  const onPressButton_SaveAndSetNewNotification = async () => {
+  const onPressButton_SaveOrUpdate = async () => {
     const alarmLocationTimeRequest: AlarmLocationTimeRequest[] = [
       ...amItems,
       ...pmItems,
@@ -255,7 +259,7 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
     const vibration = !soundVolume || soundVolume === 0 ? 1 : soundVolume;
 
     try {
-      const params: AlarmInsertRequest = {
+      const sharedParams: AlarmInsertRequest = {
         userId: local.localAuthState.userId,
         timeOfDay: alarmAMPM,
         alarmTime: alarmHours + alarmMinutes,
@@ -267,10 +271,23 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
         alarmSoundId,
       };
 
-      console.log("insert alarm: ", JSON.stringify(params, null, 2));
-      const response = await insertAlarm(params);
+      let response: any;
+
+      if (isEditMode) {
+        const updateParams: AlarmUpdateRequest = {
+          alarmId: alarm?.alarmId,
+          ...sharedParams,
+        };
+
+        console.log("update alarm: ", JSON.stringify(updateParams, null, 2));
+        response = await updateAlarm(updateParams);
+      } else {
+        console.log("insert alarm: ", JSON.stringify(sharedParams, null, 2));
+        response = await insertAlarm(sharedParams);
+      }
 
       console.log(JSON.stringify(response, null, 2));
+
       navigation.navigate("Main");
     } catch (e) {
       console.error(e);
@@ -519,10 +536,7 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
         </View>
       </ScrollView>
 
-      <BottomButton
-        onPress={onPressButton_SaveAndSetNewNotification}
-        text="확인"
-      />
+      <BottomButton onPress={onPressButton_SaveOrUpdate} text="확인" />
 
       {/* 반복 바텀시트 */}
       {repeatBottomSheetState === EBottomSheetOpenState.OPEN && (

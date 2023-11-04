@@ -16,6 +16,7 @@ import type { AlarmResponse } from "@/network/api";
 import AlarmLocationItem from "@/components/alarm/Alarm.LocationItem";
 import AlarmAddLocationItem from "@/components/alarm/Alarm.AddLocationItem";
 import { behaviours as AlarmBehaviours } from "@/state/alarm/alarm.state";
+import { useNavigation } from "@react-navigation/native";
 
 function AlarmItem(alarm: AlarmResponse) {
   const isItemEnabled = alarm.enabled === 1;
@@ -24,6 +25,7 @@ function AlarmItem(alarm: AlarmResponse) {
   time = [...time.substring(0, 2), ":", ...time.substring(2, 4)].join("");
 
   const swipeableRef = useRef<Swipeable>(null);
+  const { navigate } = useNavigation();
 
   useObservableEffect({
     observable: whenToggleDeleteMode,
@@ -39,11 +41,18 @@ function AlarmItem(alarm: AlarmResponse) {
   });
 
   const onClose_deleteAlarm = () => {
-    AlarmBehaviours.closeCurrentAlarm(alarm.alarmId);
+    AlarmBehaviours.deleteCurrentAlarm(alarm.alarmId);
   };
 
   const onPress_alarmToggleEnabled = () => {
     AlarmBehaviours.toggleAlarmToggleEnabled(alarm.alarmId, alarm.enabled);
+  };
+
+  const onPressButton_openEditAlarm = () => {
+    navigate("CreateAlarm", {
+      isEditAlarm: true,
+      alarm,
+    });
   };
 
   return (
@@ -140,8 +149,14 @@ function AlarmItem(alarm: AlarmResponse) {
             // 알람 위치 마지막에 + 버튼 추가
             data={[...(alarm.alarmLocation ?? []), { isAddNewItem: true }]}
             renderItem={(data) => {
-              if ("isAddNewItem" in data.item)
-                return <AlarmAddLocationItem isEnabled={isItemEnabled} />;
+              if ("isAddNewItem" in data.item) {
+                return (
+                  <AlarmAddLocationItem
+                    isEnabled={isItemEnabled}
+                    onPressButton={onPressButton_openEditAlarm}
+                  />
+                );
+              }
 
               return (
                 <AlarmLocationItem
