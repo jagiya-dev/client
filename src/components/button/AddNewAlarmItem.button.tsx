@@ -14,18 +14,17 @@ type Props = {
 } & TouchableOpacityProps;
 
 const AddNewAlarmItemButton = (props: Props) => (
-  <View style={[props.style, { zIndex: 10 }]}>
-    <Shadow
-      distance={16}
-      offset={[6, 6]}
-      startColor="rgba(0, 0, 0, 0.1)"
-      stretch
-    >
-      <TouchableOpacity style={s.button} onPress={props.onPress}>
-        <Image source={require("#/icons/plus.png")} style={s.plusIcon} />
-      </TouchableOpacity>
-    </Shadow>
-  </View>
+  <Shadow
+    // distance={14}
+    offset={[4, 4]}
+    startColor="rgba(0, 0, 0, 0.1)"
+    stretch
+    containerStyle={[props.style, { flex: 1, zIndex: 10, overflow: "visible" }]}
+  >
+    <TouchableOpacity style={s.button} onPress={props.onPress}>
+      <Image source={require("#/icons/plus.png")} style={s.plusIcon} />
+    </TouchableOpacity>
+  </Shadow>
 );
 
 export default AddNewAlarmItemButton;

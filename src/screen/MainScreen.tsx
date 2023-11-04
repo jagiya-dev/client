@@ -1,8 +1,14 @@
 import { Button } from "@/components/button";
-import { RightArrowIcon, SettingsIcon } from "@/components/Icon";
+import { RightArrowIcon } from "@/components/Icon";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
-import { SafeAreaView, StyleSheet, View } from "react-native";
+import {
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import AlarmContainer from "@/components/alarm/Alarm.Container";
 import AddNewAlarmItemButton from "@/components/button/AddNewAlarmItem.button";
@@ -13,17 +19,48 @@ import { useObservableState } from "@/hook/useObservableState";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import type { StackParamList } from "@/typing";
 import Text from "@/components/Text";
+import { alarmCount$, alarms } from "@/state/alarm/alarm.state";
+import { headerStyles } from "@/components/Header";
+import { getAlarmList } from "@/network/api";
+import { local } from "@/state/auth/auth.state.local";
+import { useFocusEffect } from "@react-navigation/native";
 
 type Props = NativeStackScreenProps<StackParamList, "Main">;
 
 const MainScreen = ({ route, navigation }: Props) => {
+  useFocusEffect(() => {
+    async function loadFirst() {
+      try {
+        const response = await getAlarmList({
+          userId: local.localAuthState.userId?.toString() ?? "",
+        });
+
+        if (response.data) {
+          alarms.next(response.data);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    loadFirst();
+  });
+
   const isDeleteMode = useObservableState({
     observable: deleteModeToggleSubject,
   });
 
+  const alarmCount = useObservableState({
+    observable: alarmCount$,
+  });
+
+  let hasEnoughAlarm = true;
+
+  if (!alarmCount) hasEnoughAlarm = false;
+  if (alarmCount && alarmCount < 4) hasEnoughAlarm = false;
+
   useHandleForegroundNotification();
   const loading = useInitNotification();
-
   if (loading) {
     return null;
   }
@@ -34,7 +71,6 @@ const MainScreen = ({ route, navigation }: Props) => {
 
   const onPressButton_toggleDeleteMode = () => {
     deleteModeToggleSubject.next(!isDeleteMode);
-    // AlarmBehaviours.toggleAlarmToggleEnabled();
   };
 
   const onPressButton_AddNewAlarmItem = () => {
@@ -48,14 +84,23 @@ const MainScreen = ({ route, navigation }: Props) => {
   return (
     <SafeAreaView style={s.root}>
       <View style={s.innerRoot}>
-        {/* 1. head */}
-        <View style={s.headContainer}>
-          <Text style={s.headText}>레디우산</Text>
-          <SettingsIcon
-            style={s.settingsIcon}
-            useTouch
+        <View
+          style={[
+            headerStyles.headerContainer,
+            headerStyles.headerSpaceBetween,
+          ]}
+        >
+          <Text style={headerStyles.headerText}>레디우산</Text>
+
+          <TouchableOpacity
+            style={[headerStyles.headerClickable, headerStyles.headerIcon]}
             onPress={onPressButton_goToSettings}
-          />
+          >
+            <Image
+              source={require("#/icons/setting.png")}
+              style={headerStyles.headerIcon}
+            />
+          </TouchableOpacity>
         </View>
 
         {/* 2. conversation */}
@@ -83,10 +128,12 @@ const MainScreen = ({ route, navigation }: Props) => {
       <AlarmContainer />
 
       {/* 5. Add New Alarm Item Button and its additive shadow */}
-      <AddNewAlarmItemButton
-        style={s.addNewAlarmItemButton}
-        onPress={onPressButton_AddNewAlarmItem}
-      />
+      {!hasEnoughAlarm && (
+        <AddNewAlarmItemButton
+          style={s.addNewAlarmItemButton}
+          onPress={onPressButton_AddNewAlarmItem}
+        />
+      )}
     </SafeAreaView>
   );
 };
@@ -98,30 +145,16 @@ const s = StyleSheet.create({
     width: wp("100%"),
     flex: 1,
     position: "relative",
+    backgroundColor: "white",
   },
   innerRoot: {
     paddingHorizontal: 20,
   },
-  headContainer: {
+  conversationContainer: {
+    paddingBottom: 32,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    height: 72,
-  },
-  headText: {
-    color: color.primary["600"],
-    fontSize: 22,
-    fontWeight: "800",
-  },
-  settingsIcon: {
-    tintColor: color.gray["300"],
-  },
-  conversationContainer: {
-    height: 68,
-    // marginBottom: 32,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
   },
   conversationText: {
     fontSize: font.body["1"].size,
@@ -146,6 +179,7 @@ const s = StyleSheet.create({
   alarmLabelContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
     paddingVertical: 8,
   },
   alarmLabel: {
@@ -164,6 +198,6 @@ const s = StyleSheet.create({
   addNewAlarmItemButton: {
     position: "absolute",
     right: 15,
-    bottom: 39,
+    bottom: 40,
   },
 });

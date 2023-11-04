@@ -6,10 +6,19 @@ import {
 } from "@/components/Icon";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackParamList } from "@/typing";
+import navUtils from "@/util/NavigationUtil";
+import { headerStyles } from "@/components/Header";
 
 type Props = NativeStackScreenProps<StackParamList, "Settings">;
 
@@ -34,6 +43,28 @@ const SettingsScreen = ({ route, navigation }: Props) => {
   return (
     <SafeAreaView style={s.root}>
       <View style={s.innerRoot}>
+        <View style={[headerStyles.headerContainer, headerStyles.headerCenter]}>
+          <TouchableOpacity
+            style={[
+              headerStyles.headerClickable,
+              headerStyles.headerPositional,
+              headerStyles.headerIcon,
+            ]}
+            onPress={navUtils.onPress_goBack}
+          >
+            <Image
+              source={require("#/icons/arrow_left.png")}
+              style={headerStyles.headerIcon}
+            />
+          </TouchableOpacity>
+
+          <Text
+            style={[headerStyles.headerTitle, headerStyles.headerTitleFlex]}
+          >
+            설정
+          </Text>
+        </View>
+
         {/* 2. content View */}
         <View style={s.contentLabelContainer}>
           <View style={s.contentTitleLabelContainer}>
@@ -96,22 +127,32 @@ const s = StyleSheet.create({
     width: wp("100%"),
     flex: 1,
   },
+
   innerRoot: {
     paddingHorizontal: 20,
   },
-  headContainer: {
-    height: 68,
-    flexDirection: "row", //가로로 배열
-    justifyContent: "center", // 요소 사이에 공간 분배
+
+  headerContainer: {
+    position: "relative",
+
+    height: 70,
+
+    flexDirection: "row",
+    justifyContent: "center",
     alignItems: "center",
   },
-  headText: {
-    flex: 5.3,
+  headerTitle: {
     fontSize: font.body["1"].size,
     fontWeight: font.body["1"].weight,
-    color: color.gray["700"],
-    justifyContent: "center",
+    lineHeight: font.body["1"].height,
   },
+  headerGoBackIcon: {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    right: 140,
+  },
+
   detailButton: {
     width: 10,
     flex: 4.7,
@@ -195,14 +236,5 @@ const s = StyleSheet.create({
 
   iconStyle: {
     paddingRight: 20,
-  },
-
-  addNewAlarmItembuttonRoot: {
-    position: "relative",
-  },
-  addNewAlarmItemButton: {
-    position: "absolute",
-    right: 15,
-    bottom: 39,
   },
 });

@@ -50,11 +50,16 @@ const setReminder = (pos: number) => {
   selectedReminderSubject.next({ pos, minute });
 };
 
+const setReminderDirectly = (minute: number) => {
+  selectedReminderSubject.next({ pos: 0, minute });
+};
+
 const resetReminder = () => {
   selectedReminderSubject.next({ pos: 0, minute: 0 });
 };
 
 export const behaviours = {
   setReminder,
+  setReminderDirectly,
   reset: resetReminder,
 };

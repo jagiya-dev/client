@@ -30,6 +30,9 @@ const commonHeaderOptions: NativeStackNavigationOptions = {
     fontWeight: font.body["1"].weight,
     fontFamily: "Pretendard",
   },
+  headerStyle: {
+    backgroundColor: "white",
+  },
 };
 
 const onReady = async () => {
@@ -39,12 +42,11 @@ const onReady = async () => {
 const Navigation = () => (
   <NavigationContainer ref={navRef} onReady={onReady}>
     <Stack.Navigator initialRouteName="Login">
-      <Stack.Screen name="Playground" component={Screens.PlaygroundScreen} />
-
       <Stack.Screen
         name="Login"
         component={Screens.LoginScreen}
         options={{
+          // headerShown: false,
           title: "로그인",
           headerRight: () => (
             <TouchableOpacity onPress={navUtils.onPress_SkipToMainWithoutLogin}>
@@ -104,13 +106,7 @@ const Navigation = () => (
       <Stack.Screen
         name="Settings"
         component={Screens.SettingsScreen}
-        options={{
-          title: "설정",
-          headerLeft: (_) => (
-            <LeftArrowIcon onPress={navUtils.onPress_goBack} useTouch />
-          ),
-          ...commonHeaderOptions,
-        }}
+        options={{ headerShown: false }}
       />
 
       <Stack.Screen
@@ -123,6 +119,12 @@ const Navigation = () => (
           ),
           ...commonHeaderOptions,
         }}
+      />
+
+      <Stack.Screen
+        name="Webview"
+        component={Screens.WebviewScreen}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   </NavigationContainer>

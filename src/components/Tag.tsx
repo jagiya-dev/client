@@ -11,7 +11,7 @@ import { color } from "@/styles/color";
 type Props = ViewProps & TouchableNativeFeedbackProps;
 
 const Tag = (props: PropsWithChildren<Props>) => (
-  <TouchableNativeFeedback {...props} onPress={() => console.log("press Tag")}>
+  <TouchableNativeFeedback {...props}>
     <View {...props} style={[s.root, props.style]}>
       {props.children}
     </View>

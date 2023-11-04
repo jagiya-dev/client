@@ -5,7 +5,7 @@ import { color } from "@/styles/color";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import {
   behaviors,
-  whenRepeatStateChanges,
+  repeatState$,
 } from "@/state/createAlarm/repeat/repeat.state";
 import { useObservableState } from "@/hook/useObservableState";
 import RadioButtonContainer from "@/components/radioButtons/RadioButtonContainer";
@@ -16,8 +16,9 @@ const RepeatContainer = () => {
   const { close } = useBottomSheet();
 
   const repeatItemData = useObservableState({
-    observable: whenRepeatStateChanges,
+    observable: repeatState$,
   });
+  console.log("repeat Item Data", repeatItemData);
 
   if (!repeatItemData) return null;
 

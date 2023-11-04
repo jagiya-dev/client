@@ -1,7 +1,6 @@
 import { Button, DateTextButton } from "@/components/button";
 import { UmbrellaDisabledIcon, UmbrellaEnabledIcon } from "@/components/Icon";
 import Text from "@/components/Text";
-import { dummyDates } from "@/util/dateHelper";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
 import { Animated, FlatList, Platform, StyleSheet, View } from "react-native";
@@ -16,10 +15,19 @@ import type { AlarmResponse } from "@/network/api";
 import AlarmLocationItem from "@/components/alarm/Alarm.LocationItem";
 import AlarmAddLocationItem from "@/components/alarm/Alarm.AddLocationItem";
 import { behaviours as AlarmBehaviours } from "@/state/alarm/alarm.state";
+import { useNavigation } from "@react-navigation/native";
+import { weekDaysLabel } from "@/state/const";
 
-function AlarmItem(props: AlarmResponse) {
-  const isItemEnabled = props.enabled === 1;
+function AlarmItem(alarm: AlarmResponse) {
+  const isItemEnabled = alarm.enabled === 1;
+
+  console.log(JSON.stringify(alarm, null, 2));
+
+  let time: string = alarm.alarmTime ?? "0000";
+  time = [...time.substring(0, 2), ":", ...time.substring(2, 4)].join("");
+
   const swipeableRef = useRef<Swipeable>(null);
+  const { navigate } = useNavigation();
 
   useObservableEffect({
     observable: whenToggleDeleteMode,
@@ -34,15 +42,19 @@ function AlarmItem(props: AlarmResponse) {
     dependencies: [swipeableRef],
   });
 
-  const onCloseLeftAction = () => {
-    console.log("close left action! delete");
-    // AlarmBehaviours.deleteAlarmItem(props);
+  const onClose_deleteAlarm = () => {
+    AlarmBehaviours.deleteCurrentAlarm(alarm.alarmId);
   };
 
   const onPress_alarmToggleEnabled = () => {
-    if (!props.alarmId) return;
-    console.log("onPress_alarmToggleEnabled");
-    AlarmBehaviours.toggleAlarmToggleEnabled(props.alarmId);
+    AlarmBehaviours.toggleAlarmToggleEnabled(alarm.alarmId, alarm.enabled);
+  };
+
+  const onPressButton_openEditAlarm = () => {
+    navigate("CreateAlarm", {
+      isEditAlarm: true,
+      alarm,
+    });
   };
 
   return (
@@ -56,7 +68,7 @@ function AlarmItem(props: AlarmResponse) {
 
         return (
           <Button
-            onPress={onCloseLeftAction}
+            onPress={onClose_deleteAlarm}
             style={s.leftSwipeButtonContainer}
           >
             <Animated.Image
@@ -90,18 +102,18 @@ function AlarmItem(props: AlarmResponse) {
 
           {/* 1-2. 알람 날짜 표시 (enabled/disabled) */}
           <View style={s.chronoContainer}>
-            <FlatList
-              data={dummyDates}
-              renderItem={(dateModel) => (
+            <View style={s.dateContainer}>
+              {weekDaysLabel.map((label, i) => (
                 <DateTextButton
-                  key={dateModel.index}
-                  label={dateModel.item.label}
-                  isEnabled={isItemEnabled && dateModel.item.isEnabled}
-                  onPress={() => {}}
+                  key={i}
+                  label={label[0]}
+                  isEnabled={
+                    isItemEnabled &&
+                    alarm.alarmWeek?.some((week) => week.alarmWeekId === i + 1)
+                  }
                 />
-              )}
-              style={s.dateContainer}
-            />
+              ))}
+            </View>
 
             {/* 1-3. 시간 표시 */}
             <Text style={s.timeContainer}>
@@ -112,7 +124,7 @@ function AlarmItem(props: AlarmResponse) {
                   underlyingStyles: s.time12Text,
                 })}
               >
-                {props.alarmTime}
+                {time}
               </Text>
               <Text
                 style={cond({
@@ -121,7 +133,7 @@ function AlarmItem(props: AlarmResponse) {
                   underlyingStyles: s.timeAMPMText,
                 })}
               >
-                {props.timeOfDay}
+                {alarm.timeOfDay}
               </Text>
             </Text>
           </View>
@@ -137,10 +149,16 @@ function AlarmItem(props: AlarmResponse) {
         <View style={s.down}>
           <FlatList
             // 알람 위치 마지막에 + 버튼 추가
-            data={[...(props.alarmLocation ?? []), { isAddNewItem: true }]}
+            data={[...(alarm.alarmLocation ?? []), { isAddNewItem: true }]}
             renderItem={(data) => {
-              if ("isAddNewItem" in data.item)
-                return <AlarmAddLocationItem isEnabled={isItemEnabled} />;
+              if ("isAddNewItem" in data.item) {
+                return (
+                  <AlarmAddLocationItem
+                    isEnabled={isItemEnabled}
+                    onPressButton={onPressButton_openEditAlarm}
+                  />
+                );
+              }
 
               return (
                 <AlarmLocationItem

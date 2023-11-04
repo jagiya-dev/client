@@ -1,5 +1,9 @@
 import { DateFlag } from "@/util/dateHelper";
-import { LocationResponse } from "@/network/api";
+import {
+  AlarmResponse,
+  AlarmWeekResponse,
+  LocationResponse,
+} from "@/network/api";
 
 export type DateFlagT = typeof DateFlag;
 
@@ -38,8 +42,7 @@ export type StackParamList = {
   Main: undefined;
   Login: undefined;
   CreateAlarm: {
-    selectedLocation: LocationResponse;
-    selectedTimes: TimetableItem[];
+    alarm?: AlarmResponse;
   };
   ActivatedAlarm: undefined;
   AlarmDetail: undefined;
@@ -47,6 +50,12 @@ export type StackParamList = {
   Settings: undefined;
   MyInfo: undefined;
   Playground: undefined;
+  Webview: {
+    method?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+    html?: string;
+    uri?: string;
+    headerTitle?: string;
+  };
 };
 
 export type AlarmDate = {
@@ -93,10 +102,10 @@ export type ListItemsUnderLyingType = {
   label?: string;
 };
 
-export type RepeatItem = ListItemsUnderLyingType & {
-  date: number;
-  isSelected: boolean;
-};
+export type RepeatItem = ListItemsUnderLyingType &
+  AlarmWeekResponse & {
+    isSelected: boolean;
+  };
 
 export type SoundItem = ListItemsUnderLyingType & {
   isSelected: boolean;

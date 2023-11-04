@@ -31,6 +31,16 @@ export class Local {
     });
   }
 
+  public hydrate(localAuthState: LocalAuthState) {
+    const { userId, whichLoginType } = localAuthState;
+
+    this._localAuthStateSubject.next({
+      isLoggedIn: true,
+      userId: Number(userId),
+      whichLoginType,
+    });
+  }
+
   //#addRegion behaviours
   public login(whichLoginType: LocalAuthState["whichLoginType"]) {
     this._localAuthStateSubject.next({

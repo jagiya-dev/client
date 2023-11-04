@@ -1,52 +1,63 @@
-import { AlarmModel } from "@/typing";
-import { catchError, map, of } from "rxjs";
-import { fromFetch } from "rxjs/fetch";
+import { BehaviorSubject, map } from "rxjs";
 
-import { URL_ROOT } from "@/network/api/api.mutator";
-import { GetAlarmList200 } from "@/network/api";
+import {
+  type AlarmResponse,
+  deleteAlarm,
+  updateAlarmEnabled,
+} from "@/network/api";
 
-const fetchGetAlarmList = fromFetch<GetAlarmList200>(
-  `${URL_ROOT}/alarm/getAlarmList?userId=${1}`,
-  {
-    method: "GET",
-    selector: (response) => response.json(),
-  },
-);
-export const alarmList$ = fetchGetAlarmList.pipe(
-  map((parsed) => parsed.data),
-  // catchError((err) => {
-  //   console.error(err);
-  //   return of({ error: true, message: err.message });
-  // }),
-);
+export const alarms = new BehaviorSubject<readonly AlarmResponse[]>([]);
+export const alarmList$ = alarms.asObservable();
+export const alarmCount$ = alarms.pipe(map((alarms) => alarms.length));
 
-const addNewAlarmItem = (newItem: AlarmModel) => {
-  // fetchGetAlarmList.next([...fetchGetAlarmList.value, newItem]);
+const toggleAlarmToggleEnabled = async (alarmId?: number, enabled?: number) => {
+  try {
+    const nextEnabled = enabled === 0 ? 1 : 0;
+    await updateAlarmEnabled({
+      alarmId,
+      enabled: nextEnabled,
+    });
+
+    // console.log(JSON.stringify(response, null, 2));
+
+    const { value: prevAlarms } = alarms;
+
+    const nextAlarms = prevAlarms.map((alarm) =>
+      alarm.alarmId === alarmId
+        ? {
+            ...alarm,
+            enabled: nextEnabled,
+          }
+        : alarm,
+    );
+
+    alarms.next(nextAlarms);
+  } catch (err) {
+    console.error(err);
+  }
 };
 
-const deleteAlarmItem = (id: number) => {
-  // fetchGetAlarmList.next(
-  //   fetchGetAlarmList.value.filter((item) => item.id !== id),
-  // );
+const deleteCurrentAlarm = async (alarmId?: number) => {
+  try {
+    await deleteAlarm({
+      alarmId,
+    });
+
+    // console.log(JSON.stringify(response, null, 2));
+
+    const { value: prevAlarms } = alarms;
+    const nextAlarms = prevAlarms.filter((alarm) => alarm.alarmId !== alarmId);
+
+    alarms.next(nextAlarms);
+  } catch (err) {
+    console.error(err);
+  }
 };
 
-const toggleAlarmToggleEnabled = (id: number) => {
-  // todo: PUT 으로 실제 알람 수정
-  // fetchGetAlarmList.next(
-  //   fetchGetAlarmList.value.map((item) =>
-  //     item.id == id ? { ...item, isEnabled: !item.isEnabled } : item,
-  //   ),
-  // );
-};
-
-const closeCurrentAlarm = () => {};
-
-const deferCurrentAlarm = () => {};
+const deferCurrentAlarm = (alarmId?: number) => {};
 
 export const behaviours = {
-  addNewAlarmItem,
-  deleteAlarmItem,
   toggleAlarmToggleEnabled,
-  closeCurrentAlarm,
+  deleteCurrentAlarm,
   deferCurrentAlarm,
 };

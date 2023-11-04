@@ -4,20 +4,26 @@ import { cond } from "@/util/StyleHelper";
 import { IsEnabled } from "@/typing";
 import { StyleSheet } from "react-native";
 import { color } from "@/styles/color";
+import { useNavigation } from "@react-navigation/native";
 
-type Props = IsEnabled;
+type Props = {
+  onPressButton: () => void;
+} & IsEnabled;
 
-const AlarmAddLocationItem = (props: Props) => (
-  <Tag
-    style={cond({
-      predicate: () => !props.isEnabled,
-      true$: s.disabledBG,
-      underlyingStyles: s.addNewWeatherRoot,
-    })}
-  >
-    <PlusIcon style={s.plusIcon} />
-  </Tag>
-);
+const AlarmAddLocationItem = (props: Props) => {
+  return (
+    <Tag
+      style={cond({
+        predicate: () => !props.isEnabled,
+        true$: s.disabledBG,
+        underlyingStyles: s.addNewWeatherRoot,
+      })}
+      onPress={props.onPressButton}
+    >
+      <PlusIcon style={s.plusIcon} />
+    </Tag>
+  );
+};
 export default AlarmAddLocationItem;
 const s = StyleSheet.create({
   addNewWeatherRoot: {

@@ -7,6 +7,7 @@ import MainScreen from "@/screen/MainScreen";
 import SettingsScreen from "@/screen/SettingsScreen";
 import MyInfoScreen from "@/screen/MyInfoScreen";
 import PlaygroundScreen from "@/screen/Playground";
+import WebviewScreen from "@/screen/WebviewScreen";
 
 export default {
   ActivatedAlarmScreen,
@@ -18,4 +19,5 @@ export default {
   SettingsScreen,
   MyInfoScreen,
   PlaygroundScreen,
+  WebviewScreen,
 };

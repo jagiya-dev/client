@@ -21,6 +21,10 @@
       "description": "최근주소 API"
     },
     {
+      "name": "Authority",
+      "description": "알림권한 API"
+    },
+    {
       "name": "User",
       "description": "유저 API"
     },
@@ -577,14 +581,49 @@
         }
       }
     },
-    "/user/getTermsAndPrivacy": {
+    "/user/getTermsOfUse": {
       "get": {
         "tags": [
           "User"
         ],
-        "summary": "약관및개인정보처리방침 조회",
-        "description": "약관및개인정보처리방침 조회",
-        "operationId": "getTermsAndPrivacy",
+        "summary": "이용약관 조회",
+        "description": "이용약관 조회",
+        "operationId": "getTermsOfUse",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "200"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/HtmlResponse"
+                    },
+                    "message": {
+                      "type": "string",
+                      "default": "OK"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/getPrivacyPolicy": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "개인정보처리방침 조회",
+        "description": "개인정보처리방침 조회",
+        "operationId": "getPrivacyPolicy",
         "responses": {
           "200": {
             "description": "OK",
@@ -1051,7 +1090,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/AlarmLocationWeatherResponse"
+                        "$ref": "#/components/schemas/AlarmLocationWeatherDetailResponse"
                       }
                     },
                     "message": {
@@ -1154,6 +1193,116 @@
                     },
                     "data": {
                       "$ref": "#/components/schemas/AlarmDetailResponse"
+                    },
+                    "message": {
+                      "type": "string",
+                      "default": "OK"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/AuthorityInfo/alarmAuthoritySelect": {
+      "get": {
+        "tags": [
+          "Authority"
+        ],
+        "summary": "알림권한조회",
+        "description": "알림권한조회",
+        "operationId": "alarmAuthorityInsert",
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "query",
+            "description": "디바이스 ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "디바이스 ID",
+              "example": "test1234"
+            },
+            "example": "test1234"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "200"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Authority"
+                    },
+                    "message": {
+                      "type": "string",
+                      "default": "OK"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/AuthorityInfo/alarmAuthorityInsert": {
+      "get": {
+        "tags": [
+          "Authority"
+        ],
+        "summary": "알림권한등록",
+        "description": "알림권한등록",
+        "operationId": "alarmAuthorityInsert_1",
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "query",
+            "description": "디바이스 ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "디바이스 ID",
+              "example": "test1234"
+            },
+            "example": "test1234"
+          },
+          {
+            "name": "authFlag",
+            "in": "query",
+            "description": "알람권한 동의여부",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "알람권한 동의여부",
+              "example": 0
+            },
+            "example": 0
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "200"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Authority"
                     },
                     "message": {
                       "type": "string",
@@ -1760,7 +1909,7 @@
         },
         "description": "알람지역날씨목록"
       },
-      "AlarmLocationWeatherResponse": {
+      "AlarmLocationWeatherDetailResponse": {
         "type": "object",
         "properties": {
           "cityDo": {
@@ -2018,6 +2167,31 @@
           }
         },
         "description": "알람지역시간목록"
+      },
+      "Authority": {
+        "type": "object",
+        "properties": {
+          "authorityId": {
+            "type": "integer",
+            "description": "authority Id",
+            "format": "int64"
+          },
+          "deviceId": {
+            "type": "string",
+            "description": "디바이스 ID"
+          },
+          "authFlag": {
+            "type": "integer",
+            "description": "알림권한 동의여부",
+            "format": "int32"
+          },
+          "authDate": {
+            "type": "string",
+            "description": "알람권한 갱신일자",
+            "format": "date-time"
+          }
+        },
+        "description": "알람권한 VO"
       },
       "AlarmDeleteRequest": {
         "type": "object",
