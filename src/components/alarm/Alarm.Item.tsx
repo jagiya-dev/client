@@ -119,7 +119,7 @@ function AlarmItem(alarm: AlarmResponse) {
             <Text style={s.timeContainer}>
               <Text
                 style={cond({
-                  predicate: () => isItemEnabled,
+                  predicate: () => !isItemEnabled,
                   true$: s.disabledText,
                   underlyingStyles: s.time12Text,
                 })}
