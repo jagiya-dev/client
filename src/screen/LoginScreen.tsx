@@ -3,6 +3,7 @@ import {
   Platform,
   SafeAreaView,
   StyleSheet,
+  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
@@ -20,6 +21,9 @@ import { apple } from "@/state/auth/auth.state.apple";
 import { kakao } from "@/state/auth/auth.state.kakao";
 import { local } from "@/state/auth/auth.state.local";
 import { useAsyncStorage } from "@react-native-async-storage/async-storage";
+import { getPrivacyPolicy, getTermsOfUse } from "@/network/api";
+import { headerStyles } from "@/components/Header";
+import navUtils from "@/util/NavigationUtil";
 
 type Props = NativeStackScreenProps<StackParamList, "Login">;
 
@@ -35,27 +39,28 @@ const LoginScreen = ({ route, navigation }: Props) => {
 
   useEffect(() => {
     const queryHasLoginHistory = async () => {
-      const jsonValue = await getItem((err, result) => {});
-      if (!jsonValue) {
-        return;
-      }
-
-      const localHistory: LocalAuthState = JSON.parse(jsonValue);
-      if (!localHistory) {
-        return;
-      }
-
-      console.log(`[${Platform.OS}] already has login history`, localHistory);
-
-      local.hydrate(localHistory);
-
-      navigateToMain();
-
       try {
-      } catch (err) {}
+        const jsonValue = await getItem((err, result) => {});
+        if (!jsonValue) {
+          return;
+        }
+
+        const localHistory: LocalAuthState = JSON.parse(jsonValue);
+        if (!localHistory) {
+          return;
+        }
+
+        console.log(`[${Platform.OS}] already has login history`, localHistory);
+
+        local.hydrate(localHistory);
+
+        navigateToMain();
+      } catch (err) {
+        console.error(err);
+      }
     };
 
-    queryHasLoginHistory();
+    // queryHasLoginHistory();
   }, []);
 
   useEffect(() => {
@@ -106,12 +111,22 @@ const LoginScreen = ({ route, navigation }: Props) => {
     navigateToMain();
   };
 
-  const onPress_useAndCondition = () => {
-    console.log("use and condition button pressed");
+  const onPress_useAndCondition = async () => {
+    const response = await getTermsOfUse();
+
+    navigation.navigate("Webview", {
+      html: response.data?.html ?? "",
+      headerTitle: "이용약관",
+    });
   };
 
-  const onPress_privacyPolicy = () => {
-    console.log("privacy policy button pressed");
+  const onPress_privacyPolicy = async () => {
+    const response = await getPrivacyPolicy();
+
+    navigation.navigate("Webview", {
+      html: response.data?.html ?? "",
+      headerTitle: "개인정보처리방침",
+    });
   };
 
   return (
@@ -183,6 +198,11 @@ const s = StyleSheet.create({
     alignItems: "center",
     flex: 1,
     zIndex: 0,
+    backgroundColor: "white",
+  },
+  headerText: {
+    fontSize: font.body["5"].size,
+    fontWeight: font.body["5"].weight,
   },
   image: {
     width: 200,

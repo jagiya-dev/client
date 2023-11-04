@@ -38,8 +38,7 @@ export type StackParamList = {
   Main: undefined;
   Login: undefined;
   CreateAlarm: {
-    selectedLocation: LocationResponse;
-    selectedTimes: TimetableItem[];
+    alarm?: AlarmResponse;
   };
   ActivatedAlarm: undefined;
   AlarmDetail: undefined;
@@ -51,6 +50,7 @@ export type StackParamList = {
     method?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
     html?: string;
     uri?: string;
+    headerTitle?: string;
   };
 };
 
