@@ -19,32 +19,20 @@ import { useObservableState } from "@/hook/useObservableState";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import type { StackParamList } from "@/typing";
 import Text from "@/components/Text";
-import { alarmCount$, alarms } from "@/state/alarm/alarm.state";
+import { alarmCount$, alarmList$, alarms } from "@/state/alarm/alarm.state";
 import { headerStyles } from "@/components/Header";
-import { getAlarmList } from "@/network/api";
+import { AlarmResponse, getAlarmList } from "@/network/api";
 import { local } from "@/state/auth/auth.state.local";
 import { useFocusEffect } from "@react-navigation/native";
+import { useCallback } from "react";
 
 type Props = NativeStackScreenProps<StackParamList, "Main">;
 
 const MainScreen = ({ route, navigation }: Props) => {
-  useFocusEffect(() => {
-    async function loadFirst() {
-      try {
-        const response = await getAlarmList({
-          userId: local.localAuthState.userId?.toString() ?? "",
-        });
-
-        if (response.data) {
-          alarms.next(response.data);
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    }
-
-    loadFirst();
-  });
+  const alarmDataArr: readonly AlarmResponse[] =
+    useObservableState({
+      observable: alarmList$,
+    }) ?? [];
 
   const isDeleteMode = useObservableState({
     observable: deleteModeToggleSubject,
@@ -60,6 +48,32 @@ const MainScreen = ({ route, navigation }: Props) => {
   if (alarmCount && alarmCount < 4) hasEnoughAlarm = false;
 
   useHandleForegroundNotification();
+
+  useFocusEffect(
+    useCallback(() => {
+      let alreadyFetched = false;
+      async function loadFirst() {
+        try {
+          const response = await getAlarmList({
+            userId: local.localAuthState.userId?.toString() ?? "",
+          });
+
+          if (alreadyFetched && response.data) {
+            alarms.next(response.data);
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      }
+
+      loadFirst();
+
+      return () => {
+        alreadyFetched = true;
+      };
+    }, []),
+  );
+
   const loading = useInitNotification();
   if (loading) {
     return null;
@@ -78,7 +92,13 @@ const MainScreen = ({ route, navigation }: Props) => {
   };
 
   const onPressButton_DetailButton = () => {
-    navigation.navigate("AlarmDetail");
+    // TODO: 언제 비가 올지 모르니까, 비가 올 때만 보여주는 걸로 바꿔야 함.
+    // const onlyRainExpected = alarmDataArr.filter((alarm) => {
+    //   alarm.
+    // });
+    navigation.navigate("AlarmDetail", {
+      alarmId: "15",
+    });
   };
 
   return (
@@ -125,7 +145,7 @@ const MainScreen = ({ route, navigation }: Props) => {
       </View>
 
       {/* 4. Alarm Scroll View */}
-      <AlarmContainer />
+      <AlarmContainer alarmDataArr={alarmDataArr} />
 
       {/* 5. Add New Alarm Item Button and its additive shadow */}
       {!hasEnoughAlarm && (

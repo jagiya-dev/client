@@ -1,5 +1,11 @@
 import Text from "@/components/Text";
-import { FlatList, SafeAreaView, StyleSheet, View } from "react-native";
+import {
+  Image,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  View,
+} from "react-native";
 import { Button } from "@/components/button";
 import { CloseIcon } from "@/components/Icon";
 import { useCallback, useState } from "react";
@@ -8,9 +14,8 @@ import { color } from "@/styles/color";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackParamList } from "@/typing";
 import {
-  AlarmDetailResponse,
-  AlarmLocationDetailResponse,
-  getAlarmDetail,
+  AlarmLocationWeatherDetailResponse,
+  getAlarmLocationWeatherDetail,
 } from "@/network/api";
 import { useQuestHasLoginHistory } from "@/hook/useQuestHasLoginHistory";
 import LocationItem from "@/components/location/LocationItem";
@@ -19,16 +24,14 @@ import { useFocusEffect } from "@react-navigation/native";
 type ScreenProps = NativeStackScreenProps<StackParamList, "AlarmDetail">;
 const AlarmDetailScreen = ({ route, navigation }: ScreenProps) => {
   const { params } = route;
-  const isComingFromActivatedAlarm =
-    params?.isComingFromActivatedAlarm ?? false;
-
   const alarmId = params?.alarmId ?? "77";
 
   useQuestHasLoginHistory();
 
-  const [alarmDetail, setAlarmDetail] = useState<AlarmDetailResponse>();
+  const [alarmLocationDetails, setAlarmLocationDetails] =
+    useState<readonly AlarmLocationWeatherDetailResponse[]>();
 
-  console.log("alarmDetail", JSON.stringify(alarmDetail, null, 2));
+  // console.log("alarmDetail", JSON.stringify(alarmLocationDetails, null, 2));
 
   const [selectedLocation, setSelectedLocation] = useState<number>(0);
 
@@ -36,7 +39,7 @@ const AlarmDetailScreen = ({ route, navigation }: ScreenProps) => {
     useCallback(() => {
       let alreadyFetched = false;
       async function refetchFromEditAlarm() {
-        const response = await getAlarmDetail({
+        const response = await getAlarmLocationWeatherDetail({
           alarmId,
         });
 
@@ -49,9 +52,9 @@ const AlarmDetailScreen = ({ route, navigation }: ScreenProps) => {
 
         if (alreadyFetched) return;
 
-        setAlarmDetail(data);
+        setAlarmLocationDetails(data);
 
-        const soundVolume = data?.volume ?? 0.5;
+        // const soundVolume = data?.volume ?? 0.5;
 
         // get sound
         // get sound volume
@@ -101,38 +104,54 @@ const AlarmDetailScreen = ({ route, navigation }: ScreenProps) => {
 
       {/* 3. locations */}
       <View style={s.locationContainer}>
-        {alarmDetail?.alarmLocation && alarmDetail.alarmLocation.length > 0 && (
-          <FlatList
-            data={alarmDetail.alarmLocation}
-            renderItem={(data) => (
-              <LocationItem
-                key={data.index}
-                eupMyun={data.item.eupMyun}
-                isSelected={selectedLocation === data.index}
-                selectLocation={() => setSelectedLocation(data.index)}
-              />
-            )}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-          />
-        )}
+        {alarmLocationDetails &&
+          alarmLocationDetails.length > 0 &&
+          alarmLocationDetails.map((data, i) => (
+            <LocationItem
+              key={i}
+              eupMyun={data.eupMyun}
+              isSelected={selectedLocation === i}
+              selectLocation={() => {
+                console.log("selectLocation", i);
+                setSelectedLocation(i);
+              }}
+            />
+          ))}
       </View>
 
       {/* 4. Times */}
       <View style={s.timeContainer}>
-        {/*<FlatList*/}
-        {/*  data={alarmDetail?.alarmTime ?? []}*/}
-        {/*  renderItem={(data) => (*/}
-        {/*    <View style={s.timeItemContainer} key={data.item.alarmId}>*/}
-        {/*      <View style={s.timeItem}>*/}
-        {/*        <Text style={s.timeItemText}>{data.item.alarmTime}</Text>*/}
-        {/*        <Text style={s.timeItemTextDate}>{data.item.timeOfDay}</Text>*/}
-        {/*      </View>*/}
-        {/*    </View>*/}
-        {/*  )}*/}
-        {/*  horizontal={false}*/}
-        {/*  showsHorizontalScrollIndicator={false}*/}
-        {/*/>*/}
+        <ScrollView
+          nestedScrollEnabled
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+        >
+          {alarmLocationDetails &&
+            alarmLocationDetails.length > 0 &&
+            alarmLocationDetails.map((data, i) => {
+              if (i !== selectedLocation) return null;
+
+              return data.alarmLocationWeatherList?.map((time, j) => {
+                const timeString =
+                  time.locationTime?.substring(0, 2) +
+                  ":" +
+                  time.locationTime?.substring(2, 4);
+
+                return (
+                  <View style={s.timeItemContainer} key={j}>
+                    <View style={s.timeItem}>
+                      <Text style={s.timeItemText}>{timeString}</Text>
+                      <Text style={s.timeItemTextDate}>{time.timeOfDay}</Text>
+                    </View>
+
+                    {time.rain && (
+                      <Image source={require("#/icons/detail_rain.png")} />
+                    )}
+                  </View>
+                );
+              });
+            })}
+        </ScrollView>
       </View>
     </SafeAreaView>
   );
@@ -167,16 +186,16 @@ const s = StyleSheet.create({
     color: color.primary["600"],
   },
   topText2: {
-    fontSize: font.body["1"].size,
-    fontWeight: font.body["1"].weight,
-    lineHeight: font.body["1"].height,
+    fontSize: font.body["3"].size,
+    fontWeight: font.body["3"].weight,
+    lineHeight: font.body["3"].height,
   },
 
   // 3. location
   locationContainer: {
     marginLeft: 20,
+    flexDirection: "row",
   },
-  locationItem: {},
 
   // 4. time view
   timeContainer: {
@@ -189,9 +208,13 @@ const s = StyleSheet.create({
     paddingHorizontal: 20,
   },
   timeItemContainer: {
-    justifyContent: "center",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     paddingHorizontal: 8,
     paddingVertical: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: color.gray["100"],
   },
   timeItem: {
     flexDirection: "row",
@@ -203,6 +226,7 @@ const s = StyleSheet.create({
     fontSize: font.display["1"].size,
     fontWeight: font.display["1"].weight,
     lineHeight: font.display["1"].height,
+    marginRight: 4,
   },
   timeItemTextDate: {
     color: color.gray["400"],

@@ -48,7 +48,6 @@ export type StackParamList = {
     alarmId: string;
   };
   AlarmDetail: {
-    isComingFromActivatedAlarm: boolean;
     alarmId: string;
   };
   AddRegion: undefined;

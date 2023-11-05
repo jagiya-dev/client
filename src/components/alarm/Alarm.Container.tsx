@@ -7,12 +7,11 @@ import { alarmList$ } from "@/state/alarm/alarm.state";
 import { useObservableState } from "@/hook/useObservableState";
 import { AlarmResponse } from "@/network/api";
 
-const AlarmContainer = () => {
-  const alarmDataArr: readonly AlarmResponse[] =
-    useObservableState({
-      observable: alarmList$,
-    }) ?? [];
+type Props = {
+  alarmDataArr: readonly AlarmResponse[];
+};
 
+const AlarmContainer = ({ alarmDataArr }: Props) => {
   // console.log(JSON.stringify(alarmDataArr, null, 2));
 
   if (alarmDataArr.length === 0) {
