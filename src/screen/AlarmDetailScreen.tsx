@@ -7,7 +7,11 @@ import { font } from "@/styles/font";
 import { color } from "@/styles/color";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackParamList } from "@/typing";
-import { AlarmDetailResponse, getAlarmDetail } from "@/network/api";
+import {
+  AlarmDetailResponse,
+  AlarmLocationDetailResponse,
+  getAlarmDetail,
+} from "@/network/api";
 import { useQuestHasLoginHistory } from "@/hook/useQuestHasLoginHistory";
 import LocationItem from "@/components/location/LocationItem";
 import { useFocusEffect } from "@react-navigation/native";
@@ -18,13 +22,15 @@ const AlarmDetailScreen = ({ route, navigation }: ScreenProps) => {
   const isComingFromActivatedAlarm =
     params?.isComingFromActivatedAlarm ?? false;
 
-  const alarmId = params?.alarmId ?? "15";
+  const alarmId = params?.alarmId ?? "77";
 
   useQuestHasLoginHistory();
 
   const [alarmDetail, setAlarmDetail] = useState<AlarmDetailResponse>();
 
   console.log("alarmDetail", JSON.stringify(alarmDetail, null, 2));
+
+  const [selectedLocation, setSelectedLocation] = useState<number>(0);
 
   useFocusEffect(
     useCallback(() => {
@@ -85,7 +91,9 @@ const AlarmDetailScreen = ({ route, navigation }: ScreenProps) => {
 
       {/* 2. top texts */}
       <View style={s.topContainer}>
-        <Text style={s.topText1}>아 맞다, 우산!</Text>
+        <Text style={s.topText1}>
+          아 맞다, <Text style={[s.topText1, s.topText1Inner]}>우산!</Text>
+        </Text>
         <Text style={s.topText2}>
           내가 설정한 지역 중에 비가 오는 곳이 있어요.
         </Text>
@@ -93,27 +101,27 @@ const AlarmDetailScreen = ({ route, navigation }: ScreenProps) => {
 
       {/* 3. locations */}
       <View style={s.locationContainer}>
-        {!!alarmDetail?.alarmLocation &&
-          alarmDetail.alarmLocation.length > 0 && (
-            <FlatList
-              data={alarmDetail.alarmLocation}
-              renderItem={(data) => (
-                <LocationItem
-                  key={data.index}
-                  eupMyun={data.item.eupMyun}
-                  isSelected={false}
-                />
-              )}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-            />
-          )}
+        {alarmDetail?.alarmLocation && alarmDetail.alarmLocation.length > 0 && (
+          <FlatList
+            data={alarmDetail.alarmLocation}
+            renderItem={(data) => (
+              <LocationItem
+                key={data.index}
+                eupMyun={data.item.eupMyun}
+                isSelected={selectedLocation === data.index}
+                selectLocation={() => setSelectedLocation(data.index)}
+              />
+            )}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+          />
+        )}
       </View>
 
       {/* 4. Times */}
       <View style={s.timeContainer}>
         {/*<FlatList*/}
-        {/*  data={alarms}*/}
+        {/*  data={alarmDetail?.alarmTime ?? []}*/}
         {/*  renderItem={(data) => (*/}
         {/*    <View style={s.timeItemContainer} key={data.item.alarmId}>*/}
         {/*      <View style={s.timeItem}>*/}
@@ -154,6 +162,9 @@ const s = StyleSheet.create({
     fontSize: font.headline["2"].size,
     fontWeight: font.headline["2"].weight,
     lineHeight: font.headline["2"].height,
+  },
+  topText1Inner: {
+    color: color.primary["600"],
   },
   topText2: {
     fontSize: font.body["1"].size,

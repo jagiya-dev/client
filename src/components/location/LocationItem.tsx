@@ -7,6 +7,7 @@ import { font } from "@/styles/font";
 import { AlarmLocationDetailResponse } from "@/network/api";
 
 type Props = {
+  selectLocation: () => void;
   isSelected: boolean;
 } & Pick<AlarmLocationDetailResponse, "eupMyun">;
 
@@ -15,10 +16,21 @@ const LocationItem = (props: Props) => (
     style={cond({
       predicate: () => props.isSelected,
       true$: s.selected,
+      false$: s.disabled,
       underlyingStyles: s.root,
     })}
+    onPress={props.selectLocation}
   >
-    <Text style={s.text}>{props.eupMyun}</Text>
+    <Text
+      style={cond({
+        predicate: () => props.isSelected,
+        true$: s.selectedText,
+        false$: s.disabledText,
+        underlyingStyles: s.text,
+      })}
+    >
+      {props.eupMyun}
+    </Text>
   </Tag>
 );
 
@@ -26,7 +38,6 @@ export default LocationItem;
 
 const s = StyleSheet.create({
   root: {
-    borderColor: color.sub["200"],
     borderRadius: 24,
     borderWidth: 1,
     paddingHorizontal: 16,
@@ -34,13 +45,23 @@ const s = StyleSheet.create({
     marginRight: 8,
   },
   selected: {
-    backgroundColor: color.sub["200"],
+    backgroundColor: color.sub["500"],
+    borderColor: color.sub["500"],
+  },
+  disabled: {
+    backgroundColor: "white",
+    borderColor: color.gray["100"],
+  },
+
+  text: {
+    fontSize: font.body["2"].size,
+    fontWeight: font.body["2"].weight,
+    lineHeight: font.body["2"].height,
+  },
+  selectedText: {
     color: "white",
   },
-  text: {
-    color: color.sub["500"],
-    fontSize: font.title["2"].size,
-    fontWeight: font.title["2"].weight,
-    lineHeight: font.title["2"].height,
+  disabledText: {
+    color: color.gray["300"],
   },
 });
