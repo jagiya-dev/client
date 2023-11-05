@@ -1,9 +1,11 @@
 import { BehaviorSubject } from "rxjs";
 import {
-  getProfile as kakaoGetProfile,
   KakaoOAuthToken,
   KakaoProfile,
+  getProfile as kakaoGetProfile,
   login as kakaoLogin,
+  logout as kakaoLogout,
+  unlink as kakaoUnlink,
 } from "@react-native-seoul/kakao-login";
 
 export class Kakao {
@@ -50,6 +52,26 @@ export class Kakao {
       }
 
       console.log(`Login Fail(code:${error.code})`, error.message);
+    }
+  }
+
+  public async unlink(): Promise<void> {
+    try {
+      const message = await kakaoUnlink();
+      this._kakaoProfileSubject.next(null);
+      console.log("Unlink Success", message);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  public async logout(): Promise<void> {
+    try {
+      const message = await kakaoLogout();
+      this._kakaoProfileSubject.next(null);
+      console.log("Logout Success", message);
+    } catch (error) {
+      console.error(error);
     }
   }
 

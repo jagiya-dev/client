@@ -1,9 +1,10 @@
-import { useEffect } from "react";
+import { useCallback } from "react";
 import { LocalAuthState } from "@/typing";
 import { Platform } from "react-native";
 import { local } from "@/state/auth/auth.state.local";
 import { useAsyncStorage } from "@react-native-async-storage/async-storage";
-import { CallbackWithResult } from "@react-native-async-storage/async-storage/lib/typescript/types";
+import type { CallbackWithResult } from "@react-native-async-storage/async-storage/lib/typescript/types";
+import { useFocusEffect } from "@react-navigation/native";
 
 const defaultErrorHandler: CallbackWithResult<string> = (err, result) =>
   console.error(err, result);
@@ -13,25 +14,37 @@ export const useQuestHasLoginHistory = (
 ) => {
   const { getItem } = useAsyncStorage("localAuthState");
 
-  useEffect(() => {
-    const queryHasLoginHistory = async () => {
-      try {
-        const jsonValue = await getItem(errorHandler);
-        if (!jsonValue) return;
+  useFocusEffect(
+    useCallback(() => {
+      let alreadyDone = false;
+      const queryHasLoginHistory = async () => {
+        try {
+          if (alreadyDone) return;
 
-        const localHistory: LocalAuthState = JSON.parse(jsonValue);
-        if (!localHistory) return;
+          const jsonValue = await getItem(errorHandler);
+          if (!jsonValue) return;
 
-        console.log(`[${Platform.OS}] already has login history`, localHistory);
+          const localHistory: LocalAuthState = JSON.parse(jsonValue);
+          if (!localHistory) return;
 
-        local.hydrate(localHistory);
+          console.log(
+            `[${Platform.OS}] already has login history`,
+            localHistory,
+          );
 
-        afterQuery?.();
-      } catch (err) {
-        console.error(err);
-      }
-    };
+          local.hydrate(localHistory);
 
-    queryHasLoginHistory();
-  }, [getItem]);
+          afterQuery?.();
+        } catch (err) {
+          console.error(err);
+        }
+      };
+
+      queryHasLoginHistory();
+
+      return () => {
+        alreadyDone = true;
+      };
+    }, [getItem]),
+  );
 };

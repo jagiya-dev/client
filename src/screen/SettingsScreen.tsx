@@ -8,7 +8,9 @@ import { color } from "@/styles/color";
 import { font } from "@/styles/font";
 import {
   Image,
+  Platform,
   SafeAreaView,
+  Share,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -19,25 +21,137 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackParamList } from "@/typing";
 import navUtils from "@/util/NavigationUtil";
 import { headerStyles } from "@/components/Header";
+import { getPrivacyPolicy, getTermsOfUse, memberDelete } from "@/network/api";
+import { local } from "@/state/auth/auth.state.local";
+import { kakao } from "@/state/auth/auth.state.kakao";
+import { apple } from "@/state/auth/auth.state.apple";
+import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 
 type Props = NativeStackScreenProps<StackParamList, "Settings">;
 
 const SettingsScreen = ({ route, navigation }: Props) => {
-  /** click **/
-  const onPressButton_Mode01 = () => {
-    console.log("onPressButton_Mode01");
+  const { setItem } = useAsyncStorage("localAuthState");
+
+  const onPressButton_openMyInfo = () => {
+    const { userId } = local.localAuthState;
+    if (!userId) {
+      console.error(`내 정보 열었지만, userId === undefined`);
+      return;
+    }
+
+    navigation.navigate("MyInfo", {
+      userId: userId.toString(),
+    });
   };
-  const onPressButton_Mode02 = () => {
-    console.log("onPressButton_Mode02");
+
+  const onPressButton_share = async () => {
+    console.log("onPressButton_share");
+
+    // TODO: add app store url
+    const urlToShare = Platform.select({
+      ios: "https://www.google.com/",
+      android: "https://www.google.com/",
+    });
+
+    try {
+      const result = await Share.share({
+        message: "공유하시겠습니까!",
+        title: "공유하기!",
+        url: urlToShare,
+      });
+
+      switch (result.action) {
+        case "sharedAction":
+          {
+            if (result.activityType) {
+              console.log("sharedAction: ", result.activityType);
+              // shared with activity type of result.activityType
+            } else {
+              console.log("shared!");
+              // shared
+            }
+          }
+          break;
+
+        case "dismissedAction":
+          {
+            // dismissed
+            console.log("dismissedAction");
+          }
+          break;
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
-  const onPressButton_Mode03 = () => {
-    console.log("onPressButton_Mode03");
+
+  const onPressButton_logOut = async () => {
+    console.log("onPressButton_logOut");
+    const snsType = local.getSnsType();
+
+    try {
+      if (snsType === "1") {
+        await kakao.unlink();
+      } else if (snsType === "2") {
+        await apple.logout();
+      } else {
+        local.logout();
+      }
+      await setItem("");
+
+      navigation.navigate("Login");
+    } catch (err) {
+      console.error(err);
+    }
   };
-  const onPressButton_Mode04 = () => {
-    console.log("onPressButton_Mode04");
+
+  const onPressButton_withdrawAccount = async () => {
+    console.log("onPressButton_withdrawAccount");
+
+    const snsType = local.getSnsType();
+
+    try {
+      const { snsId } = await local.getSnsInfo();
+
+      if (snsType === "1") {
+        await kakao.unlink();
+      } else if (snsType === "2") {
+        await apple.logout();
+      } else {
+        local.logout();
+      }
+
+      await setItem("");
+
+      const { data } = await memberDelete({
+        snsId,
+        snsType,
+      });
+
+      console.log(JSON.stringify(data, null, 2));
+
+      navigation.navigate("Login");
+    } catch (err) {
+      console.error(err);
+    }
   };
-  const onPressButton_Mode05 = () => {
-    console.log("onPressButton_Mode05");
+
+  const onPress_termsOfUse = async () => {
+    const response = await getTermsOfUse();
+
+    navigation.navigate("Webview", {
+      html: response.data?.html ?? "",
+      headerTitle: "이용약관",
+    });
+  };
+
+  const onPress_privacyPolicy = async () => {
+    const response = await getPrivacyPolicy();
+
+    navigation.navigate("Webview", {
+      html: response.data?.html ?? "",
+      headerTitle: "개인정보처리방침",
+    });
   };
 
   return (
@@ -72,16 +186,14 @@ const SettingsScreen = ({ route, navigation }: Props) => {
           </View>
 
           <Button
-            onPress={onPressButton_Mode01}
+            onPress={onPressButton_openMyInfo}
             style={s.contentFirstToggleModeText}
           >
             <UserMyPageIcon />
             <Text style={s.contentLabel}>내 정보</Text>
           </Button>
-          <Button
-            onPress={onPressButton_Mode02}
-            style={s.contentToggleModeText}
-          >
+
+          <Button onPress={onPressButton_share} style={s.contentToggleModeText}>
             <ShareMyPageIcon />
             <Text style={s.contentLabel}>친구에게 공유하기</Text>
           </Button>
@@ -93,23 +205,28 @@ const SettingsScreen = ({ route, navigation }: Props) => {
           </View>
 
           <Button
-            onPress={onPressButton_Mode03}
-            style={s.contentToggleModeText}
+            onPress={onPress_termsOfUse}
+            style={s.contentFirstToggleModeText}
           >
             <InformationMyPageIcon style={s.iconStyle} />
-            <Text style={s.contentLabel}>이용약관&개인정보처리방침</Text>
+            <Text style={s.contentLabel}>이용약관</Text>
+          </Button>
+
+          <Button onPress={onPress_termsOfUse} style={s.contentToggleModeText}>
+            <InformationMyPageIcon style={s.iconStyle} />
+            <Text style={s.contentLabel}>개인정보 처리방침</Text>
           </Button>
         </View>
 
         <View style={s.contentLabelContainer}>
           <Button
-            onPress={onPressButton_Mode04}
+            onPress={onPressButton_logOut}
             style={s.contentFirstToggleModeText}
           >
             <Text style={s.contentFirstLabel}>로그아웃</Text>
           </Button>
           <Button
-            onPress={onPressButton_Mode05}
+            onPress={onPressButton_withdrawAccount}
             style={s.contentTwoToggleDeleteModeText}
           >
             <Text style={s.contentDeleteLabel}>탈퇴하기</Text>
@@ -191,16 +308,6 @@ const s = StyleSheet.create({
     justifyContent: "center",
   },
 
-  contentToggleModeText: {
-    flexDirection: "row", //가로로 배열
-    justifyContent: "flex-start", // 요소 사이에 공간 분배
-    alignItems: "center",
-    backgroundColor: color.gray["0"],
-    height: 54,
-    paddingLeft: 20,
-    borderBottomLeftRadius: 8, // 위 왼쪽 모서리에 radius 적용
-    borderBottomRightRadius: 8, // 위 오른쪽 모서리에 radius 적용
-  },
   contentFirstToggleModeText: {
     flexDirection: "row", //가로로 배열
     justifyContent: "flex-start", // 요소 사이에 공간 분배
@@ -212,6 +319,16 @@ const s = StyleSheet.create({
     paddingLeft: 20,
     borderTopLeftRadius: 8, // 위 왼쪽 모서리에 radius 적용
     borderTopRightRadius: 8, // 위 오른쪽 모서리에 radius 적용
+  },
+  contentToggleModeText: {
+    flexDirection: "row", //가로로 배열
+    justifyContent: "flex-start", // 요소 사이에 공간 분배
+    alignItems: "center",
+    backgroundColor: color.gray["0"],
+    height: 54,
+    paddingLeft: 20,
+    borderBottomLeftRadius: 8, // 위 왼쪽 모서리에 radius 적용
+    borderBottomRightRadius: 8, // 위 오른쪽 모서리에 radius 적용
   },
   contentTwoToggleDeleteModeText: {
     flexDirection: "row", //가로로 배열

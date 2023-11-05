@@ -34,7 +34,7 @@ export class Apple {
 
   public constructor() {
     this._isSupportAppleLogin = new BehaviorSubject<boolean>(
-      this.init_isSupportAppleLogin(),
+      this.isSupportAppleLogin(),
     );
 
     this._appleInfoSubject = new BehaviorSubject<AppleRequestResponse | null>(
@@ -48,10 +48,16 @@ export class Apple {
 
   public async logout(): Promise<void> {
     try {
-      const appleAuthRequestResponse = await appleAuth.performRequest({
-        requestedOperation: appleAuth.Operation.LOGOUT,
-        requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
-      });
+      this._appleInfoSubject.next(null);
+
+      // const appleAuthRequestResponse = await appleAuth.performRequest({
+      //   requestedOperation: appleAuth.Operation.LOGOUT,
+      //   // requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
+      // });
+      // console.log(
+      //   "apple logout success!",
+      //   JSON.stringify(appleAuthRequestResponse, null, 2),
+      // );
     } catch (error) {
       console.error(error);
     }
@@ -59,7 +65,8 @@ export class Apple {
 
   //#region impl
 
-  private init_isSupportAppleLogin(): boolean {
+  private isSupportAppleLogin(): boolean {
+    // android 에서 iOS 로그인 제외.
     if (Platform.OS === "android") {
       return false;
       // return appleAuthAndroid.isSupported;

@@ -3,11 +3,9 @@ import AlarmItem from "./Alarm.Item";
 import Text from "../Text";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
-import { alarmList$, alarms } from "@/state/alarm/alarm.state";
+import { alarmList$ } from "@/state/alarm/alarm.state";
 import { useObservableState } from "@/hook/useObservableState";
-import { AlarmResponse, getAlarmList } from "@/network/api";
-import { useEffect } from "react";
-import { local } from "@/state/auth/auth.state.local";
+import { AlarmResponse } from "@/network/api";
 
 const AlarmContainer = () => {
   const alarmDataArr: readonly AlarmResponse[] =

@@ -6,7 +6,7 @@ import {
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { MapIcon } from "@/components/Icon";
 import Text from "@/components/Text";
-import React, { useEffect } from "react";
+import React, { useCallback } from "react";
 import {
   behaviours as searchResultsBehaviours,
   recentSearchResults$,
@@ -17,6 +17,7 @@ import { color } from "@/styles/color";
 import { font } from "@/styles/font";
 import { useBottomSheet } from "@gorhom/bottom-sheet";
 import { local, Local } from "@/state/auth/auth.state.local";
+import { useFocusEffect } from "@react-navigation/native";
 
 const SearchResultContents = () => {
   const { close } = useBottomSheet();
@@ -30,9 +31,17 @@ const SearchResultContents = () => {
 
   recentSearches?.reverse();
 
-  useEffect(() => {
-    searchResultsBehaviours.fetchRecentSearchResults();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      let isAlreadyFetched = false;
+
+      searchResultsBehaviours.fetchRecentSearchResults(isAlreadyFetched);
+
+      return () => {
+        isAlreadyFetched = true;
+      };
+    }, []),
+  );
 
   const onPress_deleteRecentLocation = async (
     recentLocationId: number | undefined,

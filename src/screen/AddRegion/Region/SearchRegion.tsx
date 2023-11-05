@@ -9,9 +9,10 @@ import {
   behaviours as searchResultsBehaviours,
   searchInput$,
 } from "@/state/addRegion/search/searchResults.state";
-import React, { useEffect } from "react";
+import React, { useCallback } from "react";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import SearchResultContents from "@/screen/AddRegion/Region/SearchResultContents";
+import { useFocusEffect } from "@react-navigation/native";
 
 const SearchRegion = () => {
   const updateSearchKeywords = (input: string) => {
@@ -23,9 +24,11 @@ const SearchRegion = () => {
   });
   const bHasSearched = searchInput !== "";
 
-  useEffect(() => {
-    searchResultsBehaviours.reset();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      searchResultsBehaviours.reset();
+    }, []),
+  );
 
   return (
     <View style={s.root}>

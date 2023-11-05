@@ -2,64 +2,211 @@ import { Button } from "@/components/button";
 import { KakaoIdLoginOffIcon, AppleIdLoginOnIcon } from "@/components/Icon";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
-import { SafeAreaView, StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
+import { headerStyles } from "@/components/Header";
+import navUtils from "@/util/NavigationUtil";
+import { useFocusEffect } from "@react-navigation/native";
+import {
+  getUserDetail,
+  loginAndUserTransform,
+  updateUserName,
+  UserDetailResponse,
+} from "@/network/api";
+import { useCallback, useState } from "react";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { StackParamList } from "@/typing";
 
-const MyInfoScreen = () => {
-  /** click **/
-  const onPressButton_Mode01 = () => {
-    console.log("onPressButton_Mode01");
+type Props = NativeStackScreenProps<StackParamList, "MyInfo">;
+const MyInfoScreen = ({ route, navigation }: Props) => {
+  const { params } = route;
+  const userId = params?.userId;
+
+  const [userDetail, setUserDetail] = useState<UserDetailResponse>();
+  const [isNameEditMode, setNameEditMode] = useState<boolean>(false);
+  const [newName, setNewName] = useState<string>("");
+  const onChange_updateNewName = (text: string) => {
+    setNewName(text);
   };
 
-  const onPressButton_Mode02 = () => {
-    console.log("onPressButton_Mode02");
+  useFocusEffect(
+    useCallback(() => {
+      let isActive = true;
+      const fetchUserDetail = async () => {
+        try {
+          if (!userId) return;
+
+          const { data } = await getUserDetail({
+            userId: userId.toString(),
+          });
+
+          if (isActive && data) {
+            setUserDetail(data);
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+      fetchUserDetail();
+
+      return () => {
+        isActive = false;
+      };
+    }, [userId]),
+  );
+
+  const onPressButton_enableNameEditMode = () => {
+    setNameEditMode(true);
   };
 
-  const onPressButton_Mode03 = () => {
-    console.log("onPressButton_Mode03");
+  const onPressButton_submitNewName = async () => {
+    setNameEditMode(false);
+
+    try {
+      const { data } = await updateUserName({
+        userId: Number(userId),
+        name: newName,
+      });
+
+      if (!data) return;
+      console.log("update user name succeed!", JSON.stringify(data, null, 2));
+
+      setUserDetail((prev) => ({
+        ...prev,
+        name: newName,
+      }));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const onPressButton_loginAndTransformToKakao = async () => {
+    console.log("onPressButton_loginAndTransformToKakao");
+
+    try {
+      const { data } = await loginAndUserTransform({
+        userId: "",
+        name: "",
+        email: "",
+        snsType: "",
+        tobeSnsId: "",
+      });
+      if (!data) return;
+
+      console.log(JSON.stringify(data, null, 2));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const onPressButton_loginAndTransformToApple = async () => {
+    console.log("onPressButton_loginAndTransformToApple");
+
+    try {
+      const { data } = await loginAndUserTransform({
+        userId: "",
+        name: "",
+        email: "",
+        snsType: "",
+        tobeSnsId: "",
+      });
+      if (!data) return;
+
+      console.log(JSON.stringify(data, null, 2));
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
     <SafeAreaView style={s.root}>
       <View style={s.innerRoot}>
-        {/* 1. content View */}
-        <View style={s.contentLabelContainer}>
-          <View style={s.contentTitleLabelContainer}>
-            <Text style={s.contentTitleLabel}>이름</Text>
-          </View>
-          <View style={s.contentModeText}>
-            <Text style={s.contentLabel}>nickname</Text>
-            <Button onPress={onPressButton_Mode01} style={s.contentToggleBtn}>
-              <Text style={s.contentBtnLabel}>변경</Text>
-            </Button>
-          </View>
+        {/* 0. header */}
+        <View style={[headerStyles.headerContainer, headerStyles.headerCenter]}>
+          <TouchableOpacity
+            style={[
+              headerStyles.headerClickable,
+              headerStyles.headerPositional,
+              headerStyles.headerIcon,
+            ]}
+            onPress={navUtils.onPress_goBack}
+          >
+            <Image
+              source={require("#/icons/arrow_left.png")}
+              style={headerStyles.headerIcon}
+            />
+          </TouchableOpacity>
+
+          <Text style={[headerStyles.headerTitle, { flex: 4.1 }]}>내 정보</Text>
         </View>
 
-        {/*이름수정*/}
-        <View style={s.contentLabelContainer}>
-          <View style={s.contentTitleLabelContainer}>
-            <Text style={s.contentTitleLabel}>이름</Text>
-          </View>
-          <View style={s.contentModeTextNameBox}>
-            <View style={s.contentModeTextNameInputBox}>
-              <TextInput style={s.contentInput} placeholder="닉네임 입력" />
+        {/* 1. content View */}
+        {!isNameEditMode && (
+          <View style={s.contentLabelContainer}>
+            <View style={s.contentTitleLabelContainer}>
+              <Text style={s.contentTitleLabel}>이름</Text>
             </View>
-            <Text style={s.contentBtnNameAlertLabel}>닉네임을 입력하세요.</Text>
-            <Button
-              onPress={onPressButton_Mode01}
-              style={s.contentToggleBtnSave}
-            >
-              <Text style={s.contentBtnSaveLabel}>저장하기</Text>
-            </Button>
+
+            <View style={s.contentModeText}>
+              <Text style={s.contentLabel}>{userDetail?.name ?? "비회원"}</Text>
+
+              <Button
+                onPress={onPressButton_enableNameEditMode}
+                style={s.contentToggleBtn}
+              >
+                <Text style={s.contentBtnLabel}>변경</Text>
+              </Button>
+            </View>
           </View>
-        </View>
+        )}
+
+        {/*이름수정*/}
+        {isNameEditMode && (
+          <View style={s.contentLabelContainer}>
+            <View style={s.contentTitleLabelContainer}>
+              <Text style={s.contentTitleLabel}>이름</Text>
+            </View>
+
+            <View style={s.contentModeTextNameBox}>
+              <View style={s.contentModeTextNameInputBox}>
+                <TextInput
+                  style={s.contentInput}
+                  placeholder="닉네임 입력"
+                  value={newName}
+                  onChangeText={onChange_updateNewName}
+                />
+              </View>
+
+              <Text style={s.contentBtnNameAlertLabel}>
+                닉네임을 입력하세요.
+              </Text>
+
+              <Button
+                onPress={onPressButton_submitNewName}
+                style={s.contentToggleBtnSave}
+              >
+                <Text style={s.contentBtnSaveLabel}>저장하기</Text>
+              </Button>
+            </View>
+          </View>
+        )}
 
         <View style={s.contentLabelContainer}>
           <View style={s.contentTitleLabelContainer}>
             <Text style={s.contentTitleLabel}>계정 정보</Text>
           </View>
+
           <View style={s.contentModeTextUser}>
-            <Text style={s.contentLabel}>user_email</Text>
+            <Text style={s.contentLabel}>{userDetail?.email ?? "-"}</Text>
           </View>
         </View>
 
@@ -67,6 +214,7 @@ const MyInfoScreen = () => {
           <View style={s.contentTitleLabelContainer}>
             <Text style={s.contentTitleLabel}>SNS연결</Text>
           </View>
+
           <View style={s.contentModeText}>
             <Text style={s.contentLabel}>
               연결된 SNS계정으로 간편하게 로그인할 수 있어요.
@@ -76,13 +224,14 @@ const MyInfoScreen = () => {
 
         <View style={s.contentLabelContainerSns}>
           <Button
-            onPress={onPressButton_Mode02}
+            onPress={onPressButton_loginAndTransformToKakao}
             style={s.contentToggleBottomBtn}
           >
             <KakaoIdLoginOffIcon />
           </Button>
+
           <Button
-            onPress={onPressButton_Mode03}
+            onPress={onPressButton_loginAndTransformToApple}
             style={s.contentToggleBottomBtn}
           >
             <AppleIdLoginOnIcon />
