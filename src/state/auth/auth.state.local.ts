@@ -31,6 +31,20 @@ export class Local {
     });
   }
 
+  public getSnsType(): "0" | "1" | "2" {
+    switch (this._localAuthStateSubject.getValue().whichLoginType) {
+      case "kakao":
+        return "1";
+
+      case "apple":
+        return "2";
+
+      case "guest":
+      default:
+        return "0";
+    }
+  }
+
   public hydrate(localAuthState: LocalAuthState) {
     const { userId, whichLoginType } = localAuthState;
 
@@ -53,6 +67,7 @@ export class Local {
     this._localAuthStateSubject.next({
       isLoggedIn: false,
       whichLoginType: undefined,
+      userId: undefined,
     });
   }
 

@@ -19,23 +19,74 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackParamList } from "@/typing";
 import navUtils from "@/util/NavigationUtil";
 import { headerStyles } from "@/components/Header";
-import { getPrivacyPolicy, getTermsOfUse } from "@/network/api";
+import { getPrivacyPolicy, getTermsOfUse, memberDelete } from "@/network/api";
+import { local } from "@/state/auth/auth.state.local";
+import { kakao } from "@/state/auth/auth.state.kakao";
+import { apple } from "@/state/auth/auth.state.apple";
+import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 
 type Props = NativeStackScreenProps<StackParamList, "Settings">;
 
 const SettingsScreen = ({ route, navigation }: Props) => {
-  /** click **/
+  const { setItem } = useAsyncStorage("localAuthState");
+
   const onPressButton_openMyInfo = () => {
     navigation.navigate("MyInfo");
   };
+
   const onPressButton_share = () => {
     console.log("onPressButton_share");
   };
-  const onPressButton_Mode04 = () => {
-    console.log("onPressButton_Mode04");
+
+  const onPressButton_logOut = async () => {
+    console.log("onPressButton_logOut");
+    const snsType = local.getSnsType();
+
+    try {
+      if (snsType === "1") {
+        await kakao.unlink();
+      } else if (snsType === "2") {
+        await apple.logout();
+      } else {
+        local.logout();
+      }
+      await setItem("");
+
+      navigation.navigate("Login");
+    } catch (err) {
+      console.error(err);
+    }
   };
-  const onPressButton_Mode05 = () => {
-    console.log("onPressButton_Mode05");
+
+  const onPressButton_withdrawAccount = async () => {
+    console.log("onPressButton_withdrawAccount");
+
+    const snsType = local.getSnsType();
+
+    try {
+      const { snsId } = await local.getSnsInfo();
+
+      if (snsType === "1") {
+        await kakao.unlink();
+      } else if (snsType === "2") {
+        await apple.logout();
+      } else {
+        local.logout();
+      }
+
+      await setItem("");
+
+      const { data } = await memberDelete({
+        snsId,
+        snsType,
+      });
+
+      console.log(JSON.stringify(data, null, 2));
+
+      navigation.navigate("Login");
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const onPress_termsOfUse = async () => {
@@ -122,13 +173,13 @@ const SettingsScreen = ({ route, navigation }: Props) => {
 
         <View style={s.contentLabelContainer}>
           <Button
-            onPress={onPressButton_Mode04}
+            onPress={onPressButton_logOut}
             style={s.contentFirstToggleModeText}
           >
             <Text style={s.contentFirstLabel}>로그아웃</Text>
           </Button>
           <Button
-            onPress={onPressButton_Mode05}
+            onPress={onPressButton_withdrawAccount}
             style={s.contentTwoToggleDeleteModeText}
           >
             <Text style={s.contentDeleteLabel}>탈퇴하기</Text>
