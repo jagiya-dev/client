@@ -24,8 +24,10 @@ type Props = NativeStackScreenProps<StackParamList, "Settings">;
 
 const SettingsScreen = ({ route, navigation }: Props) => {
   /** click **/
-  const onPressButton_Mode01 = () => {
-    console.log("onPressButton_Mode01");
+  const onPressButton_openMyInfo = () => {
+    console.log("clicked onPressButton_openMyInfo()");
+
+    navigation.navigate("MyInfo");
   };
   const onPressButton_Mode02 = () => {
     console.log("onPressButton_Mode02");
@@ -72,7 +74,7 @@ const SettingsScreen = ({ route, navigation }: Props) => {
           </View>
 
           <Button
-            onPress={onPressButton_Mode01}
+            onPress={onPressButton_openMyInfo}
             style={s.contentFirstToggleModeText}
           >
             <UserMyPageIcon />

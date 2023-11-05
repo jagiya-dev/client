@@ -2,8 +2,18 @@ import { Button } from "@/components/button";
 import { KakaoIdLoginOffIcon, AppleIdLoginOnIcon } from "@/components/Icon";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
-import { SafeAreaView, StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
+import { headerStyles } from "@/components/Header";
+import navUtils from "@/util/NavigationUtil";
 
 const MyInfoScreen = () => {
   /** click **/
@@ -22,6 +32,25 @@ const MyInfoScreen = () => {
   return (
     <SafeAreaView style={s.root}>
       <View style={s.innerRoot}>
+        {/* 0. header */}
+        <View style={[headerStyles.headerContainer, headerStyles.headerCenter]}>
+          <TouchableOpacity
+            style={[
+              headerStyles.headerClickable,
+              headerStyles.headerPositional,
+              headerStyles.headerIcon,
+            ]}
+            onPress={navUtils.onPress_goBack}
+          >
+            <Image
+              source={require("#/icons/arrow_left.png")}
+              style={headerStyles.headerIcon}
+            />
+          </TouchableOpacity>
+
+          <Text style={[headerStyles.headerTitle, { flex: 4.1 }]}>내 정보</Text>
+        </View>
+
         {/* 1. content View */}
         <View style={s.contentLabelContainer}>
           <View style={s.contentTitleLabelContainer}>

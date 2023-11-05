@@ -41,7 +41,7 @@ const onReady = async () => {
 
 const Navigation = () => (
   <NavigationContainer ref={navRef} onReady={onReady}>
-    <Stack.Navigator initialRouteName="ActivatedAlarm">
+    <Stack.Navigator initialRouteName="Settings">
       <Stack.Screen
         name="Login"
         component={Screens.LoginScreen}
@@ -111,13 +111,7 @@ const Navigation = () => (
       <Stack.Screen
         name="MyInfo"
         component={Screens.MyInfoScreen}
-        options={{
-          title: "내 정보",
-          headerLeft: (_) => (
-            <LeftArrowIcon onPress={navUtils.onPress_goBack} useTouch />
-          ),
-          ...commonHeaderOptions,
-        }}
+        options={{ headerShown: false }}
       />
 
       <Stack.Screen
