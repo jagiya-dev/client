@@ -9,6 +9,13 @@ export const useInitNotification = () => {
 
   useEffect(() => {
     async function bootstrap() {
+      if (Platform.OS === "android") {
+        await notifee.createChannel({
+          id: "readyUmbrella",
+          name: "readyUmbrella",
+        });
+      }
+
       const initialNotification = await notifee.getInitialNotification();
 
       if (initialNotification) {

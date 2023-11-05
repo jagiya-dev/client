@@ -9,31 +9,43 @@ export const useHandleForegroundNotification = () => {
 
   useEffect(() => {
     return notifee.onForegroundEvent(async ({ type, detail }) => {
+      const alarmId = detail.notification?.data?.alarmId;
+
       switch (type) {
-        // case EventType.UNKNOWN:
-        //   break;
-        //
         case EventType.DISMISSED:
-          console.log(
-            `[${Platform.OS}] User dismissed notification`,
-            detail.notification,
-          );
+          {
+            console.log(
+              `[${Platform.OS}] User dismissed notification`,
+              detail.notification,
+            );
+            navigation.navigate("ActivatedAlarm", {
+              alarmId,
+            });
+          }
           break;
 
         case EventType.PRESS:
-          console.log(
-            `[${Platform.OS}] User pressed notification`,
-            detail.notification,
-          );
-          navigation.navigate("ActivatedAlarm");
+          {
+            console.log(
+              `[${Platform.OS}] User pressed notification`,
+              detail.notification,
+            );
+            navigation.navigate("ActivatedAlarm", {
+              alarmId,
+            });
+          }
           break;
 
         case EventType.ACTION_PRESS:
-          console.log(
-            `[${Platform.OS}] User pressed notification action`,
-            detail.notification,
-          );
-          navigation.navigate("ActivatedAlarm");
+          {
+            console.log(
+              `[${Platform.OS}] User pressed notification action`,
+              detail.notification,
+            );
+            navigation.navigate("ActivatedAlarm", {
+              alarmId,
+            });
+          }
           break;
 
         case EventType.DELIVERED:

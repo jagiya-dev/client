@@ -24,12 +24,12 @@ import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 import { getPrivacyPolicy, getTermsOfUse } from "@/network/api";
 import { headerStyles } from "@/components/Header";
 import navUtils from "@/util/NavigationUtil";
+import { useQuestHasLoginHistory } from "@/hook/useQuestHasLoginHistory";
 
 type Props = NativeStackScreenProps<StackParamList, "Login">;
 
 const LoginScreen = ({ route, navigation }: Props) => {
-  const { getItem, setItem, mergeItem, removeItem } =
-    useAsyncStorage("localAuthState");
+  const { setItem } = useAsyncStorage("localAuthState");
 
   const isSupportAppleLogin = useObservableState({
     observable: apple.isSupportAppleLogin$,
@@ -37,31 +37,7 @@ const LoginScreen = ({ route, navigation }: Props) => {
 
   const navigateToMain = () => navigation.navigate("Main");
 
-  useEffect(() => {
-    const queryHasLoginHistory = async () => {
-      try {
-        const jsonValue = await getItem((err, result) => {});
-        if (!jsonValue) {
-          return;
-        }
-
-        const localHistory: LocalAuthState = JSON.parse(jsonValue);
-        if (!localHistory) {
-          return;
-        }
-
-        console.log(`[${Platform.OS}] already has login history`, localHistory);
-
-        local.hydrate(localHistory);
-
-        navigateToMain();
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    // queryHasLoginHistory();
-  }, []);
+  useQuestHasLoginHistory(navigateToMain);
 
   useEffect(() => {
     if (Platform.OS !== "ios") return;

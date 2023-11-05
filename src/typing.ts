@@ -44,8 +44,13 @@ export type StackParamList = {
   CreateAlarm: {
     alarm?: AlarmResponse;
   };
-  ActivatedAlarm: undefined;
-  AlarmDetail: undefined;
+  ActivatedAlarm: {
+    alarmId: string;
+  };
+  AlarmDetail: {
+    isComingFromActivatedAlarm: boolean;
+    alarmId: string;
+  };
   AddRegion: undefined;
   Settings: undefined;
   MyInfo: undefined;

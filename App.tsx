@@ -9,8 +9,8 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import { handleBackgroundNotification } from "@/util/notification/useHandleBackgroundNotification";
-import { useAndroidBatteryOptimize } from "@/util/notification/useAndroidBatterOptimize";
-import { useAndroidPowerManager } from "@/util/notification/useAndroidPowerManager";
+import { useAndroidBatteryOptimize } from "@/util/useAndroidBatterOptimize";
+import { useAndroidPowerManager } from "@/util/useAndroidPowerManager";
 import Navigation from "@/navigation/navigation";
 
 import "react-native-get-random-values";

@@ -41,12 +41,11 @@ const onReady = async () => {
 
 const Navigation = () => (
   <NavigationContainer ref={navRef} onReady={onReady}>
-    <Stack.Navigator initialRouteName="Login">
+    <Stack.Navigator initialRouteName="ActivatedAlarm">
       <Stack.Screen
         name="Login"
         component={Screens.LoginScreen}
         options={{
-          // headerShown: false,
           title: "로그인",
           headerRight: () => (
             <TouchableOpacity onPress={navUtils.onPress_SkipToMainWithoutLogin}>

@@ -12,8 +12,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useInitNotification } from "@/util/notification/useInitNotification";
-import { useHandleForegroundNotification } from "@/util/notification/useHandleForegroundNotification";
 import Text from "@/components/Text";
 import {
   CloseIcon,
@@ -212,13 +210,6 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
     const volume = Number(value[0].toFixed(2));
     soundVolumeBehaviours.setSoundVolume(volume);
   };
-
-  useHandleForegroundNotification();
-
-  const loading = useInitNotification();
-  if (loading) {
-    return null;
-  }
 
   const onPressButton_deleteRegion = (locationName: string) => {
     locationBehaviours.removeLocation(locationName);

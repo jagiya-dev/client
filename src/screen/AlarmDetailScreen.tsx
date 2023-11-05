@@ -2,31 +2,66 @@ import Text from "@/components/Text";
 import { FlatList, SafeAreaView, StyleSheet, View } from "react-native";
 import { Button } from "@/components/button";
 import { CloseIcon } from "@/components/Icon";
-import { useObservableState } from "@/hook/useObservableState";
-import { alarmList$ } from "@/state/alarm/alarm.state";
-import { useMemo } from "react";
-import LocationItem from "@/components/location/LocationItem";
+import { useEffect, useState } from "react";
 import { font } from "@/styles/font";
 import { color } from "@/styles/color";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackParamList } from "@/typing";
+import { AlarmDetailResponse, getAlarmDetail } from "@/network/api";
+import { useQuestHasLoginHistory } from "@/hook/useQuestHasLoginHistory";
+import LocationItem from "@/components/location/LocationItem";
 
 type ScreenProps = NativeStackScreenProps<StackParamList, "AlarmDetail">;
 const AlarmDetailScreen = ({ route, navigation }: ScreenProps) => {
-  const alarms = useObservableState({
-    observable: alarmList$,
-  });
+  const { params } = route;
+  const isComingFromActivatedAlarm =
+    params?.isComingFromActivatedAlarm ?? false;
+
+  const alarmId = params?.alarmId ?? "15";
+
+  useQuestHasLoginHistory();
+
+  const [alarmDetail, setAlarmDetail] = useState<AlarmDetailResponse>();
+
+  console.log("alarmDetail", JSON.stringify(alarmDetail, null, 2));
+
+  useEffect(() => {
+    async function refetchFromEditAlarm() {
+      const response = await getAlarmDetail({
+        alarmId,
+      });
+
+      console.log(
+        "refetch from AlarmDetailScreen",
+        JSON.stringify(response, null, 2),
+      );
+
+      const { data } = response;
+      setAlarmDetail(data);
+
+      const soundVolume = data?.volume ?? 0.5;
+
+      // get sound
+      // get sound volume
+      // play sound alarm
+      // with message.
+
+      // soundVolumeBehaviours.setSoundVolume(soundVolume);
+      // reminderBehaviours.setReminderDirectly(Number(data?.reminder) ?? 0);
+      // soundBehaviours.selectSound(
+      //   data?.alarmSoundId?.toString() ?? "0",
+      //   soundVolume,
+      // );
+      // repeatBehaviours.setRepeat(data?.alarmWeek ?? []);
+    }
+
+    refetchFromEditAlarm();
+  }, []);
 
   const onPressButton_ExitAlarmDetailScreen = () => {
-    console.log("onPressButton_ExitAlarmDetailScreen");
+    // TODO: Dispose Resources.
     navigation.navigate("Main");
   };
-
-  const locations = useMemo(
-    () =>
-      alarms?.flatMap((alarm) => alarm.alarmLocation).slice(0, alarms.length),
-    [alarms],
-  );
 
   return (
     <SafeAreaView style={s.root}>
@@ -47,36 +82,38 @@ const AlarmDetailScreen = ({ route, navigation }: ScreenProps) => {
 
       {/* 3. locations */}
       <View style={s.locationContainer}>
-        {!!locations && locations.length > 0 && (
-          <FlatList
-            data={locations.map((location) => ({
-              location: location?.eupMyun,
-              isSelected: false,
-            }))}
-            renderItem={(data) => (
-              <LocationItem key={data.index} {...data.item} />
-            )}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-          />
-        )}
+        {!!alarmDetail?.alarmLocation &&
+          alarmDetail.alarmLocation.length > 0 && (
+            <FlatList
+              data={alarmDetail.alarmLocation}
+              renderItem={(data) => (
+                <LocationItem
+                  key={data.index}
+                  eupMyun={data.item.eupMyun}
+                  isSelected={false}
+                />
+              )}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+            />
+          )}
       </View>
 
       {/* 4. Times */}
       <View style={s.timeContainer}>
-        <FlatList
-          data={alarms}
-          renderItem={(data) => (
-            <View style={s.timeItemContainer} key={data.item.alarmId}>
-              <View style={s.timeItem}>
-                <Text style={s.timeItemText}>{data.item.alarmTime}</Text>
-                <Text style={s.timeItemTextDate}>{data.item.timeOfDay}</Text>
-              </View>
-            </View>
-          )}
-          horizontal={false}
-          showsHorizontalScrollIndicator={false}
-        />
+        {/*<FlatList*/}
+        {/*  data={alarms}*/}
+        {/*  renderItem={(data) => (*/}
+        {/*    <View style={s.timeItemContainer} key={data.item.alarmId}>*/}
+        {/*      <View style={s.timeItem}>*/}
+        {/*        <Text style={s.timeItemText}>{data.item.alarmTime}</Text>*/}
+        {/*        <Text style={s.timeItemTextDate}>{data.item.timeOfDay}</Text>*/}
+        {/*      </View>*/}
+        {/*    </View>*/}
+        {/*  )}*/}
+        {/*  horizontal={false}*/}
+        {/*  showsHorizontalScrollIndicator={false}*/}
+        {/*/>*/}
       </View>
     </SafeAreaView>
   );

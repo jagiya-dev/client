@@ -1,23 +1,73 @@
 import { Button } from "@/components/button";
 import { StackParamList } from "@/typing";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { Image, Modal, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
-import { useEffect, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import AlarmDeferModal from "@/components/alarm/AlarmDeferModal";
 import { startCountdown } from "@/state/alarmDefer/alarmDefer.state";
-import DeviceInfo from "react-native-device-info";
+import { useFocusEffect } from "@react-navigation/native";
+import { AlarmDetailResponse, getAlarmDetail } from "@/network/api";
+import alarmDetailScreen from "@/screen/AlarmDetailScreen";
 
 type PageProps = NativeStackScreenProps<StackParamList, "ActivatedAlarm">;
 
 const ActivatedAlarmScreen = ({ route, navigation }: PageProps) => {
+  const { params } = route;
+  const alarmId = params?.alarmId ?? "0";
+
   const [isDeferred, setDeferred] = useState<boolean>(false);
 
+  const [alarmDetail, setAlarmDetail] = useState<AlarmDetailResponse>();
+  const locationString = useMemo(() => {
+    const locations = alarmDetail?.alarmLocation;
+    if (!locations) return "";
+
+    const length = locations.length;
+    const firstLocation = locations[0].eupMyun + " " + locations[0].guGun;
+
+    if (length === 1) return firstLocation;
+    return `${firstLocation} 외 ${length - 1}곳`;
+  }, [alarmDetail]);
+
+  const timeString = useMemo(() => {
+    let alarmTime = alarmDetail?.alarmTime ?? "";
+    if (alarmTime) {
+      alarmTime =
+        alarmTime.substring(0, 2) + ":" + alarmTime.substring(2, 4) + "시";
+    }
+
+    let alarmTimeOfDay = alarmDetail?.timeOfDay;
+    alarmTimeOfDay = alarmTimeOfDay?.toLowerCase() === "AM" ? "오전" : "오후";
+
+    return `${alarmTimeOfDay} ${alarmTime}`;
+  }, [alarmDetail]);
+
+  useFocusEffect(() => {
+    const fetchCurrentAlarmInfo = async () => {
+      try {
+        const { data } = await getAlarmDetail({ alarmId });
+
+        if (!data) return;
+
+        console.log(JSON.stringify(data, null, 2));
+        setAlarmDetail(data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchCurrentAlarmInfo();
+  });
+
   const onPressButton_closeAlarm = () => {
-    navigation.navigate("AlarmDetail");
+    navigation.navigate("AlarmDetail", {
+      isComingFromActivatedAlarm: true,
+      alarmId,
+    });
   };
 
   const onPressButton_deferAlarm = () => {
@@ -39,19 +89,16 @@ const ActivatedAlarmScreen = ({ route, navigation }: PageProps) => {
       <SafeAreaView style={s.root}>
         {/* 1. Indicator Phrases */}
         <View style={s.topContainer}>
-          <Text style={s.topLocationText}>관악구 봉천동 외 3곳</Text>
+          <Text style={s.topLocationText}>{locationString}</Text>
           <Text style={s.topWeatherText}>
-            <Text style={s.topTimeText}>오전</Text>
-            에 비 예보가 있어요.
+            <Text style={s.topTimeText}>{timeString}</Text>에 비 예보가 있어요.
           </Text>
         </View>
 
         {/* 2. Gadget Texts */}
         <View style={s.gadgetContainer}>
           <Text style={s.gadgetText}>우산</Text>
-          <Text style={s.gadgetLabel}>
-            을 꼭 챙겨주세요!
-          </Text>
+          <Text style={s.gadgetLabel}>을 꼭 챙겨주세요!</Text>
         </View>
 
         {/* 3. Gadget Image */}
@@ -60,10 +107,7 @@ const ActivatedAlarmScreen = ({ route, navigation }: PageProps) => {
             source={require("#/images/umbrella.png")}
             style={s.weatherImage}
           />
-          <Image
-            source={require("#/images/rains.png")}
-            style={s.rainImage}
-          />
+          <Image source={require("#/images/rains.png")} style={s.rainImage} />
         </View>
 
         {/* 4. Bottom Actions */}
@@ -78,7 +122,6 @@ const ActivatedAlarmScreen = ({ route, navigation }: PageProps) => {
             </Button>
           </View>
         )}
-
       </SafeAreaView>
     </>
   );
@@ -154,7 +197,7 @@ const s = StyleSheet.create({
   // 4. bottom actions
   bottomContainer: {
     paddingHorizontal: 50,
-    marginTop: 35.5
+    marginTop: 35.5,
   },
   closeButton: {
     backgroundColor: color.primary["600"],
@@ -162,7 +205,7 @@ const s = StyleSheet.create({
     paddingVertical: 16,
     borderRadius: 99,
     alignItems: "center",
-    width: 290
+    width: 290,
   },
   closeButtonText: {
     color: "white",
@@ -173,7 +216,7 @@ const s = StyleSheet.create({
   deferButton: {
     width: 290,
     alignItems: "center",
-    marginTop: 32
+    marginTop: 32,
   },
   deferButtonText: {
     color: color.primary["600"],

@@ -2,29 +2,26 @@ import Tag from "@/components/Tag";
 import Text from "@/components/Text";
 import { StyleSheet } from "react-native";
 import { color } from "@/styles/color";
-import { WeatherModel } from "@/typing";
 import { cond } from "@/util/StyleHelper";
 import { font } from "@/styles/font";
+import { AlarmLocationDetailResponse } from "@/network/api";
 
 type Props = {
   isSelected: boolean;
-} & Pick<WeatherModel, "location">;
-const LocationItem = (props: Props) => {
-  return (
-    <Tag
-      style={cond({
-        predicate: () => props.isSelected,
-        true$: s.selected,
-        underlyingStyles: s.root
-      })}
-    >
-      <Text style={s.text}>
-        {props.location}
-      </Text>
-    </Tag>
-  );
+} & Pick<AlarmLocationDetailResponse, "eupMyun">;
 
-};
+const LocationItem = (props: Props) => (
+  <Tag
+    style={cond({
+      predicate: () => props.isSelected,
+      true$: s.selected,
+      underlyingStyles: s.root,
+    })}
+  >
+    <Text style={s.text}>{props.eupMyun}</Text>
+  </Tag>
+);
+
 export default LocationItem;
 
 const s = StyleSheet.create({
@@ -38,13 +35,12 @@ const s = StyleSheet.create({
   },
   selected: {
     backgroundColor: color.sub["200"],
-    color: "white"
+    color: "white",
   },
   text: {
     color: color.sub["500"],
     fontSize: font.title["2"].size,
     fontWeight: font.title["2"].weight,
     lineHeight: font.title["2"].height,
-
-  }
+  },
 });
