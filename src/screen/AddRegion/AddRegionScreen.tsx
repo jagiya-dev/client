@@ -9,9 +9,11 @@ import { color } from "@/styles/color";
 import { font } from "@/styles/font";
 import React, { useEffect, useState } from "react";
 import {
+  Image,
   Platform,
   StyleSheet,
   TouchableNativeFeedback,
+  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -36,6 +38,8 @@ import {
   behaviours as searchResultsBehaviours,
 } from "@/state/addRegion/search/searchResults.state";
 import { behaviours as locationBehaviours } from "@/state/createAlarm/location.state";
+import { headerStyles } from "@/components/Header";
+import navUtils from "@/util/NavigationUtil";
 
 type ScreenProps = NativeStackScreenProps<StackParamList, "AddRegion">;
 
@@ -115,6 +119,24 @@ const AddRegionScreen = ({ route, navigation }: ScreenProps) => {
 
   return (
     <SafeAreaView style={s.root}>
+      <View style={[headerStyles.headerContainer, headerStyles.headerCenter]}>
+        <TouchableOpacity
+          style={[
+            headerStyles.headerClickable,
+            headerStyles.headerPositional,
+            headerStyles.headerIcon,
+          ]}
+          onPress={navUtils.onPress_goBack}
+        >
+          <Image
+            source={require("#/icons/arrow_left.png")}
+            style={headerStyles.headerIcon}
+          />
+        </TouchableOpacity>
+
+        <Text style={[headerStyles.headerTitle, { flex: 4.5 }]}>지역 추가</Text>
+      </View>
+
       {/* 1. forecast search bar */}
       <Text style={s.regionSearchBarLabel}>어떤 지역의 예보를 확인할까요?</Text>
 
