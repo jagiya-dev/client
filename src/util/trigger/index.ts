@@ -12,30 +12,32 @@ type TriggerOperationArgs = {
   title: string;
 };
 
-export async function retrieveTriggerIds(): Promise<string[]> {
+export const retrieveTriggerIds = async (): Promise<readonly string[]> => {
   return await notifee.getTriggerNotificationIds();
-}
-export async function isTriggerExist(alarmId: string): Promise<boolean> {
+};
+
+export const isTriggerExist = async (
+  alarmId: TriggerOperationArgs["alarmId"],
+): Promise<boolean> => {
   try {
-    return (await retrieveTriggerIds()).includes(alarmId);
+    const triggerIds = await retrieveTriggerIds();
+    return triggerIds.includes(alarmId);
   } catch (err) {
     console.error(err);
     return false;
   }
-}
+};
 
-export async function cancelTrigger({
-  alarmId,
-}: Pick<TriggerOperationArgs, "alarmId">) {
-  await notifee.cancelNotification(alarmId);
-}
+export const cancelTrigger = async (
+  alarmId: TriggerOperationArgs["alarmId"],
+): Promise<void> => {
+  if (await isTriggerExist(alarmId)) {
+    await notifee.cancelNotification(alarmId);
+  }
+};
 
-export async function createOrUpdateNewTrigger({
-  alarmId,
-  time,
-  locationList,
-  title,
-}: TriggerOperationArgs) {
+export const createOrUpdateNewTrigger = async (args: TriggerOperationArgs) => {
+  const { alarmId, time, locationList, title } = args;
   let isGoodToCreateAlarm = true;
 
   const settings = await notifee.getNotificationSettings();
@@ -43,6 +45,7 @@ export async function createOrUpdateNewTrigger({
   if (settings.android.alarm === AndroidNotificationSetting.DISABLED) {
     await notifee.openAlarmPermissionSettings();
 
+    // disabled again?
     if (settings.android.alarm === AndroidNotificationSetting.DISABLED) {
       Alert.alert(
         "알림 권한이 필요합니다.",
@@ -50,9 +53,12 @@ export async function createOrUpdateNewTrigger({
         [{ text: "확인" }, { text: "취소" }],
         { cancelable: false },
       );
+
       isGoodToCreateAlarm = false;
+
       return;
     }
+
     isGoodToCreateAlarm = true;
   }
 
@@ -97,4 +103,4 @@ export async function createOrUpdateNewTrigger({
     },
     trigger,
   );
-}
+};

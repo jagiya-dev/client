@@ -17,6 +17,7 @@ import AlarmAddLocationItem from "@/components/alarm/Alarm.AddLocationItem";
 import { behaviours as AlarmBehaviours } from "@/state/alarm/alarm.state";
 import { useNavigation } from "@react-navigation/native";
 import { weekDaysLabel } from "@/state/const";
+import { cancelTrigger } from "@/util/trigger";
 
 const AlarmItem = (alarm: AlarmResponse) => {
   const isItemEnabled = alarm.enabled === 1;
@@ -42,8 +43,9 @@ const AlarmItem = (alarm: AlarmResponse) => {
     dependencies: [swipeableRef],
   });
 
-  const onClose_deleteAlarm = () => {
+  const onClose_deleteAlarm = async () => {
     AlarmBehaviours.deleteCurrentAlarm(alarm.alarmId);
+    await cancelTrigger(alarm.alarmId?.toString() ?? "");
   };
 
   const onPress_alarmToggleEnabled = () => {
