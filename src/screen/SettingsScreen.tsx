@@ -212,7 +212,10 @@ const SettingsScreen = ({ route, navigation }: Props) => {
             <Text style={s.contentLabel}>이용약관</Text>
           </Button>
 
-          <Button onPress={onPress_termsOfUse} style={s.contentToggleModeText}>
+          <Button
+            onPress={onPress_privacyPolicy}
+            style={s.contentToggleModeText}
+          >
             <InformationMyPageIcon style={s.iconStyle} />
             <Text style={s.contentLabel}>개인정보 처리방침</Text>
           </Button>
