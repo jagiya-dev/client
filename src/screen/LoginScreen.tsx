@@ -84,7 +84,7 @@ const LoginScreen = ({ route, navigation }: Props) => {
     navigateToMain();
   };
 
-  const onPress_useAndCondition = async () => {
+  const onPress_termsOfUse = async () => {
     const response = await getTermsOfUse();
 
     navigation.navigate("Webview", {
@@ -147,7 +147,7 @@ const LoginScreen = ({ route, navigation }: Props) => {
         </View>
 
         <View style={s.privacyViewTextView}>
-          <TouchableWithoutFeedback onPress={onPress_useAndCondition}>
+          <TouchableWithoutFeedback onPress={onPress_termsOfUse}>
             <Text style={[s.privacyTextInside, s.privacyText]}>이용약관</Text>
           </TouchableWithoutFeedback>
 
