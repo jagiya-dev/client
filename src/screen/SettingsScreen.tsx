@@ -8,7 +8,9 @@ import { color } from "@/styles/color";
 import { font } from "@/styles/font";
 import {
   Image,
+  Platform,
   SafeAreaView,
+  Share,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -34,8 +36,45 @@ const SettingsScreen = ({ route, navigation }: Props) => {
     navigation.navigate("MyInfo");
   };
 
-  const onPressButton_share = () => {
+  const onPressButton_share = async () => {
     console.log("onPressButton_share");
+
+    // TODO: add app store url
+    const urlToShare = Platform.select({
+      ios: "https://www.google.com/",
+      android: "https://www.google.com/",
+    });
+
+    try {
+      const result = await Share.share({
+        message: "공유하시겠습니까!",
+        title: "공유하기!",
+        url: urlToShare,
+      });
+
+      switch (result.action) {
+        case "sharedAction":
+          {
+            if (result.activityType) {
+              console.log("sharedAction: ", result.activityType);
+              // shared with activity type of result.activityType
+            } else {
+              console.log("shared!");
+              // shared
+            }
+          }
+          break;
+
+        case "dismissedAction":
+          {
+            // dismissed
+            console.log("dismissedAction");
+          }
+          break;
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const onPressButton_logOut = async () => {
