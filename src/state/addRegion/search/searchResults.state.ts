@@ -64,7 +64,7 @@ const reset = () => {
   selectedLocation?.next(undefined);
 };
 
-const fetchRecentSearchResults = async () => {
+const fetchRecentSearchResults = async (isAlreadyFetched: boolean) => {
   try {
     let snsId = "";
     let snsType = "";
@@ -93,6 +93,8 @@ const fetchRecentSearchResults = async () => {
     console.log(JSON.stringify(response.data, null, 2));
 
     if (!response.data) throw new Error(response.message);
+
+    if (isAlreadyFetched) return;
 
     recentSearchResults.next(response.data);
   } catch (error) {

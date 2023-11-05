@@ -2,7 +2,7 @@ import Text from "@/components/Text";
 import { FlatList, SafeAreaView, StyleSheet, View } from "react-native";
 import { Button } from "@/components/button";
 import { CloseIcon } from "@/components/Icon";
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { font } from "@/styles/font";
 import { color } from "@/styles/color";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -10,6 +10,7 @@ import { StackParamList } from "@/typing";
 import { AlarmDetailResponse, getAlarmDetail } from "@/network/api";
 import { useQuestHasLoginHistory } from "@/hook/useQuestHasLoginHistory";
 import LocationItem from "@/components/location/LocationItem";
+import { useFocusEffect } from "@react-navigation/native";
 
 type ScreenProps = NativeStackScreenProps<StackParamList, "AlarmDetail">;
 const AlarmDetailScreen = ({ route, navigation }: ScreenProps) => {
@@ -25,38 +26,48 @@ const AlarmDetailScreen = ({ route, navigation }: ScreenProps) => {
 
   console.log("alarmDetail", JSON.stringify(alarmDetail, null, 2));
 
-  useEffect(() => {
-    async function refetchFromEditAlarm() {
-      const response = await getAlarmDetail({
-        alarmId,
-      });
+  useFocusEffect(
+    useCallback(() => {
+      let alreadyFetched = false;
+      async function refetchFromEditAlarm() {
+        const response = await getAlarmDetail({
+          alarmId,
+        });
 
-      console.log(
-        "refetch from AlarmDetailScreen",
-        JSON.stringify(response, null, 2),
-      );
+        console.log(
+          "refetch from AlarmDetailScreen",
+          JSON.stringify(response, null, 2),
+        );
 
-      const { data } = response;
-      setAlarmDetail(data);
+        const { data } = response;
 
-      const soundVolume = data?.volume ?? 0.5;
+        if (alreadyFetched) return;
 
-      // get sound
-      // get sound volume
-      // play sound alarm
-      // with message.
+        setAlarmDetail(data);
 
-      // soundVolumeBehaviours.setSoundVolume(soundVolume);
-      // reminderBehaviours.setReminderDirectly(Number(data?.reminder) ?? 0);
-      // soundBehaviours.selectSound(
-      //   data?.alarmSoundId?.toString() ?? "0",
-      //   soundVolume,
-      // );
-      // repeatBehaviours.setRepeat(data?.alarmWeek ?? []);
-    }
+        const soundVolume = data?.volume ?? 0.5;
 
-    refetchFromEditAlarm();
-  }, []);
+        // get sound
+        // get sound volume
+        // play sound alarm
+        // with message.
+
+        // soundVolumeBehaviours.setSoundVolume(soundVolume);
+        // reminderBehaviours.setReminderDirectly(Number(data?.reminder) ?? 0);
+        // soundBehaviours.selectSound(
+        //   data?.alarmSoundId?.toString() ?? "0",
+        //   soundVolume,
+        // );
+        // repeatBehaviours.setRepeat(data?.alarmWeek ?? []);
+      }
+
+      refetchFromEditAlarm();
+
+      return () => {
+        alreadyFetched = true;
+      };
+    }, []),
+  );
 
   const onPressButton_ExitAlarmDetailScreen = () => {
     // TODO: Dispose Resources.

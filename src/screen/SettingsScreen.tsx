@@ -33,7 +33,15 @@ const SettingsScreen = ({ route, navigation }: Props) => {
   const { setItem } = useAsyncStorage("localAuthState");
 
   const onPressButton_openMyInfo = () => {
-    navigation.navigate("MyInfo");
+    const { userId } = local.localAuthState;
+    if (!userId) {
+      console.error(`내 정보 열었지만, userId === undefined`);
+      return;
+    }
+
+    navigation.navigate("MyInfo", {
+      userId: userId.toString(),
+    });
   };
 
   const onPressButton_share = async () => {

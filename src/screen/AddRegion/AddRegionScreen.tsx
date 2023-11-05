@@ -7,7 +7,7 @@ import {
 import Text from "@/components/Text";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   Image,
   Platform,
@@ -40,6 +40,7 @@ import {
 import { behaviours as locationBehaviours } from "@/state/createAlarm/location.state";
 import { headerStyles } from "@/components/Header";
 import navUtils from "@/util/NavigationUtil";
+import { useFocusEffect } from "@react-navigation/native";
 
 type ScreenProps = NativeStackScreenProps<StackParamList, "AddRegion">;
 
@@ -62,10 +63,12 @@ const AddRegionScreen = ({ route, navigation }: ScreenProps) => {
     observable: selectedLocationAsStr$,
   });
 
-  useEffect(() => {
-    timeTableBehaviours.reset();
-    searchResultsBehaviours.reset();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      timeTableBehaviours.reset();
+      searchResultsBehaviours.reset();
+    }, []),
+  );
 
   const deleteFromSelectedTimes = (index: number) => {
     if (!allSelectedTimes) return;

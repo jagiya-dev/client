@@ -1,6 +1,7 @@
-import { useEffect } from "react";
+import { useCallback } from "react";
 import type { DependencyList } from "react";
 import { Observable, Observer } from "rxjs";
+import { useFocusEffect } from "@react-navigation/native";
 
 type UseObservableEffectArgs<T> = {
   observable: Observable<T>;
@@ -13,8 +14,10 @@ export const useObservableEffect = <T>({
   subscribeFn,
   dependencies,
 }: UseObservableEffectArgs<T>): void => {
-  useEffect(() => {
-    const dispose = observable.subscribe(subscribeFn);
-    return () => dispose?.unsubscribe();
-  }, [observable, subscribeFn, ...(dependencies || [])]);
+  useFocusEffect(
+    useCallback(() => {
+      const dispose = observable.subscribe(subscribeFn);
+      return () => dispose?.unsubscribe();
+    }, [observable, subscribeFn, ...(dependencies || [])]),
+  );
 };

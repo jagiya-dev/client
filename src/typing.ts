@@ -53,7 +53,9 @@ export type StackParamList = {
   };
   AddRegion: undefined;
   Settings: undefined;
-  MyInfo: undefined;
+  MyInfo: {
+    userId: string;
+  };
   Playground: undefined;
   Webview: {
     method?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";

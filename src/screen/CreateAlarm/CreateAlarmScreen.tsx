@@ -19,7 +19,7 @@ import {
   SoundVolumeIcon,
   VibrationIcon,
 } from "@/components/Icon";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import DatePicker from "react-native-date-picker";
 import { color } from "@/styles/color";
 import { Shadow } from "react-native-shadow-2";
@@ -74,6 +74,7 @@ import { amItems, pmItems } from "@/state/addRegion/regionTimetable.data";
 import { local } from "@/state/auth/auth.state.local";
 import dayjs from "dayjs";
 import { createOrUpdateNewTrigger } from "@/util/trigger";
+import { useFocusEffect } from "@react-navigation/native";
 
 const createDateFromHourAndMinute = (hour: string, minute: string) => {
   const date = new Date();
@@ -94,30 +95,45 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
     console.log(JSON.stringify(alarm, null, 2));
   }
 
-  useEffect(() => {
-    async function refetchFromEditAlarm() {
-      if (!isEditMode) return;
+  useFocusEffect(
+    useCallback(() => {
+      let alreadyRefetched = false;
 
-      const alarmId = alarm?.alarmId?.toString() ?? "";
-      const response = await getAlarmDetail({
-        alarmId,
-      });
+      async function refetchFromEditAlarm() {
+        if (!isEditMode) return;
 
-      console.log("refetch from EditAlarm", JSON.stringify(response, null, 2));
+        const alarmId = alarm?.alarmId?.toString() ?? "";
+        const response = await getAlarmDetail({
+          alarmId,
+        });
 
-      const { data } = response;
+        console.log(
+          "refetch from EditAlarm",
+          JSON.stringify(response, null, 2),
+        );
 
-      const soundVolume = data?.volume ?? 0.5;
-      soundVolumeBehaviours.setSoundVolume(soundVolume);
-      reminderBehaviours.setReminderDirectly(Number(data?.reminder) ?? 0);
-      soundBehaviours.selectSound(
-        data?.alarmSoundId?.toString() ?? "0",
-        soundVolume,
-      );
-      repeatBehaviours.setRepeat(data?.alarmWeek ?? []);
-    }
-    refetchFromEditAlarm();
-  }, [alarm]);
+        const { data } = response;
+
+        if (alreadyRefetched) return;
+
+        const soundVolume = data?.volume ?? 0.5;
+        soundVolumeBehaviours.setSoundVolume(soundVolume);
+
+        reminderBehaviours.setReminderDirectly(Number(data?.reminder) ?? 0);
+        soundBehaviours.selectSound(
+          data?.alarmSoundId?.toString() ?? "0",
+          soundVolume,
+        );
+        repeatBehaviours.setRepeat(data?.alarmWeek ?? []);
+      }
+
+      refetchFromEditAlarm();
+
+      return () => {
+        alreadyRefetched = true;
+      };
+    }, [alarm, alarm?.alarmId]),
+  );
 
   const [isCreateAlarmDialogOpen, setIsCreateAlarmDialogOpen] = useState<
     boolean | undefined
@@ -145,10 +161,6 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
         )
       : new Date(),
   );
-
-  useEffect(() => {
-    console.log("alarmDate changed: ", dayjs(alarmDate));
-  }, [alarmDate]);
 
   const alarmHours = useMemo(
     () => alarmDate.getHours().toString().padStart(2, "0"),

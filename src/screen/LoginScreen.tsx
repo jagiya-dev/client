@@ -14,7 +14,7 @@ import { color } from "@/styles/color";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackParamList } from "@/typing";
 import appleAuth from "@invertase/react-native-apple-authentication";
-import { useEffect } from "react";
+import { useCallback } from "react";
 import { useObservableState } from "@/hook/useObservableState";
 import { apple } from "@/state/auth/auth.state.apple";
 import { kakao } from "@/state/auth/auth.state.kakao";
@@ -22,6 +22,7 @@ import { local } from "@/state/auth/auth.state.local";
 import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 import { getPrivacyPolicy, getTermsOfUse } from "@/network/api";
 import { useQuestHasLoginHistory } from "@/hook/useQuestHasLoginHistory";
+import { useFocusEffect } from "@react-navigation/native";
 
 type Props = NativeStackScreenProps<StackParamList, "Login">;
 
@@ -36,17 +37,19 @@ const LoginScreen = ({ route, navigation }: Props) => {
 
   useQuestHasLoginHistory(navigateToMain);
 
-  useEffect(() => {
-    if (Platform.OS !== "ios") return;
-    if (!isSupportAppleLogin) return;
+  useFocusEffect(
+    useCallback(() => {
+      if (Platform.OS !== "ios") return;
+      if (!isSupportAppleLogin) return;
 
-    // onCredentialRevoked returns a function that will remove the event listener. useEffect will call this function when the component unmounts
-    return appleAuth.onCredentialRevoked(async () => {
-      console.warn(
-        "If this function executes, User Credentials have been Revoked",
-      );
-    });
-  }, []);
+      // onCredentialRevoked returns a function that will remove the event listener.
+      return appleAuth.onCredentialRevoked(async () => {
+        console.warn(
+          "If this function executes, User Credentials have been Revoked",
+        );
+      });
+    }, []),
+  );
 
   const onPress_KakaoLoginButton = async () => {
     await kakao.login();
