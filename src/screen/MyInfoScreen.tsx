@@ -4,6 +4,7 @@ import { color } from "@/styles/color";
 import { font } from "@/styles/font";
 import {
   Image,
+  Platform,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -24,6 +25,11 @@ import {
 import { useCallback, useState } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackParamList } from "@/typing";
+import { kakao } from "@/state/auth/auth.state.kakao";
+import { local } from "@/state/auth/auth.state.local";
+import { apple } from "@/state/auth/auth.state.apple";
+import { useAsyncStorage } from "@react-native-async-storage/async-storage";
+import { useObservableState } from "@/hook/useObservableState";
 
 type Props = NativeStackScreenProps<StackParamList, "MyInfo">;
 const MyInfoScreen = ({ route, navigation }: Props) => {
@@ -36,6 +42,12 @@ const MyInfoScreen = ({ route, navigation }: Props) => {
   const onChange_updateNewName = (text: string) => {
     setNewName(text);
   };
+
+  const { setItem } = useAsyncStorage("localAuthState");
+
+  const isSupportAppleLogin = useObservableState({
+    observable: apple.isSupportAppleLogin$,
+  });
 
   useFocusEffect(
     useCallback(() => {
@@ -93,12 +105,26 @@ const MyInfoScreen = ({ route, navigation }: Props) => {
     console.log("onPressButton_loginAndTransformToKakao");
 
     try {
+      await kakao.login();
+
+      local.logout();
+      local.login("kakao");
+      await local.update();
+
+      const persistentLocalAuthState = JSON.stringify(local.localAuthState);
+      console.log(`[${Platform.OS}]`, persistentLocalAuthState);
+
+      await setItem(persistentLocalAuthState);
+
+      const profile = kakao.kakaoProfile;
+      if (!profile) return;
+
       const { data } = await loginAndUserTransform({
-        userId: "",
-        name: "",
-        email: "",
-        snsType: "",
-        tobeSnsId: "",
+        userId: userId,
+        name: profile.name,
+        email: profile.email,
+        snsType: "1",
+        tobeSnsId: profile.id,
       });
       if (!data) return;
 
@@ -112,12 +138,34 @@ const MyInfoScreen = ({ route, navigation }: Props) => {
     console.log("onPressButton_loginAndTransformToApple");
 
     try {
+      if (!isSupportAppleLogin) {
+        console.log(
+          "This device doesn't support Sign in with Apple because API is",
+          Platform.Version,
+        );
+        return;
+      }
+
+      await apple.login();
+
+      local.logout();
+      local.login("apple");
+      await local.update();
+
+      const persistentLocalAuthState = JSON.stringify(local.localAuthState);
+      console.log(`[${Platform.OS}]`, persistentLocalAuthState);
+
+      await setItem(persistentLocalAuthState);
+
+      const info = apple.appleInfo;
+      if (!info) return;
+
       const { data } = await loginAndUserTransform({
-        userId: "",
-        name: "",
-        email: "",
-        snsType: "",
-        tobeSnsId: "",
+        userId,
+        name: info.fullName?.nickname ?? "",
+        email: info.email ?? "",
+        snsType: "2",
+        tobeSnsId: info.user,
       });
       if (!data) return;
 
