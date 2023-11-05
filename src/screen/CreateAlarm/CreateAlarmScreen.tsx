@@ -73,6 +73,7 @@ import {
 import { amItems, pmItems } from "@/state/addRegion/regionTimetable.data";
 import { local } from "@/state/auth/auth.state.local";
 import dayjs from "dayjs";
+import { createOrUpdateNewTrigger } from "@/util/trigger";
 
 const createDateFromHourAndMinute = (hour: string, minute: string) => {
   const date = new Date();
@@ -263,8 +264,6 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
         alarmSoundId,
       };
 
-      let response: any;
-
       if (isEditMode) {
         const updateParams: AlarmUpdateRequest = {
           alarmId: alarm?.alarmId,
@@ -272,13 +271,22 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
         };
 
         console.log("update alarm: ", JSON.stringify(updateParams, null, 2));
-        response = await updateAlarm(updateParams);
+
+        const response = await updateAlarm(updateParams);
+        console.log(JSON.stringify(response, null, 2));
       } else {
         console.log("insert alarm: ", JSON.stringify(sharedParams, null, 2));
-        response = await insertAlarm(sharedParams);
+
+        const response = await insertAlarm(sharedParams);
+        console.log(JSON.stringify(response, null, 2));
       }
 
-      console.log(JSON.stringify(response, null, 2));
+      await createOrUpdateNewTrigger({
+        alarmId: "",
+        time: alarmDate,
+        locationList: alarmLocationList ?? [],
+        title: "",
+      });
 
       navigation.navigate("Main");
     } catch (e) {

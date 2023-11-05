@@ -3,7 +3,6 @@ import {
   Platform,
   SafeAreaView,
   StyleSheet,
-  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
@@ -13,7 +12,7 @@ import { font } from "@/styles/font";
 import { AppleLogo, KakaoLogo } from "@/components/Icon";
 import { color } from "@/styles/color";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { LocalAuthState, StackParamList } from "@/typing";
+import { StackParamList } from "@/typing";
 import appleAuth from "@invertase/react-native-apple-authentication";
 import { useEffect } from "react";
 import { useObservableState } from "@/hook/useObservableState";
@@ -22,8 +21,6 @@ import { kakao } from "@/state/auth/auth.state.kakao";
 import { local } from "@/state/auth/auth.state.local";
 import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 import { getPrivacyPolicy, getTermsOfUse } from "@/network/api";
-import { headerStyles } from "@/components/Header";
-import navUtils from "@/util/NavigationUtil";
 import { useQuestHasLoginHistory } from "@/hook/useQuestHasLoginHistory";
 
 type Props = NativeStackScreenProps<StackParamList, "Login">;

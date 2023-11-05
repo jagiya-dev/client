@@ -18,7 +18,7 @@ import { behaviours as AlarmBehaviours } from "@/state/alarm/alarm.state";
 import { useNavigation } from "@react-navigation/native";
 import { weekDaysLabel } from "@/state/const";
 
-function AlarmItem(alarm: AlarmResponse) {
+const AlarmItem = (alarm: AlarmResponse) => {
   const isItemEnabled = alarm.enabled === 1;
 
   console.log(JSON.stringify(alarm, null, 2));
@@ -183,7 +183,7 @@ function AlarmItem(alarm: AlarmResponse) {
       </Shadow>
     </Swipeable>
   );
-}
+};
 
 export default AlarmItem;
 
