@@ -143,16 +143,37 @@ const AddRegionScreen = ({ route, navigation }: ScreenProps) => {
       {/* 1. forecast search bar */}
       <Text style={s.regionSearchBarLabel}>어떤 지역의 예보를 확인할까요?</Text>
 
-      <TouchableNativeFeedback onPress={onPress_RegionSearchBar}>
-        <View style={s.regionSearchBar}>
-          <SearchIcon style={s.regionSearchBarIcon} />
-          <Text style={s.regionSearchBarInnerText}>
-            {searchedRegionAsStr === "" || !searchedRegionAsStr
-              ? "원하는 지역을 검색해주세요."
-              : searchedRegionAsStr}
-          </Text>
-        </View>
-      </TouchableNativeFeedback>
+      {/*<TouchableNativeFeedback onPress={onPress_RegionSearchBar}>*/}
+      {/*  <View style={s.regionSearchBar}>*/}
+      {/*    <Text style={s.regionSearchBarInnerText}></Text>*/}
+      {/*  </View>*/}
+      {/*</TouchableNativeFeedback>*/}
+
+      <Shadow
+        offset={[0, 2]}
+        distance={2}
+        startColor="rgba(0, 0, 0, 0.1)"
+        style={s.timeContainerShadow}
+        containerStyle={s.regionSearchBar}
+        stretch
+      >
+        <TouchableNativeFeedback
+          onPress={onPress_TimeContainer}
+          style={s.timeTouchable}
+        >
+          <View style={s.timeContainer}>
+            <View style={s.timeContainerLeft}>
+              <SearchIcon style={s.regionSearchBarIcon} />
+              <Text style={s.timeContainerLeftLabel}>
+                {searchedRegionAsStr === "" || !searchedRegionAsStr
+                  ? "원하는 지역을 검색해주세요."
+                  : searchedRegionAsStr}
+              </Text>
+            </View>
+            <DownArrowIcon useTouch />
+          </View>
+        </TouchableNativeFeedback>
+      </Shadow>
 
       {regionBottomSheetState === EBottomSheetOpenState.OPEN && (
         <BottomSheet
@@ -257,21 +278,21 @@ const s = StyleSheet.create({
     marginBottom: 16,
   },
   regionSearchBar: {
-    height: 45,
-
-    backgroundColor: color.gray["100"],
-    borderRadius: 8,
-    flexDirection: "row",
-    alignItems: "center",
+    // height: 45,
+    //
+    // backgroundColor: color.gray["100"],
+    // borderRadius: 8,
+    // flexDirection: "row",
+    // alignItems: "center",
 
     marginBottom: 32,
-    paddingHorizontal: 13,
-    paddingVertical: 13,
+    // paddingHorizontal: 13,
+    // paddingVertical: 13,
   },
   regionSearchBarIcon: {
     width: 18,
     height: 18,
-    tintColor: color.gray["200"],
+    tintColor: color.primary["600"],
     marginRight: 5,
   },
   regionSearchBarInnerText: {
@@ -312,9 +333,9 @@ const s = StyleSheet.create({
   },
   timeContainerLeftLabel: {
     color: color.gray["500"],
-    fontSize: font.body["1"].size,
-    fontWeight: font.body["1"].weight,
-    lineHeight: font.body["1"].height,
+    fontSize: font.body["2"].size,
+    fontWeight: font.body["2"].weight,
+    lineHeight: font.body["2"].height,
     marginLeft: 6,
   },
 
