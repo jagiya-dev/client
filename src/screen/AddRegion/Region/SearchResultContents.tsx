@@ -16,10 +16,14 @@ import { useObservableState } from "@/hook/useObservableState";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
 import { useBottomSheet } from "@gorhom/bottom-sheet";
-import { local, Local } from "@/state/auth/auth.state.local";
+import { local } from "@/state/auth/auth.state.local";
 import { useFocusEffect } from "@react-navigation/native";
 
-const SearchResultContents = () => {
+type Props = {
+  hasSearched: boolean;
+};
+
+const SearchResultContents = (props: Props) => {
   const { close } = useBottomSheet();
   const searchResults = useObservableState({
     observable: searchResult$,
@@ -72,13 +76,12 @@ const SearchResultContents = () => {
       snsId,
       snsType,
     });
-    console.log("최근 검색 추가: ", JSON.stringify(data, null, 2));
+    // console.log("최근 검색 추가: ", JSON.stringify(data, null, 2));
 
     close();
   };
 
-  const bHasSearched = searchResults && searchResults.length > 0;
-  if (!bHasSearched) {
+  if (!props.hasSearched) {
     return (
       <>
         {recentSearches &&
@@ -131,7 +134,8 @@ const SearchResultContents = () => {
 
   return (
     <>
-      {searchResults.length > 0 &&
+      {searchResults &&
+        searchResults.length > 0 &&
         searchResults.map((data) => {
           const { eupMyun, cityDo, guGun } = data;
           const location = `${cityDo} ${guGun} ${eupMyun}`;

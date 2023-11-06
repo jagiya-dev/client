@@ -15,20 +15,21 @@ import SearchResultContents from "@/screen/AddRegion/Region/SearchResultContents
 import { useFocusEffect } from "@react-navigation/native";
 
 const SearchRegion = () => {
-  const updateSearchKeywords = (input: string) => {
-    searchResultsBehaviours.updateSearchKeywords(input);
-  };
-
   const searchInput = useObservableState({
     observable: searchInput$,
   });
-  const bHasSearched = searchInput !== "";
+
+  const hasSearched = searchInput !== "";
 
   useFocusEffect(
     useCallback(() => {
       searchResultsBehaviours.reset();
     }, []),
   );
+
+  const updateSearchKeywords = (input: string) => {
+    searchResultsBehaviours.updateSearchKeywords(input);
+  };
 
   return (
     <View style={s.root}>
@@ -49,14 +50,14 @@ const SearchRegion = () => {
       </View>
 
       <View style={s.labelContainer}>
-        <Text style={s.label}>{bHasSearched ? "주소 검색" : "최근 검색"}</Text>
+        <Text style={s.label}>{hasSearched ? "주소 검색" : "최근 검색"}</Text>
       </View>
 
       <BottomSheetScrollView
         nestedScrollEnabled
         contentContainerStyle={s.searchListRoot}
       >
-        <SearchResultContents />
+        <SearchResultContents hasSearched={hasSearched} />
       </BottomSheetScrollView>
     </View>
   );
