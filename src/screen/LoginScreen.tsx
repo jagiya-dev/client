@@ -27,15 +27,12 @@ import { useFocusEffect } from "@react-navigation/native";
 type Props = NativeStackScreenProps<StackParamList, "Login">;
 
 const LoginScreen = ({ route, navigation }: Props) => {
-  const { setItem } = useAsyncStorage("localAuthState");
+  const navigateToMain = () => navigation.navigate("Main");
 
+  const { getItem, setItem } = useQuestHasLoginHistory(navigateToMain);
   const isSupportAppleLogin = useObservableState({
     observable: apple.isSupportAppleLogin$,
   });
-
-  const navigateToMain = () => navigation.navigate("Main");
-
-  useQuestHasLoginHistory(navigateToMain);
 
   useFocusEffect(
     useCallback(() => {

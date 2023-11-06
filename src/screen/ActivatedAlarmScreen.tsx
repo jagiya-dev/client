@@ -65,7 +65,6 @@ const ActivatedAlarmScreen = ({ route, navigation }: PageProps) => {
 
   const onPressButton_closeAlarm = () => {
     navigation.navigate("AlarmDetail", {
-      isComingFromActivatedAlarm: true,
       alarmId,
     });
   };

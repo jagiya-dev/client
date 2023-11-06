@@ -22,7 +22,7 @@ import { cancelTrigger } from "@/util/trigger";
 const AlarmItem = (alarm: AlarmResponse) => {
   const isItemEnabled = alarm.enabled === 1;
 
-  console.log(JSON.stringify(alarm, null, 2));
+  // console.log(JSON.stringify(alarm, null, 2));
 
   let time: string = alarm.alarmTime ?? "0000";
   time = [...time.substring(0, 2), ":", ...time.substring(2, 4)].join("");

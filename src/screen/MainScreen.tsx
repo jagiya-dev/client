@@ -51,14 +51,13 @@ const MainScreen = ({ route, navigation }: Props) => {
 
   useFocusEffect(
     useCallback(() => {
-      let alreadyFetched = false;
       async function loadFirst() {
         try {
           const response = await getAlarmList({
             userId: local.localAuthState.userId?.toString() ?? "",
           });
 
-          if (alreadyFetched && response.data) {
+          if (response.data) {
             alarms.next(response.data);
           }
         } catch (err) {
@@ -67,10 +66,6 @@ const MainScreen = ({ route, navigation }: Props) => {
       }
 
       loadFirst();
-
-      return () => {
-        alreadyFetched = true;
-      };
     }, []),
   );
 
@@ -91,13 +86,12 @@ const MainScreen = ({ route, navigation }: Props) => {
     navigation.navigate("CreateAlarm");
   };
 
-  const onPressButton_DetailButton = () => {
-    // TODO: 언제 비가 올지 모르니까, 비가 올 때만 보여주는 걸로 바꿔야 함.
-    // const onlyRainExpected = alarmDataArr.filter((alarm) => {
-    //   alarm.
-    // });
+  const onPressButton_DetailButton = async () => {
+    const alarmIds = alarmDataArr.map((alarm) => alarm.alarmId!);
+    console.log(`going to AlarmDetail with `, alarmIds);
+
     navigation.navigate("AlarmDetail", {
-      alarmId: "15",
+      alarmIds,
     });
   };
 

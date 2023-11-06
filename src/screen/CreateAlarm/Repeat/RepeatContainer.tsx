@@ -18,7 +18,7 @@ const RepeatContainer = () => {
   const repeatItemData = useObservableState({
     observable: repeatState$,
   });
-  console.log("repeat Item Data", repeatItemData);
+  // console.log("repeat Item Data", repeatItemData);
 
   if (!repeatItemData) return null;
 

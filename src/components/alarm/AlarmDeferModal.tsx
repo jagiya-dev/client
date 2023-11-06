@@ -31,7 +31,6 @@ const AlarmDeferModal = ({ visible, setDeferred, navigation }: Props) => {
     console.log("onPressButton_closeAlarm on defer modal");
     setDeferred(false);
     navigation.navigate("AlarmDetail", {
-      isComingFromActivatedAlarm: true,
       alarmId: "",
     });
   };

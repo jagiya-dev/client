@@ -24,7 +24,7 @@ import { useFocusEffect } from "@react-navigation/native";
 type ScreenProps = NativeStackScreenProps<StackParamList, "AlarmDetail">;
 const AlarmDetailScreen = ({ route, navigation }: ScreenProps) => {
   const { params } = route;
-  const alarmId = params?.alarmId ?? "77";
+  const alarmIds = params?.alarmIds;
 
   useQuestHasLoginHistory();
 
@@ -39,20 +39,27 @@ const AlarmDetailScreen = ({ route, navigation }: ScreenProps) => {
     useCallback(() => {
       let alreadyFetched = false;
       async function refetchFromEditAlarm() {
-        const response = await getAlarmLocationWeatherDetail({
-          alarmId,
-        });
+        console.log("alarmIds ", alarmIds);
 
-        console.log(
-          "refetch from AlarmDetailScreen",
-          JSON.stringify(response, null, 2),
+        const tasks = alarmIds.map((id) =>
+          getAlarmLocationWeatherDetail({ alarmId: id.toString() }),
         );
 
-        const { data } = response;
+        const responses = await Promise.all(tasks);
+        console.log("responses", JSON.stringify(responses, null, 2));
 
-        if (alreadyFetched) return;
+        const weatherDetails: AlarmLocationWeatherDetailResponse[] = [];
+        for (const response of responses) {
+          if (!response.data) continue;
 
-        setAlarmLocationDetails(data);
+          for (const e of response.data) {
+            if (e) {
+              weatherDetails.push(e);
+            }
+          }
+        }
+
+        setAlarmLocationDetails(weatherDetails);
 
         // const soundVolume = data?.volume ?? 0.5;
 
