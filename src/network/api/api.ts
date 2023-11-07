@@ -18,6 +18,8 @@ import type {
   RefreshLocationForWeatherParams,
   GetLocationForWeather200,
   GetLocationForWeatherParams,
+  Logout200,
+  LogoutParams,
   Login200,
   LoginParams,
   LoginAndUserTransform200,
@@ -35,7 +37,6 @@ import type {
   GetRecentDeleteLocationParams,
   GetLocation200,
   GetLocationParams,
-  GetAlarmSoundList200,
   GetAlarmLocationWeather200,
   GetAlarmLocationWeatherParams,
   GetAlarmLocationWeatherDetail200,
@@ -139,7 +140,7 @@ export const insertAlarm = (
 };
 
 /**
- * 지역코드와 갱신타입을 입력하면 해당 지역의 날씨를 갱신하여 DB를 저장하고 조회
+ * 지역코드와 갱신타입을 입력하면 해당 지역의 날씨를 갱신하여 DB를 저장하고 조회 테스트용 실제 사용 X
  * @summary 지역별 날씨갱신
  */
 export const refreshLocationForWeather = (
@@ -153,7 +154,7 @@ export const refreshLocationForWeather = (
 };
 
 /**
- * 지역코드와 기준날짜를 입력하면 날씨DB를 조회(지역코드는 /location/getLocation에서 조회가능하다.)
+ * 지역코드와 기준날짜를 입력하면 날씨DB를 조회(지역코드는 /location/getLocation에서 조회가능하다.) 테스트용 실제 사용 X
  * @summary 지역별 날씨
  */
 export const getLocationForWeather = (
@@ -162,6 +163,20 @@ export const getLocationForWeather = (
 ) => {
   return getInstance<GetLocationForWeather200>(
     { url: `/weather/getLocationForWeather`, method: "get", params },
+    options,
+  );
+};
+
+/**
+ * 로그아웃
+ * @summary 로그아웃
+ */
+export const logout = (
+  params: LogoutParams,
+  options?: SecondParameter<typeof getInstance>,
+) => {
+  return getInstance<Logout200>(
+    { url: `/user/logout`, method: "get", params },
     options,
   );
 };
@@ -305,19 +320,6 @@ export const getLocation = (
 };
 
 /**
- * 알람소리리스트 조회
- * @summary 알람소리리스트 조회
- */
-export const getAlarmSoundList = (
-  options?: SecondParameter<typeof getInstance>,
-) => {
-  return getInstance<GetAlarmSoundList200>(
-    { url: `/alarm/getAlarmSoundList`, method: "get" },
-    options,
-  );
-};
-
-/**
  * 알람지역별날씨 조회
  * @summary 알람지역별날씨 조회
  */
@@ -438,6 +440,7 @@ export type RefreshLocationForWeatherResult = NonNullable<
 export type GetLocationForWeatherResult = NonNullable<
   Awaited<ReturnType<typeof getLocationForWeather>>
 >;
+export type LogoutResult = NonNullable<Awaited<ReturnType<typeof logout>>>;
 export type LoginResult = NonNullable<Awaited<ReturnType<typeof login>>>;
 export type LoginAndUserTransformResult = NonNullable<
   Awaited<ReturnType<typeof loginAndUserTransform>>
@@ -465,9 +468,6 @@ export type GetRecentDeleteLocationResult = NonNullable<
 >;
 export type GetLocationResult = NonNullable<
   Awaited<ReturnType<typeof getLocation>>
->;
-export type GetAlarmSoundListResult = NonNullable<
-  Awaited<ReturnType<typeof getAlarmSoundList>>
 >;
 export type GetAlarmLocationWeatherResult = NonNullable<
   Awaited<ReturnType<typeof getAlarmLocationWeather>>

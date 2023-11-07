@@ -5,10 +5,10 @@
  * Springdoc을 사용한 Swagger UI
  * OpenAPI spec version: 1.0.0
  */
-import type { CommonMsgResponse } from "./commonMsgResponse";
+import type { AlarmDetailResponse } from "./alarmDetailResponse";
 
 export type InsertAlarm200 = {
   code?: string;
-  data?: CommonMsgResponse;
+  data?: AlarmDetailResponse;
   message?: string;
 };

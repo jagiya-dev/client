@@ -11,6 +11,12 @@
       "description": "Default Server URL"
     }
   ],
+  "security": [
+    {
+      "Access_Token": [],
+      "Refresh_Token": []
+    }
+  ],
   "tags": [
     {
       "name": "Weather",
@@ -118,7 +124,7 @@
                       "default": "200"
                     },
                     "data": {
-                      "$ref": "#/components/schemas/CommonMsgResponse"
+                      "$ref": "#/components/schemas/AlarmDetailResponse"
                     },
                     "message": {
                       "type": "string",
@@ -208,7 +214,7 @@
                       "default": "200"
                     },
                     "data": {
-                      "$ref": "#/components/schemas/CommonMsgResponse"
+                      "$ref": "#/components/schemas/AlarmDetailResponse"
                     },
                     "message": {
                       "type": "string",
@@ -228,7 +234,7 @@
           "Weather"
         ],
         "summary": "지역별 날씨갱신",
-        "description": "지역코드와 갱신타입을 입력하면 해당 지역의 날씨를 갱신하여 DB를 저장하고 조회",
+        "description": "지역코드와 갱신타입을 입력하면 해당 지역의 날씨를 갱신하여 DB를 저장하고 조회 테스트용 실제 사용 X",
         "operationId": "refreshLocationForWeather",
         "parameters": [
           {
@@ -292,7 +298,7 @@
           "Weather"
         ],
         "summary": "지역별 날씨",
-        "description": "지역코드와 기준날짜를 입력하면 날씨DB를 조회(지역코드는 /location/getLocation에서 조회가능하다.)",
+        "description": "지역코드와 기준날짜를 입력하면 날씨DB를 조회(지역코드는 /location/getLocation에서 조회가능하다.) 테스트용 실제 사용 X",
         "operationId": "getLocationForWeather",
         "parameters": [
           {
@@ -337,6 +343,55 @@
                       "items": {
                         "$ref": "#/components/schemas/WeatherTestResponse"
                       }
+                    },
+                    "message": {
+                      "type": "string",
+                      "default": "OK"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/logout": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "로그아웃",
+        "description": "로그아웃",
+        "operationId": "logout",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "계정 ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "계정 ID",
+              "example": 1
+            },
+            "example": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "200"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/CommonMsgResponse"
                     },
                     "message": {
                       "type": "string",
@@ -966,44 +1021,6 @@
         }
       }
     },
-    "/alarm/getAlarmSoundList": {
-      "get": {
-        "tags": [
-          "Alarm"
-        ],
-        "summary": "알람소리리스트 조회",
-        "description": "알람소리리스트 조회",
-        "operationId": "getAlarmSoundList",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json;charset=UTF-8": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "code": {
-                      "type": "string",
-                      "default": "200"
-                    },
-                    "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/AlarmSoundResponse"
-                      }
-                    },
-                    "message": {
-                      "type": "string",
-                      "default": "OK"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/alarm/getAlarmLocationWeather": {
       "get": {
         "tags": [
@@ -1526,6 +1543,150 @@
         },
         "description": "요일목록"
       },
+      "AlarmDetailResponse": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "description": "유저ID",
+            "format": "int64",
+            "example": 1
+          },
+          "alarmId": {
+            "type": "integer",
+            "description": "알람ID",
+            "format": "int64",
+            "example": 1
+          },
+          "enabled": {
+            "type": "integer",
+            "description": "활성화여부(0 : 비활성화, 1 : 활성화)",
+            "format": "int32",
+            "example": 1
+          },
+          "vibration": {
+            "type": "integer",
+            "description": "진동여부(0: 비활성화, 1 : 활성화)",
+            "format": "int32",
+            "example": 1
+          },
+          "volume": {
+            "type": "integer",
+            "description": "볼륨",
+            "format": "int32",
+            "example": 1
+          },
+          "reminder": {
+            "type": "string",
+            "description": "다시울림",
+            "example": "15"
+          },
+          "alarmTime": {
+            "type": "string",
+            "description": "알람시간(AM PM 시간)",
+            "example": "0800"
+          },
+          "timeOfDay": {
+            "type": "string",
+            "description": "AM, PM",
+            "example": "AM"
+          },
+          "alarmLocation": {
+            "type": "array",
+            "description": "알람지역목록",
+            "items": {
+              "$ref": "#/components/schemas/AlarmLocationDetailResponse"
+            }
+          },
+          "alarmWeek": {
+            "type": "array",
+            "description": "알람요일목록",
+            "items": {
+              "$ref": "#/components/schemas/AlarmWeekResponse"
+            }
+          },
+          "alarmSoundId": {
+            "type": "integer",
+            "description": "알람소리코드",
+            "format": "int64",
+            "example": 1
+          }
+        }
+      },
+      "AlarmLocationDetailResponse": {
+        "type": "object",
+        "properties": {
+          "alarmLocationId": {
+            "type": "integer",
+            "description": "알람지역ID",
+            "format": "int64",
+            "example": 1
+          },
+          "regionCd": {
+            "type": "string",
+            "description": "법정동코드",
+            "example": "1111010300"
+          },
+          "cityDo": {
+            "type": "string",
+            "description": "시도",
+            "example": "수원시"
+          },
+          "guGun": {
+            "type": "string",
+            "description": "구군",
+            "example": "팔달구"
+          },
+          "eupMyun": {
+            "type": "string",
+            "description": "읍면동",
+            "example": "중동"
+          },
+          "alarmLocationTimeDetail": {
+            "type": "array",
+            "description": "알람지역시간목록",
+            "items": {
+              "$ref": "#/components/schemas/AlarmLocationTimeDetailResponse"
+            }
+          }
+        },
+        "description": "알람지역목록"
+      },
+      "AlarmLocationTimeDetailResponse": {
+        "type": "object",
+        "properties": {
+          "alarmLocationTimeId": {
+            "type": "integer",
+            "description": "지역시간ID",
+            "format": "int64",
+            "example": 1
+          },
+          "locationTime": {
+            "type": "string",
+            "description": "지역시간",
+            "example": "1100"
+          }
+        },
+        "description": "알람지역시간목록"
+      },
+      "AlarmWeekResponse": {
+        "type": "object",
+        "properties": {
+          "alarmWeekId": {
+            "type": "integer",
+            "description": "알람요일ID",
+            "format": "int64",
+            "example": 1
+          },
+          "weekId": {
+            "type": "integer",
+            "description": "요일코드(1부터 월요일)",
+            "format": "int64",
+            "example": 1
+          }
+        },
+        "description": "알람요일목록"
+      },
       "AlarmEnabledRequest": {
         "type": "object",
         "properties": {
@@ -1577,7 +1738,7 @@
             "type": "array",
             "description": "요일목록",
             "items": {
-              "$ref": "#/components/schemas/AlarmWeekRequest"
+              "$ref": "#/components/schemas/AlarmWeekInsertRequest"
             }
           },
           "alarmSoundId": {
@@ -1596,10 +1757,66 @@
             "type": "array",
             "description": "알람지역목록",
             "items": {
-              "$ref": "#/components/schemas/AlarmLocationRequest"
+              "$ref": "#/components/schemas/AlarmLocationInsertRequest"
             }
           }
         }
+      },
+      "AlarmLocationInsertRequest": {
+        "type": "object",
+        "properties": {
+          "regionCd": {
+            "type": "string",
+            "description": "법정동코드",
+            "example": "1111010300"
+          },
+          "cityDo": {
+            "type": "string",
+            "description": "시도",
+            "example": "수원시"
+          },
+          "guGun": {
+            "type": "string",
+            "description": "구군",
+            "example": "팔달구"
+          },
+          "eupMyun": {
+            "type": "string",
+            "description": "읍면동",
+            "example": "중동"
+          },
+          "alarmLocationTimeRequest": {
+            "type": "array",
+            "description": "알람지역시간목록",
+            "items": {
+              "$ref": "#/components/schemas/AlarmLocationTimeInsertRequest"
+            }
+          }
+        },
+        "description": "알람지역목록"
+      },
+      "AlarmLocationTimeInsertRequest": {
+        "type": "object",
+        "properties": {
+          "locationTime": {
+            "type": "string",
+            "description": "지역시간",
+            "example": "1100"
+          }
+        },
+        "description": "알람지역시간목록"
+      },
+      "AlarmWeekInsertRequest": {
+        "type": "object",
+        "properties": {
+          "weekId": {
+            "type": "integer",
+            "description": "요일코드(1부터 월요일)",
+            "format": "int64",
+            "example": 1
+          }
+        },
+        "description": "요일목록"
       },
       "WeatherTestResponse": {
         "type": "object",
@@ -1831,27 +2048,6 @@
           }
         }
       },
-      "AlarmSoundResponse": {
-        "type": "object",
-        "properties": {
-          "alarmSoundId": {
-            "type": "integer",
-            "description": "알람소리ID",
-            "format": "int64",
-            "example": 1
-          },
-          "alarmSoundName": {
-            "type": "string",
-            "description": "알람소리이름",
-            "example": "기본소리"
-          },
-          "fileName": {
-            "type": "string",
-            "description": "파일이름",
-            "example": "nomal.mp3"
-          }
-        }
-      },
       "AlarmLocationNotiResponse": {
         "type": "object",
         "properties": {
@@ -2024,150 +2220,6 @@
           }
         }
       },
-      "AlarmWeekResponse": {
-        "type": "object",
-        "properties": {
-          "alarmWeekId": {
-            "type": "integer",
-            "description": "알람요일ID",
-            "format": "int64",
-            "example": 1
-          },
-          "weekId": {
-            "type": "integer",
-            "description": "요일코드(1부터 월요일)",
-            "format": "int64",
-            "example": 1
-          }
-        },
-        "description": "알람요일목록"
-      },
-      "AlarmDetailResponse": {
-        "type": "object",
-        "properties": {
-          "userId": {
-            "type": "integer",
-            "description": "유저ID",
-            "format": "int64",
-            "example": 1
-          },
-          "alarmId": {
-            "type": "integer",
-            "description": "알람ID",
-            "format": "int64",
-            "example": 1
-          },
-          "enabled": {
-            "type": "integer",
-            "description": "활성화여부(0 : 비활성화, 1 : 활성화)",
-            "format": "int32",
-            "example": 1
-          },
-          "vibration": {
-            "type": "integer",
-            "description": "진동여부(0: 비활성화, 1 : 활성화)",
-            "format": "int32",
-            "example": 1
-          },
-          "volume": {
-            "type": "integer",
-            "description": "볼륨",
-            "format": "int32",
-            "example": 1
-          },
-          "reminder": {
-            "type": "string",
-            "description": "다시울림",
-            "example": "15"
-          },
-          "alarmTime": {
-            "type": "string",
-            "description": "알람시간(AM PM 시간)",
-            "example": "0800"
-          },
-          "timeOfDay": {
-            "type": "string",
-            "description": "AM, PM",
-            "example": "AM"
-          },
-          "alarmLocation": {
-            "type": "array",
-            "description": "알람지역목록",
-            "items": {
-              "$ref": "#/components/schemas/AlarmLocationDetailResponse"
-            }
-          },
-          "alarmWeek": {
-            "type": "array",
-            "description": "알람요일목록",
-            "items": {
-              "$ref": "#/components/schemas/AlarmWeekResponse"
-            }
-          },
-          "alarmSoundId": {
-            "type": "integer",
-            "description": "알람소리코드",
-            "format": "int64",
-            "example": 1
-          }
-        }
-      },
-      "AlarmLocationDetailResponse": {
-        "type": "object",
-        "properties": {
-          "alarmLocationId": {
-            "type": "integer",
-            "description": "알람지역ID",
-            "format": "int64",
-            "example": 1
-          },
-          "regionCd": {
-            "type": "string",
-            "description": "법정동코드",
-            "example": "1111010300"
-          },
-          "cityDo": {
-            "type": "string",
-            "description": "시도",
-            "example": "수원시"
-          },
-          "guGun": {
-            "type": "string",
-            "description": "구군",
-            "example": "팔달구"
-          },
-          "eupMyun": {
-            "type": "string",
-            "description": "읍면동",
-            "example": "중동"
-          },
-          "alarmLocationTimeDetail": {
-            "type": "array",
-            "description": "알람지역시간목록",
-            "items": {
-              "$ref": "#/components/schemas/AlarmLocationTimeDetailResponse"
-            }
-          }
-        },
-        "description": "알람지역목록"
-      },
-      "AlarmLocationTimeDetailResponse": {
-        "type": "object",
-        "properties": {
-          "alarmLocationTimeId": {
-            "type": "integer",
-            "description": "지역시간ID",
-            "format": "int64",
-            "example": 1
-          },
-          "locationTime": {
-            "type": "string",
-            "description": "지역시간",
-            "example": "1100"
-          }
-        },
-        "description": "알람지역시간목록"
-      },
       "Authority": {
         "type": "object",
         "properties": {
@@ -2203,6 +2255,18 @@
             "example": 1
           }
         }
+      }
+    },
+    "securitySchemes": {
+      "Access_Token": {
+        "type": "apiKey",
+        "name": "Access_Token",
+        "in": "header"
+      },
+      "Refresh_Token": {
+        "type": "apiKey",
+        "name": "Refresh_Token",
+        "in": "header"
       }
     }
   }

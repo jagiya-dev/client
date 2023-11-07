@@ -5,8 +5,8 @@
  * Springdoc을 사용한 Swagger UI
  * OpenAPI spec version: 1.0.0
  */
-import type { AlarmWeekRequest } from "./alarmWeekRequest";
-import type { AlarmLocationRequest } from "./alarmLocationRequest";
+import type { AlarmWeekInsertRequest } from "./alarmWeekInsertRequest";
+import type { AlarmLocationInsertRequest } from "./alarmLocationInsertRequest";
 
 export interface AlarmInsertRequest {
   /** 유저ID */
@@ -20,11 +20,11 @@ export interface AlarmInsertRequest {
   /** 진동여부(0:없음, 1:진동) */
   vibration?: number;
   /** 요일목록 */
-  weekList?: AlarmWeekRequest[];
+  weekList?: AlarmWeekInsertRequest[];
   /** 알람소리코드 */
   alarmSoundId?: number;
   /** 볼륨(1부터 10까지) */
   volume?: number;
   /** 알람지역목록 */
-  alarmLocationList?: AlarmLocationRequest[];
+  alarmLocationList?: AlarmLocationInsertRequest[];
 }

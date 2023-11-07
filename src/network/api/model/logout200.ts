@@ -5,10 +5,10 @@
  * Springdoc을 사용한 Swagger UI
  * OpenAPI spec version: 1.0.0
  */
-import type { AlarmDetailResponse } from "./alarmDetailResponse";
+import type { CommonMsgResponse } from "./commonMsgResponse";
 
-export type UpdateAlarm200 = {
+export type Logout200 = {
   code?: string;
-  data?: AlarmDetailResponse;
+  data?: CommonMsgResponse;
   message?: string;
 };
