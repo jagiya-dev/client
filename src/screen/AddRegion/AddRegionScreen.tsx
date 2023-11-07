@@ -158,7 +158,7 @@ const AddRegionScreen = ({ route, navigation }: ScreenProps) => {
         stretch
       >
         <TouchableNativeFeedback
-          onPress={onPress_TimeContainer}
+          onPress={onPress_RegionSearchBar}
           style={s.timeTouchable}
         >
           <View style={s.timeContainer}>
