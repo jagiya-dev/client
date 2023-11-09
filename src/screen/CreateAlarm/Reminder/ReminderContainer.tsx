@@ -62,7 +62,6 @@ export default ReminderContainer;
 const s = StyleSheet.create({
   root: {
     flex: 1,
-    width: widthPercentageToDP("100%"),
     position: "relative",
   },
 
@@ -86,7 +85,7 @@ const s = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    height: 36,
+    minHeight: 36,
     // maxHeight: 36,
     // paddingVertical: 3,
     // ...Platform.select({
@@ -114,7 +113,7 @@ const s = StyleSheet.create({
     left: 20,
     ...Platform.select({
       ios: {
-        top: "42%",
+        top: "36%",
       },
       android: {
         top: "38%",

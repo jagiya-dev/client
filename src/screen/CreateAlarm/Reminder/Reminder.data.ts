@@ -30,7 +30,7 @@ export const reminderItemsIOS: readonly ReminderIntervalItem[] = [
     id: "10",
     label: "60분",
   }, // 6
-  ...new Array(6)
+  ...new Array(8)
     .fill(0)
     .map((_, i) => ({ id: (i + 11).toString(), label: "" })),
 ];

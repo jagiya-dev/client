@@ -59,7 +59,7 @@ import {
 } from "@/state/createAlarm/repeat/repeat.state";
 import {
   behaviours as reminderBehaviours,
-  whenSelectedReminderChange,
+  selectedReminderChange$,
 } from "@/screen/CreateAlarm/Reminder/reminder.state";
 import {
   behaviours as soundBehaviours,
@@ -203,7 +203,7 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
   });
 
   const reminderState = useObservableState({
-    observable: whenSelectedReminderChange,
+    observable: selectedReminderChange$,
   });
 
   const addedLocations = useObservableState({

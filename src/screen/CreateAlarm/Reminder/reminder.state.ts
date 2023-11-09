@@ -10,7 +10,7 @@ const selectedReminderSubject = new BehaviorSubject<ReminderState>({
   pos: 0,
   minute: 0,
 });
-export const whenSelectedReminderChange = selectedReminderSubject
+export const selectedReminderChange$ = selectedReminderSubject
   .asObservable()
   .pipe(
     debounceTime(700),
@@ -28,6 +28,8 @@ const setReminder = (pos: number) => {
   let minute: number = 1;
   if (Platform.OS === "android") {
     pos += 10;
+  } else {
+    pos -= 10;
   }
 
   if (pos <= 36) {
@@ -46,7 +48,6 @@ const setReminder = (pos: number) => {
     minute = 60;
   }
 
-  // console.log("pos: ", pos.toFixed(2), "min: ", minute);
   selectedReminderSubject.next({ pos, minute });
 };
 
