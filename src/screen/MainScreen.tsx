@@ -54,7 +54,7 @@ const MainScreen = ({ route, navigation }: Props) => {
       async function loadFirst() {
         try {
           const response = await getAlarmList({
-            userId: local.localAuthState.userId?.toString() ?? "",
+            userId: local.localAuthState.userId?.toString() ?? "-1",
           });
 
           if (response.data) {

@@ -5,7 +5,10 @@ import { LocalAuthState } from "@/typing";
 import { Platform } from "react-native";
 import { local } from "@/state/auth/auth.state.local";
 
-export const useQuestHasLoginHistory = (afterQuery?: () => void) => {
+export const useQuestHasLoginHistory = (
+  afterQuery?: () => void,
+  onFail?: () => void,
+) => {
   const { setItem, getItem } = useAsyncStorage("localAuthState");
 
   useFocusEffect(
@@ -14,10 +17,16 @@ export const useQuestHasLoginHistory = (afterQuery?: () => void) => {
       const queryHasLoginHistory = async () => {
         try {
           const jsonValue = await getItem();
-          if (!jsonValue) return;
+          if (!jsonValue || jsonValue === "{}") {
+            onFail?.();
+            return;
+          }
 
           const localHistory: LocalAuthState = JSON.parse(jsonValue);
-          if (!localHistory) return;
+          if (!localHistory) {
+            return;
+          }
+
           console.log(
             `[${Platform.OS}] already has login history`,
             localHistory,
@@ -34,7 +43,7 @@ export const useQuestHasLoginHistory = (afterQuery?: () => void) => {
 
       const timer = setTimeout(() => {
         queryHasLoginHistory();
-      }, 3000);
+      }, 1000);
 
       return () => {
         alreadyDone = true;

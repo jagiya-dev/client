@@ -1,5 +1,10 @@
 import { Button } from "@/components/button";
-import { KakaoIdLoginOffIcon, AppleIdLoginOnIcon } from "@/components/Icon";
+import {
+  AppleIdLoginOffIcon,
+  AppleIdLoginOnIcon,
+  KakaoIdLoginOffIcon,
+  KakaoIdLoginOnIcon,
+} from "@/components/Icon";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
 import {
@@ -39,6 +44,12 @@ const MyInfoScreen = ({ route, navigation }: Props) => {
   const [userDetail, setUserDetail] = useState<UserDetailResponse>();
   const [isNameEditMode, setNameEditMode] = useState<boolean>(false);
   const [newName, setNewName] = useState<string>("");
+
+  let accountInfo = "guest";
+  if (userDetail?.email && userDetail.email !== "") {
+    accountInfo = userDetail.email;
+  }
+
   const onChange_updateNewName = (text: string) => {
     setNewName(text);
   };
@@ -48,6 +59,30 @@ const MyInfoScreen = ({ route, navigation }: Props) => {
   const isSupportAppleLogin = useObservableState({
     observable: apple.isSupportAppleLogin$,
   });
+  const [isAppleLoggedIn, setAppleLoggedIn] = useState(false);
+  const [isKakaoLoggedIn, setKakaoLoggedIn] = useState(false);
+
+  useFocusEffect(
+    useCallback(() => {
+      const { whichLoginType } = local.localAuthState;
+      switch (whichLoginType) {
+        case "apple":
+          setAppleLoggedIn(true);
+          setKakaoLoggedIn(false);
+          break;
+
+        case "kakao":
+          setAppleLoggedIn(false);
+          setKakaoLoggedIn(true);
+          break;
+
+        case "guest":
+          setAppleLoggedIn(false);
+          setKakaoLoggedIn(false);
+          break;
+      }
+    }, []),
+  );
 
   useFocusEffect(
     useCallback(() => {
@@ -254,7 +289,7 @@ const MyInfoScreen = ({ route, navigation }: Props) => {
           </View>
 
           <View style={s.contentModeTextUser}>
-            <Text style={s.contentLabel}>{userDetail?.email ?? "-"}</Text>
+            <Text style={s.contentLabel}>{accountInfo}</Text>
           </View>
         </View>
 
@@ -272,18 +307,26 @@ const MyInfoScreen = ({ route, navigation }: Props) => {
 
         <View style={s.contentLabelContainerSns}>
           <Button
+            disabled={isKakaoLoggedIn}
             onPress={onPressButton_loginAndTransformToKakao}
             style={s.contentToggleBottomBtn}
           >
-            <KakaoIdLoginOffIcon />
+            {isKakaoLoggedIn ? <KakaoIdLoginOnIcon /> : <KakaoIdLoginOffIcon />}
           </Button>
 
-          <Button
-            onPress={onPressButton_loginAndTransformToApple}
-            style={s.contentToggleBottomBtn}
-          >
-            <AppleIdLoginOnIcon />
-          </Button>
+          {Platform.OS === "ios" && (
+            <Button
+              disabled={isAppleLoggedIn}
+              onPress={onPressButton_loginAndTransformToApple}
+              style={s.contentToggleBottomBtn}
+            >
+              {isAppleLoggedIn ? (
+                <AppleIdLoginOnIcon />
+              ) : (
+                <AppleIdLoginOffIcon />
+              )}
+            </Button>
+          )}
         </View>
       </View>
     </SafeAreaView>
@@ -314,17 +357,20 @@ const s = StyleSheet.create({
   contentLabel: {
     fontSize: font.body["3"].size,
     fontWeight: font.body["3"].weight,
+    lineHeight: font.body["3"].height,
     color: color.gray["700"],
   },
 
   contentBtnLabel: {
     fontSize: font.button["2"].size,
     fontWeight: font.button["2"].weight,
+    lineHeight: font.button["2"].height,
   },
 
   contentBtnSaveLabel: {
     fontSize: font.button["2"].size,
     fontWeight: font.button["2"].weight,
+    lineHeight: font.button["2"].height,
     color: "#ffffff",
   },
 

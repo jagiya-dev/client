@@ -26,64 +26,61 @@ import { local } from "@/state/auth/auth.state.local";
 import { kakao } from "@/state/auth/auth.state.kakao";
 import { apple } from "@/state/auth/auth.state.apple";
 import { useAsyncStorage } from "@react-native-async-storage/async-storage";
+import { useFocusEffect } from "@react-navigation/native";
+import { useCallback, useState } from "react";
 
 type Props = NativeStackScreenProps<StackParamList, "Settings">;
 
 const SettingsScreen = ({ route, navigation }: Props) => {
   const { setItem } = useAsyncStorage("localAuthState");
-
   const onPressButton_openMyInfo = () => {
     const { userId } = local.localAuthState;
-    if (!userId) {
-      console.error(`내 정보 열었지만, userId === undefined`);
-      return;
-    }
 
     navigation.navigate("MyInfo", {
-      userId: userId.toString(),
+      userId: userId?.toString() ?? "-1",
     });
   };
 
-  const onPressButton_share = async () => {
-    console.log("onPressButton_share");
-
-    // TODO: add app store url
-    const urlToShare = Platform.select({
-      ios: "https://www.google.com/",
-      android: "https://www.google.com/",
-    });
-
-    try {
-      const result = await Share.share({
-        message: "공유하시겠습니까!",
-        title: "공유하기!",
-        url: urlToShare,
-      });
-
-      switch (result.action) {
-        case "sharedAction":
-          {
-            if (result.activityType) {
-              console.log("sharedAction: ", result.activityType);
-              // shared with activity type of result.activityType
-            } else {
-              console.log("shared!");
-              // shared
-            }
-          }
-          break;
-
-        case "dismissedAction":
-          {
-            // dismissed
-            console.log("dismissedAction");
-          }
-          break;
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const onPressButton_share = async () => {
+  //   console.log("onPressButton_share");
+  //
+  //   // TODO: add app store url
+  //   const urlToShare = Platform.select({
+  //     ios: "https://www.google.com/",
+  //     android: "https://www.google.com/",
+  //   });
+  //
+  //   try {
+  //     const result = await Share.share({
+  //       message: "공유하시겠습니까!",
+  //       title: "공유하기!",
+  //       url: urlToShare,
+  //     });
+  //
+  //     switch (result.action) {
+  //       case "sharedAction":
+  //         {
+  //           if (result.activityType) {
+  //             console.log("sharedAction: ", result.activityType);
+  //             // shared with activity type of result.activityType
+  //           } else {
+  //             console.log("shared!");
+  //             // shared
+  //           }
+  //         }
+  //         break;
+  //
+  //       case "dismissedAction":
+  //         {
+  //           // dismissed
+  //           console.log("dismissedAction");
+  //         }
+  //         break;
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   const onPressButton_logOut = async () => {
     console.log("onPressButton_logOut");
@@ -193,10 +190,10 @@ const SettingsScreen = ({ route, navigation }: Props) => {
             <Text style={s.contentLabel}>내 정보</Text>
           </Button>
 
-          <Button onPress={onPressButton_share} style={s.contentToggleModeText}>
-            <ShareMyPageIcon />
-            <Text style={s.contentLabel}>친구에게 공유하기</Text>
-          </Button>
+          {/*<Button onPress={onPressButton_share} style={s.contentToggleModeText}>*/}
+          {/*  <ShareMyPageIcon />*/}
+          {/*  <Text style={s.contentLabel}>친구에게 공유하기</Text>*/}
+          {/*</Button>*/}
         </View>
 
         <View style={s.contentLabelContainer}>

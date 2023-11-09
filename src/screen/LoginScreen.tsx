@@ -29,7 +29,10 @@ type Props = NativeStackScreenProps<StackParamList, "Login">;
 const LoginScreen = ({ route, navigation }: Props) => {
   const navigateToMain = () => navigation.navigate("Main");
 
-  const { getItem, setItem } = useQuestHasLoginHistory(navigateToMain);
+  const { getItem, setItem } = useQuestHasLoginHistory(
+    navigateToMain,
+    navigateToMain,
+  );
   const isSupportAppleLogin = useObservableState({
     observable: apple.isSupportAppleLogin$,
   });
@@ -75,6 +78,8 @@ const LoginScreen = ({ route, navigation }: Props) => {
 
     local.login("apple");
     await local.update();
+
+    await setItem("{}");
 
     const persistentLocalAuthState = JSON.stringify(local.localAuthState);
     console.log(`[${Platform.OS}]`, persistentLocalAuthState);
