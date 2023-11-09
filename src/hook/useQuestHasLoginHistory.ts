@@ -5,10 +5,7 @@ import { LocalAuthState } from "@/typing";
 import { Platform } from "react-native";
 import { local } from "@/state/auth/auth.state.local";
 
-export const useQuestHasLoginHistory = (
-  afterQuery?: () => void,
-  onFail?: () => void,
-) => {
+export const useQuestHasLoginHistory = (afterQuery?: () => void) => {
   const { setItem, getItem } = useAsyncStorage("localAuthState");
 
   useFocusEffect(
@@ -18,7 +15,6 @@ export const useQuestHasLoginHistory = (
         try {
           const jsonValue = await getItem();
           if (!jsonValue || jsonValue === "{}") {
-            onFail?.();
             return;
           }
 

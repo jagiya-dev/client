@@ -29,7 +29,7 @@ import {
 } from "@/network/api";
 import { useCallback, useState } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { StackParamList } from "@/typing";
+import { LocalAuthState, StackParamList } from "@/typing";
 import { kakao } from "@/state/auth/auth.state.kakao";
 import { local } from "@/state/auth/auth.state.local";
 import { apple } from "@/state/auth/auth.state.apple";
@@ -59,28 +59,13 @@ const MyInfoScreen = ({ route, navigation }: Props) => {
   const isSupportAppleLogin = useObservableState({
     observable: apple.isSupportAppleLogin$,
   });
-  const [isAppleLoggedIn, setAppleLoggedIn] = useState(false);
-  const [isKakaoLoggedIn, setKakaoLoggedIn] = useState(false);
+
+  const [loginStatus, setLoginStatus] =
+    useState<LocalAuthState["whichLoginType"]>("guest");
 
   useFocusEffect(
     useCallback(() => {
-      const { whichLoginType } = local.localAuthState;
-      switch (whichLoginType) {
-        case "apple":
-          setAppleLoggedIn(true);
-          setKakaoLoggedIn(false);
-          break;
-
-        case "kakao":
-          setAppleLoggedIn(false);
-          setKakaoLoggedIn(true);
-          break;
-
-        case "guest":
-          setAppleLoggedIn(false);
-          setKakaoLoggedIn(false);
-          break;
-      }
+      setLoginStatus(local.localAuthState.whichLoginType);
     }, []),
   );
 
@@ -137,8 +122,6 @@ const MyInfoScreen = ({ route, navigation }: Props) => {
   };
 
   const onPressButton_loginAndTransformToKakao = async () => {
-    console.log("onPressButton_loginAndTransformToKakao");
-
     try {
       await kakao.login();
 
@@ -146,9 +129,8 @@ const MyInfoScreen = ({ route, navigation }: Props) => {
       local.login("kakao");
       await local.update();
 
+      await setItem("{}");
       const persistentLocalAuthState = JSON.stringify(local.localAuthState);
-      console.log(`[${Platform.OS}]`, persistentLocalAuthState);
-
       await setItem(persistentLocalAuthState);
 
       const profile = kakao.kakaoProfile;
@@ -161,17 +143,15 @@ const MyInfoScreen = ({ route, navigation }: Props) => {
         snsType: "1",
         tobeSnsId: profile.id,
       });
-      if (!data) return;
+      setLoginStatus("kakao");
 
-      console.log(JSON.stringify(data, null, 2));
+      if (!data) return;
     } catch (err) {
       console.error(err);
     }
   };
 
   const onPressButton_loginAndTransformToApple = async () => {
-    console.log("onPressButton_loginAndTransformToApple");
-
     try {
       if (!isSupportAppleLogin) {
         console.log(
@@ -187,9 +167,8 @@ const MyInfoScreen = ({ route, navigation }: Props) => {
       local.login("apple");
       await local.update();
 
+      await setItem("{}");
       const persistentLocalAuthState = JSON.stringify(local.localAuthState);
-      console.log(`[${Platform.OS}]`, persistentLocalAuthState);
-
       await setItem(persistentLocalAuthState);
 
       const info = apple.appleInfo;
@@ -202,9 +181,7 @@ const MyInfoScreen = ({ route, navigation }: Props) => {
         snsType: "2",
         tobeSnsId: info.user,
       });
-      if (!data) return;
-
-      console.log(JSON.stringify(data, null, 2));
+      setLoginStatus("apple");
     } catch (err) {
       console.error(err);
     }
@@ -307,20 +284,24 @@ const MyInfoScreen = ({ route, navigation }: Props) => {
 
         <View style={s.contentLabelContainerSns}>
           <Button
-            disabled={isKakaoLoggedIn}
+            disabled={loginStatus !== "guest"}
             onPress={onPressButton_loginAndTransformToKakao}
             style={s.contentToggleBottomBtn}
           >
-            {isKakaoLoggedIn ? <KakaoIdLoginOnIcon /> : <KakaoIdLoginOffIcon />}
+            {loginStatus === "kakao" ? (
+              <KakaoIdLoginOnIcon />
+            ) : (
+              <KakaoIdLoginOffIcon />
+            )}
           </Button>
 
           {Platform.OS === "ios" && (
             <Button
-              disabled={isAppleLoggedIn}
+              disabled={loginStatus !== "guest"}
               onPress={onPressButton_loginAndTransformToApple}
               style={s.contentToggleBottomBtn}
             >
-              {isAppleLoggedIn ? (
+              {loginStatus === "apple" ? (
                 <AppleIdLoginOnIcon />
               ) : (
                 <AppleIdLoginOffIcon />

@@ -161,7 +161,7 @@ export class Local {
         snsId,
         snsType,
       };
-      console.log("update login to server: ", JSON.stringify(params, null, 2));
+      // console.log("update login to server: ", JSON.stringify(params, null, 2));
 
       const response = await login(params);
       console.log("login response: ", JSON.stringify(response, null, 2));
