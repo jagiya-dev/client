@@ -33,13 +33,12 @@ import { ETimeTableItemState, StackParamList } from "@/typing";
 import { Button } from "@/components/button";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import {
+  behaviours as searchResultsBehaviours,
   selectedLocation,
   selectedLocationAsStr$,
-  behaviours as searchResultsBehaviours,
 } from "@/state/addRegion/search/searchResults.state";
 import { behaviours as locationBehaviours } from "@/state/createAlarm/location.state";
 import { headerStyles } from "@/components/Header";
-import navUtils from "@/util/NavigationUtil";
 import { useFocusEffect } from "@react-navigation/native";
 
 type ScreenProps = NativeStackScreenProps<StackParamList, "AddRegion">;
@@ -129,7 +128,7 @@ const AddRegionScreen = ({ route, navigation }: ScreenProps) => {
             headerStyles.headerPositional,
             headerStyles.headerIcon,
           ]}
-          onPress={navUtils.onPress_goBack}
+          onPress={onPress_closeButton}
         >
           <Image
             source={require("#/icons/arrow_left.png")}

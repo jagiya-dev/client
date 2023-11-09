@@ -33,7 +33,6 @@ export type WeatherModel = {
 };
 
 export type DateOfWeek = "월" | "화" | "수" | "목" | "금" | "토" | "일";
-export type SelectedDateOfWeek = readonly DateOfWeek[];
 export type DateModel = {
   label: DateOfWeek;
 } & IsEnabled;
@@ -43,6 +42,7 @@ export type StackParamList = {
   Login: undefined;
   CreateAlarm: {
     alarm?: AlarmResponse;
+    isEditRegion: boolean;
   };
   ActivatedAlarm: {
     alarmId: string;

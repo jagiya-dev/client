@@ -89,10 +89,15 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
   const { params } = route;
   const alarm = params?.alarm ?? undefined;
   const isEditMode = alarm !== undefined;
+  const isEditRegion = params?.isEditRegion ?? false;
+
+  if (isEditRegion) {
+    console.log(`CreateAlarmScreen, isEditRegion: ${isEditRegion}`);
+    navigation.navigate("AddRegion");
+  }
 
   if (isEditMode) {
-    console.log("CreateAlarmScreen, isEditMode? :", isEditMode);
-    // console.log(JSON.stringify(alarm, null, 2));
+    console.log(`CreateAlarmScreen, isEditMode? : ${isEditMode}`);
   }
 
   useFocusEffect(
@@ -107,10 +112,10 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
           alarmId,
         });
 
-        console.log(
-          "refetch from EditAlarm",
-          JSON.stringify(response, null, 2),
-        );
+        // console.log(
+        //   "refetch from EditAlarm",
+        //   JSON.stringify(response, null, 2),
+        // );
 
         const { data } = response;
 

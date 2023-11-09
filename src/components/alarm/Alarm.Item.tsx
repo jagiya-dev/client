@@ -3,7 +3,16 @@ import { UmbrellaDisabledIcon, UmbrellaEnabledIcon } from "@/components/Icon";
 import Text from "@/components/Text";
 import { color } from "@/styles/color";
 import { font } from "@/styles/font";
-import { Animated, FlatList, Platform, StyleSheet, View } from "react-native";
+import {
+  Animated,
+  FlatList,
+  Platform,
+  StyleSheet,
+  TouchableHighlight,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
 import { Shadow } from "react-native-shadow-2";
 import Toggle from "../toggle";
 import Swipeable from "react-native-gesture-handler/Swipeable";
@@ -54,7 +63,14 @@ const AlarmItem = (alarm: AlarmResponse) => {
 
   const onPressButton_openEditAlarm = () => {
     navigate("CreateAlarm", {
-      isEditAlarm: true,
+      isEditRegion: false,
+      alarm,
+    });
+  };
+
+  const onPressButton_openEditRegion = () => {
+    navigate("CreateAlarm", {
+      isEditRegion: true,
       alarm,
     });
   };
@@ -96,92 +112,102 @@ const AlarmItem = (alarm: AlarmResponse) => {
         })}
       >
         {/* 1. 상단 부분 */}
-        <View style={s.up}>
-          {/* 1-1. 날씨 아이콘 (enabled/disabled) */}
-          <View>
-            {isItemEnabled ? <UmbrellaEnabledIcon /> : <UmbrellaDisabledIcon />}
-          </View>
-
-          {/* 1-2. 알람 날짜 표시 (enabled/disabled) */}
-          <View style={s.chronoContainer}>
-            <View style={s.dateContainer}>
-              {weekDaysLabel.map((label, i) => (
-                <DateTextButton
-                  key={i}
-                  label={label[0]}
-                  isEnabled={
-                    isItemEnabled &&
-                    alarm.alarmWeek?.some((week) => week.alarmWeekId === i + 1)
-                  }
-                />
-              ))}
+        <TouchableWithoutFeedback onPress={onPressButton_openEditAlarm}>
+          <View style={s.up}>
+            {/* 1-1. 날씨 아이콘 (enabled/disabled) */}
+            <View>
+              {isItemEnabled ? (
+                <UmbrellaEnabledIcon />
+              ) : (
+                <UmbrellaDisabledIcon />
+              )}
             </View>
 
-            {/* 1-3. 시간 표시 */}
-            <Text style={s.timeContainer}>
-              <Text
-                style={cond({
-                  predicate: () => !isItemEnabled,
-                  true$: s.disabledText,
-                  underlyingStyles: s.time12Text,
-                })}
-              >
-                {time}
-              </Text>
-              <Text
-                style={cond({
-                  predicate: () => !isItemEnabled,
-                  true$: s.disabledText,
-                  underlyingStyles: s.timeAMPMText,
-                })}
-              >
-                {alarm.timeOfDay}
-              </Text>
-            </Text>
-          </View>
+            {/* 1-2. 알람 날짜 표시 (enabled/disabled) */}
+            <View style={s.chronoContainer}>
+              <View style={s.dateContainer}>
+                {weekDaysLabel.map((label, i) => (
+                  <DateTextButton
+                    key={i}
+                    label={label[0]}
+                    isEnabled={
+                      isItemEnabled &&
+                      alarm.alarmWeek?.some(
+                        (week) => week.alarmWeekId === i + 1,
+                      )
+                    }
+                  />
+                ))}
+              </View>
 
-          {/* 1-4. 알람 활성화 여부 토글 */}
-          <Toggle
-            onValueChange={onPress_alarmToggleEnabled}
-            disabled={!isItemEnabled}
-          />
-        </View>
+              {/* 1-3. 시간 표시 */}
+              <Text style={s.timeContainer}>
+                <Text
+                  style={cond({
+                    predicate: () => !isItemEnabled,
+                    true$: s.disabledText,
+                    underlyingStyles: s.time12Text,
+                  })}
+                >
+                  {time}
+                </Text>
+                <Text
+                  style={cond({
+                    predicate: () => !isItemEnabled,
+                    true$: s.disabledText,
+                    underlyingStyles: s.timeAMPMText,
+                  })}
+                >
+                  {alarm.timeOfDay}
+                </Text>
+              </Text>
+            </View>
+
+            {/* 1-4. 알람 활성화 여부 토글 */}
+            <Toggle
+              onValueChange={onPress_alarmToggleEnabled}
+              disabled={!isItemEnabled}
+            />
+          </View>
+        </TouchableWithoutFeedback>
 
         {/* 2-1. 하단 부분 */}
-        <View style={s.down}>
-          <FlatList
-            // 알람 위치 마지막에 + 버튼 추가
-            data={[...(alarm.alarmLocation ?? []), { isAddNewItem: true }]}
-            renderItem={(data) => {
-              if ("isAddNewItem" in data.item) {
+        <TouchableWithoutFeedback onPress={onPressButton_openEditAlarm}>
+          <View style={s.down}>
+            <FlatList
+              // 알람 위치 마지막에 + 버튼 추가
+              data={[...(alarm.alarmLocation ?? []), { isAddNewItem: true }]}
+              renderItem={(data) => {
+                if ("isAddNewItem" in data.item) {
+                  return (
+                    <AlarmAddLocationItem
+                      isEnabled={isItemEnabled}
+                      onPressButton={onPressButton_openEditRegion}
+                    />
+                  );
+                }
+
                 return (
-                  <AlarmAddLocationItem
+                  <AlarmLocationItem
+                    key={data.index}
                     isEnabled={isItemEnabled}
-                    onPressButton={onPressButton_openEditAlarm}
+                    {...data.item}
                   />
                 );
-              }
-
-              return (
-                <AlarmLocationItem
-                  key={data.index}
-                  isEnabled={isItemEnabled}
-                  {...data.item}
-                />
-              );
-            }}
-            style={{
-              ...Platform.select({
-                android: {
-                  zIndex: 5,
-                },
-              }),
-            }}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            scrollEnabled={isItemEnabled}
-          />
-        </View>
+              }}
+              style={{
+                ...Platform.select({
+                  android: {
+                    zIndex: 5,
+                  },
+                }),
+              }}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              scrollEnabled={isItemEnabled}
+            />
+          </View>
+        </TouchableWithoutFeedback>
       </Shadow>
     </Swipeable>
   );
