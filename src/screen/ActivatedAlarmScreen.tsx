@@ -17,14 +17,14 @@ type PageProps = NativeStackScreenProps<StackParamList, "ActivatedAlarm">;
 
 const ActivatedAlarmScreen = ({ route, navigation }: PageProps) => {
   const { params } = route;
-  const alarmId = params?.alarmId ?? "0";
+  const alarmId = params?.alarmId ?? undefined;
 
   const [isDeferred, setDeferred] = useState<boolean>(false);
-
   const [alarmDetail, setAlarmDetail] = useState<AlarmDetailResponse>();
+
   const locationString = useMemo(() => {
     const locations = alarmDetail?.alarmLocation;
-    if (!locations) return "";
+    if (!locations || locations.length === 0) return "";
 
     const length = locations.length;
     const firstLocation = locations[0].eupMyun + " " + locations[0].guGun;
@@ -47,25 +47,31 @@ const ActivatedAlarmScreen = ({ route, navigation }: PageProps) => {
   }, [alarmDetail]);
 
   useFocusEffect(() => {
+    let alreadyFetched = false;
     const fetchCurrentAlarmInfo = async () => {
       try {
         const { data } = await getAlarmDetail({ alarmId });
-
         if (!data) return;
 
-        console.log(JSON.stringify(data, null, 2));
-        setAlarmDetail(data);
+        console.log("Activated Alarm Screen: ", JSON.stringify(data, null, 2));
+        if (!alreadyFetched) {
+          setAlarmDetail(data);
+        }
       } catch (err) {
         console.error(err);
       }
     };
 
     fetchCurrentAlarmInfo();
+
+    return () => {
+      alreadyFetched = true;
+    };
   });
 
   const onPressButton_closeAlarm = () => {
     navigation.navigate("AlarmDetail", {
-      alarmId,
+      alarmIds: [Number(alarmId)],
     });
   };
 
