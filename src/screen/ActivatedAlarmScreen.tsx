@@ -91,25 +91,31 @@ const ActivatedAlarmScreen = ({ route, navigation }: PageProps) => {
 
       const soundToPlay = soundResourcesMap.get(soundToPlayId as ESoundName);
 
-      if (!soundToPlay?.isLoaded()) {
-        console.log(`${soundToPlay} is not loaded yet`);
-        return;
-      }
-
-      const soundVolume = (alarmDetail.volume ?? 5) / 10;
-      console.log(`sound volume: ${soundVolume}`);
-
-      soundToPlay?.setVolume(soundVolume);
-      soundToPlay?.play((success) => {
-        if (success) {
-          console.log(`successfully played the sound ${soundToPlayId}`);
+      const timer = setTimeout(() => {
+        if (!soundToPlay?.isLoaded()) {
+          console.log(`${soundToPlay} is not loaded yet`);
           return;
         }
 
-        console.log(
-          `playback failed due to audio decoding errors: ${soundToPlayId}`,
-        );
-      });
+        const soundVolume = (alarmDetail.volume ?? 5) / 10;
+        console.log(`sound volume: ${soundVolume}`);
+
+        soundToPlay?.setVolume(soundVolume);
+        soundToPlay?.play((success) => {
+          if (success) {
+            console.log(`successfully played the sound ${soundToPlayId}`);
+            return;
+          }
+
+          console.log(
+            `playback failed due to audio decoding errors: ${soundToPlayId}`,
+          );
+        });
+      }, 3000);
+
+      return () => {
+        clearTimeout(timer);
+      };
     }, [alarmDetail]),
   );
 

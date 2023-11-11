@@ -54,6 +54,9 @@ export const useHandleForegroundNotification = () => {
               `[${Platform.OS}] User delivered notification`,
               detail.notification,
             );
+            navigation.navigate("ActivatedAlarm", {
+              alarmId,
+            });
             break;
 
           case EventType.APP_BLOCKED:
@@ -74,6 +77,9 @@ export const useHandleForegroundNotification = () => {
               `[${Platform.OS}] Trigger notification created`,
               detail.notification,
             );
+            navigation.navigate("ActivatedAlarm", {
+              alarmId,
+            });
             break;
           case EventType.FG_ALREADY_EXIST:
             break;

@@ -9,6 +9,7 @@ export const useInitNotification = () => {
 
   useFocusEffect(
     useCallback(() => {
+      let alreadyInit = false;
       async function bootstrap() {
         if (Platform.OS === "android") {
           await notifee.createChannel({
@@ -29,7 +30,9 @@ export const useInitNotification = () => {
             initialNotification.pressAction,
           );
 
-          navigation.navigate("ActivatedAlarm");
+          navigation.navigate("ActivatedAlarm", {
+            alarmId: initialNotification.notification.data?.["alarmId"],
+          });
           return;
         }
         console.log(
@@ -40,6 +43,10 @@ export const useInitNotification = () => {
       bootstrap()
         .then(() => setLoading(false))
         .catch(console.error);
+
+      return () => {
+        alreadyInit = true;
+      };
     }, []),
   );
 

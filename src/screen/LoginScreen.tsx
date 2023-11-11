@@ -23,6 +23,7 @@ import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 import { getPrivacyPolicy, getTermsOfUse } from "@/network/api";
 import { useQuestHasLoginHistory } from "@/hook/useQuestHasLoginHistory";
 import { useFocusEffect } from "@react-navigation/native";
+import { useInitNotification } from "@/util/notification/useInitNotification";
 
 type Props = NativeStackScreenProps<StackParamList, "Login">;
 
@@ -48,6 +49,11 @@ const LoginScreen = ({ route, navigation }: Props) => {
       });
     }, []),
   );
+
+  const loading = useInitNotification();
+  if (loading) {
+    return null;
+  }
 
   const onPress_KakaoLoginButton = async () => {
     await kakao.login();

@@ -69,11 +69,6 @@ const MainScreen = ({ route, navigation }: Props) => {
     }, []),
   );
 
-  const loading = useInitNotification();
-  if (loading) {
-    return null;
-  }
-
   const onPressButton_goToSettings = () => {
     navigation.navigate("Settings");
   };
