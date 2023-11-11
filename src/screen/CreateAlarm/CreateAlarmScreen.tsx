@@ -167,10 +167,14 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
       : new Date(),
   );
 
-  const alarmHours = useMemo(
-    () => alarmDate.getHours().toString().padStart(2, "0"),
-    [alarmDate],
-  );
+  const alarmHours = useMemo(() => {
+    let hours = alarmDate.getHours();
+    if (hours >= 12) {
+      hours -= 12;
+    }
+
+    return hours.toString().padStart(2, "0");
+  }, [alarmDate]);
 
   const alarmMinutes = useMemo(
     () => alarmDate.getMinutes().toString().padStart(2, "0"),
@@ -180,6 +184,14 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
   const alarmAMPM = useMemo(
     () => (alarmDate.getHours() >= 12 ? "PM" : "AM"),
     [alarmDate],
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      console.log(
+        `selected AlarmDate: ${alarmHours}:${alarmMinutes} ${alarmAMPM}`,
+      );
+    }, [alarmDate]),
   );
 
   const [repeatBottomSheetState, setRepeatBottomSheetState] =
