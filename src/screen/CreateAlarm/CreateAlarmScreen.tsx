@@ -3,6 +3,7 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import type { StackParamList } from "@/typing";
 import { ESoundName, ETimeTableItemState } from "@/typing";
 import {
+  Alert,
   Image,
   Platform,
   SafeAreaView,
@@ -292,7 +293,17 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
       alarmSoundId,
     };
 
+    console.log(
+      `shared params before make create/update operations`,
+      JSON.stringify(sharedParams, null, 2),
+    );
+
     let alarmId: number | null = null;
+
+    if (alarmDate < new Date()) {
+      Alert.alert("저장하려는 알람의 시간은 현재보다 과거일 수 없습니다.");
+      return;
+    }
 
     try {
       if (isEditMode) {
