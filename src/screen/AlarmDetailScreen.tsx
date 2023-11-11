@@ -59,6 +59,11 @@ const AlarmDetailScreen = ({ route, navigation }: ScreenProps) => {
           }
         }
 
+        console.log(
+          `weather details: `,
+          JSON.stringify(weatherDetails, null, 2),
+        );
+
         setAlarmLocationDetails(weatherDetails);
 
         // const soundVolume = data?.volume ?? 0.5;

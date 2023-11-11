@@ -279,22 +279,21 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
     );
 
     const vibration = !soundVolume || soundVolume === 0 ? 1 : soundVolume;
+    const sharedParams: AlarmInsertRequest = {
+      userId: local.localAuthState.userId,
+      timeOfDay: alarmAMPM,
+      alarmTime: alarmHours + alarmMinutes,
+      alarmLocationList,
+      volume: soundVolume,
+      vibration,
+      weekList,
+      reminder: (reminderState?.minute ?? 0).toString(),
+      alarmSoundId,
+    };
+
+    let alarmId: number | null = null;
 
     try {
-      const sharedParams: AlarmInsertRequest = {
-        userId: local.localAuthState.userId,
-        timeOfDay: alarmAMPM,
-        alarmTime: alarmHours + alarmMinutes,
-        alarmLocationList,
-        volume: soundVolume,
-        vibration,
-        weekList,
-        reminder: (reminderState?.minute ?? 0).toString(),
-        alarmSoundId,
-      };
-
-      let alarmId: number | null = null;
-
       if (isEditMode) {
         const updateParams: AlarmUpdateRequest = {
           alarmId: alarm?.alarmId,
@@ -304,13 +303,13 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
         // console.log("update alarm: ", JSON.stringify(updateParams, null, 2));
 
         const response = await updateAlarm(updateParams);
-        console.log(JSON.stringify(response, null, 2));
+        console.log("update alarm: ", JSON.stringify(response, null, 2));
         alarmId = response.data?.alarmId ?? null;
       } else {
         // console.log("insert alarm: ", JSON.stringify(sharedParams, null, 2));
 
         const response = await insertAlarm(sharedParams);
-        console.log(JSON.stringify(response, null, 2));
+        console.log("insert alarm: ", JSON.stringify(response, null, 2));
         alarmId = response.data?.alarmId ?? null;
       }
 

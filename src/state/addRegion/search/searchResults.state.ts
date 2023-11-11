@@ -65,9 +65,10 @@ const reset = () => {
 };
 
 const fetchRecentSearchResults = async (isAlreadyFetched: boolean) => {
+  let snsId = "";
+  let snsType = "";
+
   try {
-    let snsId = "";
-    let snsType = "";
     switch (local.localAuthState.whichLoginType) {
       case "kakao":
         snsId = kakao.kakaoProfile?.id ?? "";
@@ -84,13 +85,15 @@ const fetchRecentSearchResults = async (isAlreadyFetched: boolean) => {
         snsType = "0";
         break;
     }
+
     console.log("genRecentSearchResults", snsId, snsType);
 
     const response = await getRecentSelectLocation({
       snsId,
       snsType,
     });
-    console.log(JSON.stringify(response.data, null, 2));
+
+    // console.log(JSON.stringify(response.data, null, 2));
 
     if (!response.data) throw new Error(response.message);
 

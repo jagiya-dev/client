@@ -125,7 +125,7 @@ const SettingsScreen = ({ route, navigation }: Props) => {
         snsType,
       });
 
-      console.log(JSON.stringify(data, null, 2));
+      console.log("Setting Screen: ", JSON.stringify(data, null, 2));
 
       navigation.navigate("Login");
     } catch (err) {

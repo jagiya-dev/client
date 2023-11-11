@@ -1,11 +1,4 @@
-import { DateFlag } from "@/util/dateHelper";
-import {
-  AlarmResponse,
-  AlarmWeekResponse,
-  LocationResponse,
-} from "@/network/api";
-
-export type DateFlagT = typeof DateFlag;
+import { AlarmResponse, AlarmWeekResponse } from "@/network/api";
 
 export type LocalAuthState = {
   userId?: number;
