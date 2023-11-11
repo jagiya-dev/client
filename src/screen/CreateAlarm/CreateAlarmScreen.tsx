@@ -279,12 +279,13 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
     );
 
     const vibration = !soundVolume || soundVolume === 0 ? 1 : soundVolume;
+
     const sharedParams: AlarmInsertRequest = {
       userId: local.localAuthState.userId,
       timeOfDay: alarmAMPM,
       alarmTime: alarmHours + alarmMinutes,
       alarmLocationList,
-      volume: soundVolume,
+      volume: (soundVolume ?? 0.5) * 10,
       vibration,
       weekList,
       reminder: (reminderState?.minute ?? 0).toString(),
@@ -356,7 +357,7 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
     setAlarmDate(new Date());
     repeatBehaviours.reset();
     soundBehaviours.reset();
-    soundVolumeBehaviours.setSoundVolume(0.2);
+    soundVolumeBehaviours.setSoundVolume(0.5);
     reminderBehaviours.reset();
     locationBehaviours.reset();
   };

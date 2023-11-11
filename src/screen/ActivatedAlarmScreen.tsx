@@ -1,5 +1,5 @@
 import { Button } from "@/components/button";
-import { StackParamList } from "@/typing";
+import { ESoundName, StackParamList } from "@/typing";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { widthPercentageToDP } from "react-native-responsive-screen";
@@ -11,7 +11,7 @@ import AlarmDeferModal from "@/components/alarm/AlarmDeferModal";
 import { startCountdown } from "@/state/alarmDefer/alarmDefer.state";
 import { useFocusEffect } from "@react-navigation/native";
 import { AlarmDetailResponse, getAlarmDetail } from "@/network/api";
-import alarmDetailScreen from "@/screen/AlarmDetailScreen";
+import { soundResourcesMap } from "@/audio";
 
 type PageProps = NativeStackScreenProps<StackParamList, "ActivatedAlarm">;
 
@@ -46,28 +46,72 @@ const ActivatedAlarmScreen = ({ route, navigation }: PageProps) => {
     return `${alarmTimeOfDay} ${alarmTime}`;
   }, [alarmDetail]);
 
-  useFocusEffect(() => {
-    let alreadyFetched = false;
-    const fetchCurrentAlarmInfo = async () => {
-      try {
-        const { data } = await getAlarmDetail({ alarmId });
-        if (!data) return;
+  // play alarm sound
 
-        console.log("Activated Alarm Screen: ", JSON.stringify(data, null, 2));
-        if (!alreadyFetched) {
-          setAlarmDetail(data);
+  useFocusEffect(
+    useCallback(() => {
+      let alreadyFetched = false;
+
+      const fetchCurrentAlarmInfo = async () => {
+        try {
+          const { data } = await getAlarmDetail({ alarmId });
+          if (!data) return;
+
+          if (!alreadyFetched) {
+            console.log(
+              "Activated Alarm Screen: ",
+              JSON.stringify(data, null, 2),
+            );
+            setAlarmDetail(data);
+          }
+        } catch (err) {
+          console.error(err);
         }
-      } catch (err) {
-        console.error(err);
+      };
+
+      fetchCurrentAlarmInfo();
+
+      return () => {
+        alreadyFetched = true;
+      };
+    }, [alarmId]),
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      if (!alarmDetail) return;
+      const alarmSoundId: number = alarmDetail.alarmSoundId ?? 0;
+
+      const soundToPlayId = Object.values(ESoundName).find(
+        (_, i) => i === alarmSoundId,
+      );
+      if (!soundToPlayId) return;
+
+      console.log(`sound To Play: ${soundToPlayId as ESoundName}`);
+
+      const soundToPlay = soundResourcesMap.get(soundToPlayId as ESoundName);
+
+      if (!soundToPlay?.isLoaded()) {
+        console.log(`${soundToPlay} is not loaded yet`);
+        return;
       }
-    };
 
-    fetchCurrentAlarmInfo();
+      const soundVolume = (alarmDetail.volume ?? 5) / 10;
+      console.log(`sound volume: ${soundVolume}`);
 
-    return () => {
-      alreadyFetched = true;
-    };
-  });
+      soundToPlay?.setVolume(soundVolume);
+      soundToPlay?.play((success) => {
+        if (success) {
+          console.log(`successfully played the sound ${soundToPlayId}`);
+          return;
+        }
+
+        console.log(
+          `playback failed due to audio decoding errors: ${soundToPlayId}`,
+        );
+      });
+    }, [alarmDetail]),
+  );
 
   const onPressButton_closeAlarm = () => {
     navigation.navigate("AlarmDetail", {

@@ -5,9 +5,8 @@ const VOLUME_UPDATE_INTERVAL = 500;
 const DEFAULT_SOUND_VOLUME = 0.5;
 
 const soundVolumeSubject = new BehaviorSubject<number>(0.5);
-export const whenSoundVolumeChange = soundVolumeSubject
-  .asObservable()
-  .pipe(debounceTime(VOLUME_UPDATE_INTERVAL));
+export const whenSoundVolumeChange = soundVolumeSubject.asObservable();
+// .pipe(debounceTime(VOLUME_UPDATE_INTERVAL));
 
 let lastSoundVolume: number | null = null;
 let currentSoundVolume: number = DEFAULT_SOUND_VOLUME;
@@ -32,7 +31,6 @@ const unmute = () => {
 export const behaviours = {
   reset,
   setSoundVolume,
-  currentSoundVolume,
-  mute,
-  unmute,
+  // mute,
+  // unmute,
 };

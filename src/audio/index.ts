@@ -48,12 +48,12 @@ const defaultSoundLoadCallback = (
   }
 
   // loaded successfully
-  // console.log(
-  //   `[${Platform.OS}] LOAD SUCCESS!
-  //    loaded file: ${soundName},
-  //    duration: ${soundResult.getDuration().toFixed(2)}s,
-  //    number of channels: ${soundResult.getNumberOfChannels()}`,
-  // );
+  console.log(
+    `[${Platform.OS}] LOAD SUCCESS!
+     loaded file: ${soundName},
+     duration: ${soundResult.getDuration().toFixed(2)}s,
+     number of channels: ${soundResult.getNumberOfChannels()}`,
+  );
 };
 
 export const soundResourcesMap = new Map<ESoundName, Sound>(
