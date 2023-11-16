@@ -66,14 +66,6 @@ const AlarmDetailScreen = ({ route, navigation }: ScreenProps) => {
 
         setAlarmLocationDetails(weatherDetails);
 
-        // const soundVolume = data?.volume ?? 0.5;
-
-        // get sound
-        // get sound volume
-        // play sound alarm
-        // with message.
-
-        // soundVolumeBehaviours.setSoundVolume(soundVolume);
         // reminderBehaviours.setReminderDirectly(Number(data?.reminder) ?? 0);
         // soundBehaviours.selectSound(
         //   data?.alarmSoundId?.toString() ?? "0",

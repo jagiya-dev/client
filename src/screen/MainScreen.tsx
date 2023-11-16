@@ -12,7 +12,6 @@ import {
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import AlarmContainer from "@/components/alarm/Alarm.Container";
 import AddNewAlarmItemButton from "@/components/button/AddNewAlarmItem.button";
-import { useInitNotification } from "@/util/notification/useInitNotification";
 import { useHandleForegroundNotification } from "@/util/notification/useHandleForegroundNotification";
 import { deleteModeToggleSubject } from "@/state/main/main.state";
 import { useObservableState } from "@/hook/useObservableState";
@@ -78,7 +77,9 @@ const MainScreen = ({ route, navigation }: Props) => {
   };
 
   const onPressButton_AddNewAlarmItem = () => {
-    navigation.navigate("CreateAlarm");
+    navigation.navigate("CreateAlarm", {
+      isEditRegion: false,
+    });
   };
 
   const onPressButton_DetailButton = async () => {

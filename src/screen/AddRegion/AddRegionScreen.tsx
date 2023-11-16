@@ -138,11 +138,15 @@ const AddRegionScreen = ({ route, navigation }: ScreenProps) => {
 
     locationBehaviours.addLocation(value);
 
-    navigation.navigate("CreateAlarm");
+    navigation.navigate("CreateAlarm", {
+      isEditRegion: false,
+    });
   };
 
   const onPress_closeButton = () => {
-    navigation.navigate("CreateAlarm");
+    navigation.navigate("CreateAlarm", {
+      isEditRegion: false,
+    });
   };
 
   return (
@@ -167,13 +171,6 @@ const AddRegionScreen = ({ route, navigation }: ScreenProps) => {
 
       {/* 1. forecast search bar */}
       <Text style={s.regionSearchBarLabel}>어떤 지역의 예보를 확인할까요?</Text>
-
-      {/*<TouchableNativeFeedback onPress={onPress_RegionSearchBar}>*/}
-      {/*  <View style={s.regionSearchBar}>*/}
-      {/*    <Text style={s.regionSearchBarInnerText}></Text>*/}
-      {/*  </View>*/}
-      {/*</TouchableNativeFeedback>*/}
-
       <Shadow
         offset={[0, 2]}
         distance={2}
