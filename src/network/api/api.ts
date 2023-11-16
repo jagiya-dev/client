@@ -41,6 +41,8 @@ import type {
   GetAlarmLocationWeatherParams,
   GetAlarmLocationWeatherDetail200,
   GetAlarmLocationWeatherDetailParams,
+  GetAlarmLocationTimeList200,
+  GetAlarmLocationTimeListParams,
   GetAlarmList200,
   GetAlarmListParams,
   GetAlarmDetail200,
@@ -348,6 +350,20 @@ export const getAlarmLocationWeatherDetail = (
 };
 
 /**
+ * 알람지역시간목록 조회
+ * @summary 알람지역시간목록 조회
+ */
+export const getAlarmLocationTimeList = (
+  params: GetAlarmLocationTimeListParams,
+  options?: SecondParameter<typeof getInstance>,
+) => {
+  return getInstance<GetAlarmLocationTimeList200>(
+    { url: `/alarm/getAlarmLocationTimeList`, method: "get", params },
+    options,
+  );
+};
+
+/**
  * 알람리스트 조회
  * @summary 알람리스트 조회
  */
@@ -474,6 +490,9 @@ export type GetAlarmLocationWeatherResult = NonNullable<
 >;
 export type GetAlarmLocationWeatherDetailResult = NonNullable<
   Awaited<ReturnType<typeof getAlarmLocationWeatherDetail>>
+>;
+export type GetAlarmLocationTimeListResult = NonNullable<
+  Awaited<ReturnType<typeof getAlarmLocationTimeList>>
 >;
 export type GetAlarmListResult = NonNullable<
   Awaited<ReturnType<typeof getAlarmList>>
