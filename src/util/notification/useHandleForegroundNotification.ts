@@ -77,9 +77,6 @@ export const useHandleForegroundNotification = () => {
               `[${Platform.OS}] Trigger notification created`,
               detail.notification,
             );
-            navigation.navigate("ActivatedAlarm", {
-              alarmId,
-            });
             break;
           case EventType.FG_ALREADY_EXIST:
             break;
