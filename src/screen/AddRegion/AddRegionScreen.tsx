@@ -90,7 +90,7 @@ const AddRegionScreen = ({ route, navigation }: ScreenProps) => {
       return () => {
         alreadyPopulated = true;
       };
-    }, []),
+    }, [selectedAlarmDate]),
   );
 
   const deleteFromSelectedTimes = (index: number) => {
@@ -131,6 +131,8 @@ const AddRegionScreen = ({ route, navigation }: ScreenProps) => {
 
   const onPress_saveButton = () => {
     const { value } = selectedLocation;
+    // console.log(`저장! 선택한 지역: ${JSON.stringify(value, null, 2)}`);
+
     if (!value) return;
     if (!allSelectedTimes) return;
 

@@ -92,9 +92,26 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
   const isEditMode = alarm !== undefined;
   const isEditRegion = params?.isEditRegion ?? false;
 
+  const editTime = createDateFromHourAndMinute(
+    alarm?.alarmTime?.substring(0, 2) ?? "",
+    alarm?.alarmTime?.substring(2, 4) ?? "",
+  );
+
   if (isEditRegion) {
     console.log(`CreateAlarmScreen, isEditRegion: ${isEditRegion}`);
-    navigation.navigate("AddRegion");
+
+    let hours = editTime.getHours();
+    if (hours >= 12) {
+      hours -= 12;
+    }
+
+    const hoursAsStr = hours.toString().padStart(2, "0");
+    const minutesAsStr = editTime.getMinutes().toString().padStart(2, "0");
+
+    console.log(editTime, hoursAsStr, minutesAsStr);
+    navigation.navigate("AddRegion", {
+      selectedAlarmDate: hoursAsStr + minutesAsStr,
+    });
   }
 
   if (isEditMode) {
@@ -103,8 +120,6 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
 
   useFocusEffect(
     useCallback(() => {
-      let alreadyRefetched = false;
-
       async function refetchFromEditAlarm() {
         if (!isEditMode) return;
 
@@ -120,8 +135,6 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
 
         const { data } = response;
 
-        if (alreadyRefetched) return;
-
         const soundVolume = data?.volume ?? 0.5;
         soundVolumeBehaviours.setSoundVolume(soundVolume);
 
@@ -134,10 +147,6 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
       }
 
       refetchFromEditAlarm();
-
-      return () => {
-        alreadyRefetched = true;
-      };
     }, [alarm, alarm?.alarmId]),
   );
 
@@ -160,12 +169,7 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
   };
 
   const [alarmDate, setAlarmDate] = useState<Date>(
-    isEditMode
-      ? createDateFromHourAndMinute(
-          alarm.alarmTime?.substring(0, 2) ?? "",
-          alarm.alarmTime?.substring(2, 4) ?? "",
-        )
-      : new Date(),
+    isEditMode ? editTime : new Date(),
   );
 
   const alarmHours = useMemo(() => {
@@ -185,14 +189,6 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
   const alarmAMPM = useMemo(
     () => (alarmDate.getHours() >= 12 ? "PM" : "AM"),
     [alarmDate],
-  );
-
-  useFocusEffect(
-    useCallback(() => {
-      console.log(
-        `selected AlarmDate: ${alarmHours}:${alarmMinutes} ${alarmAMPM}`,
-      );
-    }, [alarmDate]),
   );
 
   const [repeatBottomSheetState, setRepeatBottomSheetState] =
@@ -243,6 +239,7 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
   };
 
   const onPressButton_deleteRegion = (locationName: string) => {
+    // console.log(`${locationName} 지울거야`);
     locationBehaviours.removeLocation(locationName);
   };
 
