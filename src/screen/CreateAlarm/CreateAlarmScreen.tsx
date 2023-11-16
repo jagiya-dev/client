@@ -92,105 +92,6 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
   const isEditMode = alarm !== undefined;
   const isEditRegion = params?.isEditRegion ?? false;
 
-  const editTime = createDateFromHourAndMinute(
-    alarm?.alarmTime?.substring(0, 2) ?? "",
-    alarm?.alarmTime?.substring(2, 4) ?? "",
-  );
-
-  if (isEditRegion) {
-    console.log(`CreateAlarmScreen, isEditRegion: ${isEditRegion}`);
-
-    let hours = editTime.getHours();
-    if (hours >= 12) {
-      hours -= 12;
-    }
-
-    const hoursAsStr = hours.toString().padStart(2, "0");
-    const minutesAsStr = editTime.getMinutes().toString().padStart(2, "0");
-
-    console.log(editTime, hoursAsStr, minutesAsStr);
-    navigation.navigate("AddRegion", {
-      selectedAlarmDate: hoursAsStr + minutesAsStr,
-    });
-  }
-
-  if (isEditMode) {
-    console.log(`CreateAlarmScreen, isEditMode? : ${isEditMode}`);
-  }
-
-  useFocusEffect(
-    useCallback(() => {
-      async function refetchFromEditAlarm() {
-        if (!isEditMode) return;
-
-        const alarmId = alarm?.alarmId?.toString() ?? "";
-        const response = await getAlarmDetail({
-          alarmId,
-        });
-
-        // console.log(
-        //   "refetch from EditAlarm",
-        //   JSON.stringify(response, null, 2),
-        // );
-
-        const { data } = response;
-
-        const soundVolume = data?.volume ?? 0.5;
-        soundVolumeBehaviours.setSoundVolume(soundVolume);
-
-        reminderBehaviours.setReminderDirectly(Number(data?.reminder) ?? 0);
-        soundBehaviours.selectSound(
-          data?.alarmSoundId?.toString() ?? "0",
-          soundVolume,
-        );
-        repeatBehaviours.setRepeat(data?.alarmWeek ?? []);
-      }
-
-      refetchFromEditAlarm();
-    }, [alarm, alarm?.alarmId]),
-  );
-
-  const [isCreateAlarmDialogOpen, setIsCreateAlarmDialogOpen] = useState<
-    boolean | undefined
-  >(undefined);
-
-  const openCreateAlarmDialog = () => setIsCreateAlarmDialogOpen(true);
-  const closeCreateAlarmDialog = () => setIsCreateAlarmDialogOpen(false);
-
-  const onPressButton_createAlarmOK = () => {
-    closeCreateAlarmDialog();
-    resetWithoutSave();
-
-    navigation.navigate("Main");
-  };
-
-  const onPressButton_createAlarmOKCancel = () => {
-    closeCreateAlarmDialog();
-  };
-
-  const [alarmDate, setAlarmDate] = useState<Date>(
-    isEditMode ? editTime : new Date(),
-  );
-
-  const alarmHours = useMemo(() => {
-    let hours = alarmDate.getHours();
-    if (hours >= 12) {
-      hours -= 12;
-    }
-
-    return hours.toString().padStart(2, "0");
-  }, [alarmDate]);
-
-  const alarmMinutes = useMemo(
-    () => alarmDate.getMinutes().toString().padStart(2, "0"),
-    [alarmDate],
-  );
-
-  const alarmAMPM = useMemo(
-    () => (alarmDate.getHours() >= 12 ? "PM" : "AM"),
-    [alarmDate],
-  );
-
   const [repeatBottomSheetState, setRepeatBottomSheetState] =
     useState<EBottomSheetOpenState>(EBottomSheetOpenState.CLOSE);
 
@@ -228,6 +129,104 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
     observable: addedLocationForUI$,
   });
 
+  const [isCreateAlarmDialogOpen, setIsCreateAlarmDialogOpen] = useState<
+    boolean | undefined
+  >(undefined);
+
+  const editTime = createDateFromHourAndMinute(
+    alarm?.alarmTime?.substring(0, 2) ?? "",
+    alarm?.alarmTime?.substring(2, 4) ?? "",
+  );
+
+  const [alarmDate, setAlarmDate] = useState<Date>(
+    isEditMode ? editTime : new Date(),
+  );
+
+  const alarmHours = useMemo(() => {
+    let hours = alarmDate.getHours();
+    if (hours >= 12) {
+      hours -= 12;
+    }
+
+    return hours.toString().padStart(2, "0");
+  }, [alarmDate]);
+
+  const alarmMinutes = useMemo(
+    () => alarmDate.getMinutes().toString().padStart(2, "0"),
+    [alarmDate],
+  );
+
+  const alarmAMPM = useMemo(
+    () => (alarmDate.getHours() >= 12 ? "PM" : "AM"),
+    [alarmDate],
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      async function refetchFromEditAlarm() {
+        if (!isEditMode) return;
+
+        const alarmId = alarm?.alarmId?.toString() ?? "";
+        const response = await getAlarmDetail({
+          alarmId,
+        });
+
+        // console.log(
+        //   "refetch from EditAlarm",
+        //   JSON.stringify(response, null, 2),
+        // );
+
+        const { data } = response;
+
+        const soundVolume = data?.volume ?? 0.5;
+        soundVolumeBehaviours.setSoundVolume(soundVolume);
+
+        reminderBehaviours.setReminderDirectly(Number(data?.reminder) ?? 0);
+        soundBehaviours.selectSound(
+          data?.alarmSoundId?.toString() ?? "0",
+          soundVolume,
+        );
+        repeatBehaviours.setRepeat(data?.alarmWeek ?? []);
+      }
+
+      refetchFromEditAlarm();
+    }, [alarm, alarm?.alarmId]),
+  );
+
+  if (isEditRegion) {
+    console.log(`CreateAlarmScreen, isEditRegion: ${isEditRegion}`);
+
+    let hours = editTime.getHours();
+    if (hours >= 12) {
+      hours -= 12;
+    }
+
+    const hoursAsStr = hours.toString().padStart(2, "0");
+    const minutesAsStr = editTime.getMinutes().toString().padStart(2, "0");
+
+    console.log(editTime, hoursAsStr, minutesAsStr);
+    navigation.navigate("AddRegion", {
+      selectedAlarmDate: hoursAsStr + minutesAsStr,
+    });
+  }
+
+  if (isEditMode) {
+    console.log(`CreateAlarmScreen, isEditMode? : ${isEditMode}`);
+  }
+
+  const openCreateAlarmDialog = () => setIsCreateAlarmDialogOpen(true);
+  const closeCreateAlarmDialog = () => setIsCreateAlarmDialogOpen(false);
+
+  const onPressButton_createAlarmOK = () => {
+    closeCreateAlarmDialog();
+    resetWithoutSave();
+
+    navigation.navigate("Main");
+  };
+
+  const onPressButton_createAlarmOKCancel = () => {
+    closeCreateAlarmDialog();
+  };
   const canAddNewLocation =
     !addedLocationsForUI || addedLocationsForUI.length < 4;
 
@@ -332,7 +331,7 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
           alarmId: alarmId.toString(),
           time: alarmDate,
           locationList: alarmLocationList ?? [],
-          title: "알람 입장~~",
+          title: isEditRegion ? "알람 편집 입장~~" : "알람 입장~~",
         });
       }
 
