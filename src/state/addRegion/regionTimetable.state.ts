@@ -5,9 +5,12 @@ import {
   map,
 } from "rxjs";
 import { amItems, pmItems } from "@/state/addRegion/regionTimetable.data";
-import { ETimeTableItemState } from "@/typing";
+import { ETimeTableItemState, TimetableItem } from "@/typing";
+import { getAlarmLocationTimeList } from "@/network/api";
 
-const amTimetableSubject = new BehaviorSubject(amItems);
+const amTimetableSubject = new BehaviorSubject<readonly TimetableItem[]>(
+  amItems,
+);
 export const amTimetable$ = amTimetableSubject.asObservable();
 const amTimeAllSelected$ = amTimetableSubject.pipe(
   map((items) =>
@@ -15,7 +18,9 @@ const amTimeAllSelected$ = amTimetableSubject.pipe(
   ),
 );
 
-const pmTimetableSubject = new BehaviorSubject(pmItems);
+const pmTimetableSubject = new BehaviorSubject<readonly TimetableItem[]>(
+  pmItems,
+);
 export const pmTimetable$ = pmTimetableSubject.asObservable();
 const pmTimeAllSelected$ = pmTimetableSubject.pipe(
   map((items) =>
@@ -42,6 +47,65 @@ export const briefSelectedTimesAsFormattedString$ = allTimeSelected$.pipe(
     return `${allSelectedTimes?.[0].time} 외 ${cnt}건`;
   }),
 );
+
+const populate = async (fromTime: string) => {
+  try {
+    const response = await getAlarmLocationTimeList({
+      alarmTime: fromTime,
+    });
+
+    const data = response?.data;
+    if (!data) return;
+
+    // console.log(`populate region timetable ${data.map((x) => x.locationTime)}`);
+
+    // make comparable times
+    const amTimes = [];
+    const pmTimes = [];
+
+    for (const { locationTime } of response.data!) {
+      if (!locationTime || locationTime === "") {
+        continue;
+      }
+
+      const comparableLocationTime = locationTime.padStart(4, "0");
+      const comparableLocationTimeAsNumber = +comparableLocationTime;
+
+      const isAm = comparableLocationTimeAsNumber <= 1100;
+      if (isAm) {
+        amTimes.push(comparableLocationTimeAsNumber);
+      } else {
+        pmTimes.push(comparableLocationTimeAsNumber);
+      }
+    }
+
+    // mark am items
+    const comparableAMItems = amItems.map(
+      (item) => +item.time.replace(":", ""),
+    );
+
+    for (const amTime of amTimes) {
+      const found = comparableAMItems.findIndex((x) => x === amTime);
+      if (found !== -1) {
+        updateTimeTableStateOfAM(found, ETimeTableItemState.none);
+      }
+    }
+
+    // mark pm items
+    const comparablePMItems = pmItems.map(
+      (item) => +item.time.replace(":", ""),
+    );
+
+    for (const pmTime of pmTimes) {
+      const found = comparablePMItems.findIndex((x) => x === pmTime);
+      if (found !== -1) {
+        updateTimeTableStateOfPM(found, ETimeTableItemState.none);
+      }
+    }
+  } catch (e) {
+    console.error(e);
+  }
+};
 
 const reset = () => {
   const { value: amValue } = amTimetableSubject;
@@ -80,12 +144,24 @@ const updateTimeTableStateOfAM = (
   ]);
 };
 
-const updateTimeTableStateOfAMFromTime = (
+const updateTimeTableStateOfAMFromTimeStr = (
   time: string,
   newState: ETimeTableItemState,
 ) => {
   const { value } = amTimetableSubject;
   const index = value.findIndex((item) => item.time === time);
+  updateTimeTableStateOfAM(index, newState);
+};
+
+const updateTimeTableStateOfAMFromTime = (
+  time: string,
+  newState: ETimeTableItemState,
+) => {
+  const { value } = amTimetableSubject;
+  const index = value
+    .map((x) => x.time.replace(":", ""))
+    .findIndex((t) => t === time);
+
   updateTimeTableStateOfAM(index, newState);
 };
 
@@ -114,12 +190,24 @@ const updateTimeTableStateOfPM = (
   ]);
 };
 
-const updateTimeTableStateOfPMFromTime = (
+const updateTimeTableStateOfPMFromTimeStr = (
   time: string,
   newState: ETimeTableItemState,
 ) => {
   const { value } = pmTimetableSubject;
   const index = value.findIndex((item) => item.time === time);
+  updateTimeTableStateOfPM(index, newState);
+};
+
+const updateTimeTableStateOfPMFromTime = (
+  time: string,
+  newState: ETimeTableItemState,
+) => {
+  const { value } = pmTimetableSubject;
+  const index = value
+    .map((x) => x.time.replace(":", ""))
+    .findIndex((t) => t === time);
+
   updateTimeTableStateOfPM(index, newState);
 };
 
@@ -138,9 +226,12 @@ const toggleTimeTableStateOfPM = (index: number) => {
 export const behaviours = {
   updateTimeTableStateOfAM,
   toggleTimeTableStateOfAM,
-  updateTimeTableStateOfAMFromTime,
+  updateTimeTableStateOfAMFromTimeStr,
+
   updateTimeTableStateOfPM,
   toggleTimeTableStateOfPM,
-  updateTimeTableStateOfPMFromTime,
+  updateTimeTableStateOfPMFromTimeStr,
+
+  populate,
   reset,
 };

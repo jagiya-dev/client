@@ -43,7 +43,9 @@ export type StackParamList = {
   AlarmDetail: {
     alarmIds: readonly number[];
   };
-  AddRegion: undefined;
+  AddRegion: {
+    selectedAlarmDate: string;
+  };
   Settings: undefined;
   MyInfo: {
     userId: string;

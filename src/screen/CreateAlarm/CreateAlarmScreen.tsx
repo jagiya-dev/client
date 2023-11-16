@@ -247,7 +247,12 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
   };
 
   const onPressButton_AddNewRegion = () => {
-    navigation.navigate("AddRegion");
+    let selectedAlarmDate = alarmHours + alarmMinutes;
+    console.log(`open AddRegion with params: ${selectedAlarmDate}`);
+
+    navigation.navigate("AddRegion", {
+      selectedAlarmDate,
+    });
   };
 
   const onPressButton_SaveOrUpdate = async () => {

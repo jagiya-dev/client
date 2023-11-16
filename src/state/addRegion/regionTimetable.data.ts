@@ -28,37 +28,37 @@ export const amItems: readonly TimetableItem[] = [
   },
   {
     time: "05:00",
-    state: ETimeTableItemState.selected,
+    state: ETimeTableItemState.disabled,
     isAM: true,
   },
   {
     time: "06:00",
-    state: ETimeTableItemState.selected,
+    state: ETimeTableItemState.disabled,
     isAM: true,
   },
   {
     time: "07:00",
-    state: ETimeTableItemState.none,
+    state: ETimeTableItemState.disabled,
     isAM: true,
   },
   {
     time: "08:00",
-    state: ETimeTableItemState.none,
+    state: ETimeTableItemState.disabled,
     isAM: true,
   },
   {
     time: "09:00",
-    state: ETimeTableItemState.none,
+    state: ETimeTableItemState.disabled,
     isAM: true,
   },
   {
     time: "10:00",
-    state: ETimeTableItemState.none,
+    state: ETimeTableItemState.disabled,
     isAM: true,
   },
   {
     time: "11:00",
-    state: ETimeTableItemState.none,
+    state: ETimeTableItemState.disabled,
     isAM: true,
   },
 ];
@@ -101,27 +101,27 @@ export const pmItems: readonly TimetableItem[] = [
   },
   {
     time: "19:00",
-    state: ETimeTableItemState.selected,
+    state: ETimeTableItemState.disabled,
     isAM: false,
   },
   {
     time: "20:00",
-    state: ETimeTableItemState.selected,
+    state: ETimeTableItemState.disabled,
     isAM: false,
   },
   {
     time: "21:00",
-    state: ETimeTableItemState.none,
+    state: ETimeTableItemState.disabled,
     isAM: false,
   },
   {
     time: "22:00",
-    state: ETimeTableItemState.none,
+    state: ETimeTableItemState.disabled,
     isAM: false,
   },
   {
     time: "23:00",
-    state: ETimeTableItemState.none,
+    state: ETimeTableItemState.disabled,
     isAM: false,
   },
 ];

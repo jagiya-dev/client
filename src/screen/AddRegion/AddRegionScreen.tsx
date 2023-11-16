@@ -44,6 +44,8 @@ import { useFocusEffect } from "@react-navigation/native";
 type ScreenProps = NativeStackScreenProps<StackParamList, "AddRegion">;
 
 const AddRegionScreen = ({ route, navigation }: ScreenProps) => {
+  const { selectedAlarmDate } = route.params;
+
   const [regionBottomSheetState, setRegionBottomSheetState] =
     useState<EBottomSheetOpenState>(EBottomSheetOpenState.CLOSE);
 
@@ -69,13 +71,35 @@ const AddRegionScreen = ({ route, navigation }: ScreenProps) => {
     }, []),
   );
 
+  useFocusEffect(
+    useCallback(() => {
+      let alreadyPopulated = false;
+
+      async function populate() {
+        try {
+          if (!alreadyPopulated) {
+            await timeTableBehaviours.populate(selectedAlarmDate);
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      }
+
+      populate();
+
+      return () => {
+        alreadyPopulated = true;
+      };
+    }, []),
+  );
+
   const deleteFromSelectedTimes = (index: number) => {
     if (!allSelectedTimes) return;
 
     const { time, isAM } = allSelectedTimes[index];
 
     if (isAM) {
-      timeTableBehaviours.updateTimeTableStateOfAMFromTime(
+      timeTableBehaviours.updateTimeTableStateOfAMFromTimeStr(
         time,
         ETimeTableItemState.none,
       );
@@ -83,7 +107,7 @@ const AddRegionScreen = ({ route, navigation }: ScreenProps) => {
       return;
     }
 
-    timeTableBehaviours.updateTimeTableStateOfPMFromTime(
+    timeTableBehaviours.updateTimeTableStateOfPMFromTimeStr(
       time,
       ETimeTableItemState.none,
     );

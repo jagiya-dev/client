@@ -19,7 +19,6 @@ import { useObservableState } from "@/hook/useObservableState";
 import { apple } from "@/state/auth/auth.state.apple";
 import { kakao } from "@/state/auth/auth.state.kakao";
 import { local } from "@/state/auth/auth.state.local";
-import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 import { getPrivacyPolicy, getTermsOfUse } from "@/network/api";
 import { useQuestHasLoginHistory } from "@/hook/useQuestHasLoginHistory";
 import { useFocusEffect } from "@react-navigation/native";
