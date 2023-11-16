@@ -4,7 +4,6 @@ import { LocationResponse } from "@/network/api";
 export const addedLocations = new BehaviorSubject<LocationResponse[]>([]);
 export const addedLocations$ = addedLocations.asObservable();
 export const addedLocationForUI$ = addedLocations$.pipe(
-  filter((locations) => locations.length > 0),
   map((locations) => locations.map((loc) => `${loc.guGun} ${loc.eupMyun}`)),
 );
 
