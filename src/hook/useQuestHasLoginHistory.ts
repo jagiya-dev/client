@@ -10,7 +10,7 @@ export const useQuestHasLoginHistory = (afterQuery?: () => void) => {
 
   useFocusEffect(
     useCallback(() => {
-      let alreadyDone = false;
+      let alreadyLoggedInWithHistory = false;
       const queryHasLoginHistory = async () => {
         try {
           const jsonValue = await getItem();
@@ -28,7 +28,7 @@ export const useQuestHasLoginHistory = (afterQuery?: () => void) => {
             localHistory,
           );
 
-          if (alreadyDone) return;
+          if (alreadyLoggedInWithHistory) return;
           local.hydrate(localHistory);
 
           afterQuery?.();
@@ -42,7 +42,7 @@ export const useQuestHasLoginHistory = (afterQuery?: () => void) => {
       }, 1000);
 
       return () => {
-        alreadyDone = true;
+        alreadyLoggedInWithHistory = true;
         clearTimeout(timer);
       };
     }, [setItem, getItem]),

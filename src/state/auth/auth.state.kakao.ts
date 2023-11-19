@@ -43,8 +43,6 @@ export class Kakao {
       console.log("Login Success"); //, JSON.stringify(oAuthToken, null, 2));
 
       await this.getProfile();
-
-      // kakaoOAuthTokenSubject.next(oAuthToken);
     } catch (error: any) {
       if (error.code === "E_CANCELLED_OPERATION") {
         console.log("Login Cancel", error.message);

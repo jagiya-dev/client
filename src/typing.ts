@@ -4,6 +4,8 @@ export type LocalAuthState = {
   userId?: number;
   isLoggedIn: boolean;
   whichLoginType?: "kakao" | "apple" | "guest";
+  accessToken?: string;
+  refreshToken?: string;
 };
 
 export type IsEnabled = {

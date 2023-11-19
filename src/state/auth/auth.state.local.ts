@@ -71,9 +71,7 @@ export class Local {
     });
   }
 
-  public async getSnsInfo(): Promise<
-    { snsId: string; snsType: string } | { snsId: string; snsType: string }
-  > {
+  public async getSnsInfo(): Promise<{ snsId: string; snsType: string }> {
     let snsId = "";
     let snsType = "";
 
@@ -143,13 +141,7 @@ export class Local {
       case "guest":
         {
           snsType = "0";
-
-          try {
-            const deviceId = await DeviceInfo.getUniqueId();
-            snsId = deviceId;
-          } catch (error) {
-            console.error("error: ", error);
-          }
+          snsId = await DeviceInfo.getUniqueId();
         }
         break;
     }
@@ -166,7 +158,9 @@ export class Local {
       const response = await login(params);
       console.log("login response: ", JSON.stringify(response, null, 2));
 
-      this.localAuthState.userId = response.data?.userId;
+      this.localAuthState.userId = response.data?.data?.userId;
+      this.localAuthState.accessToken = response.headers["accesstoken"];
+      this.localAuthState.refreshToken = response.headers["refreshtoken"];
     } catch (error) {
       console.error(error);
     }

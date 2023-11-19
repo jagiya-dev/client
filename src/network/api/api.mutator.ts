@@ -2,8 +2,11 @@
 import AXIOS, {
   type AxiosError,
   type AxiosInstance,
+  type AxiosResponse,
   type AxiosRequestConfig,
 } from "axios";
+import axios from "axios";
+
 export const URL_ROOT =
   process.env.NODE_ENV === "development"
     ? "https://www.readyumbrelladata.com"
@@ -17,6 +20,28 @@ export type ErrorType<Error> = AxiosError<Error>;
 const axiosInstance: AxiosInstance = AXIOS.create({
   baseURL: URL_ROOT,
 });
+
+export const getInstanceWithHeaders = <T>(
+  cfg: AxiosRequestConfig,
+  options?: AxiosRequestConfig,
+): Promise<{ data: T; headers: AxiosResponse["headers"] }> => {
+  const cancelTokenSource = AXIOS.CancelToken.source();
+  const promise = axiosInstance({
+    ...cfg,
+    ...options,
+    cancelToken: cancelTokenSource.token,
+  }).then((response) => ({
+    data: response.data,
+    headers: response.headers,
+  }));
+
+  // @ts-ignore
+  promise.cancel = () => {
+    cancelTokenSource.cancel("Query was cancelled");
+  };
+
+  return promise;
+};
 
 export const getInstance = <T>(
   cfg: AxiosRequestConfig,

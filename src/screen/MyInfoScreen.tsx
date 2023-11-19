@@ -24,6 +24,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import {
   getUserDetail,
   loginAndUserTransform,
+  LoginAndUserTransformResult,
   updateUserName,
   UserDetailResponse,
 } from "@/network/api";
@@ -142,16 +143,19 @@ const MyInfoScreen = ({ route, navigation }: Props) => {
       const profile = kakao.kakaoProfile;
       if (!profile) return;
 
-      const { data } = await loginAndUserTransform({
-        userId: userId,
-        name: profile.name,
-        email: profile.email,
-        snsType: "1",
-        tobeSnsId: profile.id,
-      });
+      const response: LoginAndUserTransformResult = await loginAndUserTransform(
+        {
+          userId: userId!.toString(),
+          name: profile.name,
+          email: profile.email,
+          snsType: "1",
+          tobeSnsId: profile.id,
+        },
+      );
+
       setLoginStatus("kakao");
 
-      if (!data) return;
+      if (!response.data) return;
     } catch (err) {
       console.error(err);
     }
@@ -180,13 +184,15 @@ const MyInfoScreen = ({ route, navigation }: Props) => {
       const info = apple.appleInfo;
       if (!info) return;
 
-      const { data } = await loginAndUserTransform({
-        userId,
-        name: info.fullName?.nickname ?? "",
-        email: info.email ?? "",
-        snsType: "2",
-        tobeSnsId: info.user,
-      });
+      const response: LoginAndUserTransformResult = await loginAndUserTransform(
+        {
+          userId: userId!.toString(),
+          name: info.fullName?.nickname ?? "",
+          email: info.email ?? "",
+          snsType: "2",
+          tobeSnsId: info.user,
+        },
+      );
       setLoginStatus("apple");
     } catch (err) {
       console.error(err);

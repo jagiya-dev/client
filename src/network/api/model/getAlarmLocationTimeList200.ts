@@ -5,10 +5,9 @@
  * Springdoc을 사용한 Swagger UI
  * OpenAPI spec version: 1.0.0
  */
-import type { AlarmLocationTimeListResponse } from "./alarmLocationTimeListResponse";
 
 export type GetAlarmLocationTimeList200 = {
   code?: string;
-  data?: AlarmLocationTimeListResponse[];
+  data?: string[];
   message?: string;
 };
