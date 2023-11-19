@@ -34,11 +34,7 @@ type Props = NativeStackScreenProps<StackParamList, "Settings">;
 const SettingsScreen = ({ route, navigation }: Props) => {
   const { setItem } = useAsyncStorage("localAuthState");
   const onPressButton_openMyInfo = () => {
-    const { userId } = local.localAuthState;
-
-    navigation.navigate("MyInfo", {
-      userId: userId?.toString() ?? "-1",
-    });
+    navigation.navigate("MyInfo");
   };
 
   // const onPressButton_share = async () => {

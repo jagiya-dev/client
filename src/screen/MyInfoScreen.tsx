@@ -38,11 +38,10 @@ import { useObservableState } from "@/hook/useObservableState";
 
 type Props = NativeStackScreenProps<StackParamList, "MyInfo">;
 const MyInfoScreen = ({ route, navigation }: Props) => {
-  const { params } = route;
-  const userId = params?.userId;
-
   const [userDetail, setUserDetail] = useState<UserDetailResponse>();
+
   const [isNameEditMode, setNameEditMode] = useState<boolean>(false);
+
   const [newName, setNewName] = useState<string>("");
 
   let accountInfo = "guest";
@@ -63,10 +62,12 @@ const MyInfoScreen = ({ route, navigation }: Props) => {
   const [loginStatus, setLoginStatus] =
     useState<LocalAuthState["whichLoginType"]>("guest");
 
+  const { userId } = local.localAuthState;
+
   useFocusEffect(
     useCallback(() => {
       setLoginStatus(local.localAuthState.whichLoginType);
-    }, []),
+    }, [userId]),
   );
 
   useFocusEffect(
@@ -79,6 +80,11 @@ const MyInfoScreen = ({ route, navigation }: Props) => {
           const { data } = await getUserDetail({
             userId: userId.toString(),
           });
+          console.log(
+            "fetch user Detail",
+            userId,
+            JSON.stringify(data, null, 2),
+          );
 
           if (isActive && data) {
             setUserDetail(data);

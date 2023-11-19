@@ -47,9 +47,7 @@ export type StackParamList = {
     selectedAlarmDate: string;
   };
   Settings: undefined;
-  MyInfo: {
-    userId: string;
-  };
+  MyInfo: undefined;
   Playground: undefined;
   Webview: {
     method?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
