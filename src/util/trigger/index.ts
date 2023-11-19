@@ -1,5 +1,5 @@
 import { AndroidNotificationSetting } from "./../../../node_modules/@notifee/react-native/src/types/NotificationAndroid";
-import notifee from "@notifee/react-native";
+import notifee, { AlarmType } from "@notifee/react-native";
 import { TriggerType } from "@notifee/react-native/src/types/Trigger";
 import { TimestampTrigger } from "@notifee/react-native/dist/types/Trigger";
 import { Alert } from "react-native";
@@ -72,7 +72,7 @@ export const createOrUpdateNewTrigger = async (args: TriggerOperationArgs) => {
     type: TriggerType.TIMESTAMP,
     timestamp: time.valueOf(),
     alarmManager: {
-      allowWhileIdle: true,
+      type: AlarmType.SET_ALARM_CLOCK,
     },
   };
 
