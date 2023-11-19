@@ -68,26 +68,24 @@ const fetchRecentSearchResults = async (isAlreadyFetched: boolean) => {
   let snsId = "";
   let snsType = "";
 
+  switch (local.localAuthState.whichLoginType) {
+    case "kakao":
+      snsId = kakao.kakaoProfile?.id ?? "";
+      snsType = "1";
+      break;
+
+    case "apple":
+      snsId = apple.appleInfo?.user ?? "";
+      snsType = "2";
+      break;
+
+    case "guest":
+      snsId = await DeviceInfo.getUniqueId();
+      snsType = "0";
+      break;
+  }
+
   try {
-    switch (local.localAuthState.whichLoginType) {
-      case "kakao":
-        snsId = kakao.kakaoProfile?.id ?? "";
-        snsType = "1";
-        break;
-
-      case "apple":
-        snsId = apple.appleInfo?.user ?? "";
-        snsType = "2";
-        break;
-
-      case "guest":
-        snsId = await DeviceInfo.getUniqueId();
-        snsType = "0";
-        break;
-    }
-
-    console.log("genRecentSearchResults", snsId, snsType);
-
     const response = await getRecentSelectLocation({
       snsId,
       snsType,
