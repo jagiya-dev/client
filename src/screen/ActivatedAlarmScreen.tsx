@@ -10,7 +10,11 @@ import { useCallback, useMemo, useState } from "react";
 import AlarmDeferModal from "@/components/alarm/AlarmDeferModal";
 import { startCountdown } from "@/state/alarmDefer/alarmDefer.state";
 import { useFocusEffect } from "@react-navigation/native";
-import { AlarmDetailResponse, getAlarmDetail } from "@/network/api";
+import {
+  AlarmDetailResponse,
+  deleteAlarm,
+  getAlarmDetail,
+} from "@/network/api";
 import { soundResourcesMap } from "@/audio";
 
 type PageProps = NativeStackScreenProps<StackParamList, "ActivatedAlarm">;
@@ -46,7 +50,35 @@ const ActivatedAlarmScreen = ({ route, navigation }: PageProps) => {
     return `${alarmTimeOfDay} ${alarmTime}`;
   }, [alarmDetail]);
 
-  // play alarm sound
+  useFocusEffect(
+    useCallback(() => {
+      let alreadyDeleted = false;
+
+      async function deleteAfterAcitivate() {
+        try {
+          if (alreadyDeleted) {
+            return;
+          }
+
+          const response = await deleteAlarm({
+            alarmId: Number(alarmId),
+          });
+          console.log(
+            `alarm deleted after activating`,
+            JSON.stringify(response, null, 2),
+          );
+        } catch (e) {
+          console.error(e);
+        }
+      }
+
+      deleteAfterAcitivate();
+
+      return () => {
+        alreadyDeleted = true;
+      };
+    }, [alarmId]),
+  );
 
   useFocusEffect(
     useCallback(() => {
@@ -77,6 +109,7 @@ const ActivatedAlarmScreen = ({ route, navigation }: PageProps) => {
     }, [alarmId]),
   );
 
+  // play alarm sound
   useFocusEffect(
     useCallback(() => {
       if (!alarmDetail) return;
