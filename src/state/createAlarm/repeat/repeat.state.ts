@@ -20,31 +20,43 @@ export const onlySelectedRepeatItems$ = repeatStateSubject.pipe(
   map((items) => items.filter((item) => item.isSelected)),
 );
 
+const weekdayComparer = [1, 2, 3, 4, 5];
+const weekendComparer = [6, 7];
+const everyDayComparer = [1, 2, 3, 4, 5, 6, 7];
+const dayLabelAsString = (input: number) => {
+  switch (input) {
+    case 1:
+      return "월";
+    case 2:
+      return "화";
+    case 3:
+      return "수";
+    case 4:
+      return "목";
+    case 5:
+      return "금";
+    case 6:
+      return "토";
+    default:
+      return "일";
+  }
+};
 const getRepeatDaysAbbreviated = (label: readonly number[]) => {
-  const weekdays =
-    label.includes(1) ||
-    label.includes(2) ||
-    label.includes(3) ||
-    label.includes(4) ||
-    label.includes(5);
+  const isOneOfWeekday = weekdayComparer.some((day) => label.includes(day));
+  const isOneOfWeekend = weekendComparer.some((day) => label.includes(day));
 
-  const weekend = label.includes(6) || label.includes(7);
+  if (isOneOfWeekday && !isOneOfWeekend) return "주중";
+  if (!isOneOfWeekday && isOneOfWeekend) return "주말";
 
-  if (weekdays && !weekend) return "주중";
-  if (!weekdays && weekend) return "주말";
-
-  if (
-    label.includes(1) &&
-    label.includes(2) &&
-    label.includes(3) &&
-    label.includes(4) &&
-    label.includes(5) &&
-    label.includes(6) &&
-    label.includes(7)
-  )
+  const isEveryday = everyDayComparer.every((day) => label.includes(day));
+  if (isEveryday) {
     return "매일";
+  }
 
-  if (weekdays && weekend) return "주중+주말";
+  if (isOneOfWeekday && isOneOfWeekend) {
+    const combined = label.map(dayLabelAsString).join(", ");
+    return combined + " 요일";
+  }
 };
 
 export const repeatDaysAbbr$ = onlySelectedRepeatItems$.pipe(
