@@ -34,10 +34,10 @@ const App = () => {
 
   useRegisterForegroundReceive();
 
-  if (Platform.OS === "android") {
-    useAndroidBatteryOptimize();
-    useAndroidPowerManager();
-  }
+  // if (Platform.OS === "android") {
+  //   useAndroidBatteryOptimize();
+  //   useAndroidPowerManager();
+  // }
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
