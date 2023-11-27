@@ -407,6 +407,7 @@ const CreateAlarmScreen = ({ route, navigation }: ScreenProps) => {
             locale="en"
             is24hourSource="locale"
             androidVariant="iosClone"
+            theme="light"
           />
         </View>
 

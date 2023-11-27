@@ -9,8 +9,8 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import { handleBackgroundNotification } from "@/util/notification/useHandleBackgroundNotification";
-import { useAndroidBatteryOptimize } from "@/util/useAndroidBatterOptimize";
-import { useAndroidPowerManager } from "@/util/useAndroidPowerManager";
+// import { useAndroidBatteryOptimize } from "@/util/useAndroidBatterOptimize";
+// import { useAndroidPowerManager } from "@/util/useAndroidPowerManager";
 import Navigation from "@/navigation/navigation";
 
 import "react-native-get-random-values";
@@ -27,12 +27,12 @@ if (Platform.OS === "android") {
 }
 
 const App = () => {
-  const { progress, bHasUpdate } = Codepush.useSyncOrUpdateCode();
-  if (bHasUpdate) {
-    return <Codepush.Panel progress={progress} />;
-  }
+  // const { progress, bHasUpdate } = Codepush.useSyncOrUpdateCode();
+  // if (bHasUpdate) {
+  //   return <Codepush.Panel progress={progress} />;
+  // }
 
-  useRegisterForegroundReceive();
+  // useRegisterForegroundReceive();
 
   // if (Platform.OS === "android") {
   //   useAndroidBatteryOptimize();

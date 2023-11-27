@@ -11,8 +11,8 @@
     "link": "react-native-asset",
     "lint": "eslint .",
     "test": "jest",
-    "build:android-dev": "react-native bundle --platform android --dev --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
-    "build:android": "react-native bundle --platform android --dev=false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
+    "build:android-dev": "react-native bundle --platform android --dev --entry-file index.js --bundle-output android/app/src/main/assets/android.bundle --assets-dest android/app/src/main/res",
+    "build:android": "react-native build-android --mode=release",
     "codepush:android": "appcenter codepush release-react -a bside.16.6.shared-gmail.com/readyUmbrella-1 -d Staging",
     "codepush:ios": "appcenter codepush release-react -a bside.16.6.shared-gmail.com/readyUmbrella -d Staging",
     "syncApi": "orval --config ./orval.config.js"
