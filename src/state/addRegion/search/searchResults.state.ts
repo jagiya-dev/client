@@ -29,6 +29,12 @@ export const searchResult$ = searchInput$.pipe(
   mergeMap((keyword) =>
     fromFetch(
       `https://www.readyumbrelladata.com/location/getLocation?keyword=${keyword}`,
+      {
+        headers: {
+          AccessToken: local.localAuthState.accessToken,
+          RefreshToken: local.localAuthState.refreshToken,
+        },
+      },
     ).pipe(
       switchMap((response) => {
         if (response.ok) {
