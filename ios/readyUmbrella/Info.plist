@@ -39,7 +39,6 @@
 	<string>ad2146b60d762c0d340e03159e095747</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
-		<string>kakaoad2146b60d762c0d340e03159e095747</string>
 		<string>kakaokompassauth</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
