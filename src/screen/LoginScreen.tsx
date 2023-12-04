@@ -132,17 +132,17 @@ const LoginScreen = ({ route, navigation }: Props) => {
           </Text>
         </Button>
 
-        {isSupportAppleLogin && (
-          <Button
-            style={[s.loginButton, s.loginButtonApple]}
-            onPress={onPressAppleLoginButton}
-          >
-            <AppleLogo style={s.loginButtonLogo} />
-            <Text style={[s.loginButtonText, s.loginButtonTextApple]}>
-              애플 로그인
-            </Text>
-          </Button>
-        )}
+        {/*{isSupportAppleLogin && (*/}
+        {/*  <Button*/}
+        {/*    style={[s.loginButton, s.loginButtonApple]}*/}
+        {/*    onPress={onPressAppleLoginButton}*/}
+        {/*  >*/}
+        {/*    <AppleLogo style={s.loginButtonLogo} />*/}
+        {/*    <Text style={[s.loginButtonText, s.loginButtonTextApple]}>*/}
+        {/*      애플 로그인*/}
+        {/*    </Text>*/}
+        {/*  </Button>*/}
+        {/*)}*/}
       </View>
 
       {/* 이용약관 & 개인정보처리방침 */}

@@ -28,7 +28,6 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>kakaoad2146b60d762c0d340e03159e095747</string>
-				<string>kakaoad2146b60d762c0d340e03159e095747://oauth</string>
 			</array>
 		</dict>
 	</array>
@@ -100,5 +99,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>UIUserInterfaceStyle</key>
+	<string>Light</string>
 </dict>
 </plist>
