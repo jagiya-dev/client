@@ -37,6 +37,7 @@ export const searchResult$ = searchInput$.pipe(
       },
     ).pipe(
       switchMap((response) => {
+        console.log(response);
         if (response.ok) {
           return response.json();
         }
@@ -71,36 +72,20 @@ const reset = () => {
 };
 
 const fetchRecentSearchResults = async (isAlreadyFetched: boolean) => {
-  let snsId = "";
-  let snsType = "";
-
-  switch (local.localAuthState.whichLoginType) {
-    case "kakao":
-      snsId = kakao.kakaoProfile?.id ?? "";
-      snsType = "1";
-      break;
-
-    case "apple":
-      snsId = apple.appleInfo?.user ?? "";
-      snsType = "2";
-      break;
-
-    case "guest":
-      snsId = await DeviceInfo.getUniqueId();
-      snsType = "0";
-      break;
+  if (!local.localAuthState.userId) {
+    return;
   }
+
+  console.log("getRecentSelectLocation", local.localAuthState);
 
   try {
     const response = await getRecentSelectLocation({
-      snsId,
-      snsType,
+      userId: local.localAuthState.userId.toString(),
     });
 
-    // console.log(JSON.stringify(response.data, null, 2));
+    console.log(JSON.stringify(response.data, null, 2));
 
     if (!response.data) throw new Error(response.message);
-
     if (isAlreadyFetched) return;
 
     recentSearchResults.next(response.data);
