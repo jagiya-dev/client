@@ -1,8 +1,8 @@
 import { BehaviorSubject } from "rxjs";
 import {
+  getProfile as kakaoGetProfile,
   KakaoOAuthToken,
   KakaoProfile,
-  getProfile as kakaoGetProfile,
   login as kakaoLogin,
   logout as kakaoLogout,
   unlink as kakaoUnlink,
@@ -40,7 +40,7 @@ export class Kakao {
   public async login(): Promise<void> {
     try {
       const oAuthToken: KakaoOAuthToken = await kakaoLogin();
-      console.log("Login Success"); //, JSON.stringify(oAuthToken, null, 2));
+      console.log("Login Success", JSON.stringify(oAuthToken, null, 2)); //, ;
 
       await this.getProfile();
     } catch (error: any) {

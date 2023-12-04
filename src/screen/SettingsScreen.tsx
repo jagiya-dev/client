@@ -79,8 +79,8 @@ const SettingsScreen = ({ route, navigation }: Props) => {
   // };
 
   const onPressButton_logOut = async () => {
-    console.log("onPressButton_logOut");
     const snsType = local.getSnsType();
+    console.log("onPressButton_logOut. snsType: ", snsType);
 
     try {
       if (snsType === "1") {

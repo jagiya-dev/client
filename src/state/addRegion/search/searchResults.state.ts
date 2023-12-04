@@ -33,7 +33,7 @@ export const searchResult$ = searchInput$.pipe(
         headers: {
           AccessToken: local.localAuthState.accessToken,
           RefreshToken: local.localAuthState.refreshToken,
-        },
+        } as any,
       },
     ).pipe(
       switchMap((response) => {
