@@ -6,6 +6,7 @@ import AXIOS, {
   type AxiosRequestConfig,
 } from "axios";
 import axios from "axios";
+import { local } from "@/state/auth/auth.state.local";
 
 export const URL_ROOT =
   process.env.NODE_ENV === "development"
@@ -50,6 +51,10 @@ export const getInstance = <T>(
   const cancelTokenSource = AXIOS.CancelToken.source();
   const promise = axiosInstance({
     ...cfg,
+    headers: {
+      AccessToken: local.localAuthState.accessToken,
+      RefreshToken: local.localAuthState.refreshToken,
+    },
     ...options,
     cancelToken: cancelTokenSource.token,
   }).then(({ data }) => data);

@@ -66,15 +66,12 @@ const SearchResultContents = (props: Props) => {
   const onPress_selectLocation = async (location: LocationResponse) => {
     searchResultsBehaviours.updateSelectedLocation(location);
 
-    const { snsId, snsType } = await local.getSnsInfo();
-
-    const { data } = await getRecentLocation({
+    await getRecentLocation({
       eupMyun: location.eupMyun ?? "",
       guGun: location.guGun ?? "",
       cityDo: location.cityDo ?? "",
       regionCd: location.regionCd ?? "",
-      snsId,
-      snsType,
+      userId: local.localAuthState.userId?.toString() ?? "",
     });
     // console.log("최근 검색 추가: ", JSON.stringify(data, null, 2));
 

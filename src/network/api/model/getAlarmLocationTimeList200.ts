@@ -8,6 +8,6 @@
 
 export type GetAlarmLocationTimeList200 = {
   code?: string;
-  data?: string[];
+  data?: string;
   message?: string;
 };

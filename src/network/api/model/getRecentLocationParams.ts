@@ -8,13 +8,9 @@
 
 export type GetRecentLocationParams = {
   /**
-   * 소셜 계정 ID (비회원은 디바이스 ID)
+   * userId
    */
-  snsId: string;
-  /**
-   * 소셜 타입(0 비회원, 1 카카오, 2 애플)
-   */
-  snsType: string;
+  userId: string;
   /**
    * 시/도
    */

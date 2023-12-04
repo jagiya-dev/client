@@ -17,7 +17,7 @@ import {
   AlarmLocationWeatherDetailResponse,
   getAlarmLocationWeatherDetail,
 } from "@/network/api";
-import { useQuestHasLoginHistory } from "@/hook/useQuestHasLoginHistory";
+import { useLoginHistory } from "@/hook/useLoginHistory";
 import LocationItem from "@/components/location/LocationItem";
 import { useFocusEffect } from "@react-navigation/native";
 
@@ -26,7 +26,7 @@ const AlarmDetailScreen = ({ route, navigation }: ScreenProps) => {
   const { params } = route;
   const alarmIds = params?.alarmIds;
 
-  useQuestHasLoginHistory();
+  useLoginHistory();
 
   const [alarmLocationDetails, setAlarmLocationDetails] =
     useState<readonly AlarmLocationWeatherDetailResponse[]>();

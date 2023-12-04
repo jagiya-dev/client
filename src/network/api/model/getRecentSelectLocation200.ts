@@ -5,10 +5,10 @@
  * Springdoc을 사용한 Swagger UI
  * OpenAPI spec version: 1.0.0
  */
-import type { RecentLocation } from "./recentLocation";
+import type { RecentLocationResponse } from "./recentLocationResponse";
 
 export type GetRecentSelectLocation200 = {
   code?: string;
-  data?: RecentLocation[];
+  data?: RecentLocationResponse[];
   message?: string;
 };

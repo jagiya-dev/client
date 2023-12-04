@@ -6,57 +6,56 @@
  * OpenAPI spec version: 1.0.0
  */
 import type {
-  AlarmAuthorityInsert1200,
-  AlarmAuthorityInsert1Params,
-  AlarmAuthorityInsert200,
-  AlarmAuthorityInsertParams,
-  AlarmDeleteRequest,
-  AlarmEnabledRequest,
-  AlarmInsertRequest,
-  AlarmUpdateRequest,
-  DeleteAlarm200,
-  GetAlarmDetail200,
-  GetAlarmDetailParams,
-  GetAlarmList200,
-  GetAlarmListParams,
-  GetAlarmLocationTimeList200,
-  GetAlarmLocationTimeListParams,
-  GetAlarmLocationWeather200,
-  GetAlarmLocationWeatherDetail200,
-  GetAlarmLocationWeatherDetailParams,
-  GetAlarmLocationWeatherParams,
-  GetLocation200,
-  GetLocationForWeather200,
-  GetLocationForWeatherParams,
-  GetLocationParams,
-  GetPrivacyPolicy200,
-  GetRecentDeleteLocationParams,
-  GetRecentLocation200,
-  GetRecentLocationParams,
-  GetRecentSelectLocation200,
-  GetRecentSelectLocationParams,
-  GetTermsOfUse200,
-  GetUserDetail200,
-  GetUserDetailParams,
-  InsertAlarm200,
-  Login200,
-  LoginAndUserTransform200,
-  LoginAndUserTransformParams,
-  LoginParams,
-  Logout200,
-  LogoutParams,
-  MemberDelete200,
-  MemberDeleteParams,
-  RefreshLocationForWeather200,
-  RefreshLocationForWeatherParams,
-  UpdateAlarm200,
-  UpdateAlarmEnabled200,
   UpdateUserName200,
   UserDetailUpdateRequest,
+  UpdateAlarm200,
+  AlarmUpdateRequest,
+  UpdateAlarmEnabled200,
+  AlarmEnabledRequest,
+  InsertAlarm200,
+  AlarmInsertRequest,
+  RefreshLocationForWeather200,
+  RefreshLocationForWeatherParams,
+  GetLocationForWeather200,
+  GetLocationForWeatherParams,
+  Logout200,
+  LogoutParams,
+  Login200,
+  LoginParams,
+  LoginAndUserTransform200,
+  LoginAndUserTransformParams,
+  GetUserDetail200,
+  GetUserDetailParams,
+  GetTermsOfUse200,
+  GetPrivacyPolicy200,
+  MemberDelete200,
+  MemberDeleteParams,
+  GetRecentSelectLocation200,
+  GetRecentSelectLocationParams,
+  GetRecentLocation200,
+  GetRecentLocationParams,
+  GetRecentDeleteLocationParams,
+  GetLocation200,
+  GetLocationParams,
+  GetAlarmLocationWeather200,
+  GetAlarmLocationWeatherParams,
+  GetAlarmLocationWeatherDetail200,
+  GetAlarmLocationWeatherDetailParams,
+  GetAlarmLocationTimeList200,
+  GetAlarmLocationTimeListParams,
+  GetAlarmList200,
+  GetAlarmListParams,
+  GetAlarmDetail200,
+  GetAlarmDetailParams,
+  AlarmAuthorityInsert200,
+  AlarmAuthorityInsertParams,
+  AlarmAuthorityInsert1200,
+  AlarmAuthorityInsert1Params,
+  DeleteAlarm200,
+  AlarmDeleteRequest,
 } from "./model";
+import { getInstance } from "./api.mutator";
 import type { BodyType } from "./api.mutator";
-import { getInstance, getInstanceWithHeaders } from "./api.mutator";
-import { local } from "@/state/auth/auth.state.local";
 
 // eslint-disable-next-line
 type SecondParameter<T extends (...args: any) => any> = T extends (
@@ -78,11 +77,7 @@ export const updateUserName = (
     {
       url: `/user/updateUserName`,
       method: "put",
-      headers: {
-        "Content-Type": "application/json;charset=UTF-8",
-        AccessToken: local.localAuthState.accessToken,
-        RefreshToken: local.localAuthState.refreshToken,
-      },
+      headers: { "Content-Type": "application/json;charset=UTF-8" },
       data: userDetailUpdateRequest,
     },
     options,
@@ -101,11 +96,7 @@ export const updateAlarm = (
     {
       url: `/alarm/updateAlarm`,
       method: "put",
-      headers: {
-        "Content-Type": "application/json;charset=UTF-8",
-        AccessToken: local.localAuthState.accessToken,
-        RefreshToken: local.localAuthState.refreshToken,
-      },
+      headers: { "Content-Type": "application/json;charset=UTF-8" },
       data: alarmUpdateRequest,
     },
     options,
@@ -143,11 +134,7 @@ export const insertAlarm = (
     {
       url: `/alarm/insertAlarm`,
       method: "post",
-      headers: {
-        "Content-Type": "application/json;charset=UTF-8",
-        AccessToken: local.localAuthState.accessToken,
-        RefreshToken: local.localAuthState.refreshToken,
-      },
+      headers: { "Content-Type": "application/json;charset=UTF-8" },
       data: alarmInsertRequest,
     },
     options,
@@ -163,15 +150,7 @@ export const refreshLocationForWeather = (
   options?: SecondParameter<typeof getInstance>,
 ) => {
   return getInstance<RefreshLocationForWeather200>(
-    {
-      url: `/weather/refreshLocationForWeather`,
-      method: "get",
-      params,
-      headers: {
-        AccessToken: local.localAuthState.accessToken,
-        RefreshToken: local.localAuthState.refreshToken,
-      },
-    },
+    { url: `/weather/refreshLocationForWeather`, method: "get", params },
     options,
   );
 };
@@ -185,15 +164,7 @@ export const getLocationForWeather = (
   options?: SecondParameter<typeof getInstance>,
 ) => {
   return getInstance<GetLocationForWeather200>(
-    {
-      url: `/weather/getLocationForWeather`,
-      method: "get",
-      params,
-      headers: {
-        AccessToken: local.localAuthState.accessToken,
-        RefreshToken: local.localAuthState.refreshToken,
-      },
-    },
+    { url: `/weather/getLocationForWeather`, method: "get", params },
     options,
   );
 };
@@ -207,15 +178,7 @@ export const logout = (
   options?: SecondParameter<typeof getInstance>,
 ) => {
   return getInstance<Logout200>(
-    {
-      url: `/user/logout`,
-      method: "get",
-      params,
-      headers: {
-        AccessToken: local.localAuthState.accessToken,
-        RefreshToken: local.localAuthState.refreshToken,
-      },
-    },
+    { url: `/user/logout`, method: "get", params },
     options,
   );
 };
@@ -228,7 +191,7 @@ export const login = (
   params: LoginParams,
   options?: SecondParameter<typeof getInstance>,
 ) => {
-  return getInstanceWithHeaders<Login200>(
+  return getInstance<Login200>(
     { url: `/user/login`, method: "get", params },
     options,
   );
@@ -243,15 +206,7 @@ export const loginAndUserTransform = (
   options?: SecondParameter<typeof getInstance>,
 ) => {
   return getInstance<LoginAndUserTransform200>(
-    {
-      url: `/user/loginAndUserTransform `,
-      method: "get",
-      params,
-      headers: {
-        AccessToken: local.localAuthState.accessToken,
-        RefreshToken: local.localAuthState.refreshToken,
-      },
-    },
+    { url: `/user/loginAndUserTransform `, method: "get", params },
     options,
   );
 };
@@ -265,15 +220,7 @@ export const getUserDetail = (
   options?: SecondParameter<typeof getInstance>,
 ) => {
   return getInstance<GetUserDetail200>(
-    {
-      url: `/user/getUserDetail`,
-      method: "get",
-      params,
-      headers: {
-        AccessToken: local.localAuthState.accessToken,
-        RefreshToken: local.localAuthState.refreshToken,
-      },
-    },
+    { url: `/user/getUserDetail`, method: "get", params },
     options,
   );
 };
@@ -286,14 +233,7 @@ export const getTermsOfUse = (
   options?: SecondParameter<typeof getInstance>,
 ) => {
   return getInstance<GetTermsOfUse200>(
-    {
-      url: `/user/getTermsOfUse`,
-      method: "get",
-      headers: {
-        AccessToken: local.localAuthState.accessToken,
-        RefreshToken: local.localAuthState.refreshToken,
-      },
-    },
+    { url: `/user/getTermsOfUse`, method: "get" },
     options,
   );
 };
@@ -306,14 +246,7 @@ export const getPrivacyPolicy = (
   options?: SecondParameter<typeof getInstance>,
 ) => {
   return getInstance<GetPrivacyPolicy200>(
-    {
-      url: `/user/getPrivacyPolicy`,
-      method: "get",
-      headers: {
-        AccessToken: local.localAuthState.accessToken,
-        RefreshToken: local.localAuthState.refreshToken,
-      },
-    },
+    { url: `/user/getPrivacyPolicy`, method: "get" },
     options,
   );
 };
@@ -327,15 +260,7 @@ export const memberDelete = (
   options?: SecondParameter<typeof getInstance>,
 ) => {
   return getInstance<MemberDelete200>(
-    {
-      url: `/memberInfo/delete`,
-      method: "get",
-      params,
-      headers: {
-        AccessToken: local.localAuthState.accessToken,
-        RefreshToken: local.localAuthState.refreshToken,
-      },
-    },
+    { url: `/memberInfo/delete`, method: "get", params },
     options,
   );
 };
@@ -349,15 +274,7 @@ export const getRecentSelectLocation = (
   options?: SecondParameter<typeof getInstance>,
 ) => {
   return getInstance<GetRecentSelectLocation200>(
-    {
-      url: `/location/getRecentSelectLocation`,
-      method: "get",
-      params,
-      headers: {
-        AccessToken: local.localAuthState.accessToken,
-        RefreshToken: local.localAuthState.refreshToken,
-      },
-    },
+    { url: `/location/getRecentSelectLocation`, method: "get", params },
     options,
   );
 };
@@ -371,15 +288,7 @@ export const getRecentLocation = (
   options?: SecondParameter<typeof getInstance>,
 ) => {
   return getInstance<GetRecentLocation200>(
-    {
-      url: `/location/getRecentLocation`,
-      method: "get",
-      params,
-      headers: {
-        AccessToken: local.localAuthState.accessToken,
-        RefreshToken: local.localAuthState.refreshToken,
-      },
-    },
+    { url: `/location/getRecentLocation`, method: "get", params },
     options,
   );
 };
@@ -393,15 +302,7 @@ export const getRecentDeleteLocation = (
   options?: SecondParameter<typeof getInstance>,
 ) => {
   return getInstance<void>(
-    {
-      url: `/location/getRecentDeleteLocation`,
-      method: "get",
-      params,
-      headers: {
-        AccessToken: local.localAuthState.accessToken,
-        RefreshToken: local.localAuthState.refreshToken,
-      },
-    },
+    { url: `/location/getRecentDeleteLocation`, method: "get", params },
     options,
   );
 };
@@ -415,15 +316,7 @@ export const getLocation = (
   options?: SecondParameter<typeof getInstance>,
 ) => {
   return getInstance<GetLocation200>(
-    {
-      url: `/location/getLocation`,
-      method: "get",
-      params,
-      headers: {
-        AccessToken: local.localAuthState.accessToken,
-        RefreshToken: local.localAuthState.refreshToken,
-      },
-    },
+    { url: `/location/getLocation`, method: "get", params },
     options,
   );
 };
@@ -437,15 +330,7 @@ export const getAlarmLocationWeather = (
   options?: SecondParameter<typeof getInstance>,
 ) => {
   return getInstance<GetAlarmLocationWeather200>(
-    {
-      url: `/alarm/getAlarmLocationWeather`,
-      method: "get",
-      params,
-      headers: {
-        AccessToken: local.localAuthState.accessToken,
-        RefreshToken: local.localAuthState.refreshToken,
-      },
-    },
+    { url: `/alarm/getAlarmLocationWeather`, method: "get", params },
     options,
   );
 };
@@ -459,15 +344,7 @@ export const getAlarmLocationWeatherDetail = (
   options?: SecondParameter<typeof getInstance>,
 ) => {
   return getInstance<GetAlarmLocationWeatherDetail200>(
-    {
-      url: `/alarm/getAlarmLocationWeatherDetail`,
-      method: "get",
-      params,
-      headers: {
-        AccessToken: local.localAuthState.accessToken,
-        RefreshToken: local.localAuthState.refreshToken,
-      },
-    },
+    { url: `/alarm/getAlarmLocationWeatherDetail`, method: "get", params },
     options,
   );
 };
@@ -481,15 +358,7 @@ export const getAlarmLocationTimeList = (
   options?: SecondParameter<typeof getInstance>,
 ) => {
   return getInstance<GetAlarmLocationTimeList200>(
-    {
-      url: `/alarm/getAlarmLocationTimeList`,
-      method: "get",
-      params,
-      headers: {
-        AccessToken: local.localAuthState.accessToken,
-        RefreshToken: local.localAuthState.refreshToken,
-      },
-    },
+    { url: `/alarm/getAlarmLocationTimeList`, method: "get", params },
     options,
   );
 };
@@ -503,15 +372,7 @@ export const getAlarmList = (
   options?: SecondParameter<typeof getInstance>,
 ) => {
   return getInstance<GetAlarmList200>(
-    {
-      url: `/alarm/getAlarmList`,
-      method: "get",
-      params,
-      headers: {
-        AccessToken: local.localAuthState.accessToken,
-        RefreshToken: local.localAuthState.refreshToken,
-      },
-    },
+    { url: `/alarm/getAlarmList`, method: "get", params },
     options,
   );
 };
@@ -525,15 +386,7 @@ export const getAlarmDetail = (
   options?: SecondParameter<typeof getInstance>,
 ) => {
   return getInstance<GetAlarmDetail200>(
-    {
-      url: `/alarm/getAlarmDetail`,
-      method: "get",
-      params,
-      headers: {
-        AccessToken: local.localAuthState.accessToken,
-        RefreshToken: local.localAuthState.refreshToken,
-      },
-    },
+    { url: `/alarm/getAlarmDetail`, method: "get", params },
     options,
   );
 };
@@ -547,15 +400,7 @@ export const alarmAuthorityInsert = (
   options?: SecondParameter<typeof getInstance>,
 ) => {
   return getInstance<AlarmAuthorityInsert200>(
-    {
-      url: `/AuthorityInfo/alarmAuthoritySelect`,
-      method: "get",
-      params,
-      headers: {
-        AccessToken: local.localAuthState.accessToken,
-        RefreshToken: local.localAuthState.refreshToken,
-      },
-    },
+    { url: `/AuthorityInfo/alarmAuthoritySelect`, method: "get", params },
     options,
   );
 };
@@ -569,15 +414,7 @@ export const alarmAuthorityInsert1 = (
   options?: SecondParameter<typeof getInstance>,
 ) => {
   return getInstance<AlarmAuthorityInsert1200>(
-    {
-      url: `/AuthorityInfo/alarmAuthorityInsert`,
-      method: "get",
-      params,
-      headers: {
-        AccessToken: local.localAuthState.accessToken,
-        RefreshToken: local.localAuthState.refreshToken,
-      },
-    },
+    { url: `/AuthorityInfo/alarmAuthorityInsert`, method: "get", params },
     options,
   );
 };
@@ -594,11 +431,7 @@ export const deleteAlarm = (
     {
       url: `/alarm/deleteAlarm`,
       method: "delete",
-      headers: {
-        "Content-Type": "application/json;charset=UTF-8",
-        AccessToken: local.localAuthState.accessToken,
-        RefreshToken: local.localAuthState.refreshToken,
-      },
+      headers: { "Content-Type": "application/json;charset=UTF-8" },
       data: alarmDeleteRequest,
     },
     options,
@@ -634,7 +467,6 @@ export type GetUserDetailResult = NonNullable<
 export type GetTermsOfUseResult = NonNullable<
   Awaited<ReturnType<typeof getTermsOfUse>>
 >;
-
 export type GetPrivacyPolicyResult = NonNullable<
   Awaited<ReturnType<typeof getPrivacyPolicy>>
 >;

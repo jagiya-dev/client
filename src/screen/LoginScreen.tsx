@@ -20,7 +20,7 @@ import { apple } from "@/state/auth/auth.state.apple";
 import { kakao } from "@/state/auth/auth.state.kakao";
 import { local } from "@/state/auth/auth.state.local";
 import { getPrivacyPolicy, getTermsOfUse } from "@/network/api";
-import { useQuestHasLoginHistory } from "@/hook/useQuestHasLoginHistory";
+import { useLoginHistory } from "@/hook/useLoginHistory";
 import { useFocusEffect } from "@react-navigation/native";
 import { useInitNotification } from "@/util/notification/useInitNotification";
 
@@ -28,7 +28,7 @@ type Props = NativeStackScreenProps<StackParamList, "Login">;
 
 const LoginScreen = ({ route, navigation }: Props) => {
   const navigateToMain = () => navigation.navigate("Main");
-  const { setItem } = useQuestHasLoginHistory(navigateToMain);
+  const { setItem } = useLoginHistory(navigateToMain);
 
   const isSupportAppleLogin = useObservableState({
     observable: apple.isSupportAppleLogin$,
