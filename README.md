@@ -8,7 +8,6 @@
 - React Native
 - React Native CLI
 - Typescript
-- react-query
-- Recoil.js
+- rxjs
 - code push + app center
 
