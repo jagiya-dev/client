@@ -9,5 +9,7 @@
 - React Native CLI
 - Typescript
 - rxjs
+- Styled-Components
+- orval (APi code gen)
 - code push + app center
 
